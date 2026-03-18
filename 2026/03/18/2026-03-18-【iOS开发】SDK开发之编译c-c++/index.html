@@ -13,13 +13,13 @@
 <meta property="og:site_name" content="花间半缘">
 <meta property="og:description" content="#介绍  本系列是SDK打包的实践，主要解决一下3个问题，本篇是第一篇。【iOS开发】SDK开发之编译c&#x2F;c++【iOS开发】SDK开发之podspec编写【iOS开发】SDK开发之podspec内执行脚本 #本期问题  SDK的源码是由其他团队编写，使用的语言为c&#x2F;c++，且会依赖第三方的库(也是c&#x2F;c++编写)。考虑有以下几种方案：1 Xcode编译  2 cma">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-cfefb662c3c5f75b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="article:published_time" content="2026-03-18T10:04:06.000Z">
-<meta property="article:modified_time" content="2026-03-18T10:11:47.000Z">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/e5d81450b0b2599e6e882709573baa47.webp">
+<meta property="article:published_time" content="2026-03-18T10:30:13.000Z">
+<meta property="article:modified_time" content="2026-03-18T10:30:19.000Z">
 <meta property="article:author" content="半缘君">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2791393-cfefb662c3c5f75b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/e5d81450b0b2599e6e882709573baa47.webp">
   
     <link rel="alternate" href="/hexo-site/atom.xml" title="花间半缘" type="application/atom+xml">
   
@@ -83,7 +83,7 @@
         <section id="main"><article id="post-2026-03-18-【iOS开发】SDK开发之编译c-c++" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8B%E7%BC%96%E8%AF%91c-c++/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
 </a>
     
   <div class="article-category">
@@ -109,7 +109,7 @@
         <p>#介绍<br>  本系列是SDK打包的实践，主要解决一下3个问题，本篇是第一篇。<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">【iOS开发】SDK开发之编译c&#x2F;c++</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/daeaf5728100?v=1742283697172">【iOS开发】SDK开发之podspec编写</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/99ca9803cb48?v=1742283732210">【iOS开发】SDK开发之podspec内执行脚本</a></p>
 <p>#本期问题<br>  SDK的源码是由其他团队编写，使用的语言为c&#x2F;c++，且会依赖第三方的库(也是c&#x2F;c++编写)。<br>考虑有以下几种方案：1 Xcode编译  2 cmake编译</p>
 <p>##一 Xcode编译步骤</p>
-<p>###1 使用Xcode创建Framework项目<br><img src="https://upload-images.jianshu.io/upload_images/2791393-cfefb662c3c5f75b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>2 添加所有使用的c&#x2F;c++文件（依赖的第三方的文件）<br>3 调整暴露的头文件public headers<br>4 编译（command+B）</p>
+<p>###1 使用Xcode创建Framework项目<br><img src="/hexo-site/hexo-site/images/note/e5d81450b0b2599e6e882709573baa47.webp" alt="image.png"><br>2 添加所有使用的c&#x2F;c++文件（依赖的第三方的文件）<br>3 调整暴露的头文件public headers<br>4 编译（command+B）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">优点：</span><br><span class="line">Xcode原生IDE加持，可视化好，操作简单</span><br><span class="line">缺点：</span><br><span class="line">1 需要运行在mac电脑上（iOS开发肯定有mac电脑，but如果需要编写团队来编译就不行了，因为他们是linux环境）</span><br><span class="line">2 第三方依赖需要我们手动配置（尤其在依赖文件有变化的时候，需要跨团队沟通）</span><br></pre></td></tr></table></figure>
 
 <p>##二 cmake编译步骤<br>1 编写cmake脚本<br>2 执行cmake脚本</p>
@@ -132,19 +132,19 @@
     
 <nav id="article-nav">
   
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E7%BC%96%E5%86%99/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91CoreMotion-MotionThread-crash%E6%8E%92%E6%9F%A5/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">前一篇</strong>
       <div class="article-nav-title">
         
-          【iOS开发】SDK开发之podspec编写
+          【iOS开发】CoreMotion-MotionThread-crash排查
         
       </div>
     </a>
   
   
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91shell%E8%84%9A%E6%9C%AC%E6%89%93%E5%8C%85SDK%EF%BC%8C%E5%B9%B6%E6%95%B4%E5%90%88/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E7%9C%9F%E6%9C%BA%E8%B0%83%E8%AF%95-dyld_shared_cache_extract_dylibs-failed/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">【iOS开发】shell脚本打包SDK，并整合</div>
+      <div class="article-nav-title">【iOS开发】真机调试--dyld_shared_cache_extract_dylibs-failed</div>
     </a>
   
 </nav>
@@ -203,10 +203,6 @@
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
-          </li>
-        
-          <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
           </li>
         
@@ -220,6 +216,10 @@
         
           <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
           </li>
         
       </ul>

@@ -81,9 +81,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-2026-03-18-runtime应用-将UIAlertView改造成UIAlertController" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-18-iOS开发-工具使用-Git-revert和reset区别" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-runtime%E5%BA%94%E7%94%A8-%E5%B0%86UIAlertView%E6%94%B9%E9%80%A0%E6%88%90UIAlertController/" class="article-date">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8-Git-revert%E5%92%8Creset%E5%8C%BA%E5%88%AB/" class="article-date">
   <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
 </a>
     
@@ -99,7 +99,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-runtime%E5%BA%94%E7%94%A8-%E5%B0%86UIAlertView%E6%94%B9%E9%80%A0%E6%88%90UIAlertController/">runtime应用--将UIAlertView改造成UIAlertController</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8-Git-revert%E5%92%8Creset%E5%8C%BA%E5%88%AB/">iOS开发-工具使用---Git-revert和reset区别</a>
     </h1>
   
 
@@ -107,244 +107,212 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>本文旨在将UIAlertView改造,使UIAlertView的用法类似UIAlertController,使得代码逻辑更加清晰化,方便阅读和维护.</p>
-<hr>
-<p>目录<br>一 UIAlertView和UIAlertController的简介<br>二 具体代码实现<br>三 使用范例<br>四 适用范围</p>
-<hr>
-<p>#一  UIAlertView和UIAlertController的简介<br>1   UIAlertView简介<br>1.1 UIAlertView 主要接口简介</p>
-<pre><code>/**
- UIAlertView的默认初始化方法
-
- @param title 标题
- @param message 提示语
- @param delegate 代理&lt;UIAlertViewDelegate&gt;
- @param cancelButtonTitle 取消按钮的文字
- @param otherButtonTitles 其他按钮的文字
- @return UIAlertView 实例
- */
-- (instancetype)initWithTitle:(nullable NSString *)title message:(nullable NSString *)message delegate:(nullable id /*&lt;UIAlertViewDelegate&gt;*/)delegate cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitles:(nullable NSString *)otherButtonTitles, ... ;
-// Alert view style - defaults to UIAlertViewStyleDefault
-@property(nonatomic,assign) UIAlertViewStyle alertViewStyle
+        <p>reset与revert的区别</p>
+<p>自己的理解：<br>git revert  XXX ：意思是将XXX版本的改动放弃，并且版本号+1；<br>git reset XXX：意思是将代码重置到XXX版本，版本号不会变；</p>
+<h1 id="引用："><a href="#引用：" class="headerlink" title="引用："></a>引用：</h1><pre><code>git revert是用一次新的commit来回滚之前的commit，git reset是直接删除指定的commit。
+在回滚这一操作上看，效果差不多。但是在日后继续merge以前的老版本时有区别。因为git revert是用一次逆向的commit“中和”之前的提交，因此日后合并老的branch时，导致这部分改变不会再次出现，但是git reset是之间把某些commit在某个branch上删除，因而和老的branch再次merge时，这些被回滚的commit应该还会被引入。
+git reset 是把HEAD向后移动了一下，而git revert是HEAD继续前进，只是新的commit的内容和要revert的内容正好相反，能够抵消要被revert的内容。
 </code></pre>
-<p>1.2 UIAlertViewDelegate接口:</p>
-<pre><code>// Called when a button is clicked. The view will be automatically dismissed after this call returns
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex NS_DEPRECATED_IOS(2_0, 9_0);
-</code></pre>
-<p>1.3 用法示例:</p>
-<pre><code>//显示alert
-UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@&quot;选取头像&quot; message:@&quot;&quot; delegate:self cancelButtonTitle:@&quot;取消&quot; otherButtonTitles:@&quot;从相册中选取&quot;,@&quot;照相&quot;, nil];
-[alert show];
-//监听点击按钮的代理方法
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    switch (buttonIndex) {
-        case 0:
-            NSLog(@&quot;点击了取消&quot;);
-            break;
-        case 1:
-            NSLog(@&quot;点击了从相册中选取&quot;);
-            break;
-        case 2:
-            NSLog(@&quot;点击了照相&quot;);
-            break;
-        default:
-            break;
-    }
-}
-</code></pre>
-<p>注意: buttonIndex为0 一定对应”取消”按钮, buttonIndex然后按照otherButtonTitles的顺序从1开始 依次+1;</p>
-<p>2 UIAlertController简介<br>2.1 UIAlertController主要接口介绍</p>
-<pre><code>/**
- 默认初始化方法
+<p>作者：流着万条永远的河<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0e1fe709dd97">https://www.jianshu.com/p/0e1fe709dd97</a><br>来源：简书</p>
 
- @param title 标题
- @param message 提示信息
- @param preferredStyle 弹出方式
- @return UIAlertController实例
- */
-+ (instancetype)alertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message preferredStyle:(UIAlertControllerStyle)preferredStyle;
-/*
-   向alert添加按钮和事件
-*/
-- (void)addAction:(UIAlertAction *)action;
-</code></pre>
-<p>2.2 UIAlertAction接口介绍</p>
-<pre><code>/**
- UIAlertAction默认初始化方法
- 
- @param title 按钮显示文字
- @param style 按钮的类型
- @param handler 点击按钮触发的事件Block
- @return UIAlertAction实例
- */
-+ (instancetype)actionWithTitle:(nullable NSString *)title style:(UIAlertActionStyle)style handler:(void (^ __nullable)(UIAlertAction *action))handler;
-</code></pre>
-<p>2.3 用法示例</p>
-<pre><code>UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;标题&quot; message:@&quot;提示信息&quot; preferredStyle:UIAlertControllerStyleAlert];
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8-Git-revert%E5%92%8Creset%E5%8C%BA%E5%88%AB/" data-id="cuidhW00N5wo40gwgcl1uVaz2" data-title="iOS开发-工具使用---Git-revert和reset区别" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
 
-UIAlertAction *action1 = [UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-    NSLog(@&quot;点击了确定后干什么写在这里&quot;);
-}];
+    </footer>
+  </div>
+  
+</article>
 
-UIAlertAction *action2 = [UIAlertAction actionWithTitle:@&quot;取消&quot; style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-    NSLog(@&quot;点击了取消后干什么写在这里,会默认关闭alert&quot;);
-}];
 
-[alert addAction:action1];
-[alert addAction:action2];
-[self presentViewController:alert animated:YES completion:nil];
-</code></pre>
-<p>#二  代码实现:<br>接下来是本文的重点,简单说明就是用UIAlertController的方式使用UIAlertView.<br>3.1 依赖类:LQAlertAction—-功能类似UIAlertAction代码如下:</p>
-<p>LQAlertAction.h<br>    #import &lt;UIKit&#x2F;UIKit.h&gt;</p>
-<pre><code>typedef NS_ENUM(NSInteger, LQAlertActionStyle) {
-    LQAlertActionStyleDefault = 0,
-    LQAlertActionStyleCancel,
-    LQAlertActionStyleDestructive
-};
-@class LQAlertAction;
-typedef void(^LQAlertActionHandler)(LQAlertAction *action);
 
-@interface LQAlertAction : NSObject
-/**
- LQAlertAction默认初始化方法
-
- @param title 标题
- @param style 样式(目前没有作用,留作后用)
- @param handler 事件block
- @return LQAlertAction实例
- */
-+ (instancetype)alertActionWithTitle:(nullable NSString *)title style:(LQAlertActionStyle)style handler:(nullable LQAlertActionHandler)handler;
-
-@property (nullable ,copy) LQAlertActionHandler handler;
-@property (nullable, nonatomic, readonly) NSString *title;
-@property (nonatomic, readonly) LQAlertActionStyle style;
-@property (nonatomic, getter=isEnabled) BOOL enabled;
-
-@end
-</code></pre>
-<p>LQAlertAction.m</p>
-<pre><code>#import &quot;LQAlertAction.h&quot;
-
-@interface LQAlertAction ()
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, assign) LQAlertActionStyle style;
-@end
-
-@implementation LQAlertAction
-+(instancetype)alertActionWithTitle:(NSString *)title style:(LQAlertActionStyle)style handler:(void (^)(LQAlertAction *))handler{
-    LQAlertAction *action = [[LQAlertAction alloc]init];
-    action.handler = handler;
-    action.title = title;
-    action.style = style;
-    return action;
-}
-- (NSString *)title{
-    if (_title == nil) {
-        return @&quot;&quot;;
-    }
-    return _title;
-}
-- (LQAlertActionStyle)style{
-    return _style;
-}
-@end
-</code></pre>
-<p>3.2 给UIAlertView增加一个分类:<br>UIAlertView+Extention.h<br>    #import &lt;UIKit&#x2F;UIKit.h&gt;<br>    #import “LQAlertAction.h”<br>    @interface UIAlertView (Extention)<br>    @property (nonatomic, strong) NSArray *actions;</p>
-<pre><code>/**
- UIAlertView初始化方法
-
- @param actions LQAlertAction的数组,默认会有一个取消按钮
- @param title 标题
- @param message 提示信息
- */
-+(void)showAlertWithActions:(NSArray *)actions title:(NSString *)title message:(NSString *)message;
-@end
-</code></pre>
-<p>UIAlertView+Extention.m<br>    #import “UIAlertView+Extention.h”<br>    #import &lt;objc&#x2F;runtime.h&gt;<br>    @interface UIAlertView ()<UIAlertViewDelegate></p>
-<pre><code>@end
-
-@implementation UIAlertView (Extention)
-static NSArray *_actions = nil;
-
-+(void)showAlertWithActions:(NSArray *)actions title:(NSString *)title message:(NSString *)message{
-    return [[self alloc] showAlertWithActions:actions title:title message:message];
-}
-
--(void)showAlertWithActions:(NSArray *)actions title:(NSString *)title message:(NSString *)message{
+  
+    <article id="post-2026-03-18-iOS开发-Xcode-出现Could-not-build-module-&#39;Foundation&#39;错误" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Xcode-%E5%87%BA%E7%8E%B0Could-not-build-module-'Foundation'%E9%94%99%E8%AF%AF/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
     
-    NSMutableArray *otherButtonTitle = [[NSMutableArray alloc]init];
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
     
-    NSMutableArray *tempActionArray = [[NSMutableArray alloc] init];//整理action的顺序 0对应的是取消按钮
-    LQAlertAction *cancel = [self cancelActionWithTitle:@&quot;取消&quot;];
-    [tempActionArray addObject:cancel];
-    for (LQAlertAction *action in actions) {
-        if (action.style == LQAlertActionStyleCancel) {
-            //            cancelButtonTitle = action.title;
-            cancel = [self cancelActionWithTitle:action.title];
-            break;
-        } else {
-            [otherButtonTitle addObject:action.title];
-            [tempActionArray addObject:action];
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Xcode-%E5%87%BA%E7%8E%B0Could-not-build-module-'Foundation'%E9%94%99%E8%AF%AF/">iOS开发--Xcode-出现Could-not-build-module-&#39;Foundation&#39;错误</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Xcode编译</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Xcode-%E5%87%BA%E7%8E%B0Could-not-build-module-'Foundation'%E9%94%99%E8%AF%AF/" data-id="cuidqvfSzpeZ_h1hvZRWnp3Tc" data-title="iOS开发--Xcode-出现Could-not-build-module-&#39;Foundation&#39;错误" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-最优办法查找两个数组相同与不同的数据" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E6%9C%80%E4%BC%98%E5%8A%9E%E6%B3%95%E6%9F%A5%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E7%9B%B8%E5%90%8C%E4%B8%8E%E4%B8%8D%E5%90%8C%E7%9A%84%E6%95%B0%E6%8D%AE/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E6%9C%80%E4%BC%98%E5%8A%9E%E6%B3%95%E6%9F%A5%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E7%9B%B8%E5%90%8C%E4%B8%8E%E4%B8%8D%E5%90%8C%E7%9A%84%E6%95%B0%E6%8D%AE/">iOS开发-最优办法查找两个数组相同与不同的数据</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在项目开发过程中,往往会遇到这个问题:查找两个数组相同的数据或者不同的数据,你会用下面三种中的哪种办法实现呢?那种办法会更好呢?</p>
+<p>一  很多人都知道也最容易想到的是for循环,forin循环,block循环等其他的循环判断数据中的元素相同不相同,如果找相同的数据一次双层循环就可以,如果找不同的数据就需要两次双层循环.这里以block循环为例;</p>
+<p>1 查找相同的数据</p>
+<pre><code>NSArray * arr2 = @[@4,@3,@2,@1];
+NSArray * arr1 = @[@2,@3,@4,@5];
+__block NSMutableArray *sameObject = [NSMutableArray arrayWithCapacity:5];
+[arr2 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    NSNumber *number1 = obj;
+   [arr1 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+       if ([number1 isEqual:obj]) {
+           [sameObject addObject:number1];
+           *stop = YES;
+       }
+   }];
+}];
+NSLog(@&quot;%@&quot;,sameObject);
+</code></pre>
+<p>打印信息:(4,3,2)</p>
+<pre><code>注:由观察可以看出打印顺序是按照arr2的顺序打印的,解读代码之后可以
+   很容易得到结论:
+               打印顺序是由外层循环的数组决定的;
+</code></pre>
+<p>2 查找不同的数据</p>
+<pre><code>NSArray * arr2 = @[@4,@3,@2,@1];
+NSArray * arr1 = @[@2,@3,@4,@5];
+
+__block NSMutableArray *difObject = [NSMutableArray arrayWithCapacity:5];
+//找到arr2中有,arr1中没有的数据
+[arr2 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    NSNumber *number1 = obj;//[obj objectAtIndex:idx];
+    __block BOOL isHave = NO;
+    [arr1 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([number1 isEqual:obj]) {
+            isHave = YES;
+            *stop = YES;
         }
-        
-    }
-    
-    self.actions = tempActionArray.copy;
-    UIAlertView *alert = [self initWithTitle:title message:message delegate:self cancelButtonTitle:cancel.title otherButtonTitles:nil];
-    for (NSString *str in otherButtonTitle) {
-        [alert addButtonWithTitle:str];
-    }
-    
-    [alert show];
-}
-- (LQAlertAction *)cancelActionWithTitle:(NSString *)title{
-    LQAlertAction *action = [LQAlertAction alertActionWithTitle:title style:LQAlertActionStyleCancel handler:^(LQAlertAction *action) {
-        
     }];
-    return action;
-}
-
-
-- (void)setActions:(NSArray *)actions{
-    objc_setAssociatedObject(self, &amp;_actions, actions, OBJC_ASSOCIATION_RETAIN);
-}
-- (NSArray *)actions{
-    
-    return objc_getAssociatedObject(self, &amp;_actions);
-}
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex&gt;self.actions.count-1) {
-        return;
+    if (!isHave) {
+        [difObject addObject:obj];
     }
-    if (self.actions[buttonIndex]) {
-        LQAlertAction *action = self.actions[buttonIndex];
-        if (action.handler) {
-            action.handler(action);
+}];
+//找到arr1中有,arr2中没有的数据
+[arr1 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    NSNumber *number1 = obj;//[obj objectAtIndex:idx];
+    __block BOOL isHave = NO;
+    [arr2 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([number1 isEqual:obj]) {
+            isHave = YES;
+            *stop = YES;
         }
+    }];
+    if (!isHave) {
+        [difObject addObject:obj];
     }
-}
--(void)setAlertViewStyle:(UIAlertViewStyle)alertViewStyle{
-    
-}
-</code></pre>
-<p>#三 使用范例</p>
-<p>代码如下:</p>
-<pre><code>LQAlertAction *action1 = [LQAlertAction alertActionWithTitle:@&quot;从相册选取&quot; style:LQAlertActionStyleDefault handler:^(LQAlertAction *action) {
-    NSLog(@&quot;打开相册&quot;);
 }];
-
-LQAlertAction *action2 = [LQAlertAction alertActionWithTitle:@&quot;照相&quot; style:LQAlertActionStyleDefault handler:^(LQAlertAction *action) {
-    NSLog(@&quot;打开相机&quot;);
-}];
-
-LQAlertAction *cancle = [LQAlertAction alertActionWithTitle:@&quot;取消&quot; style:LQAlertActionStyleCancel handler:nil];
-[UIAlertView showAlertWithActions:@[action1,action2,cancle] title:@&quot;选取头像&quot; message:@&quot;信息内容&quot;];
+NSLog(@&quot;%@&quot;,difObject);
 </code></pre>
-<p>#四  使用范围<br>目前仅支持UIAlertViewStyle &#x3D; UIAlertViewStyleDefault的情况,后续视情况增加新的支持</p>
+<p>打印信息:(1,5)</p>
+<p>可以看到这种循环遍历找出两个数组的相同和不同的元素,代码量有点多,我们就想有没有简单一点的方法呢?</p>
+<p>二 有的人可能会想到用集合(NSSet)的相关方法,代码如下:</p>
+<p>1 查找相同的数据</p>
+<pre><code>NSArray *arr2 = @[@4,@3,@2,@1];
+NSArray *arr1 = @[@2,@3,@4,@5];
+NSMutableSet *set1 = [NSMutableSet setWithArray:arr1];
+NSMutableSet *set2 = [NSMutableSet setWithArray:arr2];
+[set1 intersectSet:set2];
+NSLog(@&quot;%@&quot;,set1);
+</code></pre>
+<p>打印结果: (3,4,2)</p>
+<p>2 查找不同的数据</p>
+<pre><code>NSMutableSet *set1 = [NSMutableSet setWithArray:arr1];
+NSMutableSet *set2 = [NSMutableSet setWithArray:arr2];
+[set2 minusSet:set1];
+NSMutableSet *set3 = [NSMutableSet setWithArray:arr2];
+[set1 minusSet:set3];
+[set2 unionSet:set1];
+NSLog(@&quot;%@&quot;,set2);
+</code></pre>
+<p>打印结果:(1,5)</p>
+<p>注:这种办法可以得到两个数组中相同的数据,但是从打印出的结果看,得出的集合是无序的,这个是由集合的特性决定的,所以在实际开发过程中的应用相对较少.</p>
+<p>三 运用正则的API得出两个数组中相同与不同的数据</p>
+<p>1 查找相同的数据</p>
+<pre><code>NSArray * arr2 = @[@4,@3,@2,@1];
+NSArray * arr1 = @[@2,@3,@4,@5];
+NSPredicate * filterPredicate_same = [NSPredicate predicateWithFormat:@&quot;SELF IN %@&quot;,arr1];
+NSArray * filter_no = [arr2 filteredArrayUsingPredicate:filterPredicate_same];
+NSLog(@&quot;%@&quot;,filter_no);
+</code></pre>
+<p>打印结果:(4,3,2)</p>
+<p>2 查找不同的数据</p>
+<pre><code>NSArray * arr2 = @[@4,@3,@2,@1];
+NSArray * arr1 = @[@2,@3,@4,@5];
+//找到在arr2中不在数组arr1中的数据
+NSPredicate * filterPredicate1 = [NSPredicate predicateWithFormat:@&quot;NOT (SELF IN %@)&quot;,arr1];
+NSArray * filter1 = [arr2 filteredArrayUsingPredicate:filterPredicate1];
+//找到在arr1中不在数组arr2中的数据
+NSPredicate * filterPredicate2 = [NSPredicate predicateWithFormat:@&quot;NOT (SELF IN %@)&quot;,arr2];
+NSArray * filter2 = [arr1 filteredArrayUsingPredicate:filterPredicate2];
+//拼接数组
+NSMutableArray *array = [NSMutableArray arrayWithArray:filter1];
+[array addObjectsFromArray:filter2];
+NSLog(@&quot;%@&quot;,array);
+</code></pre>
+<p>打印信息:(1,5)</p>
+<p>总结:第一种循环遍历数组的方法可读性和性能都不高;集合的办法应用场景有一定的局限性;运用正则的方法可读性高(推荐方法);</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-runtime%E5%BA%94%E7%94%A8-%E5%B0%86UIAlertView%E6%94%B9%E9%80%A0%E6%88%90UIAlertController/" data-id="cuidfbNQ0o0SZOLTWR3rUPuTP" data-title="runtime应用--将UIAlertView改造成UIAlertController" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E6%9C%80%E4%BC%98%E5%8A%9E%E6%B3%95%E6%9F%A5%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E7%9B%B8%E5%90%8C%E4%B8%8E%E4%B8%8D%E5%90%8C%E7%9A%84%E6%95%B0%E6%8D%AE/" data-id="cuidQ1bj0o5r46FU3YlpQiZJ7" data-title="iOS开发-最优办法查找两个数组相同与不同的数据" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -358,9 +326,9 @@ LQAlertAction *cancle = [LQAlertAction alertActionWithTitle:@&quot;取消&quot; 
 
 
   
-    <article id="post-2026-03-18-iOS开发-自定义airPlayView实现投电视功能" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-18-iOS开发-自动化打包Jenkins-实时ing" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/" class="article-date">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85Jenkins-%E5%AE%9E%E6%97%B6ing/" class="article-date">
   <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
 </a>
     
@@ -376,7 +344,7 @@ LQAlertAction *cancle = [LQAlertAction alertActionWithTitle:@&quot;取消&quot; 
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/">iOS开发--自定义airPlayView实现投电视功能</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85Jenkins-%E5%AE%9E%E6%97%B6ing/">iOS开发--自动化打包Jenkins--实时ing</a>
     </h1>
   
 
@@ -384,643 +352,444 @@ LQAlertAction *cancle = [LQAlertAction alertActionWithTitle:@&quot;取消&quot; 
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>最近APP内需要用到投电视功能,所以做了一个小小的封装,方便使用.</p>
+        <p>当项目打包比较频繁的时候，打包的工作会占用不小的工作量，这个时候自动化打包工具就成为了必要。开发人员只需要关心代码，不必关心打包过程。</p>
+<p>下面进行Jenkins实时自动打包演练过程：</p>
+<p>1 安装 Jenkins，这里使用brew安装：</p>
 <blockquote>
-<p>更新日志：<br>1  2018-04-09 KVO监听alpha的变化</p>
+<p>brew install jenkins</p>
 </blockquote>
-<p>苹果API有一个类叫”MPVolumeView”,它是用来实现投电视的控件,但是这个控件和UISlider类似,定制性不是很好,不能用frame改变大小,并且自带一个电视的小图标,对于个性的产品来说很难满足他的需求(我们就是这样…)—–故自己封装一个用起来比较方便的view.</p>
+<p>提示有脚本需要sudo权限,按照提示添加sudo执行 错误提示中的命令行，继续执行brew install jenkins。</p>
+<p>2 查找jenkins.war</p>
 <blockquote>
-<p>本文<a target="_blank" rel="noopener" href="https://github.com/CoderLi-Q/airPlayView">demo</a>地址</p>
+<p>mdfind -name jenkins.war</p>
 </blockquote>
-<p>废话不多说上~~代码:</p>
-<p> LQAirPlayView.h</p>
-<pre><code> #import &lt;UIKit/UIKit.h&gt;
+<p>结果：</p>
+<blockquote>
+<p>bogon:~ mdfind -name jenkins.war<br>&#x2F;usr&#x2F;local&#x2F;Cellar&#x2F;jenkins&#x2F;2.220&#x2F;libexec&#x2F;jenkins.war</p>
+</blockquote>
+<p>3 绑定jenkins.war 端口号</p>
+<blockquote>
+<p>java -jar &#x2F;usr&#x2F;local&#x2F;Cellar&#x2F;jenkins&#x2F;2.220&#x2F;libexec&#x2F;jenkins.war –httpPort&#x3D;8080</p>
+</blockquote>
+<p>报错：</p>
+<blockquote>
+<p>9月 27, 2020 11:40:54 上午 Main verifyJavaVersion<br>严重: Running with Java class version 57 which is not in the list of supported versions: [52, 55]. Run with the –enable-future-java flag to enable such behavior. See <a target="_blank" rel="noopener" href="https://jenkins.io/redirect/java-support/">https://jenkins.io/redirect/java-support/</a><br>java.lang.UnsupportedClassVersionError: 57.0<br>	at Main.verifyJavaVersion(Main.java:174)<br>	at Main.main(Main.java:142)<br>Jenkins requires Java versions [8, 11] but you are running with Java 13 from &#x2F;Library&#x2F;Java&#x2F;JavaVirtualMachines&#x2F;jdk-13.jdk&#x2F;Contents&#x2F;Home<br>java.lang.UnsupportedClassVersionError: 57.0<br>	at Main.verifyJavaVersion(Main.java:174)<br>	at Main.main(Main.java:142)</p>
+</blockquote>
+<p>原因:java版本和jenkins要求不一致<br>解决办法：更新java版本<br>解决之后再次执行： </p>
+<blockquote>
+<p>java -jar &#x2F;usr&#x2F;local&#x2F;Cellar&#x2F;jenkins&#x2F;2.220&#x2F;libexec&#x2F;jenkins.war –httpPort&#x3D;8080</p>
+</blockquote>
 
-@interface LQAirPlayView : UIView
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85Jenkins-%E5%AE%9E%E6%97%B6ing/" data-id="cuidaqSHqCeoxDsLfpDVXomZs" data-title="iOS开发--自动化打包Jenkins--实时ing" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
 
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-获取wifi名字,判断是否连接了dl" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%8E%B7%E5%8F%96wifi%E5%90%8D%E5%AD%97,%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E8%BF%9E%E6%8E%A5%E4%BA%86dl/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%8E%B7%E5%8F%96wifi%E5%90%8D%E5%AD%97,%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E8%BF%9E%E6%8E%A5%E4%BA%86dl/">iOS开发--获取wifi名字,判断是否连接了dl</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <pre><code>+ (NSString *)wiFiName
+{
+NSArray *wiFiName = CFBridgingRelease(CNCopySupportedInterfaces());
+id info1 = nil;
+for (NSString *wfName in wiFiName) {
+    info1 = (__bridge_transfer id)CNCopyCurrentNetworkInfo((CFStringRef) wfName);
+        if (info1 &amp;&amp; [info1 count]) {
+            break;
+        }
+    }
+    NSDictionary *dic = (NSDictionary *)info1;
+
+    NSString *ssidName = [[dic objectForKey:@&quot;SSID&quot;] lowercaseString];
+
+    return ssidName;
+}
++ (BOOL)isVPNOn
+{
+   BOOL flag = NO;
+   NSString *version = [UIDevice currentDevice].systemVersion;
+   // need two ways to judge this.
+   if (version.doubleValue &gt;= 9.0)
+   {
+   NSDictionary *dict = CFBridgingRelease(CFNetworkCopySystemProxySettings());
+   NSArray *keys = [dict[@&quot;__SCOPED__&quot;] allKeys];
+   for (NSString *key in keys) {
+       if ([key rangeOfString:@&quot;tap&quot;].location != NSNotFound ||
+           [key rangeOfString:@&quot;tun&quot;].location != NSNotFound ||
+           [key rangeOfString:@&quot;ipsec&quot;].location != NSNotFound ||
+           [key rangeOfString:@&quot;ppp&quot;].location != NSNotFound){
+           flag = YES;
+           break;
+       }
+   }
+   }
+
+   return flag;
+}
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%8E%B7%E5%8F%96wifi%E5%90%8D%E5%AD%97,%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E8%BF%9E%E6%8E%A5%E4%BA%86dl/" data-id="cuid8B7py-H1NkWI-8bdgBU3S" data-title="iOS开发--获取wifi名字,判断是否连接了dl" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-运用AVPlayer播放视频" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%BF%90%E7%94%A8AVPlayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%BF%90%E7%94%A8AVPlayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91/">iOS开发--运用AVPlayer播放视频</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>AVPlayer是可以高度定制性的播放器<br>利用AVPlayer播放的简单实现见下文:</p>
+<pre><code>NSURL *url = [NSURL URLWithString:@&quot;http://******&quot;];
+playerItem  = [[AVPlayerItem alloc]initWithURL:url];
+//创建player
+player = [[AVPlayer alloc]initWithPlayerItem:playerItem];
+//生成layer层
+AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player];
+self.playLayer = player;
+//设置坐标
+layer.frame = CGRectMake(0, 0, 480, 480);
+//把layer层假如到self.view.layer中
+[self.view.layer addSublayer:layer];
+//进行播放
+[player play];
+</code></pre>
+<p>如想了解AVPlayer的更多用法可以参考</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%BF%90%E7%94%A8AVPlayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91/" data-id="cuid03K7NN_HVrD9nbdGH736K" data-title="iOS开发--运用AVPlayer播放视频" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-解析json出错-NSCocoaErrorDomain-Code=3840" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%A7%A3%E6%9E%90json%E5%87%BA%E9%94%99-NSCocoaErrorDomain-Code=3840/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%A7%A3%E6%9E%90json%E5%87%BA%E9%94%99-NSCocoaErrorDomain-Code=3840/">iOS开发---解析json出错-NSCocoaErrorDomain-Code=3840</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>  最近线上版本发现一个页面无法正常显示数据，经过排查，定位到是接口返回的json有问题，导致无法正确解析。</p>
+<p>  解决办法：</p>
+<pre><code>先正常解析，之后，判断是否出错，如果出错，删除特殊字符后，再次解析
+</code></pre>
+<p>1 问题描述：<br>    返回json事例：</p>
+<pre><code>{&quot;title&quot;:&quot;123&quot;,&quot;its&quot;:&quot;1232  324534  sdfsd &quot;}
+</code></pre>
+<p>2 错误代码以及复原<br>   解析json的方法：</p>
+<pre><code>NSError *err;
+NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                    options:NSJSONReadingMutableContainers
+                                                      error:&amp;err];
+</code></pre>
+<p>报错：Error Domain&#x3D;NSCocoaErrorDomain Code&#x3D;3840 “Unescaped control character around character XXX.”<br>3 解决方法,在解析一次之后，判断是否出错，如果出错，删除特殊字符后，再次解析</p>
+<pre><code>if(err) {
+    NSLog(@&quot;%@&quot;,err);
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    jsonString = [self removeUnescapedCharacter:jsonString];
+    jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    err = nil;
+    dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                          options:NSJSONReadingMutableContainers
+                                            error:&amp;err];
+}
+
+-(NSString *)removeUnescapedCharacter:(NSString *)inputStr
+{
+ NSCharacterSet *controlChars = [NSCharacterSet controlCharacterSet];//获取那些特殊字符
+NSRange range = [inputStr rangeOfCharacterFromSet:controlChars];//寻找字符串中有没有这些特殊字符
+if (range.location != NSNotFound)
+{
+    NSMutableString *mutable = [NSMutableString stringWithString:inputStr];
+    while (range.location != NSNotFound)
+    {
+        [mutable deleteCharactersInRange:range];//去掉这些特殊字符
+        range = [mutable rangeOfCharacterFromSet:controlChars];
+    }
+    return mutable;
+}
+return inputStr;
+}
+</code></pre>
+<p>本文借鉴其他人的处理方法，仅作为记录使用，如有侵权，请联系本人删除！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%A7%A3%E6%9E%90json%E5%87%BA%E9%94%99-NSCocoaErrorDomain-Code=3840/" data-id="cuidYyUjSrgaKkVIAp_d7-7Er" data-title="iOS开发---解析json出错-NSCocoaErrorDomain-Code=3840" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发BUG-UITableView-dataSource-is-not-set" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91BUG-UITableView-dataSource-is-not-set/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91BUG-UITableView-dataSource-is-not-set/">iOS开发BUG---UITableView-dataSource-is-not-set</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近项目发现有一个BUG,百思不得其解:</p>
+<pre><code>reason: UITableView dataSource is not set
+</code></pre>
+<p>原因是: </p>
+<pre><code> 在UITableView执行数据源代理方法cellForRowAtIndexPath的时候,数据源释放了;
+</code></pre>
+<p>出现情况:</p>
+<pre><code>此问题出现概率较小,通常是在定时刷新UITableView的时候出现
+</code></pre>
+<p>解决方法:</p>
+<pre><code>方法一: 降低刷新频率(不建议)
+此方法不能完全解决闪退问题,只能降低崩溃概率
+方法二: 定时刷新tableView的时候,也就是调用reload的时候保证在主线程执行(建议用此方法,能完全解决此问题):
+
+*代码*
+ dispatch_async(dispatch_get_main_queue(), ^{ 
+                [tableView reloadData];
+  });
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91BUG-UITableView-dataSource-is-not-set/" data-id="cuid559e4pVeakT4Xrlkmvf5R" data-title="iOS开发BUG---UITableView-dataSource-is-not-set" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS自定义视图系列(二)-状态栏(点击状态栏返回到顶部效果)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%BA%8C)-%E7%8A%B6%E6%80%81%E6%A0%8F(%E7%82%B9%E5%87%BB%E7%8A%B6%E6%80%81%E6%A0%8F%E8%BF%94%E5%9B%9E%E5%88%B0%E9%A1%B6%E9%83%A8%E6%95%88%E6%9E%9C)/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%BA%8C)-%E7%8A%B6%E6%80%81%E6%A0%8F(%E7%82%B9%E5%87%BB%E7%8A%B6%E6%80%81%E6%A0%8F%E8%BF%94%E5%9B%9E%E5%88%B0%E9%A1%B6%E9%83%A8%E6%95%88%E6%9E%9C)/">iOS自定义视图系列(二)-状态栏(点击状态栏返回到顶部效果)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>iOS有一个特有的功能–点击状态栏会使UIScollView自动滚动到顶部,这个效果其实是系统API里UIScrollView的一个属性</p>
+<pre><code> @property(nonatomic) BOOL scrollsToTop
+</code></pre>
+<p>这个属性默认是YES,也就是支持点击状态栏会使UIScollView自动滚动到顶部的效果(如果不想要这个效果设置为NO就可以了).</p>
+<pre><code> 但是有一个局限就是如果在当前的屏幕上有
+ &quot;多于1个&quot;UIScollView(包括所有继承自UIScollView)视图的&quot;scrollsTop属性是YES&quot;的时候,
+ 这个效果会失效.
+</code></pre>
+<p>本篇文章就是要解决点击状态栏会使UIScollView自动滚动到顶部失效的问题.</p>
+<p>本人最终的解决思路是:</p>
+<pre><code>在点击状态栏的手势方法里把所有的scrollView的contentOffSize设置为CGPointZero
+</code></pre>
+<p>当然在此之前需要做一些判断的逻辑,针对我的项目我做了如下判断:</p>
+<pre><code>把不需要滚动到顶部的scrollView筛选掉
+if ([scrollView isKindOfClass:[TuiJianCollectionView class]])return;
+if ([scrollView isKindOfClass:[TopView class]]) return;
+if (scrollView.width &lt; ScreenWidth-100)return;
+//然后就可以滚动了
+[scrollView setContentOffset:CGPointZero animated:YES];
+</code></pre>
+<p>好了,核心的东西说完了,上代码<br>LQTopStatusWindow.h<br>    #import &lt;UIKit&#x2F;UIKit.h&gt;<br>    @interface LQTopStatusWindow : NSObject<br>    &#x2F;*<br>        在需要用到自定义状态栏的页面显示(具体用法见注2)<br>    <em>&#x2F;<br>    + (void)show;<br>    &#x2F;</em><br>        在不需要的页面隐藏(具体用法见注2)<br>    *&#x2F;<br>    +(void)hidden;<br>    @end<br>LQTopStatusWindow.m</p>
+<pre><code>#import &quot;LQTopStatusWindow.h&quot;
+@implementation LQTopStatusWindow
+
+static UIWindow *_topWindow = nil;
 /**
- 返回实例
-
- @param rect frame
- @param image 图片
- @return 实例
- */
-+ (instancetype)airPlayViewWithFrame:(CGRect)rect image:(UIImage *)image;
-@end
 </code></pre>
-<p> LQAirPlayView.m</p>
-<pre><code>#import &quot;LQAirPlayView.h&quot;
-#import &lt;MediaPlayer/MediaPlayer.h&gt;
-@interface LQAirPlayView ()
-@property (nonatomic, weak) UIImageView *imageView;
-@property (nonatomic, weak) MPVolumeView *mpAirplayView;
-@end
-
-@implementation LQAirPlayView
-
-+(instancetype)airPlayViewWithFrame:(CGRect)rect image:(UIImage *)image{
-    return [[self alloc] initWithFrame:rect image:image];
-}
-
-+ (instancetype)airPlayViewWithFrame:(CGRect)rect{
-    return [[self alloc] initWithFrame:rect];
-}
-- (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image
-{
-    self = [self initWithFrame:frame];
-    if (self) {
-        self.imageView.image = image;
-    }
-    return self;
-}
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor = [UIColor lightGrayColor];
-        UIImageView *imgView = [[UIImageView alloc]init];
-        _imageView = imgView;
-        [self addSubview:imgView];
-        
-        MPVolumeView *mpAirplayView = [[MPVolumeView alloc] init];
-        [mpAirplayView setRouteButtonImage:nil forState:UIControlStateNormal];
-        [mpAirplayView setShowsVolumeSlider:NO];
-        _mpAirplayView = mpAirplayView;
-        [self addSubview:mpAirplayView];
-
-        /*添加于2018-04-09*/
-        for (UIButton *button in mpAirplayView.subviews) {
-            if ([button isKindOfClass:[UIButton class]]) {
-                [button addObserver:self forKeyPath:@&quot;alpha&quot; options:NSKeyValueObservingOptionNew context:nil];
-            }
-        }
-        /*添加于2018-04-09*/
-
-    }
-    return self;
-}
- /*添加于2018-04-09*/
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-if ([object isKindOfClass:[UIButton class]] ) {
-    if([[change valueForKey:NSKeyValueChangeNewKey] intValue] == 1){
-        [(UIButton *)object setBounds:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-    }else{
-        self.mpAirplayView.hidden = NO;
-        [object setAlpha:1];
-    }
-}
-}
- /*添加于2018-04-09*/
--(void)layoutSubviews{
-    [super layoutSubviews];
-    CGFloat scaleW = self.frame.size.width/30;
-    CGFloat scaleH = self.frame.size.height/34;
-    CGFloat scale = scaleH &gt; scaleW ? scaleH : scaleW;
-    self.mpAirplayView.transform = CGAffineTransformMake(scale,0, 0, scale, self.frame.size.width/2, self.frame.size.height/2);
-    self.imageView.frame = self.bounds;
-    
-}
-
-@end
+<p>     * 显示顶部窗口<br>     *&#x2F;<br>    + (void)initialize<br>    {<br>        _topWindow &#x3D; [[UIWindow alloc] init];<br>        _topWindow.windowLevel &#x3D; UIWindowLevelAlert;<br>        CGRect frame &#x3D; [UIApplication sharedApplication].statusBarFrame;<br>       &#x2F;&#x2F;下边设置frame为什么需要加50,原因见注1<br>        _topWindow.frame &#x3D; CGRectMake(frame.origin.x + 50, frame.origin.y, frame.size.width, frame.size.height);<br>        _topWindow.backgroundColor &#x3D; [UIColor clearColor];<br>        _topWindow.hidden &#x3D; NO;<br>        [_topWindow addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(topWindowClick)]];<br>    <br>    }</p>
+<pre><code>+ (void)show{
 </code></pre>
-<p>用法:</p>
-<pre><code>LQAirPlayView *airView = [LQAirPlayView airPlayViewWithFrame:CGRectMake(100, 100, w, w) image:[UIImage imageNamed:@&quot;icon]];
-[self.view addSubview:airView];
+<p>        _topWindow.hidden &#x3D; NO;<br>    }<br>    + (void)hidden{<br>        _topWindow.hidden &#x3D; YES;<br>    }</p>
+<pre><code>/**
 </code></pre>
-<p>最后附上本文<a target="_blank" rel="noopener" href="https://github.com/CoderLi-Q/airPlayView">demo</a>地址！</p>
-<pre><code>        ————[半缘魔君](https://www.jianshu.com/u/5bf6c3f1b289)出品——————
+<p>     * 监听顶部窗口点击<br>     *&#x2F;<br>    + (void)topWindowClick<br>    {<br>        UIWindow *keyWindow &#x3D; [UIApplication sharedApplication].keyWindow;<br>        [self searchAllScrollViewsInView:keyWindow];<br>    }</p>
+<pre><code>/**
 </code></pre>
-<p>AirPlay的API：</p>
-<pre><code>@property (nonatomic) BOOL showsVolumeSlider MP_API(ios(4.2)); // Default is YES.
-@property (nonatomic) BOOL showsRouteButton MP_API(ios(4.2));  // Default is YES.
+<p>     * 找到参数view中所有的UIScrollView<br>     *&#x2F;<br>    + (void)searchAllScrollViewsInView:(UIView *)view<br>    {<br>        &#x2F;&#x2F; 递归遍历所有的子控件<br>        for (UIView *subview in view.subviews) {<br>            [self searchAllScrollViewsInView:subview];<br>        }<br>        &#x2F;&#x2F; 判断子控件类型(如果不是UIScrollView，直接返回)<br>        if (![view isKindOfClass:[UIScrollView class]]) return;<br>    <br>        &#x2F;&#x2F; 找到了UIScrollView<br>        &#x2F;&#x2F;过滤掉不需要滚动到顶部的scrollview<br>        UIScrollView *scrollView &#x3D; (UIScrollView *)view;<br>        if ([scrollView isKindOfClass:[TopView class]]) return;<br>        if (scrollView.width &lt; ScreenWidth-100) return;<br>        &#x2F;&#x2F;让所有需要滚动到顶部的scrollView滚动到顶部<br>        [scrollView setContentOffset:CGPointZero animated:YES];<br>    }</p>
+<p>好了,代码贴完,具体用法是: 不用写别的代码.</p>
+<pre><code> 注1:此处没有让frame直接与frame(系统的状态栏的frame)完全相同,是因为,iOS应用间跳转的时候左
+    上角有&quot;返回XX&quot;按钮,为了不影响它的点击这里让自定义的_topWindow向右移动了50(这个是试出来的)
+    _topWindow.frame = CGRectMake(frame.origin.x + 50, frame.origin.y, frame.size.width, frame.size.height);
 
-// Returns YES if wireless routes (AirPlay, Bluetooth, etc) are available for user selection.
-// Note that the view must be in present in a window hierarchy in order to discover some types of wireless routes.
-@property (nonatomic, readonly, getter=areWirelessRoutesAvailable) BOOL wirelessRoutesAvailable MP_API(ios(7.0));
-
-// Returns YES if a wireless route is active.
-@property (nonatomic, readonly, getter=isWirelessRouteActive) BOOL wirelessRouteActive MP_API(ios(7.0));
-
-// Volume slider customization
-
-- (void)setMinimumVolumeSliderImage:(nullable UIImage *)image forState:(UIControlState)state MP_API(ios(6.0));
-- (void)setMaximumVolumeSliderImage:(nullable UIImage *)image forState:(UIControlState)state MP_API(ios(6.0));
-- (void)setVolumeThumbImage:(nullable UIImage *)image forState:(UIControlState)state MP_API(ios(6.0));
-
-- (nullable UIImage *)minimumVolumeSliderImageForState:(UIControlState)state MP_API(ios(6.0));
-- (nullable UIImage *)maximumVolumeSliderImageForState:(UIControlState)state MP_API(ios(6.0));
-- (nullable UIImage *)volumeThumbImageForState:(UIControlState)state MP_API(ios(6.0));
-
-// Sets the image for the EU volume limit. When appropriate, this image will be displayed on top of the
-// maximumVolumeSliderImage. It must be visually distinct from the maximumVolumeSliderImage, and use
-// a color similar to the default, to convey a sense of warning to the user. The same image is used for
-// all control states. For debugging purposes, switch on the &quot;EU Volume Limit&quot; setting in the Developer
-// menu of the Settings application to always enable the volume limit.
-@property (nonatomic, strong, nullable) UIImage *volumeWarningSliderImage MP_API(ios(7.0));
-
-- (CGRect)volumeSliderRectForBounds:(CGRect)bounds MP_API(ios(6.0));
-- (CGRect)volumeThumbRectForBounds:(CGRect)bounds volumeSliderRect:(CGRect)rect value:(float)value MP_API(ios(6.0));
-
-// Route button customization
-
-- (void)setRouteButtonImage:(nullable UIImage *)image forState:(UIControlState)state MP_API(ios(6.0));
-- (nullable UIImage *)routeButtonImageForState:(UIControlState)state MP_API(ios(6.0));
-
-- (CGRect)routeButtonRectForBounds:(CGRect)bounds MP_API(ios(6.0));
+ 注2:当你有需要在某些页面
 </code></pre>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/" data-id="cuidOdM6eWqPa6qE8jHD3othF" data-title="iOS开发--自定义airPlayView实现投电视功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【Linux】找到-svn文件并删除" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90Linux%E3%80%91%E6%89%BE%E5%88%B0-svn%E6%96%87%E4%BB%B6%E5%B9%B6%E5%88%A0%E9%99%A4/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90Linux%E3%80%91%E6%89%BE%E5%88%B0-svn%E6%96%87%E4%BB%B6%E5%B9%B6%E5%88%A0%E9%99%A4/">【Linux】找到-svn文件并删除</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>find XXXX  -name “.svn” |xargs rm -rf</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90Linux%E3%80%91%E6%89%BE%E5%88%B0-svn%E6%96%87%E4%BB%B6%E5%B9%B6%E5%88%A0%E9%99%A4/" data-id="cuid17n6eKSHyUKJf7Qq3etnE" data-title="【Linux】找到-svn文件并删除" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【MAC-小知识】host文件地址" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC-%E5%B0%8F%E7%9F%A5%E8%AF%86%E3%80%91host%E6%96%87%E4%BB%B6%E5%9C%B0%E5%9D%80/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC-%E5%B0%8F%E7%9F%A5%E8%AF%86%E3%80%91host%E6%96%87%E4%BB%B6%E5%9C%B0%E5%9D%80/">【MAC-小知识】host文件地址</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>host文件地址： &#x2F;private&#x2F;etc&#x2F;hosts</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC-%E5%B0%8F%E7%9F%A5%E8%AF%86%E3%80%91host%E6%96%87%E4%BB%B6%E5%9C%B0%E5%9D%80/" data-id="cuid_3ubvJBnx0YVX_chBe4Jx" data-title="【MAC-小知识】host文件地址" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【MAC软件】-StarUML简单使用教程" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC%E8%BD%AF%E4%BB%B6%E3%80%91-StarUML%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC%E8%BD%AF%E4%BB%B6%E3%80%91-StarUML%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/">【MAC软件】---StarUML简单使用教程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>最近了解到StarUML比较多，所以写一篇教程供大家，不足之处，请见谅。</p>
-<p>StarUML(简称SU)，是一种创建UML类图，生成类图和其他类型的统一建模语言(UML)图表的工具。StarUML是一个开源项目之一发展快、灵活、可扩展性强(zj).</p>
-<p>StarUML官方下载地址： <a target="_blank" rel="noopener" href="http://staruml.io/download">http://staruml.io/download</a></p>
-<p>安装教程：<br>安装步骤很简单，省略。<br>注意：付费软件，如需破解网上很多教程，不破解不影响使用</p>
-<p>安装之后的主界面简介如图所示：<br><img src="https://upload-images.jianshu.io/upload_images/2791393-25c0472068f87629.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>2.创建工程<br>在启动star UML时，系统会默认帮我们创建一个工程</p>
-<p>如果这个工程不是你想要的工程，你可以点击File–》new from template中修改为你需要的工程类型。如图所示。<br> <img src="https://upload-images.jianshu.io/upload_images/2791393-89094e92b904abf9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>3.介绍类与类之间的关系<br>既然介绍类图，我们首先了解，什么是类？<br>类图: 类图是面向对象系统建模中最常用和最重要的图，是定义其它图的基础。类图主要是用来显示系统中的类、接口以及它们之间的静态结构和关系的一种静态模型。<br>类图的3个基本组件：类名、属性、方法。<br>类的几个主要关系：实现，关联，泛化，聚合，组合，依赖<br>在StarUML中默认打开的“toolbox”工具中就是类相关的一下基础功能组件，以及组件的功能简介基础组件中有类实例，以及描述类的各个功能组件。如图所示。 </p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-0bb599f101d9dce7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>类组件的基本操作介绍：<br>单击选择Class，至工作区域内单机左键，即可创建一个class实例。创建实例后，周围会出现一堆，功能按钮，去描述这个类，如图所示。图后会有介绍各个租价功能的介绍。<br> <img src="https://upload-images.jianshu.io/upload_images/2791393-24d26a4cb025f424.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>功能介绍： </p>
-<ol>
-<li>用来标识Class的可见性（默认为public） </li>
-<li>用来添加note的，比如：类的说明 </li>
-<li>增加类的属性 </li>
-<li>增加类的操作方法。 </li>
-<li>增加Reception </li>
-<li>增加子类 </li>
-<li>增加父类 </li>
-<li>添加已有的接口 </li>
-<li>添加需要的接口 </li>
-<li>添加关联 </li>
-<li>添加聚合 </li>
-<li>添加组合 </li>
-<li>添加端口 </li>
-<li>添加部件</li>
-</ol>
-<p>泛化（继承）<br>泛化关系是类元的一般描述和具体描述之间的关系，具体描述建立在一般描述的基础之上，并对其进行了扩展。具体描述完全拥有一般描述的特性、成员和关系， 并且包含补充的信息。在Java中用“extend”来表示此关系。举个计算机的例子来说：冯诺依曼结构是最初的计算机结构，无论是个人计算机，服务器，还是超级计算机，都具有该特性，并在此特性上进行了扩展。<br>UML图中实现泛化管理的描述，在类图中使用带空心三角箭头的实线表示，箭头从子类、子接口指向父类、父接口。具体如图所示。<br><img src="https://upload-images.jianshu.io/upload_images/2791393-b6a1184b7e151f34.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>实现<br>实现指的是一个class类实现interface接口（可以是多个）的功能，实现是类与接口之间最常见的关系。在类图中使用带空心三角箭头的虚线表示，箭头从实现类指向接口。如图。<br><img src="https://upload-images.jianshu.io/upload_images/2791393-66fbd8b0e9f5d519.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<ol start="3">
-<li>依赖<br>类A的实现需要引用类B，这就是依赖，这种使用关系是具有偶然性的、临时性的、非常弱的，而B类的变化会影响到A，则A与B存在依赖关系，依赖关系是弱的关联关系。例如：人依赖计算机去做软件开发。在UML类图设计中，依赖关系用由类A指向类B的带箭头虚线表示。如图所示。<br><img src="https://upload-images.jianshu.io/upload_images/2791393-0a6eb5ad3f492fac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
-</ol>
-<p>聚合<br>聚合是关联关系的一种特例，它体现的是整体与部分的关系，是has-a的关系，此时整体与部分之间是可分离的，即没有了整体，局部也可单独存在。就比如我们航母战斗群：驱逐舰，巡洋舰，护卫舰，航空母舰等。在UML类图设计中，聚合关系以空心菱形加实线箭头表示如图所示。<br><img src="https://upload-images.jianshu.io/upload_images/2791393-467ce45bf8b19da7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<ol start="5">
-<li>组合<br>是一种contains-a的关系，部分不能脱离整体存在。这是一种比聚合更强的关系，又称强聚合。整体的生命周期即为组成部分的生命周期。例如：人和人的构成部分大脑，心脏等。在UML类图设计中，组合关系以实心菱形加实线箭头表示。 如图所示。<br><img src="https://upload-images.jianshu.io/upload_images/2791393-0de4ad91b4ef9059.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
-</ol>
-<p>StarUML制作用例图<br>该软件最常用的功能就是制作用例图，时序图，序列图等，本节以用例图为基础讲解基本使用。<br>单击Model选择Add Diagram 会出现许多模型，选择你想要使用的，如我想要使用：用例图，则我选择Use Case Diagram如图所示。选择后，tool box会产生相应的变化，更新出配套的功能组件，如图所示。<br> <img src="https://upload-images.jianshu.io/upload_images/2791393-6b7246da62c02912.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>Tool box工具盒中有用例图的参与者（Actor）、用例 （Use Case）、系统边界、箭头等工具组成。我们可以根据需要选择恰当的工具。模拟制作图书馆的一部分用例：学生借书的操作如图所示。<br><img src="https://upload-images.jianshu.io/upload_images/2791393-89c29ca664037fd5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <hr>
-<p>作者：luansha0<br>来源：CSDN<br>原文：<a target="_blank" rel="noopener" href="https://blog.csdn.net/luansha0/article/details/82260678">https://blog.csdn.net/luansha0/article/details/82260678</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC%E8%BD%AF%E4%BB%B6%E3%80%91-StarUML%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" data-id="cuidIf7F93HCaBgYEeojMDcqp" data-title="【MAC软件】---StarUML简单使用教程" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【iOS开发—BUG定位】利用内存地址和符号表定位崩溃" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E2%80%94BUG%E5%AE%9A%E4%BD%8D%E3%80%91%E5%88%A9%E7%94%A8%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E5%92%8C%E7%AC%A6%E5%8F%B7%E8%A1%A8%E5%AE%9A%E4%BD%8D%E5%B4%A9%E6%BA%83/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E2%80%94BUG%E5%AE%9A%E4%BD%8D%E3%80%91%E5%88%A9%E7%94%A8%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E5%92%8C%E7%AC%A6%E5%8F%B7%E8%A1%A8%E5%AE%9A%E4%BD%8D%E5%B4%A9%E6%BA%83/">【iOS开发—BUG定位】利用内存地址和符号表定位崩溃</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>xcrun atos -arch (architecture) -o  （dsymfile）  address</p>
-<p>architecture : 取 arm64&#x2F;armv7<br>dsymfile： 取dsym的文件名字<br>address： 内存地址</p>
-<p>终端进入到对应版本的dsym文件目录下， 执行上述命令。 address和architecture可以在报表上看到的</p>
-<p>例如：</p>
-<pre><code>xcrun atos -arch arm64 -o dsym 0x120d13208
+<p>如果您只是为了解决当前问题,请关闭本文;如果您有一颗程序猿的进取之心,想了解我解决此问题的过程,请继续往下读:</p>
+<p>解决过程一:</p>
+<pre><code>首先我知道了&quot;点击状态栏会使UIScollView自动滚动到顶部&quot;这个效果是由下边这个属性决定的
+   @property(nonatomic) BOOL scrollsToTop
+   而此效果失效的原因是当前的屏幕上有
+ &quot;多于1个&quot;UIScollView(包括所有继承自UIScollView)视图的&quot;scrollsTop属性是YES&quot;的时候,
 </code></pre>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E2%80%94BUG%E5%AE%9A%E4%BD%8D%E3%80%91%E5%88%A9%E7%94%A8%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E5%92%8C%E7%AC%A6%E5%8F%B7%E8%A1%A8%E5%AE%9A%E4%BD%8D%E5%B4%A9%E6%BA%83/" data-id="cuidop5ZtjsRFsu09Zu0JNKYD" data-title="【iOS开发—BUG定位】利用内存地址和符号表定位崩溃" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【iOS开发】-@weakify、@strongify原理解析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-@weakify%E3%80%81@strongify%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-@weakify%E3%80%81@strongify%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/">【iOS开发】--@weakify、@strongify原理解析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="很长的前言"><a href="#很长的前言" class="headerlink" title="很长的前言"></a>很长的前言</h2><p>在block语句块中，如果需引用self，而self对象中又持有block对象，就会造成循环引用<code>循环引用(retain cycle)</code>，导致内存泄露，比如以下代码</p>
-<pre><code>  self.block = ^{
-    [self description];
-};
-</code></pre>
-<p>一般我们是这么解决的，使用一个<code>__weak</code>修饰的weakSelf变量指向self对象，在block中使用weakSelf:</p>
-<pre><code> __weak typeof(self) weakSelf = self;
-self.block = ^{
-    [weakSelf description];
-};
-</code></pre>
-<p>但是酱紫写，还是可能出问题，因为weakSelf是弱引用，而self一旦释放了，weakSelf可能为nil，还是举个栗子吧:1.先定义一个TestObj对象，他的属性有一个block对象</p>
-<pre><code>@interface TestObj : NSObject
-@property (nonatomic, copy)void(^block)();
-@end
-
-@implementation TestObj
-- (void)dealloc {
-NSLog(@&quot;%s&quot;,__func__);
-}
-- (instancetype)init {
-self = [super init];
-if (self) {
-    __weak typeof(self) weakSelf = self;
-    self.block = ^{
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            [NSThread sleepForTimeInterval:1];
-            NSLog(@&quot;%@&quot;,weakSelf);
-        });
-    };
-}
-return self;
-}
-
-@end
-</code></pre>
-<p>2.再另一个类实例中定义一个testFunc方法</p>
-<pre><code>- (void)testFunc{
-TestObj *obj = [TestObj new];
-obj.block();
-</code></pre>
-<p>}</p>
-<p>执行<code>testFunc</code>方法，结果是打印的是(null)，因为block里打印的方法是异步执行的，在 <code>NSLog(@&quot;%@&quot;,weakSelf);</code>这句代码执行之前<code>testFunc</code>函数就结束，所以<code>obj</code>对象已经被release了。怎么解决呢？所以再对<code>weakSelf</code>做一次 <code>__strong</code>就可以了:</p>
-<pre><code>__weak typeof(self) weakSelf = self;
-    self.block = ^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            [NSThread sleepForTimeInterval:1];
-            NSLog(@&quot;%@&quot;,strongSelf);
-        });
-    };
+<p>我产生了两个解决办法:<br>一  减少UIScollView的数量,让当前屏幕中只有一个UIScollView,但是我的项目中界面比较多,如果每个界面都重构,替换scrollView的工作量会很大,而且时间不允许——PASS.<br>二   把其余不需要响应点击状态栏效果的scrollView的scrollsToTop设置为NO,由于办法一的原因—–PASS.</p>
+<p>解决过程二:</p>
+<p>求助度娘:果然有先贤已经处理过这个问题,下边附上我当时参考的两篇”简书”上的文章<br>一   <a target="_blank" rel="noopener" href="http://www.jianshu.com/p/e18356fccbc9">http://www.jianshu.com/p/e18356fccbc9</a><br>借鉴此文章,我自定义好了视图,并添加好了手势,但是有一个问题,这篇文章用了一个”bs_intersectsWithAnotherView:”方法,也没有写实现,我就暂时不知道该怎么办了,此路不通.<br>二  <a target="_blank" rel="noopener" href="http://www.jianshu.com/p/68632cbd6263">http://www.jianshu.com/p/68632cbd6263</a><br>后来我发现这篇文章中有”bs_intersectsWithAnotherView:”这个方法(不知道是不是一个作者,看名字好像不是),具体是</p>
+<pre><code>- (BOOL)bs_intersectsWithAnotherView:(UIView *)anotherView{ 
+   if (anotherView == nil){
+   anotherView = [UIApplication sharedApplication].keyWindow
+   }; 
+  // 判断self和anotherView是否重叠 
+  CGRect selfRect = [self convertRect:self.bounds toView:nil];    
+  CGRect anotherRect = [anotherView convertRect:anotherView.bounds toView:nil]; 
+  return CGRectIntersectsRect(selfRect, anotherRect);
 }
 </code></pre>
-<p>使用了<code>__strong</code>在dispatch_async 里边 block 代码执行完毕之前，对<code>self</code>有一个引用，防止对象(self)提前被释放。而作用域一过，<code>strongSelf</code>不存在了，对象(self)也会被释放，具体可以看看我之前写的<a target="_blank" rel="noopener" href="http://ziecho.com/post/ios/2015-09-02">这篇文章</a>。</p>
-<h2 id="1-问题"><a href="#1-问题" class="headerlink" title="1.问题"></a>1.问题</h2><p>前面的写法虽然严谨了，也解决了问题了，但是作为喜欢偷懒的程序猿，会不会觉得很啰嗦？每次都要写那两条长长的<code>__weak</code>和<code>__strong</code>，而且在block里用到的self的全部要改成strongSelf，假设把一段很多self的代码拷贝到block里，一个个改成strongSelf是不是很蛋疼？</p>
-<h2 id="2-RAC是怎么解决的"><a href="#2-RAC是怎么解决的" class="headerlink" title="2.RAC是怎么解决的"></a>2.RAC是怎么解决的</h2><pre><code>@weakify(self);
-[[button rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
-@strongify(self);
-[self popViewControllerAnimated:YES];
-}];
-</code></pre>
-<p>只要在block外用了@weakify(self);然后再block里写@strongify(self);就可以了，@strongify(self);语句后的的self可以原封不动，好像很神奇，下面一起看看@weakify、@strongify 这两个神奇的宏最终替换了什么东西。导入RAC的头文件，把上面的测试代码替换成RAC中用的@weakify(self);和@strongify(self), 分屏显示Xcode，让右侧的显示内容改为 preprocess“,就可以看到宏最终替换的结果。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-9eec71afc106cd91.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<ol>
-<li>@autoreleasepool {} 是什么鬼？</li>
-</ol>
-<p>注意到@weakify(self)前面的@颜色并不是橙色没有？<code>@</code>并不属于宏的一部分，当然你不能平白无故写个@对吧，所以RAC的weakify宏定义机智地给你补了一句<code>autoreleasepool {}</code> 这样一前一后就变成了啥事都没干的@autoreleasepool {}</p>
-<ol>
-<li><p><strong>attribute</strong>((objc_ownership(weak)))是什么鬼？</p>
-<p>这个就是__weak在编译前被编译器替换的结果，而weakify这个宏最终替换的代码包含有__weak（后面说到），所以编译器再替换就成了__attribute__((objc_ownership(weak)))</p>
-</li>
-</ol>
-<h2 id="2-weakify、strongify的定义"><a href="#2-weakify、strongify的定义" class="headerlink" title="2.weakify、strongify的定义"></a>2.weakify、strongify的定义</h2><h3 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h3><ol>
-<li><code>...</code>和 <code>__VA_ARGS__</code></li>
-</ol>
-<p>看下<code>NSLog</code>和<code>printf</code>，他们的传入参数有多个，用…表示不确定参数个数，看看NSLog的定义：<code>NSLog(NSString *format, ...)</code>在宏里也可以用<code>...</code>来表示多个参数，而<code>__VA_ARGS__</code>就对应多个参数的部分。举个例子，你觉得NSLog太难看，想造一个自己的log打印函数，比如Zlog你就可以这么写：<code>#define Zlog(...) NSLog(__VA_ARGS__)</code></p>
-<ol>
-<li>宏连接符<code>##</code>:</li>
-</ol>
-<p><code>##</code>这个符号 会将出现在 <code>##</code> 左右两边连接的东西起来,举个例子：宏定义为<code>#define XLink(n) x ## n</code>，这宏的意思是把x和传入的n连接起来书写:</p>
-<pre><code>#define XLink(n) x ## n
-int x1 = 1;
-int x2 = 2;
-int x3 = 3;
-//打印x1 x2 x3
-NSLog(@&quot;%d&quot;,XLink(1)); //NSlog(@&quot;%zd&quot;,x1);
-NSLog(@&quot;%d&quot;,XLink(2)); //NSlog(@&quot;%zd&quot;,x2);
-NSLog(@&quot;%d&quot;,XLink(3)); //NSlog(@&quot;%zd&quot;,x3);
-</code></pre>
-<h3 id="一层层展开weakify"><a href="#一层层展开weakify" class="headerlink" title="一层层展开weakify"></a>一层层展开weakify</h3><p>假设我们写了@weakify(self) 发生了什么第一层：</p>
-<pre><code>#define weakify(...) \
- rac_keywordify \
- metamacro_foreach_cxt(rac_weakify_,, __weak, __VA_ARGS__)
-</code></pre>
-<p><code>rac_keywordify</code> 实际上就是<code>autoreleasepool {}</code>的宏替换而__VA_ARGS__就是对应我们传入的参数这里我们就可以变成这样：</p>
-<pre><code>autoreleasepool {} 
-metamacro_foreach_cxt(rac_weakify_,, __weak, self)
-</code></pre>
-<p>第二层：</p>
-<pre><code>#define metamacro_foreach_cxt(MACRO, SEP, CONTEXT, ...) \
- metamacro_concat(metamacro_foreach_cxt, metamacro_argcount(__VA_ARGS__))(MACRO, SEP, CONTEXT, __VA_ARGS__)
-</code></pre>
-<p>这一层开始就比较神奇了，替换第一层的结果就变成这样：</p>
-<pre><code>autoreleasepool {}
-metamacro_concat(metamacro_foreach_cxt, metamacro_argcount(self))(rac_weakify_,  , __weak, self)
-</code></pre>
-<p>我们先看<code>metamacro_argcount(self)</code>这部分，<code>metamacro_argcount(...)</code>这个宏很强大，可以替换可变参数(…)的个数：举个例子metamacro_argcount(@”obj”) &gt; 会被替换成<code>1</code>metamacro_argcount(@”obj”，@“obj”) &gt; 会被替换成<code>2</code>所以metamacro_argcount(self) &gt; 会被替换成<code>1</code>(只有一个参数)再看看metamacro_concat的定义：</p>
-<pre><code>#define metamacro_concat(A, B) \
- metamacro_concat_(A, B)
-</code></pre>
-<p>居然还包了一次，那好，再点进去看看metamacro_concat_的定义</p>
-<pre><code>#define metamacro_concat_(A, B) A ## B
-</code></pre>
-<p>嗯，搞了半天就是之前说到的宏连接符 <code>##</code>所以metamacro_concat(A, B) 就是把A、B连接起来变成AB根据上面分析的metamacro_argcount(self) &gt; 1 ，再用metamacro_concat连接：</p>
-<pre><code>autoreleasepool {}
-metamacro_foreach_cxt ## 1 (rac_weakify_,  , __weak, self)
-</code></pre>
-<p>也就是：</p>
-<pre><code>autoreleasepool {}
-metamacro_foreach_cxt1(rac_weakify_,  , __weak, self)
-</code></pre>
-<p>第三层：<code>metamacro_foreach_cxt1</code> 没错,不要怀疑，他还定义了metamacro_foreach_cxt1这个后面数组为1的宏，搜索一下：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-40f7832dab9390a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>嗯，你没猜错，有metamacro_foreach_cxt1就有metamacro_foreach_cxt2、3、4、5、6、7、8…，这些是什么鬼，我们先不管，先看我们的metamacro_foreach_cxt1</p>
-<pre><code>#define metamacro_foreach_cxt1(MACRO, SEP, CONTEXT, _0) MACRO(0, CONTEXT, _0)
-</code></pre>
-<p>替换第二层分析的结果：</p>
-<pre><code>autoreleasepool {}
-rac_weakify_（0,__weak,self）    
-</code></pre>
-<p>额，好像明朗起来了，毫不犹豫看看rac_weakify这个宏是怎么定义的：</p>
-<pre><code>#define rac_weakify_(INDEX, CONTEXT, VAR) \
- CONTEXT __typeof__(VAR) metamacro_concat(VAR, _weak_) = (VAR);
-</code></pre>
-<p>再替换一次：<code>__weak __typeof__(self) self ## _weak_ = self</code>最终真相大白变成：</p>
-<pre><code>autoreleasepool {}__weak __typeof__(self) self_weak_ = self
-</code></pre>
-<p>同理 strongify(self) 这个宏最终展开是这样的，注意这里他重新定义了self，在block语句块里面是允许这么干的，之后用self就是文章一开头的使用strongSelf一样。</p>
-<pre><code>autoreleasepool {}
- __attribute__((objc_ownership(strong))) __typeof__(self) self = self_weak_;
-</code></pre>
-<p>裤子都脱了 你就给我看这个?有人要问了 为什么不直接用rac_weakify_就好，搞那么复杂饶了一大圈，这不是装逼么 - -其实饶了一大圈的函数就是 @weakify(…);可以支持最多20个参数比如： @weakify(ob1,obj2…,obj20);最终会替换成：</p>
-<pre><code>@autoreleasepool {}
-__weak type(obj1) obj1_weak_ = obj1;
-__weak type(obj2) obj2_weak_ = obj2;
-...
-__weak type(obj20) obj20_weak_ = obj20;
-</code></pre>
-<p>下面，我们来讲一讲RAC是怎么装逼的。</p>
-<h2 id="3-RAC装逼宏"><a href="#3-RAC装逼宏" class="headerlink" title="3.RAC装逼宏"></a>3.RAC装逼宏</h2><h3 id="metamacro-argcount-的定义"><a href="#metamacro-argcount-的定义" class="headerlink" title="metamacro_argcount 的定义"></a>metamacro_argcount 的定义</h3><p>前面说过metamacro_argcount这个宏可以把可变参数…替换成参数的个数，看看他的定义:</p>
-<pre><code>#define metamacro_argcount(...) \
- metamacro_at(20, __VA_ARGS__, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
-</code></pre>
-<p>一脸懵逼？没关系，我们一层层来看：假设：metamacro_at(self)就变成：metamacro_at(20, self, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)</p>
-<p>看看metamacro_at的定义</p>
-<pre><code>#define metamacro_at(N, ...) \
- metamacro_concat(metamacro_at, N)(__VA_ARGS__)
-</code></pre>
-<p>替换进去就是</p>
-<pre><code>metamacro_concat(metamacro_at, 20)(self, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
-</code></pre>
-<p>之前已经知道<code>metamacro_concat</code>是连接宏，所以变成</p>
-<pre><code>metamacro_at20(self, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
-</code></pre>
-<p>搜索<code>metamacro_at20</code></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-079783e06aedc3e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>呵呵 又是一堆乱七八糟的，没事看懂一个就全懂了。</p>
-<pre><code>#define metamacro_at20(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, ...) 
-metamacro_head(__VA_ARGS__)
-</code></pre>
-<p>嗯，这个宏的意思就是 去掉传入参数中<code>前20个</code>参数，把<code>剩下的</code>参数传入metamacro_head宏，上面的metamacro_at20 前20个参数就是:<code>self, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2</code>所以剩下的参数是 <code>1</code>假设一开始不是 metamacro_at(self)而是两个或多个参数会发生什么？比如 metamacro_at(self,self)？根据上面的规则替换，就会变成</p>
-<pre><code>metamacro_at20(self,self, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
-</code></pre>
-<p>除去前面20个参数，剩下 只有 2，1 所以把 2,1 这两个参数传入<code>metamacro_head（2,1）</code>看看的<code>metamacro_head</code>的定义</p>
-<pre><code>#define metamacro_head(...) \
- metamacro_head_(__VA_ARGS__, 0)
-</code></pre>
-<p>又是一层，继续点进去metamacro_head_</p>
-<pre><code>#define metamacro_head_(FIRST, ...) FIRST
-</code></pre>
-<p>其实就是截取第一个参数，所以metamacro_head（2,1）就是 2。而前面的metamacro_head（1）就是 1。到这里 相信你已经弄清楚 metamacro_at 是怎么替换成参数个数的了</p>
-<p>其他metamacro_at 也是一个道理</p>
-<h3 id="metamacro-foreach-cxt-的定义"><a href="#metamacro-foreach-cxt-的定义" class="headerlink" title="metamacro_foreach_cxt 的定义"></a>metamacro_foreach_cxt 的定义</h3><p>回过头看metamacro_foreach_cxt</p>
-<pre><code>#define metamacro_foreach_cxt1(MACRO, SEP, CONTEXT, _0) MACRO(0, CONTEXT, _0)
-
-#define metamacro_foreach_cxt2(MACRO, SEP, CONTEXT, _0, _1) \
- metamacro_foreach_cxt1(MACRO, SEP, CONTEXT, _0) \
- SEP \
- MACRO(1, CONTEXT, _1)
-
-#define metamacro_foreach_cxt3(MACRO, SEP, CONTEXT, _0, _1, _2) \
- metamacro_foreach_cxt2(MACRO, SEP, CONTEXT, _0, _1) \
- SEP \
- MACRO(2, CONTEXT, _2)
-...省略N多行
-</code></pre>
-<p>回到最开始，举个例子metamacro_argcount(obj1,obj2,obj3)通过上面metamacro_argcount宏，确定出参数为3后，对号入座传入metamacro_foreach_cxt3</p>
-<pre><code>#define metamacro_foreach_cxt3(MACRO, SEP, CONTEXT, _0, _1, _2) \
- metamacro_foreach_cxt2(MACRO, SEP, CONTEXT, _0, _1) \
- SEP \
- MACRO(2, CONTEXT, _2)
-</code></pre>
-<p>所以也就变成了</p>
-<pre><code>metamacro_foreach_cxt3(rac_weakify_, , __weak , obj1 ,obj2 ,obj3)
-</code></pre>
-<p>发现是个递归，也就是</p>
-<pre><code>metamacro_foreach_cxt2(rac_weakify_, , CONTEXT, obj1, obj2) 
-rac_weakify_(2, __weak, obj3)
-</code></pre>
-<p>而metamacro_foreach_cxt2 又是一层递归，最后obj1、obj2、obj3都被替换成了:</p>
-<pre><code>__weak type(obj1) obj1_weak_ = obj1;
-__weak type(obj2) obj2_weak_ = obj2;
-__weak type(obj3) obj3_weak_ = obj3;
-</code></pre>
-<h3 id="RAC的宏装逼过程总结"><a href="#RAC的宏装逼过程总结" class="headerlink" title="RAC的宏装逼过程总结"></a>RAC的宏装逼过程总结</h3><p>其实总结起来很简单，就2点：</p>
-<ol>
-<li>通过metamacro_argcount确定可变参数个数<code>x</code></li>
-<li>根据1得到的<code>x</code>调用metamacro_foreach_cxt<code>x</code>,层层递归，对每个参数进行宏替换</li>
-</ol>
-<p>本文引用自<a target="_blank" rel="noopener" href="http://ziecho.com/post/ios/2016-08-04">这里</a>,如有侵权，请联系本人删除！</p>
+<p>这个方法只用的判断两个矩形框是不是重叠的方法CGRectIntersectsRect()但是这个方法不适用于我的项目,因为与窗口重叠的scrollView也不是一个,此路不通.</p>
+<p>解决过程三:</p>
+<p>我观察了一下我需要此效果的scrollView的frame是一样的,而且只有一个,所以我在判断要不要滚动到顶部的手势方法里加了一个frame的判断,只有特定frame的scrollView需要滚动到顶部,然而因为不明原因(可能是判断太严格了)还是无法实现,此路不通.<br>解决过程三:<br>最后我无奈了,我发了一个大招,在点击状态栏的手势方法里把所有的scrollView的contentOffSize设置为CGPointZero.这下好了,果然在点击状态栏的时候,所有scrollView都滚动到顶部了.我以为这样就可以了,但是,但是,我发现我所有界面的scrollView包括大的,小的,继承自它的控件都滚动到顶部了.我最后加了几个判断,解决问题,详见上文中最终解决方案.</p>
+<p>总结:我觉得我解决这个问题的方法不是最好的解决办法,希望您能给我提出宝贵的意见或建议,欢迎各位指点,留言!</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-@weakify%E3%80%81@strongify%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" data-id="cuidDpERMQ1o78ew9u4iMt_XR" data-title="【iOS开发】--@weakify、@strongify原理解析" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%BA%8C)-%E7%8A%B6%E6%80%81%E6%A0%8F(%E7%82%B9%E5%87%BB%E7%8A%B6%E6%80%81%E6%A0%8F%E8%BF%94%E5%9B%9E%E5%88%B0%E9%A1%B6%E9%83%A8%E6%95%88%E6%9E%9C)/" data-id="cuidgBw8-L6QAazVnhAaQ1chI" data-title="iOS自定义视图系列(二)-状态栏(点击状态栏返回到顶部效果)" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1034,9 +803,9 @@ __weak type(obj3) obj3_weak_ = obj3;
 
 
   
-    <article id="post-2026-03-18-【iOS开发】-google第三方登录授权页面404解决方案" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-18-markdown编辑常用格式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83%E9%A1%B5%E9%9D%A2404%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="article-date">
+    <a href="/hexo-site/2026/03/18/2026-03-18-markdown%E7%BC%96%E8%BE%91%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F/" class="article-date">
   <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
 </a>
     
@@ -1052,7 +821,7 @@ __weak type(obj3) obj3_weak_ = obj3;
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83%E9%A1%B5%E9%9D%A2404%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">【iOS开发】-google第三方登录授权页面404解决方案</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-markdown%E7%BC%96%E8%BE%91%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F/">markdown编辑常用格式</a>
     </h1>
   
 
@@ -1060,161 +829,35 @@ __weak type(obj3) obj3_weak_ = obj3;
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>#iOS WKWebview需要去掉UA中“ OS”   </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> [webView evaluateJavaScript:@&quot;navigator.userAgent&quot; completionHandler:^(NSString * _Nullable UA, NSError * _Nullable error)&#123;</span><br><span class="line">     NSLog(@&quot;UA-%@&quot;,UA);</span><br><span class="line">     webView.customUserAgent = [UA stringByReplacingOccurrencesOfString:@&quot; OS&quot; withString:@&quot;&quot;];</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
-<p>#android 需要去掉UA中的“wv”</p>
+        <p>按时发斯蒂芬</p>
+<hr>
+<p><del>删除线</del></p>
+<blockquote>
+<p>文过饰非</p>
+</blockquote>
+<p><img src="/hexo-site/www.baidu.com" alt="图片">&#x2F;&#x2F;图片</p>
+<p><a href="www.baidu.com">超链接</a>&#x2F;&#x2F;链接<br><em>1234</em> 斜体</p>
+<table>
+<thead>
+<tr>
+<th align="left">表格</th>
+<th align="center">表格</th>
+<th align="right">表格</th>
+<th align="right"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">冒号在左边表示左对齐</td>
+<td align="center">冒号两边都有表示居中</td>
+<td align="right">冒号在右边表示右对齐</td>
+<td align="right">啥第三方</td>
+</tr>
+</tbody></table>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83%E9%A1%B5%E9%9D%A2404%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" data-id="cuidpRiAVQTblmDATZuGCvw3W" data-title="【iOS开发】-google第三方登录授权页面404解决方案" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS自定义视图系列(一)-实用的进度条" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%B8%80)-%E5%AE%9E%E7%94%A8%E7%9A%84%E8%BF%9B%E5%BA%A6%E6%9D%A1/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%B8%80)-%E5%AE%9E%E7%94%A8%E7%9A%84%E8%BF%9B%E5%BA%A6%E6%9D%A1/">iOS自定义视图系列(一)-实用的进度条</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>博主从事iOS开发3年多,看过许多大神的博客,感觉他们文笔都很好,讲解很透彻,但是本人一直没有写过博客,今天鼓起勇气写下这个入门级的小东西–实用的进度条,想用的尽管拿去.我随手封装的东西,如果有可以改进的地方,你又愿意提点我,请留言,谢谢!如果不喜欢,请关闭本文,谢谢!</p>
-<pre><code>   好了,废话不多说,进入主题!
-</code></pre>
-<p> 由于目前项目中要用到进度条,但是系统的UIProgressView的高度和背景颜色不一致,想了几种办法尝试解决这个问题,但是感觉有点费劲,然后,然后,我就自己搞了一个,先用着.欢迎留言交流……</p>
-<p>上代码:</p>
-<p>   LQProgressLine.h</p>
-<pre><code>@interface LQProgressLine : UIView
-/**
- *  背景色
- */
-@property (nonatomic,copy) NSString *backColor;
-/**
- *  已经经过的进度的颜色
- */
-@property (nonatomic,copy) NSString *didColor;
-/**
- *  进度
- */
-@property (nonatomic,assign) CGFloat progress;
-
-/**
- *  工厂方法
- *
- *  @param bColor 背景颜色 (例如&quot;#ffffff&quot;)
- *  @param dColor 已经经过的进度的颜色(例如&quot;#000000&quot;)
- *
- *  @return 对象
- */
-+(instancetype)progressLineWithBackColor:(NSString *)bColor didColor:(NSString *)dColor;
-</code></pre>
-<p>LQProgressLine.m</p>
-<pre><code>#import &quot;LQProgressLine.h&quot;
-@interface LQProgressLine ()
-@property (nonatomic,strong) NSArray *backColorArray;
-@property (nonatomic,strong) NSArray *didColorArray;
-@end
-
-@implementation LQProgressLine
-+(instancetype)progressLineWithBackColor:(NSString *)bColor didColor:(NSString *)dColor{
-</code></pre>
-<p>        return [[self alloc]initWithBackColor:bColor didColor:dColor];<br>    }<br>    - (instancetype)initWithBackColor:(NSString *)bColor didColor:    (NSString *)dColor{<br>      if (self &#x3D; [super init]) {<br>          self.backColor &#x3D; bColor;<br>          self.backgroundColor &#x3D; [UIColor colorWithRed:[self.backColorArray[0] floatValue] green:[self.backColorArray[1]   floatValue] blue:[self.backColorArray[2] floatValue] alpha:1];<br>          self.didColor &#x3D; dColor;<br>    }<br>      return self;<br>    }<br>    - (void)setBackColor:(NSString *)backColor{<br>      _backColor &#x3D; backColor;<br>      self.backColorArray &#x3D; [self RGBFromStr:backColor];<br>      }<br>    - (void)setDidColor:(NSString <em>)didColor{<br>      _didColor &#x3D; didColor;<br>      self.didColorArray &#x3D; [self RGBFromStr:didColor];<br>      }<br>    - (void)drawRect:(CGRect)rect{<br>      CGContextRef context &#x3D; UIGraphicsGetCurrentContext();<br>      CGContextSetLineWidth(context, rect.size.width);  &#x2F;&#x2F;线宽<br>      CGContextSetRGBStrokeColor(context, [self.didColorArray[0] floatValue], [self.didColorArray[1] floatValue],   [self.didColorArray[2] floatValue], 1.0);  &#x2F;&#x2F;线的颜色<br>      CGContextBeginPath(context);<br>      CGContextMoveToPoint(context, 0, 0);  &#x2F;&#x2F;起点坐标<br>      CGContextAddLineToPoint(context, rect.size.width</em>_progress, rect.size.height);   &#x2F;&#x2F;终点坐标<br>      CGContextStrokePath(context);<br>    }<br>    - (void)setProgress:(CGFloat)progress{<br>        _progress &#x3D; progress;<br>       [self setNeedsDisplay];<br>    }</p>
-<pre><code>- (NSArray *)RGBFromStr:(NSString *)hexColor{
-</code></pre>
-<p>      NSString *str &#x3D; nil;<br>      if([hexColor rangeOfString:@”#”].length&gt;0){<br>          str &#x3D; [hexColor substringFromIndex:1];<br>      }else{<br>          str &#x3D; hexColor;<br>      }<br>      if(str.length&lt;&#x3D;0)return nil;<br>      unsigned int red, green, blue;<br>      NSRange range;<br>      range.length &#x3D;2;<br>      range.location &#x3D;0;<br>      [[NSScanner scannerWithString:[str substringWithRange:range]]scanHexInt:&amp;red];<br>      range.location &#x3D;2;<br>      [[NSScanner scannerWithString:[str substringWithRange:range]]scanHexInt:&amp;green];<br>      range.location &#x3D;4;<br>      [[NSScanner scannerWithString:[str substringWithRange:range]]scanHexInt:&amp;blue];<br>      return @[@(red&#x2F;255.0),@(green&#x2F;255.0),@(blue&#x2F;255.0)];<br>      }</p>
-<p>好了,代码贴完,用法如下:</p>
-<pre><code>//创建
-
-LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;#cccccc&quot; didColor:@&quot;#0096e0&quot;];
-[superView addSubview:progressView];
-
-//在需要设置进度的时候设置
-[progressView setProgress:0.4];
-</code></pre>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%B8%80)-%E5%AE%9E%E7%94%A8%E7%9A%84%E8%BF%9B%E5%BA%A6%E6%9D%A1/" data-id="cuidsxjZ_jABTBdhhUdsqj4Ha" data-title="iOS自定义视图系列(一)-实用的进度条" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【iOS】一行命令查找项目中的私有API" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E3%80%91%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BE%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E7%A7%81%E6%9C%89API/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E3%80%91%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BE%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E7%A7%81%E6%9C%89API/">【iOS】一行命令查找项目中的私有API</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <pre><code>find . | grep &quot;.a&quot; | grep -v &quot;.app&quot; | xargs grep [API] &gt;[地址]
-</code></pre>
-<p>第一个括号替换成你要查找的私有API，</p>
-<p>第二个括号是查找到之后写入的文件路径</p>
-<p>例如，<br>查找 私有API：prefs:root&#x3D;<br>写入路径：&#x2F;Users&#x2F;zhangxiaohan&#x2F;Desktop&#x2F;ttt.txt</p>
-<p> 生成的命令如下：<br>    find . | grep “.a” | grep -v “.app” | xargs grep prefs:root&#x3D; &gt;&#x2F;Users&#x2F;xx&#x2F;Desktop&#x2F;ttt.txt</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E3%80%91%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BE%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E7%A7%81%E6%9C%89API/" data-id="cuidEhiAXUfT6rPUcZvg0y2iB" data-title="【iOS】一行命令查找项目中的私有API" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-markdown%E7%BC%96%E8%BE%91%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F/" data-id="cuid4bA0cm-gAgTzVy87vI5g8" data-title="markdown编辑常用格式" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1285,10 +928,6 @@ LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
-          </li>
-        
-          <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
           </li>
         
@@ -1302,6 +941,10 @@ LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;
         
           <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
           </li>
         
       </ul>

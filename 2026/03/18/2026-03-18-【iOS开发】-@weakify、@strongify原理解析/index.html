@@ -13,15 +13,15 @@
 <meta property="og:site_name" content="花间半缘">
 <meta property="og:description" content="很长的前言在block语句块中，如果需引用self，而self对象中又持有block对象，就会造成循环引用循环引用(retain cycle)，导致内存泄露，比如以下代码   self.block &#x3D; ^{     [self description]; };  一般我们是这么解决的，使用一个__weak修饰的weakSelf变量指向self对象，在block中使用weakSelf:  __wea">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-9eec71afc106cd91.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-40f7832dab9390a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-079783e06aedc3e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="article:published_time" content="2026-03-18T10:04:06.000Z">
-<meta property="article:modified_time" content="2026-03-18T10:11:47.000Z">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/f1f78914433a4f2984e5bf9d4a6f7cff.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/273894f4f0cd379be7869da1388df4a1.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/39c2f0e4711d093abf8481f0e4e507ab.webp">
+<meta property="article:published_time" content="2026-03-18T10:30:13.000Z">
+<meta property="article:modified_time" content="2026-03-18T10:30:19.000Z">
 <meta property="article:author" content="半缘君">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2791393-9eec71afc106cd91.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/f1f78914433a4f2984e5bf9d4a6f7cff.webp">
   
     <link rel="alternate" href="/hexo-site/atom.xml" title="花间半缘" type="application/atom+xml">
   
@@ -85,7 +85,7 @@
         <section id="main"><article id="post-2026-03-18-【iOS开发】-@weakify、@strongify原理解析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-@weakify%E3%80%81@strongify%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
 </a>
     
   <div class="article-category">
@@ -170,7 +170,7 @@ obj.block();
 }];
 </code></pre>
 <p>只要在block外用了@weakify(self);然后再block里写@strongify(self);就可以了，@strongify(self);语句后的的self可以原封不动，好像很神奇，下面一起看看@weakify、@strongify 这两个神奇的宏最终替换了什么东西。导入RAC的头文件，把上面的测试代码替换成RAC中用的@weakify(self);和@strongify(self), 分屏显示Xcode，让右侧的显示内容改为 preprocess“,就可以看到宏最终替换的结果。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-9eec71afc106cd91.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="/hexo-site/hexo-site/images/note/f1f78914433a4f2984e5bf9d4a6f7cff.webp" alt="image.png"></p>
 <ol>
 <li>@autoreleasepool {} 是什么鬼？</li>
 </ol>
@@ -230,7 +230,7 @@ metamacro_foreach_cxt ## 1 (rac_weakify_,  , __weak, self)
 metamacro_foreach_cxt1(rac_weakify_,  , __weak, self)
 </code></pre>
 <p>第三层：<code>metamacro_foreach_cxt1</code> 没错,不要怀疑，他还定义了metamacro_foreach_cxt1这个后面数组为1的宏，搜索一下：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-40f7832dab9390a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="/hexo-site/hexo-site/images/note/273894f4f0cd379be7869da1388df4a1.webp" alt="image.png"></p>
 <p>嗯，你没猜错，有metamacro_foreach_cxt1就有metamacro_foreach_cxt2、3、4、5、6、7、8…，这些是什么鬼，我们先不管，先看我们的metamacro_foreach_cxt1</p>
 <pre><code>#define metamacro_foreach_cxt1(MACRO, SEP, CONTEXT, _0) MACRO(0, CONTEXT, _0)
 </code></pre>
@@ -273,7 +273,7 @@ __weak type(obj20) obj20_weak_ = obj20;
 <pre><code>metamacro_at20(self, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
 </code></pre>
 <p>搜索<code>metamacro_at20</code></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-079783e06aedc3e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="/hexo-site/hexo-site/images/note/39c2f0e4711d093abf8481f0e4e507ab.webp" alt="image.png"></p>
 <p>呵呵 又是一堆乱七八糟的，没事看懂一个就全懂了。</p>
 <pre><code>#define metamacro_at20(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, ...) 
 metamacro_head(__VA_ARGS__)
@@ -344,19 +344,19 @@ __weak type(obj3) obj3_weak_ = obj3;
     
 <nav id="article-nav">
   
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E2%80%94BUG%E5%AE%9A%E4%BD%8D%E3%80%91%E5%88%A9%E7%94%A8%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E5%92%8C%E7%AC%A6%E5%8F%B7%E8%A1%A8%E5%AE%9A%E4%BD%8D%E5%B4%A9%E6%BA%83/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC%E8%BD%AF%E4%BB%B6%E3%80%91-StarUML%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">前一篇</strong>
       <div class="article-nav-title">
         
-          【iOS开发—BUG定位】利用内存地址和符号表定位崩溃
+          【MAC软件】---StarUML简单使用教程
         
       </div>
     </a>
   
   
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83%E9%A1%B5%E9%9D%A2404%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-UICollectionView%E5%A4%8D%E7%94%A8%E7%9A%84%E5%9D%91/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">【iOS开发】-google第三方登录授权页面404解决方案</div>
+      <div class="article-nav-title">【iOS开发】--UICollectionView复用的坑</div>
     </a>
   
 </nav>
@@ -415,10 +415,6 @@ __weak type(obj3) obj3_weak_ = obj3;
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
-          </li>
-        
-          <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
           </li>
         
@@ -432,6 +428,10 @@ __weak type(obj3) obj3_weak_ = obj3;
         
           <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
           </li>
         
       </ul>

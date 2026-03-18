@@ -13,16 +13,16 @@
 <meta property="og:site_name" content="花间半缘">
 <meta property="og:description" content="崩溃的截图：         最近项目中有一个dispatch_group相关的巨坑（此问题解决方法很简单，难点是定位问题），特此记录下来并分享，希望帮助到有需要的人！    本文涉及的知识面较广，有一定的逻辑性，如果想真正明白各种原理，请细细读来，如时间紧迫，可记住正确使用方法亦可！    阅读本文需要的知识点：  1 熟悉AFNetworking  2 熟练使用dispatch_grou">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-f8f3119957fa530b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-467722a485cd44a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-20cd54e3726c0564.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-1b9f6d43af5babe1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="article:published_time" content="2026-03-18T10:04:06.000Z">
-<meta property="article:modified_time" content="2026-03-18T10:11:47.000Z">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/15f69cd324ef0ffbea5444bb70ba5875.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/8c0e06b090bda15a2631fb0dbff35734.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/1ae39c1ded50e2853db32d8e2b8afde7.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/b097bbe5cf702d7e5b1e07e3a6757f6d.webp">
+<meta property="article:published_time" content="2026-03-18T10:30:13.000Z">
+<meta property="article:modified_time" content="2026-03-18T10:30:19.000Z">
 <meta property="article:author" content="半缘君">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2791393-f8f3119957fa530b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/15f69cd324ef0ffbea5444bb70ba5875.webp">
   
     <link rel="alternate" href="/hexo-site/atom.xml" title="花间半缘" type="application/atom+xml">
   
@@ -86,7 +86,7 @@
         <section id="main"><article id="post-2026-03-18-iOS开发-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
 </a>
     
   <div class="article-category">
@@ -109,8 +109,8 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>   崩溃的截图：<br>  <img src="https://upload-images.jianshu.io/upload_images/2791393-f8f3119957fa530b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>  <img src="https://upload-images.jianshu.io/upload_images/2791393-467722a485cd44a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png">  </p>
+        <p>   崩溃的截图：<br>  <img src="/hexo-site/hexo-site/images/note/15f69cd324ef0ffbea5444bb70ba5875.webp" alt="image.png"></p>
+<p>  <img src="/hexo-site/hexo-site/images/note/8c0e06b090bda15a2631fb0dbff35734.webp" alt="image.png">  </p>
 <p> 最近项目中有一个dispatch_group相关的巨坑（此问题解决方法很简单，难点是定位问题），特此记录下来并分享，希望帮助到有需要的人！</p>
 <p>   本文涉及的知识面较广，有一定的逻辑性，如果想真正明白各种原理，请细细读来，如时间紧迫，可记住正确使用方法亦可！</p>
 <p>   阅读本文需要的知识点：</p>
@@ -156,7 +156,7 @@
 </code></pre>
 <p> 我想你肯定在疑惑加一个if判断就解决了问题了，那这个坑应该不大，分分钟搞定，请往下看</p>
 <p>产生此问题的原因：概括的说是dispatch_group的原理和AFNetworking网络请求回调block的缓存回调原理的协作问题</p>
-<p>举例详细说明，流程图如下：<br><img src="https://upload-images.jianshu.io/upload_images/2791393-20cd54e3726c0564.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>举例详细说明，流程图如下：<br><img src="/hexo-site/hexo-site/images/note/1ae39c1ded50e2853db32d8e2b8afde7.webp" alt="image.png"></p>
 <pre><code>正常情况下：执行步骤1 的间隔时间充分长，或者只执行一次，此逻辑没有问题，不会crash；
 非正常情况：开头所说的crash出现场景下，即频繁执行上图中步骤1到步骤3
 </code></pre>
@@ -190,7 +190,7 @@ dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
 });   
 }
 </code></pre>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-1b9f6d43af5babe1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="崩溃截图"></p>
+<p><img src="/hexo-site/hexo-site/images/note/b097bbe5cf702d7e5b1e07e3a6757f6d.webp" alt="崩溃截图"></p>
 <p> 修正后代码：</p>
 <pre><code>- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
 if(self.group == nil){
@@ -230,11 +230,11 @@ dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
     
 <nav id="article-nav">
   
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-NSURL%E5%A4%A7%E9%83%A8%E5%88%86%E4%BA%BA%E9%83%BD%E7%94%A8%E9%94%99%E4%BA%86/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">前一篇</strong>
       <div class="article-nav-title">
         
-          iOS开发--NSURL大部分人都用错了
+          iOS开发--BUG定位,符号化crash地址
         
       </div>
     </a>
@@ -301,10 +301,6 @@ dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
-          </li>
-        
-          <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
           </li>
         
@@ -318,6 +314,10 @@ dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
         
           <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
           </li>
         
       </ul>

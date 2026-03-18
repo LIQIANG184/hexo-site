@@ -13,17 +13,17 @@
 <meta property="og:site_name" content="花间半缘">
 <meta property="og:description" content="iOS 签名机制挺复杂，各种证书，Provisioning Profile，entitlements，CertificateSigningRequest，p12，AppID，概念一堆，也很容易出错，本文尝试从原理出发，一步步推出为什么会有这么多概念，希望能有助于理解 iOS App 签名的原理和流程。 目的先来看看苹果的签名机制是为了做什么。在 iOS 出来之前，在主流操作系统(Mac&#x2F;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1742958-23b2a7d1219ff903.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-50b0ae26b71e7e85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-27f600e838d67a16.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-5eab2a7b5e50f730.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-e4b0e9d778bd2f4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="article:published_time" content="2026-03-18T10:04:06.000Z">
-<meta property="article:modified_time" content="2026-03-18T10:11:47.000Z">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/3b3cf3b744e3167bb5e93a80af336e60.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/651c2ac172a6d2d54433b66503f8db21.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/66a71fe638c30394e3aa60d2dc947209.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/b78f0fa3ed4f489520349d32bd0c0f93.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/bc9f570105360b0bbc5b5556b0abffaf.webp">
+<meta property="article:published_time" content="2026-03-18T10:30:13.000Z">
+<meta property="article:modified_time" content="2026-03-18T10:30:19.000Z">
 <meta property="article:author" content="半缘君">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/1742958-23b2a7d1219ff903.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta name="twitter:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/3b3cf3b744e3167bb5e93a80af336e60.webp">
   
     <link rel="alternate" href="/hexo-site/atom.xml" title="花间半缘" type="application/atom+xml">
   
@@ -87,7 +87,7 @@
         <section id="main"><article id="post-2026-03-18-[iOS]-App-签名的原理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D-App-%E7%AD%BE%E5%90%8D%E7%9A%84%E5%8E%9F%E7%90%86/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
 </a>
     
   <div class="article-category">
@@ -120,7 +120,7 @@
 <p>上述的 (n,e) 这两个数据在一起就是公钥，(n,d) 这两个数据就是私钥，满足用公钥加密，私钥解密，或反过来公钥加密，私钥解密，也满足在只暴露公钥（只知道 n 和 e）的情况下，要推导出私钥 (n,d)，需要把大整数 n 因数分解。目前因数分解只能靠暴力穷举，而n数字越大，越难以用穷举计算出因数 p 和 q，也就越安全，当 n 大到二进制 1024 位或 2048 位时，以目前技术要破解几乎不可能，所以非常安全。<br>若对数字 <code>d</code> 是怎样计算出来的感兴趣，可以详读这两篇文章：RSA 算法原理<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html">（一）</a><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html">（二）</a></p>
 <h1 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h1><p>现在知道了有非对称加密这东西，那数字签名是怎么回事呢？</p>
 <p>数字签名的作用是我对某一份数据打个标记，表示我认可了这份数据（签了个名），然后我发送给其他人，其他人可以知道这份数据是经过我认证的，数据没有被篡改过。</p>
-<p>有了上述非对称加密算法，就可以实现这个需求：<br><img src="https://upload-images.jianshu.io/upload_images/1742958-23b2a7d1219ff903.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="图片"></p>
+<p>有了上述非对称加密算法，就可以实现这个需求：<br><img src="/hexo-site/hexo-site/images/note/3b3cf3b744e3167bb5e93a80af336e60.webp" alt="图片"></p>
 <blockquote>
 <p>1.首先用一种算法，算出原始数据的摘要。需满足 a.若原始数据有任何变化，计算出来的摘要值都会变化。 b.摘要要够短。这里最常用的算法是MD5。</p>
 <ol start="2">
@@ -132,7 +132,7 @@
 <p>之所以要有第一步计算摘要，是因为非对称加密的原理限制可加密的内容不能太大（不能大于上述 n 的位数，也就是一般不能大于 1024 位&#x2F; 2048 位），于是若要对任意大的数据签名，就需要改成对它的特征值签名，效果是一样的。</p>
 <p>好了，有了非对称加密的基础，知道了数字签名是什么，怎样可以保证一份数据是经过某个地方认证的，来看看怎样通过数字签名的机制保证每一个安装到 iOS 上的 APP 都是经过苹果认证允许的。</p>
 <h1 id="最简单的签名"><a href="#最简单的签名" class="headerlink" title="最简单的签名"></a>最简单的签名</h1><p>要实现这个需求很简单，最直接的方式，苹果官方生成一对公私钥，在 iOS 里内置一个公钥，私钥由苹果后台保存，我们传 App 上 AppStore 时，苹果后台用私钥对 APP 数据进行签名，iOS 系统下载这个 APP 后，用公钥验证这个签名，若签名正确，这个 APP 肯定是由苹果后台认证的，并且没有被修改过，也就达到了苹果的需求：保证安装的每一个 APP 都是经过苹果官方允许的。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-50b0ae26b71e7e85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="/hexo-site/hexo-site/images/note/651c2ac172a6d2d54433b66503f8db21.webp" alt="image.png"></p>
 <p>如果我们 iOS 设备安装 APP 只有从 AppStore 下载这一种方式的话，这件事就结束了，没有任何复杂的东西，只有一个数字签名，非常简单地解决问题。</p>
 <p>但实际上因为除了从 AppStore 下载，我们还可以有三种方式安装一个 App：</p>
 <blockquote>
@@ -145,7 +145,7 @@
 </blockquote>
 <p>为了实现这些需求，iOS 签名的复杂度也就开始增加了。</p>
 <p>苹果这里给出的方案是使用了双层签名，会比较绕，流程大概是这样的：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-27f600e838d67a16.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="/hexo-site/hexo-site/images/note/66a71fe638c30394e3aa60d2dc947209.webp" alt="image.png"></p>
 <blockquote>
 <ol>
 <li>在你的 Mac 开发机器生成一对公私钥，这里称为公钥L，私钥L。L:Local</li>
@@ -158,12 +158,12 @@
 </blockquote>
 <h1 id="加点东西"><a href="#加点东西" class="headerlink" title="加点东西"></a>加点东西</h1><p>上述流程只解决了上面第一个需求，也就是需要经过苹果允许才可以安装，还未解决第二个避免被滥用的问题。怎么解决呢？苹果再加了两个限制，一是限制在苹果后台注册过的设备才可以安装，二是限制签名只能针对某一个具体的 APP。</p>
 <p>怎么加的？在上述第三步，苹果用私钥 A 签名我们本地公钥 L 时，实际上除了签名公钥 L，还可以加上无限多数据，这些数据都可以保证是经过苹果官方认证的，不会有被篡改的可能。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-5eab2a7b5e50f730.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="/hexo-site/hexo-site/images/note/b78f0fa3ed4f489520349d32bd0c0f93.webp" alt="image.png"></p>
 <p>可以想到把 允许安装的设备 ID 列表 和 App对应的 AppID 等数据，都在第三步这里跟公钥L一起组成证书，再用苹果私钥 A 对这个证书签名。在最后第 5 步验证时就可以拿到设备 ID 列表，判断当前设备是否符合要求。根据数字签名的原理，只要数字签名通过验证，第 5 步这里的设备 IDs &#x2F; AppID &#x2F; 公钥 L 就都是经过苹果认证的，无法被修改，苹果就可以限制可安装的设备和 APP，避免滥用。</p>
 <h1 id="最终流程"><a href="#最终流程" class="headerlink" title="最终流程"></a>最终流程</h1><p>到这里这个证书已经变得很复杂了，有很多额外信息，实际上除了 设备 ID &#x2F; AppID，还有其他信息也需要在这里用苹果签名，像这个 APP 里 iCloud &#x2F; push &#x2F; 后台运行 等权限苹果都想控制，苹果把这些权限开关统一称为 Entitlements，它也需要通过签名去授权。</p>
 <p>实际上一个“证书”本来就有规定的格式规范，上面我们把各种额外信息塞入证书里是不合适的，于是苹果另外搞了个东西，叫 Provisioning Profile，一个 Provisioning Profile 里就包含了证书以及上述提到的所有额外信息，以及所有信息的签名。</p>
 <p>所以整个流程稍微变一下，就变成这样了：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-e4b0e9d778bd2f4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="/hexo-site/hexo-site/images/note/bc9f570105360b0bbc5b5556b0abffaf.webp" alt="image.png"></p>
 <p>因为步骤有小变动，这里我们不辞啰嗦重新再列一遍整个流程：</p>
 <blockquote>
 <ol>
@@ -224,9 +224,9 @@
     </a>
   
   
-    <a href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D-url%E6%8B%BC%E6%8E%A5%E5%8F%82%E6%95%B0%E5%B0%81%E8%A3%85%E6%96%B9%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D%E8%AF%81%E4%B9%A6%E6%8E%88%E6%9D%83%E6%96%87%E4%BB%B6%E4%B8%8D%E5%8C%B9%E9%85%8D%E9%94%99%E8%AF%AF-%E5%85%B3%E4%BA%8EProvisioning-profile-%E2%80%9C%E2%80%9D-doesn't-include-a/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">[iOS]---url拼接参数封装方法</div>
+      <div class="article-nav-title">[iOS]证书授权文件不匹配错误-关于Provisioning-profile-“”-doesn&#39;t-include-any-certifi</div>
     </a>
   
 </nav>
@@ -285,10 +285,6 @@
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
-          </li>
-        
-          <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
           </li>
         
@@ -302,6 +298,10 @@
         
           <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
           </li>
         
       </ul>

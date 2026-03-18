@@ -13,15 +13,15 @@
 <meta property="og:site_name" content="花间半缘">
 <meta property="og:description" content="我们知道OC中有按位枚举这种数据类型,具体说明以及用法可以参考:http:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;600402ed85df这里不做说明 目录1 举例说明如何识别普通枚举和按位枚举2 Swift中如何使用按位枚举 1   举例说明如何识别普通枚举和按位枚举 &#x2F;&#x2F;普通枚举 public enum UIControlContentHorizontalAlignment : Int {">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-f118f436c308fc2d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-d011fa2c577b948d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-7642b294677a8214.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="article:published_time" content="2026-03-18T10:04:06.000Z">
-<meta property="article:modified_time" content="2026-03-18T10:11:47.000Z">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/2ea5497825bc2efd5e9db7a5361b0003.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/03ff301f788dbd1b953be6acd8e17825.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/d0f752ce7721666b25c850e832bd7ed8.webp">
+<meta property="article:published_time" content="2026-03-18T10:30:13.000Z">
+<meta property="article:modified_time" content="2026-03-18T10:30:19.000Z">
 <meta property="article:author" content="半缘君">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2791393-f118f436c308fc2d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/2ea5497825bc2efd5e9db7a5361b0003.webp">
   
     <link rel="alternate" href="/hexo-site/atom.xml" title="花间半缘" type="application/atom+xml">
   
@@ -85,7 +85,7 @@
         <section id="main"><article id="post-2026-03-18-Swift-按位枚举说明及用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
 </a>
     
   <div class="article-category">
@@ -143,9 +143,9 @@ public static var application: UIControlState { get } // additional flags availa
 public static var reserved: UIControlState { get } // flags reserved for internal framework use
 </code></pre>
 <p>}<br>最大的区别是”声明格式”不同<br>       普通枚举声明格式:<br>      public enum 枚举名称: 枚举值类型 {<br>      case  枚举值1<br>      case  枚举值2<br>      ….<br>      }<br>      按位枚举声明格式:<br>      public struct 枚举名称 : OptionSet {<br>      public static var 枚举值1: 枚举名称 { get }<br>      public static var 枚举值2: 枚举名称 { get }<br>      …<br>      }<br>   2 Swift中按位枚举的使用方法: 用中括号括起来,中间用逗号分隔(类似OC中的数组,在Swift中叫元组)</p>
-<p>例:<br><img src="http://upload-images.jianshu.io/upload_images/2791393-f118f436c308fc2d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"><br>但是需要注意的是: 此用法不得先定义变量,然后传值,必须要在使用按位枚举的地方直接将枚举值用中括号括起来,用逗号分隔开!<br>不然会报类型不匹配的错误<br>例:</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/2791393-d011fa2c577b948d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"><br>正确代码为:</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/2791393-7642b294677a8214.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>例:<br><img src="/hexo-site/hexo-site/images/note/2ea5497825bc2efd5e9db7a5361b0003.webp" alt="Paste_Image.png"><br>但是需要注意的是: 此用法不得先定义变量,然后传值,必须要在使用按位枚举的地方直接将枚举值用中括号括起来,用逗号分隔开!<br>不然会报类型不匹配的错误<br>例:</p>
+<p><img src="/hexo-site/hexo-site/images/note/03ff301f788dbd1b953be6acd8e17825.webp" alt="Paste_Image.png"><br>正确代码为:</p>
+<p><img src="/hexo-site/hexo-site/images/note/d0f752ce7721666b25c850e832bd7ed8.webp" alt="Paste_Image.png"></p>
 
       
     </div>
@@ -162,11 +162,11 @@ public static var reserved: UIControlState { get } // flags reserved for interna
     
 <nav id="article-nav">
   
-    <a href="/hexo-site/2026/03/18/2026-03-18-SVN%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF-svn-server-sent-unexpected-return-value-405-method-n/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">前一篇</strong>
       <div class="article-nav-title">
         
-          SVN常见错误-svn-server-sent-unexpected-return-value-405-method-not-allowed
+          OC算法实现--Dijkstra算法
         
       </div>
     </a>
@@ -233,10 +233,6 @@ public static var reserved: UIControlState { get } // flags reserved for interna
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
-          </li>
-        
-          <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
           </li>
         
@@ -250,6 +246,10 @@ public static var reserved: UIControlState { get } // flags reserved for interna
         
           <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
           </li>
         
       </ul>

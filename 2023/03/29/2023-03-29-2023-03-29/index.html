@@ -13,14 +13,14 @@
 <meta property="og:site_name" content="花间半缘">
 <meta property="og:description" content="[toc]#一 SDK接入使用podFile导入SDK  将RSOpenSDK文件夹拖到项目根目录 打开terminal, cd到项目根目录  1cd &#x2F;Users&#x2F;XXX  初始化pod(如存在可跳过)  1pod init  Podfile添加库  1pod &#x27;RSOpenSDK&#x27;, :path &#x3D;&gt; &#x27;RSOpenSDK&#x27;  pod 更新  1p">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-7c086aa5c4da51f9.png">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2791393-0e3300dacf0d0dda.png">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/70049dd232e768b79f832d7d3a631d7a.png">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/70894e8570fa9bd6ad39a829425620a5.png">
 <meta property="article:published_time" content="2023-03-29T04:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-18T10:11:47.000Z">
+<meta property="article:modified_time" content="2026-03-18T10:30:19.000Z">
 <meta property="article:author" content="半缘君">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2791393-7c086aa5c4da51f9.png">
+<meta name="twitter:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/70049dd232e768b79f832d7d3a631d7a.png">
   
     <link rel="alternate" href="/hexo-site/atom.xml" title="花间半缘" type="application/atom+xml">
   
@@ -125,14 +125,14 @@
 <li><code>pod</code> 更新</li>
 </ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod update</span><br></pre></td></tr></table></figure>
-<p>重新打开项目XXXX.xcworkspace,查看Pods目录,如下图是为正确引入<br><img src="https://upload-images.jianshu.io/upload_images/2791393-7c086aa5c4da51f9.png" alt="image.png"></p>
+<p>重新打开项目XXXX.xcworkspace,查看Pods目录,如下图是为正确引入<br><img src="/hexo-site/hexo-site/images/note/70049dd232e768b79f832d7d3a631d7a.png" alt="image.png"></p>
 <ol start="6">
 <li><p>开源库依赖说明:<code>AFNetworking</code>,<code>Masonry</code>,<code>Reachability</code>,<code>YYModel</code></p>
 </li>
 <li><p>其他: <code>隐私权限配置: Info.plist </code>蓝牙,摄像头</p>
 </li>
 </ol>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-0e3300dacf0d0dda.png" alt="image.png"></p>
+<p><img src="/hexo-site/hexo-site/images/note/70894e8570fa9bd6ad39a829425620a5.png" alt="image.png"></p>
 <p>#二 接口介绍<br>##1. 初始化<br><code>RSConfig</code> 接口,详细示例见<code>demo``AppDelegate+CaptureSDK.m</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSString *openHost;//开放平台Host</span><br><span class="line">@property (nonatomic, copy) RSCaptureTicketCallBlock ticket;//网络请求凭证</span><br><span class="line">@property (nonatomic, copy) RSCaptureModifyCallBlock projectCreate;//项目创建</span><br><span class="line">@property (nonatomic, copy) RSCaptureUploadAuthCallBlock uploadAuth;//上传凭证</span><br><span class="line">@property (nonatomic, copy) RSCaptureModifyCallBlock projectModify;//修改项目名称</span><br><span class="line">@property (nonatomic, copy) RSCaptureModifyCallBlock projectSubmit;//vr 处理</span><br><span class="line">@property (nonatomic, copy) RSCaptureModifyCallBlock projectRemove;//项目删除</span><br><span class="line">@property (nonatomic, copy) RSCaptureModifyCallBlock projectDetail;//项目详情</span><br><span class="line">//可选</span><br><span class="line">@property (nonatomic, copy) RSCaptureModifyCallBlock pan_indicator;</span><br></pre></td></tr></table></figure>
 <p>##2 设备管理<br>对象: <code>RSCapture.shareInstance.connectManager</code>, 详细见<code>demo``BSDeviceListViewModel.m</code></p>
@@ -242,10 +242,6 @@
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
-          </li>
-        
-          <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
           </li>
         
@@ -259,6 +255,10 @@
         
           <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
           </li>
         
       </ul>

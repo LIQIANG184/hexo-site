@@ -81,6 +81,275 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-2026-03-18-【iOS开发】SDK开发之podspec内执行脚本" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E5%86%85%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E5%86%85%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC/">【iOS开发】SDK开发之podspec内执行脚本</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>  本系列是SDK打包的实践，主要解决一下3个问题，本篇是第三篇。<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">【iOS开发】SDK开发之编译c&#x2F;c++</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/daeaf5728100?v=1742283697172">【iOS开发】SDK开发之podspec编写</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/99ca9803cb48?v=1742283732210">【iOS开发】SDK开发之podspec内执行脚本</a></p>
+<p>上篇文章podsec内的framework是cmake编译出来的，到目前为止app内使用pod引入sdk需要两步：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 使用cmake编译sdk</span><br><span class="line">2 cd 到podfile所在目录</span><br><span class="line">   添加pod依赖</span><br><span class="line">   pod install</span><br></pre></td></tr></table></figure>
+<p>有没有可能把两步合并呢？👇🏻向下看</p>
+<h1 id="打包脚本合并到podspec中"><a href="#打包脚本合并到podspec中" class="headerlink" title="打包脚本合并到podspec中"></a>打包脚本合并到podspec中</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">system &lt;&lt;-SCRIPT</span><br><span class="line">mkdir build &amp;&amp; cd build</span><br><span class="line">cmake -G Xcode .. -B .</span><br><span class="line">env=&quot;Release&quot;</span><br><span class="line">xcodebuild -target MobilePoseAlign -configuration &quot;$env&quot;</span><br><span class="line">SCRIPT</span><br><span class="line"># 如果执行 xcodebuild 失败, 直接报错, 终止打包流程</span><br><span class="line">raise &quot;xcodebuild failed!&quot; unless $?.success?</span><br><span class="line">   </span><br><span class="line">Pod::Spec.new do |s|</span><br><span class="line">  s.name             = &#x27;sdkName&#x27;</span><br><span class="line">  s.version         = &quot;1.0.0&quot;</span><br><span class="line">  s.summary          = &#x27;***&#x27;</span><br><span class="line">  s.description      = &quot;***.&quot;</span><br><span class="line">  s.homepage         = &quot;**&quot;</span><br><span class="line">  s.license          = &#123; :type =&gt; &#x27;MIT&#x27;, :file =&gt; &#x27;LICENSE&#x27; &#125;</span><br><span class="line">  s.author           = &#123; &#x27;lq&#x27; =&gt; &#x27;**&#x27; &#125;</span><br><span class="line">  s.source           = &#123; :git =&gt; &quot;****&quot;, :tag =&gt; s.name.to_s + &quot;-&quot; + s.version.to_s &#125;</span><br><span class="line">  s.frameworks = &quot;AVFoundation&quot;, &quot;Foundation&quot;, &quot;Metal&quot;, &quot;CoreMedia&quot;</span><br><span class="line">  s.libraries = &quot;c++&quot;,&quot;z&quot;</span><br><span class="line">  s.preserve_paths = &quot;ios/build/Debug-iphoneos/**/*&quot;, &quot;ios/algorithms/**/data/**/*&quot;, &quot;3rd/iOS/lib/**/*.framework/**/*&quot;, &quot;3rd/iOS/lib/*.framework/**/*&quot;, &quot;3rd/iOS/dependence/png/*&quot;</span><br><span class="line">  s.resource_bundle = &#123; &#x27;sdkName&#x27; =&gt; &quot;ios/algorithms/**/data/*&quot; &#125;</span><br><span class="line">  s.public_header_files = &quot;3rd/iOS/dependence/png/*.h&quot;</span><br><span class="line">  s.ios.deployment_target = &#x27;9.0&#x27;</span><br><span class="line"> s.vendored_frameworks = &quot;ios/Debug-iphoneos/Release/*.framework&quot;,&quot;ios/build/Debug-iphoneos/Release/*.framework&quot;, &quot;3rd/iOS/lib/**/*.framework&quot;, &quot;3rd/iOS/lib/*.framework&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E5%86%85%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC/" data-id="cuidjLIvcZq89EdRH1vGjqurK" data-title="【iOS开发】SDK开发之podspec内执行脚本" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】SDK开发之podspec编写" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E7%BC%96%E5%86%99/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E7%BC%96%E5%86%99/">【iOS开发】SDK开发之podspec编写</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>#介绍<br>  本系列是SDK打包的实践，主要解决一下3个问题，本篇是第二篇。<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">【iOS开发】SDK开发之编译c&#x2F;c++</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/daeaf5728100?v=1742283697172">【iOS开发】SDK开发之podspec编写</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/99ca9803cb48?v=1742283732210">【iOS开发】SDK开发之podspec内执行脚本</a></p>
+<p>#本期问题</p>
+<ul>
+<li>APP内使用cocoapods管理第三方库，所以需要自己写podspec并发布到私有repo</li>
+<li>podspec嵌入打包脚本</li>
+</ul>
+<p>##podspec编写：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new do |s|</span><br><span class="line">  s.name             = &#x27;sdkName&#x27;</span><br><span class="line">  s.version         = &quot;1.0.0&quot;</span><br><span class="line">  s.summary          = &#x27;***&#x27;</span><br><span class="line">  s.description      = &quot;***.&quot;</span><br><span class="line">  s.homepage         = &quot;**&quot;</span><br><span class="line">  s.license          = &#123; :type =&gt; &#x27;MIT&#x27;, :file =&gt; &#x27;LICENSE&#x27; &#125;</span><br><span class="line">  s.author           = &#123; &#x27;lq&#x27; =&gt; &#x27;**&#x27; &#125;</span><br><span class="line">  s.source           = &#123; :git =&gt; &quot;****&quot;, :tag =&gt; s.name.to_s + &quot;-&quot; + s.version.to_s &#125;</span><br><span class="line">  s.frameworks = &quot;AVFoundation&quot;, &quot;Foundation&quot;, &quot;Metal&quot;, &quot;CoreMedia&quot;</span><br><span class="line">  s.libraries = &quot;c++&quot;,&quot;z&quot;</span><br><span class="line">  s.preserve_paths = &quot;ios/build/Debug-iphoneos/**/*&quot;, &quot;ios/algorithms/**/data/**/*&quot;, &quot;3rd/iOS/lib/**/*.framework/**/*&quot;, &quot;3rd/iOS/lib/*.framework/**/*&quot;, &quot;3rd/iOS/dependence/png/*&quot;</span><br><span class="line">  s.resource_bundle = &#123; &#x27;sdkName&#x27; =&gt; &quot;ios/algorithms/**/data/*&quot; &#125;</span><br><span class="line">  s.public_header_files = &quot;3rd/iOS/dependence/png/*.h&quot;</span><br><span class="line">  s.ios.deployment_target = &#x27;9.0&#x27;</span><br><span class="line"> s.vendored_frameworks = &quot;ios/Debug-iphoneos/Release/*.framework&quot;,&quot;ios/build/Debug-iphoneos/Release/*.framework&quot;, &quot;3rd/iOS/lib/**/*.framework&quot;, &quot;3rd/iOS/lib/*.framework&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>这个podspec意思是把很多framework加进来（没有源文件），这些framework是由<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">上一篇</a>文章cmake编译出来的</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E7%BC%96%E5%86%99/" data-id="cuid51Q56LMCF75Immdunq48K" data-title="【iOS开发】SDK开发之podspec编写" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】shell脚本打包SDK，并整合" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91shell%E8%84%9A%E6%9C%AC%E6%89%93%E5%8C%85SDK%EF%BC%8C%E5%B9%B6%E6%95%B4%E5%90%88/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91shell%E8%84%9A%E6%9C%AC%E6%89%93%E5%8C%85SDK%EF%BC%8C%E5%B9%B6%E6%95%B4%E5%90%88/">【iOS开发】shell脚本打包SDK，并整合</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近有需求需要我们打包很多<code>framework</code>(大概10多个,另外还有5个bundle),一直手动打包费时费力,还有可能会出错, 想到可以使用<code>shell</code>脚本来打包.</p>
+<p>#本文知识点:</p>
+<h2 id="变量定义-查看变量内容"><a href="#变量定义-查看变量内容" class="headerlink" title="变量定义,查看变量内容"></a>变量定义,查看变量内容</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">path=&quot;/Users/xxx/Library/Developer/Xcode/DerivedData&quot;</span><br><span class="line">echo &quot;打包开始: $path&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="删除文件夹"><a href="#删除文件夹" class="headerlink" title="删除文件夹"></a>删除文件夹</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf &quot;$path&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="杀掉进程"><a href="#杀掉进程" class="headerlink" title="杀掉进程"></a>杀掉进程</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#杀掉 Xcode</span><br><span class="line">pkill Xcode</span><br></pre></td></tr></table></figure>
+<h2 id="读取函数入参"><a href="#读取函数入参" class="headerlink" title="读取函数入参"></a>读取函数入参</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">packaging()&#123;</span><br><span class="line">#工程名称(Project的名字) </span><br><span class="line">#$1 表示第一个参数CaptureSDK</span><br><span class="line">ProjectName=$1</span><br><span class="line">#scheme名字 -</span><br><span class="line">#$2 表示第二个参数CaptureSDKScheme</span><br><span class="line">Scheme=$2</span><br><span class="line">&#125;</span><br><span class="line">packaging &quot;CaptureSDK&quot; &quot;CaptureSDKScheme&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="查找文件"><a href="#查找文件" class="headerlink" title="查找文件"></a>查找文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#其中“**”是通配符, 下边代码代表“CaptureSDK-”开头的文件</span><br><span class="line">find $path -name &quot;CaptureSDK-*&quot;</span><br><span class="line"></span><br><span class="line">#-maxdepth 1 代表查找深度1也就是在path目录下找文件,不在下一级目录查找</span><br><span class="line">find $path -name &quot;CaptureSDK-*&quot; -maxdepth 1</span><br></pre></td></tr></table></figure>
+<h2 id="for循环遍历"><a href="#for循环遍历" class="headerlink" title="for循环遍历"></a>for循环遍历</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">typeArray=&quot;all</span><br><span class="line">all_framework</span><br><span class="line">all_bundle</span><br><span class="line">phone</span><br><span class="line">gimbal</span><br><span class="line">galois</span><br><span class="line">camera</span><br><span class="line">phone_bundle</span><br><span class="line">gimbal_bundle</span><br><span class="line">galois_bundle</span><br><span class="line">camera_bundle&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i in $&#123;typeArray[@]&#125;</span><br><span class="line">do</span><br><span class="line">    echo &#x27;$i&#x27;</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<h2 id="if-语句"><a href="#if-语句" class="headerlink" title="if 语句"></a>if 语句</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#if [ condition ];then,condition所有两边和中括号之前必须有空格</span><br><span class="line">c=1</span><br><span class="line">    if [ $c == 0 ];then</span><br><span class="line">        echo &quot;不支持的参数&quot;</span><br><span class="line">        return</span><br><span class="line">    fi</span><br></pre></td></tr></table></figure>
+<h2 id="等待用户输入"><a href="#等待用户输入" class="headerlink" title="等待用户输入"></a>等待用户输入</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">read -p &quot;请输入:&quot; CURRENTTYPE</span><br><span class="line">echo &quot;输入了: $CURRENTTYPE&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="获取系统时间-年月日时分秒"><a href="#获取系统时间-年月日时分秒" class="headerlink" title="获取系统时间 年月日时分秒"></a>获取系统时间 年月日时分秒</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nowDate=$(date &quot;+%Y-%m-%d %H:%M:%S&quot;)</span><br><span class="line">echo &quot;nowData:$nowDate&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="监听control-c中止"><a href="#监听control-c中止" class="headerlink" title="监听control+c中止"></a>监听control+c中止</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#control+c 中止后当前函数返回</span><br><span class="line">trap return INT</span><br></pre></td></tr></table></figure>
+<h2 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp $sourecepath $toPath</span><br></pre></td></tr></table></figure>
+<h2 id="文件夹复制"><a href="#文件夹复制" class="headerlink" title="文件夹复制"></a>文件夹复制</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r $sourecepath $toPath</span><br></pre></td></tr></table></figure>
+<h2 id="播放音频文件"><a href="#播放音频文件" class="headerlink" title="播放音频文件"></a>播放音频文件</h2><p>   brew 安装 SoX</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#终端命令</span><br><span class="line">brew install SoX</span><br><span class="line"></span><br><span class="line">#播放,在脚本里写, 播放当前目录下success.mp3</span><br><span class="line">play success.mp3</span><br></pre></td></tr></table></figure>
+<hr>
+<p>以上为脚本内使用到的<code>知识点</code>,想深入学习的自己查资料吧</p>
+<p>#目标</p>
+<ul>
+<li>打包framework</li>
+</ul>
+<p>#方法<br>使用xcodebuild build</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild build \</span><br><span class="line">-workspace &quot;$XXX.xcworkspace&quot; \</span><br><span class="line">-scheme &quot;$XXX&quot; \</span><br><span class="line">-configuration &quot;$XXX&quot;</span><br></pre></td></tr></table></figure>
+
+<p>好,大功告成! <strong>别急这是只是1%….</strong></p>
+<p>#优化</p>
+<ol>
+<li>xcode有的时候缓存会出现奇怪的问题,所以我们要clean一下</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild clean \</span><br><span class="line">-workspace &quot;$XXX.xcworkspace&quot; \</span><br><span class="line">-scheme &quot;$XXX&quot; \</span><br><span class="line">-configuration &quot;$XXX&quot;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>framework工程使用cocopods依赖了第三方SDK,要pod update</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod update</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>打包完毕之后,需要把framework挪动到一个文件夹,方便分发</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp $sourecepath $toPath</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>打包完毕播放提示音</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">play success.mp3</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>打包参数,打包部分framework</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">allType=&quot;</span><br><span class="line">all:                    all framework and bundle;</span><br><span class="line">all_framework:          all framework;</span><br><span class="line">all_bundle:             all bundle;</span><br><span class="line">&quot;</span><br><span class="line">typeArray=&quot;all</span><br><span class="line">all_framework</span><br><span class="line">all_bundle&quot;</span><br><span class="line"></span><br><span class="line">read -p &quot;请输入打包文件,可选值有: $allType&quot; CURRENTTYPE</span><br><span class="line"></span><br><span class="line">#echo &quot;输入了: $CURRENTTYPE&quot;</span><br><span class="line"></span><br><span class="line">c=0</span><br><span class="line"></span><br><span class="line">for j in $&#123;CURRENTTYPE[@]&#125;</span><br><span class="line"></span><br><span class="line">do</span><br><span class="line"></span><br><span class="line">    for i in $&#123;typeArray[@]&#125;</span><br><span class="line">    do</span><br><span class="line">        if [ $i == $j ]; then</span><br><span class="line">        c=1</span><br><span class="line">        break</span><br><span class="line">        fi</span><br><span class="line">    done</span><br><span class="line">    if [ $c == 0 ];then</span><br><span class="line">        echo &quot;不支持的参数 $j&quot;</span><br><span class="line">        return</span><br><span class="line">    fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>输出时间</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nowDate=$(date &quot;+%Y-%m-%d %H:%M:%S&quot;)</span><br><span class="line">echo &quot;nowData:$nowDate&quot;</span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li>打包过程中control+C中断之后停止</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trap return INT</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91shell%E8%84%9A%E6%9C%AC%E6%89%93%E5%8C%85SDK%EF%BC%8C%E5%B9%B6%E6%95%B4%E5%90%88/" data-id="cuidvufy6t4u11imCP-Jfiv7H" data-title="【iOS开发】shell脚本打包SDK，并整合" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】如果让AI把figma的UI稿1：1还原出来" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%A6%82%E6%9E%9C%E8%AE%A9AI%E6%8A%8Afigma%E7%9A%84UI%E7%A8%BF1%EF%BC%9A1%E8%BF%98%E5%8E%9F%E5%87%BA%E6%9D%A5/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%A6%82%E6%9E%9C%E8%AE%A9AI%E6%8A%8Afigma%E7%9A%84UI%E7%A8%BF1%EF%BC%9A1%E8%BF%98%E5%8E%9F%E5%87%BA%E6%9D%A5/">【iOS开发】如果让AI把figma的UI稿1：1还原出来</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>一款好用的免费 figma MCP：<a target="_blank" rel="noopener" href="https://github.com/GLips/Figma-Context-MCP">https://github.com/GLips/Figma-Context-MCP</a></p>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><ol>
+<li>打开 IDE 的聊天（例如：Cursor 的代理模式）。</li>
+<li>粘贴 Figma 文件、框架或组的链接。</li>
+<li>要求 Cursor 对 Figma 文件执行某些操作（例如：实现设计）。</li>
+<li>Cursor 将从 Figma 获取相关元数据并使用它来编写代码。</li>
+</ol>
+<p>此 MCP 服务器专为与 Cursor 一起使用而设计。在从 <a target="_blank" rel="noopener" href="https://www.figma.com/developers/api">Figma API</a> 响应上下文之前，它会简化和翻译响应，以便只向模型提供最相关的布局和样式信息。</p>
+<p>减少提供给模型的上下文数量有助于提高 AI 的准确性并使响应更具相关性。</p>
+<h2 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h2><p>许多代码编辑器和其他 AI 客户端使用配置文件来管理 MCP 服务器。</p>
+<p>可以通过将以下内容添加到配置文件中来设置 <code>figma-developer-mcp</code> 服务器。</p>
+<blockquote>
+<p>注意：您需要创建 Figma 访问令牌才能使用此服务器。有关如何创建 Figma API 访问令牌的说明，请参见<a target="_blank" rel="noopener" href="https://help.figma.com/hc/en-us/articles/8085703771159-Manage-personal-access-tokens">此处</a>。</p>
+</blockquote>
+<h3 id="MacOS-Linux"><a href="#MacOS-Linux" class="headerlink" title="MacOS &#x2F; Linux"></a>MacOS &#x2F; Linux</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;mcpServers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;Framelink MCP for Figma&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npx&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;-y&quot;</span><span class="punctuation">,</span> <span class="string">&quot;figma-developer-mcp&quot;</span><span class="punctuation">,</span> <span class="string">&quot;--figma-api-key=YOUR-KEY&quot;</span><span class="punctuation">,</span> <span class="string">&quot;--stdio&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;mcpServers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;Framelink MCP for Figma&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cmd&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;/c&quot;</span><span class="punctuation">,</span> <span class="string">&quot;npx&quot;</span><span class="punctuation">,</span> <span class="string">&quot;-y&quot;</span><span class="punctuation">,</span> <span class="string">&quot;figma-developer-mcp&quot;</span><span class="punctuation">,</span> <span class="string">&quot;--figma-api-key=YOUR-KEY&quot;</span><span class="punctuation">,</span> <span class="string">&quot;--stdio&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>或者您可以在 <code>env</code> 字段中设置 <code>FIGMA_API_KEY</code> 和 <code>PORT</code>。</p>
+<p>有关如何配置 Framelink MCP for Figma 服务器的更多信息，请参阅 <a target="_blank" rel="noopener" href="https://www.framelink.ai/docs/quickstart?utm_source=github&utm_medium=readme&utm_campaign=readme">Framelink 文档</a>。</p>
+<h2 id="了解更多"><a href="#了解更多" class="headerlink" title="了解更多"></a>了解更多</h2><p>Framelink MCP for Figma 服务器简单但功能强大。在 <a target="_blank" rel="noopener" href="https://framelink.ai/?utm_source=github&utm_medium=readme&utm_campaign=readme">Framelink</a> 网站上了解更多信息。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%A6%82%E6%9E%9C%E8%AE%A9AI%E6%8A%8Afigma%E7%9A%84UI%E7%A8%BF1%EF%BC%9A1%E8%BF%98%E5%8E%9F%E5%87%BA%E6%9D%A5/" data-id="cuidAnKRZh31boXFi7sQumGfg" data-title="【iOS开发】如果让AI把figma的UI稿1：1还原出来" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-2026-03-18-【iOS开发】工具之git-clone-报错：The-project-you-were-looking-for-coul" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%B7%A5%E5%85%B7%E4%B9%8Bgit-clone-%E6%8A%A5%E9%94%99%EF%BC%9AThe-project-you-were-looking-for-coul/" class="article-date">
@@ -131,114 +400,6 @@
 
 
   
-    <article id="post-2026-03-18-【iOS开发】真机调试-dyld_shared_cache_extract_dylibs-failed" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E7%9C%9F%E6%9C%BA%E8%B0%83%E8%AF%95-dyld_shared_cache_extract_dylibs-failed/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E7%9C%9F%E6%9C%BA%E8%B0%83%E8%AF%95-dyld_shared_cache_extract_dylibs-failed/">【iOS开发】真机调试--dyld_shared_cache_extract_dylibs-failed</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>无法真机调试，出现“dyld_shared_cache_extract_dylibs failed”，如下图</p>
-<p><img src="//upload-images.jianshu.io/upload_images/2815759-e5288e68b6ca21f7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/420/format/webp" alt="image"></p>
-<p>解决办法：</p>
-<p>1.完全退出Xcode</p>
-<p>2.前往文件夹： ~&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;iOS DeviceSupport&#x2F; ，删除手机对应的系统版本。</p>
-<p><img src="//upload-images.jianshu.io/upload_images/2815759-a01d93104e01acc8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/818/format/webp" alt="image"></p>
-<p>3.启动Xcode</p>
-<p>引用链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/be8b8f1dcc1e">https://www.jianshu.com/p/be8b8f1dcc1e</a><br>來源：简书</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E7%9C%9F%E6%9C%BA%E8%B0%83%E8%AF%95-dyld_shared_cache_extract_dylibs-failed/" data-id="cuidiAKrERcqjFFC7UQcKiSN-" data-title="【iOS开发】真机调试--dyld_shared_cache_extract_dylibs-failed" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【iOS开发工具】cocoapods-can&#39;t-find-gem-cocoapods-(=-0-a)-with-exe" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E3%80%91cocoapods-can't-find-gem-cocoapods-(=-0-a)-with-exe/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E3%80%91cocoapods-can't-find-gem-cocoapods-(=-0-a)-with-exe/">【iOS开发工具】cocoapods--can&#39;t-find-gem-cocoapods-(=-0-a)-with-executable-p</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>#使用pod命令出现这个错误:</p>
-<blockquote>
-<p>can’t find gem cocoapods (&#x3D; 0.a) with executable pod (Gem::GemNotFoundException）</p>
-</blockquote>
-<p><img src="https://upload-images.jianshu.io/upload_images/2791393-9c2ed74f8c68e9ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>#解决步骤：</p>
-<blockquote>
-<p>1 cd到git目录<br>2 显示隐藏文件 【shift+command+.】<br>3 打开【.bundle】文件<br>4 打开config文件，并清空<br>（完毕！）</p>
-</blockquote>
-<p>#解决过程：</p>
-<blockquote>
-<p>1 重新安装最新版本cocoapods，不行<br>2 重新安装指定版本cocoapods，不行<br>3 重新安装ruby，不行<br>4 重新安装gem，不行<br>5 重新check代码，不行<br>6 重启电脑，不行<br>7 发现同一工程部分分支代码可以使用pod，后使用删除文件法，定位影响pod无法使用的文件，最后找到是.bundle&#x2F;config问题</p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E3%80%91cocoapods-can't-find-gem-cocoapods-(=-0-a)-with-exe/" data-id="cuidrfAVLINqCCcsaL2FEVxiE" data-title="【iOS开发工具】cocoapods--can&#39;t-find-gem-cocoapods-(=-0-a)-with-executable-p" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-2026-03-18-亲人纪实-大姑父" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E5%A4%A7%E5%A7%91%E7%88%B6/" class="article-date">
@@ -271,122 +432,6 @@
     </div>
     <footer class="article-footer">
       <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E5%A4%A7%E5%A7%91%E7%88%B6/" data-id="cuidtKaQXrqdtRSchoqd4B69X" data-title="亲人纪实--大姑父" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【iOS知识点】rootViewController获取不到的原因" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E7%9F%A5%E8%AF%86%E7%82%B9%E3%80%91rootViewController%E8%8E%B7%E5%8F%96%E4%B8%8D%E5%88%B0%E7%9A%84%E5%8E%9F%E5%9B%A0/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E7%9F%A5%E8%AF%86%E7%82%B9%E3%80%91rootViewController%E8%8E%B7%E5%8F%96%E4%B8%8D%E5%88%B0%E7%9A%84%E5%8E%9F%E5%9B%A0/">【iOS知识点】rootViewController获取不到的原因</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p> 突然发现项目中获取rootViewController的代码失效了</p>
-<p>复现步骤：是当弹出了UIAlertView后，再获取rootViewController发现获取不到如下图：<br><img src="https://upload-images.jianshu.io/upload_images/2791393-c2650d41be22b1c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>经查找资料，获取rootViewController的正确姿势:</p>
-<pre><code>AppDelegate *appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-UIViewController *rootViewController1 = appdelegate.window.rootViewController;
-</code></pre>
-<p>一般怎么获取工程中window上面的RootViewController</p>
-<p>第一种方法：</p>
-<pre><code>UIWindow *window = [UIApplication sharedApplication].keyWindow;
-UIViewController *rootViewController = window.rootViewController;
-</code></pre>
-<p>第二种方法：</p>
-<pre><code>AppDelegate *appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-UIViewController *rootViewController1 = appdelegate.window.rootViewController;
-</code></pre>
-<p>这两种写法，在平常的时候是没有区别的，但是这两种写法在有的时候就不一样了。</p>
-<p>keyWindow这个属性是什么意思？</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/2791393-cb69172db629a80a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
-<p>个人理解的意思是，在windows数组中，最近时间调用makeKeyAndVisible方法的属性。</p>
-<p>当然可以参考关于UIAlertView显示的相关内容：</p>
-<p><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/7ac398ef4532">http://www.jianshu.com/p/7ac398ef4532</a></p>
-<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/5968703/how-to-find-root-uiviewcontroller">http://stackoverflow.com/questions/5968703/how-to-find-root-uiviewcontroller</a></p>
-<p>alertView的出现是因为，生成了一个新的window，加在了界面上面。这个时候获取到的keyWindow就是UIAlertControllerShimPresenterWindow。可以通过如下代码实验：</p>
-<p>Appdelegate中的代码，设置RootViewController</p>
-<pre><code>-  (BOOL)application:(UIApplication  *)application didFinishLaunchingWithOptions:(NSDictionary  *)launchOptions { 
- // Override point for customization after application launch.  
-self.window =  [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];  
-self.window.backgroundColor =  [UIColor whiteColor];  
-ViewController  *view =  [[ViewController alloc] init];  
-UINavigationController  *nav =  [[UINavigationController alloc] initWithRootViewController:view]; 
- self.window.rootViewController = nav;  [self.window makeKeyAndVisible]; 
- return  YES;  
-}
-</code></pre>
-<p>ViewController中的代码</p>
-<pre><code>-  (void)viewDidLoad {  [super viewDidLoad];  
-// Do any additional setup after loading the view, typically from a nib.  
-UIButton  *tempBtn =  [UIButton buttonWithType:UIButtonTypeSystem]; 
-tempBtn.frame =  CGRectMake(100,  100,  100,  100); 
-tempBtn.backgroundColor =  [UIColor cyanColor]; 
- [tempBtn setTitle:@&quot;测试1&quot; forState:UIControlStateNormal];  
-[tempBtn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];  
-[self.view addSubview:tempBtn];  
-}
-
--  (void)clickBtn:(UIButton  *)sender{  
-// 创建一个测试的alertView 
- UIAlertView  *alterView =  [[UIAlertView alloc] initWithTitle:@&quot;测试&quot; message:@&quot;测试&quot;  delegate:nil cancelButtonTitle:@&quot;取消&quot; otherButtonTitles:nil,  nil]; 
- [alterView show]; 
- UIWindow  *window1 =  [UIApplication sharedApplication].keyWindow; 
- AppDelegate  *appdelegate =  (AppDelegate  *)[UIApplication sharedApplication].delegate; 
- UIWindow  *window2 = appdelegate.window;  
-NSLog(@&quot;\n\nwindow1 = %@    \n\nwindow2 = %@  \n\nwindow1.rootViewController = %@ \n\nwindow2.rootViewController = %@&quot;,window1,window2,window1.rootViewController,window2.rootViewController);  
-}
-</code></pre>
-<p>打印结果：</p>
-<pre><code>window1 =  &lt;_UIAlertControllerShimPresenterWindow:  0x7fb4ab720c80;  frame  =  (0  0;  375  667);  opaque  =  NO;  gestureRecognizers  =  &lt;NSArray:  0x7fb4ab72fac0&gt;; layer =  &lt;UIWindowLayer:  0x7fb4ab7223f0&gt;&gt; window2 =  &lt;UIWindow:  0x7fb4ab720650;  frame  =  (0  0;  375  667);  gestureRecognizers  =  &lt;NSArray:  0x7fb4ab722310&gt;; layer =  &lt;UIWindowLayer:  0x7fb4ab720a70&gt;&gt; window1.rootViewController =  &lt;UIApplicationRotationFollowingController:  0x7fb4ab9282e0&gt; window2.rootViewController =  &lt;UINavigationController:  0x7fb4ae820800&gt;&lt;/pre&gt;
-</code></pre>
-<p>结果明显不一样，其实我们一般情况下想获取的rootViewController是第二种,希望我们获取到在appdelegate中设置的appdelaget.window.rootViewController。</p>
-<p>所以了建议获取rootViewController的时候还是采用</p>
-<p>第二种方法：</p>
-<pre><code>AppDelegate  *appdelegate =  (AppDelegate  *)[UIApplication sharedApplication].delegate; 
-UIViewController  *rootViewController1 = appdelegate.window.rootViewController;&lt;/pre&gt;
-</code></pre>
-<p>其实，和alertView类似的，UIActionSheet也是这样的。</p>
-<p>一般人说无所谓，但是如果在AlertView弹出的时候去获取RootViewController，并且对你认为获取正确的RootViewController做相关的操作，你会死的很惨。</p>
-<p>还有就是建议：即时通过第二种方法获取到了RootViewController，在使用之前建议再判断一下获取到的类是不是就是自己想要的类型，更保险一些。</p>
-<pre><code>AppDelegate  *appdelegate =  (AppDelegate  *)[UIApplication sharedApplication].delegate; 
- if  ([appdelegate.window.rootViewController isKindOfClass:[&quot;想要获取到的rootVC&quot;  class]]  ==  YES) { 
- // 为所欲为 
- }
-</code></pre>
-<p>转载自<a target="_blank" rel="noopener" href="http://www.qingpingshan.com/rjbc/ios/181557.html">此处</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E7%9F%A5%E8%AF%86%E7%82%B9%E3%80%91rootViewController%E8%8E%B7%E5%8F%96%E4%B8%8D%E5%88%B0%E7%9A%84%E5%8E%9F%E5%9B%A0/" data-id="cuide9Wr7sCudvN-S-mxG1ILi" data-title="【iOS知识点】rootViewController获取不到的原因" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -580,62 +625,6 @@ UIViewController  *rootViewController1 = appdelegate.window.rootViewController;&
 
 
   
-    <article id="post-2026-03-18-升级ios14-Xcode真机调试启动非常慢的问题解决" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E5%8D%87%E7%BA%A7ios14-Xcode%E7%9C%9F%E6%9C%BA%E8%B0%83%E8%AF%95%E5%90%AF%E5%8A%A8%E9%9D%9E%E5%B8%B8%E6%85%A2%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E5%8D%87%E7%BA%A7ios14-Xcode%E7%9C%9F%E6%9C%BA%E8%B0%83%E8%AF%95%E5%90%AF%E5%8A%A8%E9%9D%9E%E5%B8%B8%E6%85%A2%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">升级ios14-Xcode真机调试启动非常慢的问题解决</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ol>
-<li><p>打开“访达”,shift+command+G到资源库 “~&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;iOS DeviceSupport&#x2F;”删除该目录下所有文件 快捷键（shift+command+G到资源库）</p>
-<p><img src="//upload-images.jianshu.io/upload_images/7827369-1d8c6f8d267b6a93.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200" alt="image"></p>
-</li>
-</ol>
-<p>全部删除文件夹下所有文件</p>
-<ol start="2">
-<li>选择Xcode-&gt;Window-&gt;Devices and Simulators 真机设备，鼠标右键选择unpair the device</li>
-</ol>
-<p><img src="//upload-images.jianshu.io/upload_images/7827369-4f80a4a1cc434c3f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200" alt="image"></p>
-<p>3.重新启动Xcode</p>
-<p>作者：赵哥窟<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d0289fc5fe37">https://www.jianshu.com/p/d0289fc5fe37</a><br>来源：简书<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E5%8D%87%E7%BA%A7ios14-Xcode%E7%9C%9F%E6%9C%BA%E8%B0%83%E8%AF%95%E5%90%AF%E5%8A%A8%E9%9D%9E%E5%B8%B8%E6%85%A2%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" data-id="cuid-nJGYuLlHeVOWb_7BbzzP" data-title="升级ios14-Xcode真机调试启动非常慢的问题解决" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -693,10 +682,6 @@ UIViewController  *rootViewController1 = appdelegate.window.rootViewController;&
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
-          </li>
-        
-          <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
           </li>
         
@@ -710,6 +695,10 @@ UIViewController  *rootViewController1 = appdelegate.window.rootViewController;&
         
           <li>
             <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
           </li>
         
       </ul>
