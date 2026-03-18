@@ -1,0 +1,141 @@
+iOS有一个特有的功能--点击状态栏会使UIScollView自动滚动到顶部,这个效果其实是系统API里UIScrollView的一个属性
+
+     @property(nonatomic) BOOL scrollsToTop
+这个属性默认是YES,也就是支持点击状态栏会使UIScollView自动滚动到顶部的效果(如果不想要这个效果设置为NO就可以了).
+
+     但是有一个局限就是如果在当前的屏幕上有
+     "多于1个"UIScollView(包括所有继承自UIScollView)视图的"scrollsTop属性是YES"的时候,
+     这个效果会失效.
+本篇文章就是要解决点击状态栏会使UIScollView自动滚动到顶部失效的问题.
+
+本人最终的解决思路是:
+
+    在点击状态栏的手势方法里把所有的scrollView的contentOffSize设置为CGPointZero
+当然在此之前需要做一些判断的逻辑,针对我的项目我做了如下判断:
+
+    把不需要滚动到顶部的scrollView筛选掉
+    if ([scrollView isKindOfClass:[TuiJianCollectionView class]])return;
+    if ([scrollView isKindOfClass:[TopView class]]) return;
+    if (scrollView.width < ScreenWidth-100)return;
+    //然后就可以滚动了
+    [scrollView setContentOffset:CGPointZero animated:YES];
+
+好了,核心的东西说完了,上代码
+LQTopStatusWindow.h
+    #import <UIKit/UIKit.h>
+    @interface LQTopStatusWindow : NSObject
+    /*
+        在需要用到自定义状态栏的页面显示(具体用法见注2)
+    */
+    + (void)show;
+    /*
+        在不需要的页面隐藏(具体用法见注2)
+    */
+    +(void)hidden;
+    @end
+LQTopStatusWindow.m
+
+    #import "LQTopStatusWindow.h"
+    @implementation LQTopStatusWindow
+
+    static UIWindow *_topWindow = nil;
+    /**
+     * 显示顶部窗口
+     */
+    + (void)initialize
+    {
+        _topWindow = [[UIWindow alloc] init];
+        _topWindow.windowLevel = UIWindowLevelAlert;
+        CGRect frame = [UIApplication sharedApplication].statusBarFrame;
+       //下边设置frame为什么需要加50,原因见注1
+        _topWindow.frame = CGRectMake(frame.origin.x + 50, frame.origin.y, frame.size.width, frame.size.height);
+        _topWindow.backgroundColor = [UIColor clearColor];
+        _topWindow.hidden = NO;
+        [_topWindow addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(topWindowClick)]];
+    
+    }
+
+    + (void)show{
+        _topWindow.hidden = NO;
+    }
+    + (void)hidden{
+        _topWindow.hidden = YES;
+    }
+
+    /**
+     * 监听顶部窗口点击
+     */
+    + (void)topWindowClick
+    {
+        UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+        [self searchAllScrollViewsInView:keyWindow];
+    }
+
+    /**
+     * 找到参数view中所有的UIScrollView
+     */
+    + (void)searchAllScrollViewsInView:(UIView *)view
+    {
+        // 递归遍历所有的子控件
+        for (UIView *subview in view.subviews) {
+            [self searchAllScrollViewsInView:subview];
+        }
+        // 判断子控件类型(如果不是UIScrollView，直接返回)
+        if (![view isKindOfClass:[UIScrollView class]]) return;
+    
+        // 找到了UIScrollView
+        //过滤掉不需要滚动到顶部的scrollview
+        UIScrollView *scrollView = (UIScrollView *)view;
+        if ([scrollView isKindOfClass:[TopView class]]) return;
+        if (scrollView.width < ScreenWidth-100) return;
+        //让所有需要滚动到顶部的scrollView滚动到顶部
+        [scrollView setContentOffset:CGPointZero animated:YES];
+    }
+
+好了,代码贴完,具体用法是: 不用写别的代码.
+
+     注1:此处没有让frame直接与frame(系统的状态栏的frame)完全相同,是因为,iOS应用间跳转的时候左
+        上角有"返回XX"按钮,为了不影响它的点击这里让自定义的_topWindow向右移动了50(这个是试出来的)
+        _topWindow.frame = CGRectMake(frame.origin.x + 50, frame.origin.y, frame.size.width, frame.size.height);
+
+     注2:当你有需要在某些页面
+-----------------------------------------------------
+如果您只是为了解决当前问题,请关闭本文;如果您有一颗程序猿的进取之心,想了解我解决此问题的过程,请继续往下读:
+
+解决过程一:
+
+    首先我知道了"点击状态栏会使UIScollView自动滚动到顶部"这个效果是由下边这个属性决定的
+       @property(nonatomic) BOOL scrollsToTop
+       而此效果失效的原因是当前的屏幕上有
+     "多于1个"UIScollView(包括所有继承自UIScollView)视图的"scrollsTop属性是YES"的时候,
+
+我产生了两个解决办法:
+一  减少UIScollView的数量,让当前屏幕中只有一个UIScollView,但是我的项目中界面比较多,如果每个界面都重构,替换scrollView的工作量会很大,而且时间不允许------PASS.
+二   把其余不需要响应点击状态栏效果的scrollView的scrollsToTop设置为NO,由于办法一的原因-----PASS.
+
+解决过程二:
+
+求助度娘:果然有先贤已经处理过这个问题,下边附上我当时参考的两篇"简书"上的文章
+一   http://www.jianshu.com/p/e18356fccbc9
+借鉴此文章,我自定义好了视图,并添加好了手势,但是有一个问题,这篇文章用了一个"bs_intersectsWithAnotherView:"方法,也没有写实现,我就暂时不知道该怎么办了,此路不通.
+二  http://www.jianshu.com/p/68632cbd6263
+后来我发现这篇文章中有"bs_intersectsWithAnotherView:"这个方法(不知道是不是一个作者,看名字好像不是),具体是
+
+    - (BOOL)bs_intersectsWithAnotherView:(UIView *)anotherView{ 
+       if (anotherView == nil){
+       anotherView = [UIApplication sharedApplication].keyWindow
+       }; 
+      // 判断self和anotherView是否重叠 
+      CGRect selfRect = [self convertRect:self.bounds toView:nil];    
+      CGRect anotherRect = [anotherView convertRect:anotherView.bounds toView:nil]; 
+      return CGRectIntersectsRect(selfRect, anotherRect);
+    }
+这个方法只用的判断两个矩形框是不是重叠的方法CGRectIntersectsRect()但是这个方法不适用于我的项目,因为与窗口重叠的scrollView也不是一个,此路不通.
+
+解决过程三:
+
+我观察了一下我需要此效果的scrollView的frame是一样的,而且只有一个,所以我在判断要不要滚动到顶部的手势方法里加了一个frame的判断,只有特定frame的scrollView需要滚动到顶部,然而因为不明原因(可能是判断太严格了)还是无法实现,此路不通.
+解决过程三:
+最后我无奈了,我发了一个大招,在点击状态栏的手势方法里把所有的scrollView的contentOffSize设置为CGPointZero.这下好了,果然在点击状态栏的时候,所有scrollView都滚动到顶部了.我以为这样就可以了,但是,但是,我发现我所有界面的scrollView包括大的,小的,继承自它的控件都滚动到顶部了.我最后加了几个判断,解决问题,详见上文中最终解决方案.
+
+总结:我觉得我解决这个问题的方法不是最好的解决办法,希望您能给我提出宝贵的意见或建议,欢迎各位指点,留言!

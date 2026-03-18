@@ -9,6 +9,7 @@
 
 ```bash
 npm install          # 安装依赖
+npm run sync-notes   # 将 note/ 下笔记同步为文章（发布前执行）
 npm run server       # 本地预览
 npm run build        # 生成 public/
 npm run deploy       # 部署到 gh-pages（使用 SSH，需本机已配置 GitHub 公钥）

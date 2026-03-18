@@ -1,0 +1,296 @@
+最近项目里需要对URL的参数进行DES加密,研究了一下,现分享一下.
+
+
+    #封装好的DES加密逻辑,具体调用如下:
+    //加密的密匙(也是解密的密匙)
+    NSString *str = @"abcdefghigklmnopqrstuvwxyz";
+    //加密
+    NSString *eStr = [DesEncrypt base64StringFromText:str];
+    NSLog(@"--%@",eStr);
+    //解密
+    NSLog(@"--%@",[DesEncrypt textFromBase64String:eStr]);
+
+   # 注:偏移量在内部已经给出(可修改),如有任何疑问欢迎留言交流!
+
+具体实现参考以下代码,也可以进入github[直接下载](https://github.com/CoderLi-Q/HelloWorld-)
+
+DesEncrypt.h
+    #import <Foundation/Foundation.h>
+
+    /******字符串转base64（包括DES加密）******/
+    #define __BASE64( text )        [Base64codeFunc base64StringFromText:text]
+
+    /******base64（通过DES解密）转字符串******/
+    #define __TEXT( base64 )        [Base64codeFunc textFromBase64String:base64]
+
+    @interface DesEncrypt : NSObject
+
+    /************************************************************
+     函数名称 : + (NSString *)base64StringFromText:(NSString *)text
+     函数描述 : 将文本转换为base64格式字符串
+     输入参数 : (NSString *)text    文本
+     输出参数 : N/A
+     返回参数 : (NSString *)    base64格式字符串
+     备注信息 :
+     **********************************************************/
+    + (NSString *)base64StringFromText:(NSString *)text;
+
+    /************************************************************
+     函数名称 : + (NSString *)textFromBase64String:(NSString *)base64
+     函数描述 : 将base64格式字符串转换为文本
+     输入参数 : (NSString *)base64  base64格式字符串
+     输出参数 : N/A
+     返回参数 : (NSString *)    文本
+     备注信息 :
+     **********************************************************/
+    + (NSString *)textFromBase64String:(NSString *)base64;
+
+
+DesEncrypt.m
+
+    #import "DesEncrypt.h"
+
+    //引入IOS自带密码库
+    #import <CommonCrypto/CommonCryptor.h>
+
+    //空字符串
+    #define     LocalStr_None           @""
+
+    static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+    #define     ENCRYPTKEY  @"123456789"
+    #define     ENCRYPTIV   @"CCCrypr"
+
+
+    @implementation DesEncrypt
+
+    + (NSString *)base64StringFromText:(NSString *)text
+    {
+        if (text && ![text isEqualToString:LocalStr_None]) {
+            //取项目的bundleIdentifier作为KEY
+            NSString *key = ENCRYPTKEY;//[[NSBundle mainBundle] bundleIdentifier];
+            NSData *data = [text dataUsingEncoding:NSUTF8StringEncoding];
+            //IOS 自带DES加密 Begin
+            data = [self DESEncrypt:data WithKey:key];
+            //IOS 自带DES加密 End
+            return [self base64EncodedStringFrom:data];
+        }
+        else {
+            return LocalStr_None;
+        }
+    }
+
+    + (NSString *)textFromBase64String:(NSString *)base64
+    {
+        if (base64 && ![base64 isEqualToString:LocalStr_None]) {
+            //取项目的bundleIdentifier作为KEY
+            NSString *key = ENCRYPTKEY;//[[NSBundle mainBundle] bundleIdentifier];
+            NSData *data = [self dataWithBase64EncodedString:base64];
+            //IOS 自带DES解密 Begin
+            data = [self DESDecrypt:data WithKey:key];
+            //IOS 自带DES加密 End
+            return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        }
+        else {
+            return LocalStr_None;
+        }
+    }
+
+    /************************************************************
+     函数名称 : + (NSData *)DESEncrypt:(NSData *)data WithKey:(NSString *)key
+     函数描述 : 文本数据进行DES加密
+     输入参数 : (NSData *)data
+     (NSString *)key
+     输出参数 : N/A
+     返回参数 : (NSData *)
+     备注信息 : 此函数不可用于过长文本
+     **********************************************************/
+    + (NSData *)DESEncrypt:(NSData *)data WithKey:(NSString *)key
+    {
+        char keyPtr[kCCKeySizeAES256+1];
+        bzero(keyPtr, sizeof(keyPtr));
+        [key getCString:keyPtr maxLength:sizeof(keyPtr) encoding:NSUTF8StringEncoding];
+        
+        char ivPtr[kCCKeySizeAES256+1];
+        bzero(ivPtr, sizeof(ivPtr));
+        [ENCRYPTIV getCString:ivPtr maxLength:sizeof(ivPtr) encoding:NSUTF8StringEncoding];
+        
+        NSUInteger dataLength = [data length];
+        
+        size_t bufferSize = dataLength + kCCBlockSizeAES128;
+        void *buffer = malloc(bufferSize);
+        
+        size_t numBytesEncrypted = 0;
+        CCCryptorStatus cryptStatus = CCCrypt(0, kCCAlgorithmDES,
+                                              kCCOptionPKCS7Padding | kCCOptionECBMode,
+                                              keyPtr, kCCBlockSizeDES,
+                                              ivPtr,
+                                              [data bytes], dataLength,
+                                              buffer, bufferSize,
+                                              &numBytesEncrypted);
+
+        if (cryptStatus == kCCSuccess) {
+            return [NSData dataWithBytesNoCopy:buffer length:numBytesEncrypted];
+        }
+        
+        free(buffer);
+        return nil;
+    }
+
+    /************************************************************
+     函数名称 : + (NSData *)DESEncrypt:(NSData *)data WithKey:(NSString *)key
+     函数描述 : 文本数据进行DES解密
+     输入参数 : (NSData *)data
+     (NSString *)key
+     输出参数 : N/A
+     返回参数 : (NSData *)
+     备注信息 : 此函数不可用于过长文本
+     **********************************************************/
+    + (NSData *)DESDecrypt:(NSData *)data WithKey:(NSString *)key
+    {
+        char keyPtr[kCCKeySizeAES256+1];
+        bzero(keyPtr, sizeof(keyPtr));
+        [key getCString:keyPtr maxLength:sizeof(keyPtr) encoding:NSUTF8StringEncoding];
+        
+        char ivPtr[kCCKeySizeAES256+1];
+        bzero(ivPtr, sizeof(ivPtr));
+        [ENCRYPTIV getCString:ivPtr maxLength:sizeof(ivPtr) encoding:NSUTF8StringEncoding];
+        
+        NSUInteger dataLength = [data length];
+        size_t bufferSize = dataLength + kCCBlockSizeAES128;
+        void *buffer = malloc(bufferSize);
+        size_t numBytesDecrypted = 0;
+        CCCryptorStatus cryptStatus = CCCrypt(kCCDecrypt, kCCAlgorithmDES,
+                                              kCCOptionPKCS7Padding | kCCOptionECBMode,
+                                              keyPtr, kCCBlockSizeDES,
+                                              ivPtr,
+                                              [data bytes], dataLength,
+                                              buffer, bufferSize,
+                                              &numBytesDecrypted);
+        
+        if (cryptStatus == kCCSuccess) {
+            return [NSData dataWithBytesNoCopy:buffer length:numBytesDecrypted];
+        }
+        
+        free(buffer);
+        return nil;
+    }
+
+    /************************************************************
+     函数名称 : + (NSData *)dataWithBase64EncodedString:(NSString *)string
+     函数描述 : base64格式字符串转换为文本数据
+     输入参数 : (NSString *)string
+     输出参数 : N/A
+     返回参数 : (NSData *)
+     备注信息 :
+     **********************************************************/
+    + (NSData *)dataWithBase64EncodedString:(NSString *)string
+    {
+        if (string == nil)
+            [NSException raise:NSInvalidArgumentException format:nil];
+        if ([string length] == 0)
+            return [NSData data];
+        
+        static char *decodingTable = NULL;
+        if (decodingTable == NULL)
+        {
+            decodingTable = malloc(256);
+            if (decodingTable == NULL)
+                return nil;
+            memset(decodingTable, CHAR_MAX, 256);
+            NSUInteger i;
+            for (i = 0; i < 64; i++)
+                decodingTable[(short)encodingTable[i]] = i;
+        }
+        
+        const char *characters = [string cStringUsingEncoding:NSASCIIStringEncoding];
+        if (characters == NULL)     //  Not an ASCII string!
+            return nil;
+        char *bytes = malloc((([string length] + 3) / 4) * 3);
+        if (bytes == NULL)
+            return nil;
+        NSUInteger length = 0;
+        
+        NSUInteger i = 0;
+        while (YES)
+        {
+            char buffer[4];
+            short bufferLength;
+            for (bufferLength = 0; bufferLength < 4; i++)
+            {
+                if (characters[i] == '\0')
+                    break;
+                if (isspace(characters[i]) || characters[i] == '=')
+                    continue;
+                buffer[bufferLength] = decodingTable[(short)characters[i]];
+                if (buffer[bufferLength++] == CHAR_MAX)      //  Illegal character!
+                {
+                    free(bytes);
+                    return nil;
+                }
+            }
+            
+            if (bufferLength == 0)
+                break;
+            if (bufferLength == 1)      //  At least two characters are needed to produce one byte!
+            {
+                free(bytes);
+                return nil;
+            }
+            
+            //  Decode the characters in the buffer to bytes.
+            bytes[length++] = (buffer[0] << 2) | (buffer[1] >> 4);
+            if (bufferLength > 2)
+                bytes[length++] = (buffer[1] << 4) | (buffer[2] >> 2);
+            if (bufferLength > 3)
+                bytes[length++] = (buffer[2] << 6) | buffer[3];
+        }
+        
+        bytes = realloc(bytes, length);
+        return [NSData dataWithBytesNoCopy:bytes length:length];
+    }
+
+    /************************************************************
+     函数名称 : + (NSString *)base64EncodedStringFrom:(NSData *)data
+     函数描述 : 文本数据转换为base64格式字符串
+     输入参数 : (NSData *)data
+     输出参数 : N/A
+     返回参数 : (NSString *)
+     备注信息 :
+     **********************************************************/
+    + (NSString *)base64EncodedStringFrom:(NSData *)data
+    {
+        if ([data length] == 0)
+            return @"";
+        
+        char *characters = malloc((([data length] + 2) / 3) * 4);
+        if (characters == NULL)
+            return nil;
+        NSUInteger length = 0;
+        
+        NSUInteger i = 0;
+        while (i < [data length])
+        {
+            char buffer[3] = {0,0,0};
+            short bufferLength = 0;
+            while (bufferLength < 3 && i < [data length])
+                buffer[bufferLength++] = ((char *)[data bytes])[i++];
+            
+            //  Encode the bytes in the buffer to four characters, including padding "=" characters if necessary.
+            characters[length++] = encodingTable[(buffer[0] & 0xFC) >> 2];
+            characters[length++] = encodingTable[((buffer[0] & 0x03) << 4) | ((buffer[1] & 0xF0) >> 4)];
+            if (bufferLength > 1)
+                characters[length++] = encodingTable[((buffer[1] & 0x0F) << 2) | ((buffer[2] & 0xC0) >> 6)];
+            else characters[length++] = '=';
+            if (bufferLength > 2)
+                characters[length++] = encodingTable[buffer[2] & 0x3F];
+            else characters[length++] = '=';
+        }
+        
+        return [[NSString alloc] initWithBytesNoCopy:characters length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
+    }
+
+    @end
+
+
+如果想详细了解DES算法原理,请参考http://www.cocoachina.com/bbs/read.php?tid=105524

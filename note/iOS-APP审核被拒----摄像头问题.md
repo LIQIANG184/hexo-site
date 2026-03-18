@@ -1,0 +1,29 @@
+最近发布的新版本遇到一个新的被拒原因---访问摄像头提示语不明确
+
+具体信息如下：
+
+      Privacy - Data Collection and Storage
+        We noticed that your app requests the user’s consent to access their camera  
+      but does not clarify the use of this feature in the permission modal alert.
+      Please see attached screenshots for details. 
+      Next Steps
+        To resolve this issue, please revise the permission modal alert to specify why 
+      the app is requesting access to the user's camera  
+      Resources
+        To learn more about requesting the user’s permission to access app features, 
+      visit the iOS Human Interface Guidelines. You may also want to review the 
+      Technical Q&A QA1937: Resolving the Privacy-Sensitive Data App Rejection 
+      page for details on how to provide a usage description for permission
+      request alerts.
+并且附带了图片（这一点还是比较好的）：
+![image.png](https://upload-images.jianshu.io/upload_images/2791393-e4fccd3db1ee2b13.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+苹果反馈的重点信息是（怎么解决）：
+
+    To resolve this issue, please revise the permission modal alert to specify why 
+      the app is requesting access to the user's camera  
+
+大概意思是：弹访问摄像头权限提示窗的时候写明为什么要访问摄像头
+
+解决方法：
+修改info.plist中摄像头访问的提示语：![image.png](https://upload-images.jianshu.io/upload_images/2791393-a4132bb481d4e591.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)

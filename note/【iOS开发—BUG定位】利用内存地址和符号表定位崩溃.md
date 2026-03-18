@@ -1,0 +1,12 @@
+xcrun atos -arch (architecture) -o  （dsymfile）  address
+
+architecture : 取 arm64/armv7
+dsymfile： 取dsym的文件名字
+address： 内存地址
+
+终端进入到对应版本的dsym文件目录下， 执行上述命令。 address和architecture可以在报表上看到的
+
+例如：
+
+    xcrun atos -arch arm64 -o dsym 0x120d13208
+

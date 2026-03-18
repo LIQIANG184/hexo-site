@@ -1,0 +1,130 @@
+在项目开发过程中,往往会遇到这个问题:查找两个数组相同的数据或者不同的数据,你会用下面三种中的哪种办法实现呢?那种办法会更好呢?
+
+一  很多人都知道也最容易想到的是for循环,forin循环,block循环等其他的循环判断数据中的元素相同不相同,如果找相同的数据一次双层循环就可以,如果找不同的数据就需要两次双层循环.这里以block循环为例;
+
+1 查找相同的数据
+
+    NSArray * arr2 = @[@4,@3,@2,@1];
+    NSArray * arr1 = @[@2,@3,@4,@5];
+    __block NSMutableArray *sameObject = [NSMutableArray arrayWithCapacity:5];
+    [arr2 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSNumber *number1 = obj;
+       [arr1 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+           if ([number1 isEqual:obj]) {
+               [sameObject addObject:number1];
+               *stop = YES;
+           }
+       }];
+    }];
+    NSLog(@"%@",sameObject);
+    
+
+打印信息:(4,3,2)
+
+    注:由观察可以看出打印顺序是按照arr2的顺序打印的,解读代码之后可以
+       很容易得到结论:
+                   打印顺序是由外层循环的数组决定的;
+
+2 查找不同的数据
+
+    NSArray * arr2 = @[@4,@3,@2,@1];
+    NSArray * arr1 = @[@2,@3,@4,@5];
+
+    __block NSMutableArray *difObject = [NSMutableArray arrayWithCapacity:5];
+    //找到arr2中有,arr1中没有的数据
+    [arr2 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSNumber *number1 = obj;//[obj objectAtIndex:idx];
+        __block BOOL isHave = NO;
+        [arr1 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([number1 isEqual:obj]) {
+                isHave = YES;
+                *stop = YES;
+            }
+        }];
+        if (!isHave) {
+            [difObject addObject:obj];
+        }
+    }];
+    //找到arr1中有,arr2中没有的数据
+    [arr1 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSNumber *number1 = obj;//[obj objectAtIndex:idx];
+        __block BOOL isHave = NO;
+        [arr2 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([number1 isEqual:obj]) {
+                isHave = YES;
+                *stop = YES;
+            }
+        }];
+        if (!isHave) {
+            [difObject addObject:obj];
+        }
+    }];
+    NSLog(@"%@",difObject);
+    
+打印信息:(1,5)
+
+
+可以看到这种循环遍历找出两个数组的相同和不同的元素,代码量有点多,我们就想有没有简单一点的方法呢?
+
+二 有的人可能会想到用集合(NSSet)的相关方法,代码如下:
+
+1 查找相同的数据
+
+    NSArray *arr2 = @[@4,@3,@2,@1];
+    NSArray *arr1 = @[@2,@3,@4,@5];
+    NSMutableSet *set1 = [NSMutableSet setWithArray:arr1];
+    NSMutableSet *set2 = [NSMutableSet setWithArray:arr2];
+    [set1 intersectSet:set2];
+    NSLog(@"%@",set1);
+
+打印结果: (3,4,2)
+
+
+
+2 查找不同的数据
+
+    NSMutableSet *set1 = [NSMutableSet setWithArray:arr1];
+    NSMutableSet *set2 = [NSMutableSet setWithArray:arr2];
+    [set2 minusSet:set1];
+    NSMutableSet *set3 = [NSMutableSet setWithArray:arr2];
+    [set1 minusSet:set3];
+    [set2 unionSet:set1];
+    NSLog(@"%@",set2);
+
+打印结果:(1,5)
+
+
+注:这种办法可以得到两个数组中相同的数据,但是从打印出的结果看,得出的集合是无序的,这个是由集合的特性决定的,所以在实际开发过程中的应用相对较少.
+
+三 运用正则的API得出两个数组中相同与不同的数据
+
+1 查找相同的数据
+
+    NSArray * arr2 = @[@4,@3,@2,@1];
+    NSArray * arr1 = @[@2,@3,@4,@5];
+    NSPredicate * filterPredicate_same = [NSPredicate predicateWithFormat:@"SELF IN %@",arr1];
+    NSArray * filter_no = [arr2 filteredArrayUsingPredicate:filterPredicate_same];
+    NSLog(@"%@",filter_no);
+    
+打印结果:(4,3,2)
+
+
+2 查找不同的数据
+
+	NSArray * arr2 = @[@4,@3,@2,@1];
+    NSArray * arr1 = @[@2,@3,@4,@5];
+	//找到在arr2中不在数组arr1中的数据
+    NSPredicate * filterPredicate1 = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)",arr1];
+    NSArray * filter1 = [arr2 filteredArrayUsingPredicate:filterPredicate1];
+    //找到在arr1中不在数组arr2中的数据
+    NSPredicate * filterPredicate2 = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)",arr2];
+    NSArray * filter2 = [arr1 filteredArrayUsingPredicate:filterPredicate2];
+    //拼接数组
+    NSMutableArray *array = [NSMutableArray arrayWithArray:filter1];
+    [array addObjectsFromArray:filter2];
+    NSLog(@"%@",array);
+打印信息:(1,5)
+
+
+
+总结:第一种循环遍历数组的方法可读性和性能都不高;集合的办法应用场景有一定的局限性;运用正则的方法可读性高(推荐方法);
