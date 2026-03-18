@@ -4,22 +4,22 @@
   <meta charset="utf-8">
   
   
-  <title>[iOS开发]-runtime实战,-指定view显示优先级 | 我的博客</title>
+  <title>[iOS开发]-runtime实战,-指定view显示优先级 | 花间半缘</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="#背景   项目中某些页面视图层级过多,视图显示前后顺序不容易控制,想办法简单控制视图的显示层级.#预期优先级高的视图,无论在什么时候添加到父视图上,都要显示在优先级低的视图上方#实现思路给UIView添加属性 level, 用runTime hook UIView 的addSubview:方法,根据level值的大小决定视图的层级 —–有兴趣的同学可以自己考虑实现,然后对比我的实现,欢迎评论交流">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[iOS开发]-runtime实战,-指定view显示优先级">
 <meta property="og:url" content="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%5BiOS%E5%BC%80%E5%8F%91%5D-runtime%E5%AE%9E%E6%88%98,-%E6%8C%87%E5%AE%9Aview%E6%98%BE%E7%A4%BA%E4%BC%98%E5%85%88%E7%BA%A7/index.html">
-<meta property="og:site_name" content="我的博客">
+<meta property="og:site_name" content="花间半缘">
 <meta property="og:description" content="#背景   项目中某些页面视图层级过多,视图显示前后顺序不容易控制,想办法简单控制视图的显示层级.#预期优先级高的视图,无论在什么时候添加到父视图上,都要显示在优先级低的视图上方#实现思路给UIView添加属性 level, 用runTime hook UIView 的addSubview:方法,根据level值的大小决定视图的层级 —–有兴趣的同学可以自己考虑实现,然后对比我的实现,欢迎评论交流">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-03-18T10:04:06.000Z">
 <meta property="article:modified_time" content="2026-03-18T10:11:47.000Z">
-<meta property="article:author" content="博主">
+<meta property="article:author" content="半缘君">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/hexo-site/atom.xml" title="我的博客" type="application/atom+xml">
+    <link rel="alternate" href="/hexo-site/atom.xml" title="花间半缘" type="application/atom+xml">
   
   
     <link rel="shortcut icon" href="/hexo-site/favicon.png">
@@ -46,11 +46,11 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/hexo-site/" id="logo">我的博客</a>
+        <a href="/hexo-site/" id="logo">花间半缘</a>
       </h1>
       
         <h2 id="subtitle-wrap">
-          <a href="/hexo-site/" id="subtitle">记录与分享</a>
+          <a href="/hexo-site/" id="subtitle">浮生闲笔，半是墨迹半是君</a>
         </h2>
       
     </div>
@@ -275,7 +275,7 @@ return [le intValue];
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2026 博主<br>
+      &copy; 2026 半缘君<br>
       Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
