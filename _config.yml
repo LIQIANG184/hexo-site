@@ -105,6 +105,6 @@ theme: landscape
 ## 文档: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://github.com/LIQIANG184/hexo-site.git
+  repo: git@github.com:LIQIANG184/hexo-site.git
   branch: gh-pages
   message: 'Site updated: {{ now("yyyy-MM-dd HH:mm:ss") }}'

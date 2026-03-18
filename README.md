@@ -11,7 +11,7 @@
 npm install          # 安装依赖
 npm run server       # 本地预览
 npm run build        # 生成 public/
-npm run deploy       # 部署到 gh-pages（需已配置 Git 凭据）
+npm run deploy       # 部署到 gh-pages（使用 SSH，需本机已配置 GitHub 公钥）
 ```
 
 部署前请在 GitHub 仓库 **Settings → Pages** 中选择分支 **`gh-pages`**。
