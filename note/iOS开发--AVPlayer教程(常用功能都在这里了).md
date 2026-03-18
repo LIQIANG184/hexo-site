@@ -3,7 +3,7 @@
 以上系统提供的播放器由于高度的封装性， 使得自定义播放器变的很难。 所以，如果我需要自定义播放器样式的时候，可以使用 AVPlayer。 
 
 AVPlayer 存在于 AVFoundtion 中，更接近于底层，也更加灵活。
-![1474352198387328.jpg](http://upload-images.jianshu.io/upload_images/2791393-3ade0b22e8345e7f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![1474352198387328.jpg](/images/note/fdf039f5882fcd7875fa95b9f51eb43d.webp)
 
 Representing and Using Media with AVFoundation
 AVFoundtion 框架中主要使用 AVAsset

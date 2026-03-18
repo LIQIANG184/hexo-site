@@ -11,7 +11,7 @@
 ##一 Xcode编译步骤
 
 ###1 使用Xcode创建Framework项目
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-cfefb662c3c5f75b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/e5d81450b0b2599e6e882709573baa47.webp)
 2 添加所有使用的c/c++文件（依赖的第三方的文件）
 3 调整暴露的头文件public headers
 4 编译（command+B）

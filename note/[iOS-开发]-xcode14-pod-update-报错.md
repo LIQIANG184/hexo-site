@@ -39,5 +39,5 @@
 把Project Format改到低版本然后pod update
 
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-323d4b9c1655b0f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/18ea1c69661801554692e14afc414139.webp)
 

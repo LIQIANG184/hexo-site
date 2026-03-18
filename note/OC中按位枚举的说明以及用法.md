@@ -36,4 +36,4 @@ OC中枚举类型有两种, 普通枚举和按位枚举
      }
 4 按位枚举的用法  
    
-![Paste_Image.png](http://upload-images.jianshu.io/upload_images/2791393-7095a86116226658.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Paste_Image.png](/images/note/a23f69212c7e14e01fb04b656d5ea596.webp)

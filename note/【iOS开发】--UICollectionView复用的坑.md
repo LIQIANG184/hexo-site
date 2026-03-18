@@ -1,7 +1,7 @@
 最近项目需要用到UICollectionView显示网络图片，在写demo时遇到一个BUG我想要这个效果（最后一个是加号，点击进入相册）
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-21f09990670c37a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/cd4a420a2b6b2e892cd4e6dda4b6c277.webp)
 这个很简单，很快写完，运行如下图：
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-c095d6efdbe741d8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/3035784dad5bd14dff64b1242844f74e.webp)
 怎么回事？为什么加号没有显示？
 
 有此BUG的代码在这里，有想挑战一下的可以去[下载](https://github.com/CoderLi-Q/CollectionviewBUG)
@@ -65,15 +65,15 @@ CollectionCell.m
 
 分析过程：
    1  在cellForItemAtIndexPath方法里的打断点：
- ![image.png](https://upload-images.jianshu.io/upload_images/2791393-397861a76c44f196.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+ ![image.png](/images/note/4a12a878565b0f1f7314125b82a69e60.webp)
 发现执行过程没有太大问题，有个小问题是方法走了 2*4=8次；也就是说有两次reloadData的过程。
 2 在reload方法里打个断点，发现只执行了一次，那为什么执行两遍数据源方法呢？
-   ![image.png](https://upload-images.jianshu.io/upload_images/2791393-46703325bca6c024.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+   ![image.png](/images/note/47b297baeebbe9839aad2c044a51ebec.webp)
 3 得出结论系统会隐式调用一遍数据源方法
 4 到这里还是没有找打问题的原因，既然imageview有问题，那我就看一下imageview的setImage方法执行的细节，我把cell中的imageV换成了继承与UIImageView的LQImageView，重写了setImage方法:
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-a1292e9941a40d87.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/cd3a4560b7169194689ae183bbfa8bd1.webp)
 打印结果：
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-0f32133becfe8424.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/35069bb07579727d5704e62c9c17da5b.webp)
 经过分析得出结论：
 
     两次reload的 加号的那个cell有问题，reload2 覆盖了reload1 的所有图片，除了reload2

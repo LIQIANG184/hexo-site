@@ -55,12 +55,12 @@ http://www.jianshu.com/p/600402ed85df
    2 Swift中按位枚举的使用方法: 用中括号括起来,中间用逗号分隔(类似OC中的数组,在Swift中叫元组)
 
 例:
-![Paste_Image.png](http://upload-images.jianshu.io/upload_images/2791393-f118f436c308fc2d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Paste_Image.png](/images/note/2ea5497825bc2efd5e9db7a5361b0003.webp)
 但是需要注意的是: 此用法不得先定义变量,然后传值,必须要在使用按位枚举的地方直接将枚举值用中括号括起来,用逗号分隔开!
 不然会报类型不匹配的错误
 例:
 
-![Paste_Image.png](http://upload-images.jianshu.io/upload_images/2791393-d011fa2c577b948d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Paste_Image.png](/images/note/03ff301f788dbd1b953be6acd8e17825.webp)
 正确代码为:
 
-![Paste_Image.png](http://upload-images.jianshu.io/upload_images/2791393-7642b294677a8214.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Paste_Image.png](/images/note/d0f752ce7721666b25c850e832bd7ed8.webp)

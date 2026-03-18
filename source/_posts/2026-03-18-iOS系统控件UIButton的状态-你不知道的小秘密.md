@@ -1,6 +1,6 @@
 ---
 title: "iOS系统控件UIButton的状态--你不知道的小秘密"
-date: 2026-03-18 18:04:06
+date: 2026-03-18 18:30:13
 tags:
   - 笔记
 categories:
@@ -23,7 +23,7 @@ source_note: "iOS系统控件UIButton的状态--你不知道的小秘密.md"
 
       注:防止出现版权问题,其中变量的名字和图片的名字,我做了调整,但是方法是原来的方法;
 点击效果如下:
-![arrow.gif](http://upload-images.jianshu.io/upload_images/2791393-f36fabf051eedc58.gif?imageMogr2/auto-orient/strip)
+![arrow.gif](/images/note/eddf4484d6f4017bb2baf2b2a483247d.webp)
 
 2 解决方案(文章后边有更好的解决办法)
 我自己想的最直接的办法解决这个问题是不用按钮自带的状态,直接在点击事件里动态改变按钮正常状态的图片

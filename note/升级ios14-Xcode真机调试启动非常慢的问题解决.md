@@ -1,12 +1,12 @@
 1.  打开“访达”,shift+command+G到资源库 “~/Library/Developer/Xcode/iOS DeviceSupport/”删除该目录下所有文件 快捷键（shift+command+G到资源库）
 
-    ![image](//upload-images.jianshu.io/upload_images/7827369-1d8c6f8d267b6a93.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200)
+    ![image](/images/note/4554f2d0838a78ea82ac9a95d877e920.webp)
 
 全部删除文件夹下所有文件
 
 2.  选择Xcode->Window->Devices and Simulators 真机设备，鼠标右键选择unpair the device
 
-![image](//upload-images.jianshu.io/upload_images/7827369-4f80a4a1cc434c3f.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200)
+![image](/images/note/03dd1bdcc0709d3fad4819ed776fa88c.webp)
 
 3.重新启动Xcode
 

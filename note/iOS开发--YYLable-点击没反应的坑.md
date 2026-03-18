@@ -1,6 +1,6 @@
 项目中有一个用户协议入口,是使用YYLable显示的,有高亮和点击事件,点击事件不执行,困扰很久,最后发现是手势冲突的问题:
 
-![IMG_0150.JPG](https://upload-images.jianshu.io/upload_images/2791393-b6739d1c25b90b71.JPG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![IMG_0150.JPG](/images/note/534df043bd1e10e2bc1ee925a1ae4d63.webp)
 
 界面内有一个textField, 为了收起键盘,在view上添加了tap手势来隐藏键盘:
 

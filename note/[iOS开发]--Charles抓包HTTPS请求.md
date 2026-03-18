@@ -3,23 +3,23 @@
 **1.安装Charles**
 **2.电脑安装Charles证书**
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-737cb28b751cbed7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/fa8273570b03f096ccfcccb3faf75f89.webp)
 
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-30831898cd7a8181.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/cbc7dcd7e88d5f28656863d1b2240374.webp)
 
 
 **3.手机安装证书**
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-60a58410715c5ace.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/ed698f4d68abd7b631568abc6b787329.webp)
 
 
 **4.手机网页输入网址 下载证书并信任**
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-c8b99ef257e73314.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/1e31ac5f939fe0f02ad96b2d1fc21085.webp)
 
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-51ef475183802d23.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/bf1202241c95f911d05d80bc99019772.webp)
 
 
 `注意`：在iOS 10.3之前,当你将安装一个自定义证书,iOS会默认信任,不需要进一步的设置。而iOS 10.3之后,安装新的自定义证书默认是不受信任的。如果要信任已安装的自定义证书,需要手动打开开关以信任证书。
@@ -28,19 +28,19 @@ iOS11下需要手动信任已下载好的证书，方法如下：
 
 > 设置->通用->关于本机->证书信任设置-> 找到charles proxy custom root certificate然后信任该证书即可.
 > 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-dcc7f45c2a66d652.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/35c47735cd7c079899c6edacc883eab3.webp)
 
 
 **5.开始抓包**
 Charles设置Proxy
 Proxy -> SSL Proxying Settings...，如下图所示：
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-469988a44d26b28d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/59cc3559996a4cc10b7db74823eca2ae.webp)
 
 
 选择Proxy | Recording Settings，弹出Recording Settings设置选项卡，勾选include
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-867b4d41067e7355.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/49878e9d923a84e4d2a7d82fe65082dc.webp)
 
 
 **6.原理简析**

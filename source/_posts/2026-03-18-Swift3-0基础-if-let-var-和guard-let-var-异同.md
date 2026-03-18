@@ -1,6 +1,6 @@
 ---
 title: "Swift3-0基础----if-let-var-和guard-let-var-异同"
-date: 2026-03-18 18:04:06
+date: 2026-03-18 18:30:13
 tags:
   - 笔记
 categories:
@@ -53,6 +53,6 @@ Swift里边有一个特殊的存在--可选项,我们知道可选项变量在具
 1 新赋值的变量的作用域不同 if let/var 创建的变量的作用域是 花括号里边 例如3中的name和greet;而guard let/var创建的变量作用域是 guard let/var 语句下边
 2 if let/var 创建的变量名字可以与原变量名相同,guar let/var 不行
 错误如下:
-![guar let_错误.png](http://upload-images.jianshu.io/upload_images/2791393-585240f202648d07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1024)
+![guar let_错误.png](/images/note/210cf6a75608b1ebc8ef046530825c5b.webp)
 
-![if let_正确.png](http://upload-images.jianshu.io/upload_images/2791393-980bb917848f6646.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![if let_正确.png](/images/note/f634ef50b2ed27b217b18b0ca037e5b1.webp)

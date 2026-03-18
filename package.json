@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "sync-notes": "node tool/sync-notes.mjs",
+    "download-note-images": "node tool/download-note-images.mjs",
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",

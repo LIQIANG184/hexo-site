@@ -1,5 +1,5 @@
 项目里有一个需求要画一个五角星,不想用图片,自己纯计算画出一个五角星
-![image.png](http://upload-images.jianshu.io/upload_images/2791393-ba12c31af14a466a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/7ab0d895f429e41e37016b0fa8ec0f85.webp)
 
 #本文所需知识点:
 1 UIBezierPath画线
@@ -12,7 +12,7 @@
 #示意图奉上:
 
 
-![image.png](http://upload-images.jianshu.io/upload_images/2791393-5fe4616dc127ca5f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/907e19e215f4f37db0cb90aa41548234.webp)
 
 
 

@@ -2,7 +2,7 @@
 
 
 效果图如下：
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-33715a8f20874459.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/301a3260fb6adc4868813a96b6171fd2.webp)
 
 #算法说明
  迪杰斯特拉算法(Dijkstra)是由荷兰计算机科学家[狄克斯特拉](https://baike.baidu.com/item/%E7%8B%84%E5%85%8B%E6%96%AF%E7%89%B9%E6%8B%89/2828872)于1959 年提出的，因此又叫[狄克斯特拉算法](https://baike.baidu.com/item/%E7%8B%84%E5%85%8B%E6%96%AF%E7%89%B9%E6%8B%89%E7%AE%97%E6%B3%95/6764865)。是从一个顶点到其余各顶点的[最短路径](https://baike.baidu.com/item/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84)算法，解决的是有权图中最短路径问题。迪杰斯特拉算法主要特点是从起始点开始，采用[贪心算法](https://baike.baidu.com/item/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/5411800)的策略，每次遍历到始点距离最近且未访问过的顶点的邻接节点，直到扩展到终点为止。算法详细可以参看[https://www.jianshu.com/p/f38857a26be1](https://www.jianshu.com/p/f38857a26be1)

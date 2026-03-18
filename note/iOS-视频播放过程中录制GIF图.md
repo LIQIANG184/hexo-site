@@ -1,7 +1,7 @@
 近期,各大视频APP都推出了一个新的功能----在播放视频过程中录制GIF图片,并分享.
 
 
-![截图.png](http://upload-images.jianshu.io/upload_images/2791393-aa84572a68a20d69.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![截图.png](/images/note/3aecdc0ad657fcca2e7243f9df6e1a96.webp)
 
 
 我们项目刚好有这个需求,就写了一个demo,这里分享一下我的实现思路;

@@ -1,6 +1,6 @@
 ---
 title: "【iOS开发】真机调试--dyld_shared_cache_extract_dylibs-failed"
-date: 2026-03-18 18:04:06
+date: 2026-03-18 18:30:13
 tags:
   - 笔记
 categories:
@@ -11,7 +11,7 @@ source_note: "【iOS开发】真机调试--dyld_shared_cache_extract_dylibs-fail
 
 无法真机调试，出现“dyld_shared_cache_extract_dylibs failed”，如下图
 
-![image](//upload-images.jianshu.io/upload_images/2815759-e5288e68b6ca21f7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/420/format/webp)
+![image](/images/note/45246186f8a2b86c991f329cdf5f04dc.webp)
 
 解决办法：
 
@@ -19,7 +19,7 @@ source_note: "【iOS开发】真机调试--dyld_shared_cache_extract_dylibs-fail
 
 2.前往文件夹： ~/Library/Developer/Xcode/iOS DeviceSupport/ ，删除手机对应的系统版本。
 
-![image](//upload-images.jianshu.io/upload_images/2815759-a01d93104e01acc8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/818/format/webp)
+![image](/images/note/c8b934955c6768522dece4913bf28edf.webp)
 
 3.启动Xcode
 

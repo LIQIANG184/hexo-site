@@ -16,11 +16,11 @@
 注:  $1里cd 后的地址是打包时生成的xcode自动生成的本地文件的地址
 找到此地址的方法打开: xcode->Window->Organizer,然后找到对应的release包,右键 Show in Finder
 
-![Paste_Image.png](http://upload-images.jianshu.io/upload_images/2791393-2eb4aa6802e733d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Paste_Image.png](/images/note/74d27b004018698c9cfa5f0d94a8f5d9.webp)
 
 会看到扩展名为.xcarchive的文件,这个文件路径(最好用拖文件的方式获取文件路径)后边拼接dSYMs即为这个地址.
 
-![Paste_Image.png](http://upload-images.jianshu.io/upload_images/2791393-3ee1b5e94674a712.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Paste_Image.png](/images/note/617702c4e8b31be8ad6170e096752139.webp)
 
 $2里dwarfdump --uuid appname.app.dSYM的 appname 替换为你的app的包名就行,别的不用动
 输出结果: 

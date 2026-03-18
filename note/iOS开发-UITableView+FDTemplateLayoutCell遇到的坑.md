@@ -15,15 +15,15 @@
 ----
 ##应用场景如下
 先来看下cell样式：
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-d753db3b05fa9d2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/e1c867c6b8b55e10ceacb16f0b8f2ce0.webp)
 
 >简单说明：1 cell分为3种状态, 回看/播放中/预约
 
 #遇到的问题
 有的时候cell高度计算不对，导致label无法全部展示。
-![错误](https://upload-images.jianshu.io/upload_images/2791393-f2692a196505e5ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![错误](/images/note/4fe3985e038bb504dddc3396c082a99c.webp)
 
-![正确](https://upload-images.jianshu.io/upload_images/2791393-eb949cd80b304ec2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![正确](/images/note/68ac47192ed511e06746f77f47373995.webp)
 
 ##错误说明：
 ”环球综艺秀-2020-23“一行显示不下，需要折行展示；

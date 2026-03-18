@@ -1,6 +1,6 @@
 ---
 title: "【iOS知识点】rootViewController获取不到的原因"
-date: 2026-03-18 18:04:06
+date: 2026-03-18 18:30:13
 tags:
   - 笔记
 categories:
@@ -12,7 +12,7 @@ source_note: "【iOS知识点】rootViewController获取不到的原因.md"
  突然发现项目中获取rootViewController的代码失效了
 
 复现步骤：是当弹出了UIAlertView后，再获取rootViewController发现获取不到如下图：
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-c2650d41be22b1c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/cb27a6ac2941debf603de09ff4f9b2f5.webp)
 经查找资料，获取rootViewController的正确姿势:
 
     AppDelegate *appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -32,7 +32,7 @@ source_note: "【iOS知识点】rootViewController获取不到的原因.md"
 
 keyWindow这个属性是什么意思？
 
-![image](http://upload-images.jianshu.io/upload_images/2791393-cb69172db629a80a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image](/images/note/9cd67b36600f471ded2f4558f2f18c8a.webp)
 
 个人理解的意思是，在windows数组中，最近时间调用makeKeyAndVisible方法的属性。
 

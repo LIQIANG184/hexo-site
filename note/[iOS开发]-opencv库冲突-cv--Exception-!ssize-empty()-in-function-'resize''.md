@@ -7,7 +7,7 @@ cv::imread(@"var/image.png")
 cv::resize(123)
 ```
 ##crash 截图如下:
-![resize crash.png](https://upload-images.jianshu.io/upload_images/2791393-16ef5af502f21814.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1280)
+![resize crash.png](/images/note/77d1ecf8c9cfc95530b33226841653f6.png)
 
 ##问题原因:
 >opencv库和insta360SDK冲突

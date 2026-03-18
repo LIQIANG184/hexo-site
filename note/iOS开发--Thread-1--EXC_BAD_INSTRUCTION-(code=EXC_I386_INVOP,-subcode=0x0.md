@@ -1,7 +1,7 @@
    崩溃的截图：
-  ![image.png](https://upload-images.jianshu.io/upload_images/2791393-f8f3119957fa530b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+  ![image.png](/images/note/15f69cd324ef0ffbea5444bb70ba5875.webp)
 
-  ![image.png](https://upload-images.jianshu.io/upload_images/2791393-467722a485cd44a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)  
+  ![image.png](/images/note/8c0e06b090bda15a2631fb0dbff35734.webp)  
 
  最近项目中有一个dispatch_group相关的巨坑（此问题解决方法很简单，难点是定位问题），特此记录下来并分享，希望帮助到有需要的人！
 
@@ -59,7 +59,7 @@
 产生此问题的原因：概括的说是dispatch_group的原理和AFNetworking网络请求回调block的缓存回调原理的协作问题
 
 举例详细说明，流程图如下：
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-20cd54e3726c0564.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/1ae39c1ded50e2853db32d8e2b8afde7.webp)
 
     正常情况下：执行步骤1 的间隔时间充分长，或者只执行一次，此逻辑没有问题，不会crash；
     非正常情况：开头所说的crash出现场景下，即频繁执行上图中步骤1到步骤3
@@ -96,7 +96,7 @@
         NSLog(@"1234567");
     });   
     }
-![崩溃截图](https://upload-images.jianshu.io/upload_images/2791393-1b9f6d43af5babe1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![崩溃截图](/images/note/b097bbe5cf702d7e5b1e07e3a6757f6d.webp)
 
 
 

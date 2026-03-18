@@ -10,7 +10,7 @@
 
 拷贝粘贴sudo spctl --master-disable的时候注意不要有多余的空格，输入密码的时候不会显示密码，别以为没输上呢，只要你输入对了回车就可以了。输入后到”隐私性与安全“那里看下，任何来源已经选中并已打开，这个时候不需要再解锁选中等其他操作。
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-b6c78b0774562323.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/449589a657ceae9fbe519cf7d05e2a82.webp)
 
 
 如已经开启任何来源，但依旧打不开（macOS Catalina 10.15以上会遇到）按以下步骤执行：
@@ -20,4 +20,4 @@
 2 输入以下命令，回车；
 sudo xattr -d com.apple.quarantine /Applications/xxxx.app
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-b0c1a45852688217.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/52fa03bd13cfd65137ea4fb31ac23fd7.webp)

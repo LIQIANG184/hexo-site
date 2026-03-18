@@ -1,6 +1,6 @@
 ---
 title: "【iOS开发】CoreMotion-MotionThread-crash排查"
-date: 2026-03-18 18:04:06
+date: 2026-03-18 18:30:13
 tags:
   - 笔记
 categories:
@@ -22,7 +22,7 @@ Attempted to dereference garbage pointer 0xab.
 应该是:野指针访问
 
 ##海神崩溃堆栈:
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-dde69e05a4561f33.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/0f3317d14b9f26a5e558a54cf5143b3d.webp)
 
     0 CoreMotion CLClientCreateIso6709Notation (in CoreMotion) + 206336
     1 CoreMotion CLClientCreateIso6709Notation (in CoreMotion) + 206300
@@ -49,19 +49,19 @@ CoreMotion是苹果的重力感应库,项目内有两个地方使用到了这个
 #3 拍摄页面
 ##3.1 查看 '进入' 拍摄页面后线程情况
 
-![线程情况.png](https://upload-images.jianshu.io/upload_images/2791393-2a01d641d40440dd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![线程情况.png](/images/note/af105d5360ae620090304adb662be682.webp)
 
-![内存情况.png](https://upload-images.jianshu.io/upload_images/2791393-38c42f330516234b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![内存情况.png](/images/note/383038a73be57d213616b31f3029d1e6.webp)
 我们发现: 
 >1 拍摄页面会创建线程 com.apple.CoreMotion.MotionThread ,这个线程是crash线程
 2 这个线程是ARSession自主创建的
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-8c6d53559cfc477c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/2354a657307e45c57676e0cf8c460ea4.webp)
 
 
 
 
 ##3.2 查看 '退出' 拍摄页面后线程情况
-![ '退出' 拍摄页面后线程.png](https://upload-images.jianshu.io/upload_images/2791393-894f3bc5f6412557.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![ '退出' 拍摄页面后线程.png](/images/note/e0a49f9981fe16b92b226e8cabba9060.webp)
 我们发现: 
 > 1 拍摄页面会创建线程 com.apple.CoreMotion.MotionThread 没有停止
 

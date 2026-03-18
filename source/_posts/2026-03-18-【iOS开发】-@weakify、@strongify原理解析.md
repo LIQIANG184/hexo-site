@@ -1,6 +1,6 @@
 ---
 title: "【iOS开发】--@weakify、@strongify原理解析"
-date: 2026-03-18 18:04:06
+date: 2026-03-18 18:30:13
 tags:
   - 笔记
 categories:
@@ -89,7 +89,7 @@ source_note: "【iOS开发】--@weakify、@strongify原理解析.md"
 
 只要在block外用了@weakify(self);然后再block里写@strongify(self);就可以了，@strongify(self);语句后的的self可以原封不动，好像很神奇，下面一起看看@weakify、@strongify 这两个神奇的宏最终替换了什么东西。导入RAC的头文件，把上面的测试代码替换成RAC中用的@weakify(self);和@strongify(self), 分屏显示Xcode，让右侧的显示内容改为 preprocess“,就可以看到宏最终替换的结果。
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-9eec71afc106cd91.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/f1f78914433a4f2984e5bf9d4a6f7cff.webp)
 
 
 1.  @autoreleasepool {} 是什么鬼？
@@ -171,7 +171,7 @@ source_note: "【iOS开发】--@weakify、@strongify原理解析.md"
 
 第三层：`metamacro_foreach_cxt1` 没错,不要怀疑，他还定义了metamacro_foreach_cxt1这个后面数组为1的宏，搜索一下：
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-40f7832dab9390a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/273894f4f0cd379be7869da1388df4a1.webp)
 
 嗯，你没猜错，有metamacro_foreach_cxt1就有metamacro_foreach_cxt2、3、4、5、6、7、8...，这些是什么鬼，我们先不管，先看我们的metamacro_foreach_cxt1
 
@@ -240,7 +240,7 @@ source_note: "【iOS开发】--@weakify、@strongify原理解析.md"
 
 搜索`metamacro_at20`
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-079783e06aedc3e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/39c2f0e4711d093abf8481f0e4e507ab.webp)
 
 呵呵 又是一堆乱七八糟的，没事看懂一个就全懂了。
 

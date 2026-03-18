@@ -1,6 +1,6 @@
 ---
 title: "[iOS-开发]-xcode14-pod-update-报错"
-date: 2026-03-18 18:04:06
+date: 2026-03-18 18:30:13
 tags:
   - 笔记
 categories:
@@ -50,5 +50,5 @@ source_note: "[iOS-开发]-xcode14-pod-update-报错.md"
 把Project Format改到低版本然后pod update
 
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-323d4b9c1655b0f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/18ea1c69661801554692e14afc414139.webp)
 

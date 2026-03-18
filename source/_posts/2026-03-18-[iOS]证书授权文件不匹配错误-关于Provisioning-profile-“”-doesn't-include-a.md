@@ -1,6 +1,6 @@
 ---
 title: "[iOS]证书授权文件不匹配错误-关于Provisioning-profile-“”-doesn't-include-any-certifi"
-date: 2026-03-18 18:04:06
+date: 2026-03-18 18:30:13
 tags:
   - 笔记
 categories:
@@ -12,7 +12,7 @@ source_note: "[iOS]证书授权文件不匹配错误-关于Provisioning-profile-
 问题描述： 
     
 日前，发布证书将要过期，重新做了一个证书，与其配套的授权文件同步更新。在这个过程中出现了问题，见下图：
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-890d0d02c430cff0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/7daab74ce1abce0e0cb2a3ac3a97a64c.webp)
 
 报错信息：
     Provisioning profile “” doesn't include any certificate for which the matching private key is install in the keychain

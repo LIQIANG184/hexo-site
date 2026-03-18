@@ -2,7 +2,7 @@
 #使用pod命令出现这个错误:
 > can't find gem cocoapods (= 0.a) with executable pod (Gem::GemNotFoundException）
 
-![image.png](https://upload-images.jianshu.io/upload_images/2791393-9c2ed74f8c68e9ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](/images/note/7219201dddd2e2ac1b5afc49ce60bac5.webp)
 #解决步骤：
 
 >1 cd到git目录
