@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>我的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="基于 Hexo 的个人静态博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="我的博客">
+<meta property="og:url" content="https://liqiang184.github.io/hexo-site/page/9/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="基于 Hexo 的个人静态博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="博主">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/hexo-site/atom.xml" title="我的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/hexo-site/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/hexo-site/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/hexo-site/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/hexo-site/" id="logo">我的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/hexo-site/" id="subtitle">记录与分享</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/hexo-site/">Home</a>
+        
+          <a class="main-nav-link" href="/hexo-site/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/hexo-site/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://liqiang184.github.io/hexo-site"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-2026-03-18-【iOS开发】-google第三方登录终极解决方案" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">【iOS开发】-google第三方登录终极解决方案</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>google第三方登录使用WKWebview组件无法登录成功，<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3ce47f1d1403">之前魔改UA的方式已经不行了</a>,需要使用ASWebAuthenticationSession组件</p>
+<p>示例代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">-(void)login&#123;</span><br><span class="line">    [[ASWebAuthenticationSession alloc] initWithURL:deUrl callbackURLScheme:@&quot;scheme&quot; completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) &#123;</span><br><span class="line">        // 处理认证结果</span><br><span class="line">        if (callbackURL) &#123;</span><br><span class="line">            // 从回调URL中获取认证授权码</span><br><span class="line">            NSDictionary *dict = [callbackURL jk_parameters];</span><br><span class="line">            NSString *ticket = [dict valueForKey:@&quot;ticket&quot;];</span><br><span class="line">            NSString *login_type = [dict valueForKey:@&quot;login_type&quot;];</span><br><span class="line">            if (ticket != nil &amp;&amp; login_type != nil) &#123;</span><br><span class="line">                self.hasOpenLogin = NO;</span><br><span class="line">                __weak typeof(self) wself = self;</span><br><span class="line">                [BSNetworkManager loginWithTicket:ticket loginType:login_type success:^(BSBaseResponseModel * _Nonnull model) &#123;</span><br><span class="line">                    </span><br><span class="line">                    </span><br><span class="line">                &#125;fail:^(BSBaseResponseModel * _Nonnull model) &#123;</span><br><span class="line">                    if (wself.callback) wself.callback();</span><br><span class="line">                &#125;];</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // 认证失败</span><br><span class="line">            NSLog(@&quot;认证失败，错误: %@&quot;, error);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 清除认证会话引用</span><br><span class="line">        weakSelf.loginSession = nil;</span><br><span class="line">    &#125;];</span><br><span class="line">#if __IPHONE_OS_VERSION_MAX_ALLOWED &gt;= 130000</span><br><span class="line">    self.loginSession.presentationContextProvider = self;</span><br><span class="line">#endif</span><br><span class="line">    [self.loginSession start];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#if __IPHONE_OS_VERSION_MAX_ALLOWED &gt;= 130000</span><br><span class="line">- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session &#123;</span><br><span class="line">    return [UIApplication sharedApplication].delegate.window;</span><br><span class="line">&#125;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" data-id="cuid57YYYWJyE2cLaVUPHuCVF" data-title="【iOS开发】-google第三方登录终极解决方案" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】-UICollectionView复用的坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-UICollectionView%E5%A4%8D%E7%94%A8%E7%9A%84%E5%9D%91/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-UICollectionView%E5%A4%8D%E7%94%A8%E7%9A%84%E5%9D%91/">【iOS开发】--UICollectionView复用的坑</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近项目需要用到UICollectionView显示网络图片，在写demo时遇到一个BUG我想要这个效果（最后一个是加号，点击进入相册）<br><img src="https://upload-images.jianshu.io/upload_images/2791393-21f09990670c37a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这个很简单，很快写完，运行如下图：<br><img src="https://upload-images.jianshu.io/upload_images/2791393-c095d6efdbe741d8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>怎么回事？为什么加号没有显示？</p>
+<p>有此BUG的代码在这里，有想挑战一下的可以去<a target="_blank" rel="noopener" href="https://github.com/CoderLi-Q/CollectionviewBUG">下载</a><br>,解决完了，记得回来看看。</p>
+<p>显示加号的逻辑很简单，在cellForItemAtIndexPath：数据源方法里判断一下：</p>
+<pre><code>    CollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@&quot;CollectionCell&quot; forIndexPath:indexPath];
+ if (indexPath.item == self.dataSourses.count) {
+    //显示加号,隐藏叉号：
+    cell.image = [UIImage imageNamed:@&quot;123&quot;];
+    cell.deleteButton.hidden = YES;
+} else {
+   //显示图片
+   cell.model = self.dataSourses[indexPath.item];
+}
+</code></pre>
+<p>CollectionCell.m</p>
+<pre><code>- (void)setMedia:(Model *)media {
+     _media = media;
+    [self.imageV sd_setImageWithURL:[NSURL URLWithString:media.imagUrl]];
+}
+</code></pre>
+<p>赋值图片的时候,很简单的用了SD，不应该有问题啊,通过观察可知，貌似是因为复用的问题。</p>
+<p>   在此先给出此问题的解决方法：</p>
+<p>解法1：在reload的时候不要加异步主线程（此方法不推荐）</p>
+<pre><code>    //dispatch_async(dispatch_get_main_queue(), ^{
+    [self.collectionView reloadData];
+  // });
+</code></pre>
+<p>解法2：在赋值dataSourses地方加延迟</p>
+<pre><code>dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+
+    collectionV.dataSources = @[
+                                @&quot;http://pic32.nipic.com/20130823/13339320_183302468194_2.jpg&quot;,
+                                @&quot;http://pic40.nipic.com/20140412/18428321_144447597175_2.jpg&quot;,
+                                @&quot;http://k.zol-img.com.cn/sjbbs/7692/a7691515_s.jpg&quot;];
+});
+</code></pre>
+<p>解法3：让reloadData方法在SD的线程安全宏里执行</p>
+<pre><code> dispatch_main_async_safe(^{
+    [self.collectionView reloadData];
+);
+</code></pre>
+<p>解法4：cellForItemAtIndexPath里的代码加一行代码</p>
+<pre><code>CollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@&quot;CollectionCell&quot; forIndexPath:indexPath];
+ if (indexPath.item == self.dataSourses.count) {
+    cell.imageV sd_cancelCurrentImageLoad]；//加上此行代码
+    //显示加号,隐藏叉号：
+    cell.image = [UIImage imageNamed:@&quot;123&quot;];
+    cell.deleteButton.hidden = YES;
+} else {
+   //显示图片
+   cell.model = self.dataSourses[indexPath.item];
+}
+</code></pre>
+<p>分析过程：<br>   1  在cellForItemAtIndexPath方法里的打断点：<br> <img src="https://upload-images.jianshu.io/upload_images/2791393-397861a76c44f196.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>发现执行过程没有太大问题，有个小问题是方法走了 2*4&#x3D;8次；也就是说有两次reloadData的过程。<br>2 在reload方法里打个断点，发现只执行了一次，那为什么执行两遍数据源方法呢？<br>   <img src="https://upload-images.jianshu.io/upload_images/2791393-46703325bca6c024.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>3 得出结论系统会隐式调用一遍数据源方法<br>4 到这里还是没有找打问题的原因，既然imageview有问题，那我就看一下imageview的setImage方法执行的细节，我把cell中的imageV换成了继承与UIImageView的LQImageView，重写了setImage方法:<br><img src="https://upload-images.jianshu.io/upload_images/2791393-a1292e9941a40d87.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>打印结果：<br><img src="https://upload-images.jianshu.io/upload_images/2791393-0f32133becfe8424.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>经过分析得出结论：</p>
+<pre><code>两次reload的 加号的那个cell有问题，reload2 覆盖了reload1 的所有图片，除了reload2
+的加号，因为reload2的加号cell是直接setImage了，随后SD异步图片回来了，又赋值一次，
+这个图片是reload1的异步图片
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-UICollectionView%E5%A4%8D%E7%94%A8%E7%9A%84%E5%9D%91/" data-id="cuid2kLePbkP-a5M2DAYUhagA" data-title="【iOS开发】--UICollectionView复用的坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】-podfile-高级用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-podfile-%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-podfile-%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/">【iOS开发】-podfile-高级用法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>#问题<br>在多人开发时，遇到了频繁修改podfile引起冲突等问题，衍生了以下需求</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">product环境的podfile最好少动，podfile在不同环境下使用不同的podfile</span><br></pre></td></tr></table></figure>
+
+<p>#解决方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 在podfile中加入环境变量的判断</span><br><span class="line">2 不同的环境引用不同的podfile.xxx文件</span><br></pre></td></tr></table></figure>
+
+<p><em>知识点</em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 cocoapods 基本使用</span><br><span class="line">2 Podfile引用 `eval(File.read(&#x27;Podfile.release&#x27;))`</span><br><span class="line">3 Podfile 打印语句 `puts &quot;product:#&#123;product&#125;&quot;`</span><br><span class="line">4 Podfile `if`语句</span><br></pre></td></tr></table></figure>
+
+<p>##Podfile<br>修改前</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">source &#x27;xxx&#x27;</span><br><span class="line"></span><br><span class="line">target &#x27;name2&#x27; do </span><br><span class="line">  # 第三方库</span><br><span class="line">  pod &#x27;AFNetworking&#x27;, &#x27;3.1.0.8&#x27;</span><br><span class="line">end</span><br><span class="line">target &#x27;name1&#x27; do </span><br><span class="line">  # 第三方库</span><br><span class="line">  pod &#x27;AFNetworking&#x27;, &#x27;3.1.0.8&#x27;</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>修改后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">product = ENV[&#x27;product&#x27;]</span><br><span class="line"></span><br><span class="line">puts &quot;product:#&#123;product&#125;&quot;</span><br><span class="line"></span><br><span class="line">if product </span><br><span class="line">  eval(File.read(&#x27;Podfile.release&#x27;))</span><br><span class="line">else</span><br><span class="line">  eval(File.read(&#x27;Podfile.local&#x27;))</span><br></pre></td></tr></table></figure>
+<p>其中 Podfile.release和之前的podfile一样<br>其中 Podfile.local如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">source &#x27;xxx&#x27;</span><br><span class="line"></span><br><span class="line">target &#x27;name2&#x27; do </span><br><span class="line">  # 第三方库</span><br><span class="line">  pod &#x27;AFNetworking&#x27;, :path =&gt;&#x27;xxx&#x27;</span><br><span class="line">end</span><br><span class="line">target &#x27;name1&#x27; do </span><br><span class="line">  # 第三方库</span><br><span class="line">  pod &#x27;AFNetworking&#x27;, :path =&gt;&#x27;xxx&#x27;</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-podfile-%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/" data-id="cuidhsvW4U5YCw4vaHLjgaibK" data-title="【iOS开发】-podfile-高级用法" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】-the-file-&#39;xxx-app&#39;-couldn&#39;t-be-opened-because-you-do" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-the-file-'xxx-app'-couldn't-be-opened-because-you-do/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-the-file-'xxx-app'-couldn't-be-opened-because-you-do/">【iOS开发】-the-file-&#39;xxx-app&#39;-couldn&#39;t-be-opened-because-you-don&#39;t-have-p</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>请确认这里是不是有4个架构，我出现此问题是因为我删除了”arm64“<br><img src="https://upload-images.jianshu.io/upload_images/2791393-47d1e65b00340061.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-the-file-'xxx-app'-couldn't-be-opened-because-you-do/" data-id="cuidnfC9qblmkRcYGaMxEG78N" data-title="【iOS开发】-the-file-&#39;xxx-app&#39;-couldn&#39;t-be-opened-because-you-don&#39;t-have-p" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】CoreMotion-MotionThread-crash排查" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91CoreMotion-MotionThread-crash%E6%8E%92%E6%9F%A5/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91CoreMotion-MotionThread-crash%E6%8E%92%E6%9F%A5/">【iOS开发】CoreMotion-MotionThread-crash排查</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>#背景 </p>
+<p>程序开发都会有BUG,有大有小. crash问题视客户端需要重点关注的一个点.客户端有一个遗留的crash问题没有解决.现将排查过程记录下来,希望尽快解决问题</p>
+<p>#问题描述<br>客户端有一个crash问题一直没有解决.</p>
+<p>##错误原因<br>Attempted to dereference garbage pointer 0xab.<br>翻译: 试图间接引用垃圾指针地址0xab.<br>应该是:野指针访问</p>
+<p>##海神崩溃堆栈:<br><img src="https://upload-images.jianshu.io/upload_images/2791393-dde69e05a4561f33.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<pre><code>0 CoreMotion CLClientCreateIso6709Notation (in CoreMotion) + 206336
+1 CoreMotion CLClientCreateIso6709Notation (in CoreMotion) + 206300
+2 CoreMotion CLClientCreateIso6709Notation (in CoreMotion) + 190264 
+3 CoreMotion CLShouldDisplayEEDUI (in CoreMotion) + 309872
+4 IOKit _iohideventsystem_copy_event_from_virtual_service (in IOKit) + 292
+5 CoreFoundation _CFXNotificationCenterCreate (in CoreFoundation) + 48
+6 CoreFoundation -[__NSSetI containsObject:] (in CoreFoundation) + 276
+7 CoreFoundation __NSArrayGetIndexPassingTest (in CoreFoundation) + 588
+8 CoreFoundation CFRunLoopTimerGetInterval (in CoreFoundation) + 36
+9 CoreFoundation CFRunLoopObserverInvalidate (in CoreFoundation) + 228
+10 CoreFoundation CFRunLoopTimerInvalidate (in CoreFoundation) + 344
+11 CoreMotion CLClientCreateIso6709Notation (in CoreMotion) + 211692
+12 libsystem_pthread.dylib pthread_rwlock_wrlock$VARIANT$mp (in libsystem_pthread.dylib) + 60
+</code></pre>
+<p>#排查过程<br>#0 根据错误原因发现是访问了野指针</p>
+<blockquote>
+<p>小结: 大致方向是内存管理的问题<br>#1 根据堆栈信息发现是崩溃在了CoreMotion的线程,而且堆栈信息内没有任何客户端调用的代码逻辑<br>小结: 不是客户端直接执行方法引起的崩溃,应该是客户端在运行过程中,系统在调用CoreMotion的底层代码时,引起了崩溃<br>#2 去掉首页列表的重力感应图片<br>CoreMotion是苹果的重力感应库,项目内有两个地方使用到了这个, 一个是拍摄页面,一个是首页列表的重力感应图片<br>结果: crash情况没有任何好转,排除首页列表的嫌疑<br>#3 拍摄页面<br>##3.1 查看 ‘进入’ 拍摄页面后线程情况</p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/2791393-2a01d641d40440dd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="线程情况.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2791393-38c42f330516234b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="内存情况.png"><br>我们发现: </p>
+<blockquote>
+<p>1 拍摄页面会创建线程 com.apple.CoreMotion.MotionThread ,这个线程是crash线程<br>2 这个线程是ARSession自主创建的<br><img src="https://upload-images.jianshu.io/upload_images/2791393-8c6d53559cfc477c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+</blockquote>
+<p>##3.2 查看 ‘退出’ 拍摄页面后线程情况<br><img src="https://upload-images.jianshu.io/upload_images/2791393-894f3bc5f6412557.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=" &#39;退出&#39; 拍摄页面后线程.png"><br>我们发现: </p>
+<blockquote>
+<p>1 拍摄页面会创建线程 com.apple.CoreMotion.MotionThread 没有停止</p>
+</blockquote>
+<p>##3.3 猜想<br> 1 会不会是线程没有关闭导致的问题<br> 2 能不能通过停止session自动释放此线程</p>
+<p>##3.4 尝试<br>  1 在退出拍摄页面的时候对session进行释放<br>  2 能不能通过停止session自动释放此线程: 不能,<br>     猜测可能是苹果的一个机制,为了下次更快速启动ARSession</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91CoreMotion-MotionThread-crash%E6%8E%92%E6%9F%A5/" data-id="cuidoG1cRroN3m04Mme6bGiXf" data-title="【iOS开发】CoreMotion-MotionThread-crash排查" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】SDK开发之podspec内执行脚本" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E5%86%85%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E5%86%85%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC/">【iOS开发】SDK开发之podspec内执行脚本</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>  本系列是SDK打包的实践，主要解决一下3个问题，本篇是第三篇。<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">【iOS开发】SDK开发之编译c&#x2F;c++</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/daeaf5728100?v=1742283697172">【iOS开发】SDK开发之podspec编写</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/99ca9803cb48?v=1742283732210">【iOS开发】SDK开发之podspec内执行脚本</a></p>
+<p>上篇文章podsec内的framework是cmake编译出来的，到目前为止app内使用pod引入sdk需要两步：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 使用cmake编译sdk</span><br><span class="line">2 cd 到podfile所在目录</span><br><span class="line">   添加pod依赖</span><br><span class="line">   pod install</span><br></pre></td></tr></table></figure>
+<p>有没有可能把两步合并呢？👇🏻向下看</p>
+<h1 id="打包脚本合并到podspec中"><a href="#打包脚本合并到podspec中" class="headerlink" title="打包脚本合并到podspec中"></a>打包脚本合并到podspec中</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">system &lt;&lt;-SCRIPT</span><br><span class="line">mkdir build &amp;&amp; cd build</span><br><span class="line">cmake -G Xcode .. -B .</span><br><span class="line">env=&quot;Release&quot;</span><br><span class="line">xcodebuild -target MobilePoseAlign -configuration &quot;$env&quot;</span><br><span class="line">SCRIPT</span><br><span class="line"># 如果执行 xcodebuild 失败, 直接报错, 终止打包流程</span><br><span class="line">raise &quot;xcodebuild failed!&quot; unless $?.success?</span><br><span class="line">   </span><br><span class="line">Pod::Spec.new do |s|</span><br><span class="line">  s.name             = &#x27;sdkName&#x27;</span><br><span class="line">  s.version         = &quot;1.0.0&quot;</span><br><span class="line">  s.summary          = &#x27;***&#x27;</span><br><span class="line">  s.description      = &quot;***.&quot;</span><br><span class="line">  s.homepage         = &quot;**&quot;</span><br><span class="line">  s.license          = &#123; :type =&gt; &#x27;MIT&#x27;, :file =&gt; &#x27;LICENSE&#x27; &#125;</span><br><span class="line">  s.author           = &#123; &#x27;lq&#x27; =&gt; &#x27;**&#x27; &#125;</span><br><span class="line">  s.source           = &#123; :git =&gt; &quot;****&quot;, :tag =&gt; s.name.to_s + &quot;-&quot; + s.version.to_s &#125;</span><br><span class="line">  s.frameworks = &quot;AVFoundation&quot;, &quot;Foundation&quot;, &quot;Metal&quot;, &quot;CoreMedia&quot;</span><br><span class="line">  s.libraries = &quot;c++&quot;,&quot;z&quot;</span><br><span class="line">  s.preserve_paths = &quot;ios/build/Debug-iphoneos/**/*&quot;, &quot;ios/algorithms/**/data/**/*&quot;, &quot;3rd/iOS/lib/**/*.framework/**/*&quot;, &quot;3rd/iOS/lib/*.framework/**/*&quot;, &quot;3rd/iOS/dependence/png/*&quot;</span><br><span class="line">  s.resource_bundle = &#123; &#x27;sdkName&#x27; =&gt; &quot;ios/algorithms/**/data/*&quot; &#125;</span><br><span class="line">  s.public_header_files = &quot;3rd/iOS/dependence/png/*.h&quot;</span><br><span class="line">  s.ios.deployment_target = &#x27;9.0&#x27;</span><br><span class="line"> s.vendored_frameworks = &quot;ios/Debug-iphoneos/Release/*.framework&quot;,&quot;ios/build/Debug-iphoneos/Release/*.framework&quot;, &quot;3rd/iOS/lib/**/*.framework&quot;, &quot;3rd/iOS/lib/*.framework&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E5%86%85%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC/" data-id="cuidjLIvcZq89EdRH1vGjqurK" data-title="【iOS开发】SDK开发之podspec内执行脚本" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】SDK开发之podspec编写" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E7%BC%96%E5%86%99/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E7%BC%96%E5%86%99/">【iOS开发】SDK开发之podspec编写</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>#介绍<br>  本系列是SDK打包的实践，主要解决一下3个问题，本篇是第二篇。<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">【iOS开发】SDK开发之编译c&#x2F;c++</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/daeaf5728100?v=1742283697172">【iOS开发】SDK开发之podspec编写</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/99ca9803cb48?v=1742283732210">【iOS开发】SDK开发之podspec内执行脚本</a></p>
+<p>#本期问题</p>
+<ul>
+<li>APP内使用cocoapods管理第三方库，所以需要自己写podspec并发布到私有repo</li>
+<li>podspec嵌入打包脚本</li>
+</ul>
+<p>##podspec编写：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new do |s|</span><br><span class="line">  s.name             = &#x27;sdkName&#x27;</span><br><span class="line">  s.version         = &quot;1.0.0&quot;</span><br><span class="line">  s.summary          = &#x27;***&#x27;</span><br><span class="line">  s.description      = &quot;***.&quot;</span><br><span class="line">  s.homepage         = &quot;**&quot;</span><br><span class="line">  s.license          = &#123; :type =&gt; &#x27;MIT&#x27;, :file =&gt; &#x27;LICENSE&#x27; &#125;</span><br><span class="line">  s.author           = &#123; &#x27;lq&#x27; =&gt; &#x27;**&#x27; &#125;</span><br><span class="line">  s.source           = &#123; :git =&gt; &quot;****&quot;, :tag =&gt; s.name.to_s + &quot;-&quot; + s.version.to_s &#125;</span><br><span class="line">  s.frameworks = &quot;AVFoundation&quot;, &quot;Foundation&quot;, &quot;Metal&quot;, &quot;CoreMedia&quot;</span><br><span class="line">  s.libraries = &quot;c++&quot;,&quot;z&quot;</span><br><span class="line">  s.preserve_paths = &quot;ios/build/Debug-iphoneos/**/*&quot;, &quot;ios/algorithms/**/data/**/*&quot;, &quot;3rd/iOS/lib/**/*.framework/**/*&quot;, &quot;3rd/iOS/lib/*.framework/**/*&quot;, &quot;3rd/iOS/dependence/png/*&quot;</span><br><span class="line">  s.resource_bundle = &#123; &#x27;sdkName&#x27; =&gt; &quot;ios/algorithms/**/data/*&quot; &#125;</span><br><span class="line">  s.public_header_files = &quot;3rd/iOS/dependence/png/*.h&quot;</span><br><span class="line">  s.ios.deployment_target = &#x27;9.0&#x27;</span><br><span class="line"> s.vendored_frameworks = &quot;ios/Debug-iphoneos/Release/*.framework&quot;,&quot;ios/build/Debug-iphoneos/Release/*.framework&quot;, &quot;3rd/iOS/lib/**/*.framework&quot;, &quot;3rd/iOS/lib/*.framework&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>这个podspec意思是把很多framework加进来（没有源文件），这些framework是由<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">上一篇</a>文章cmake编译出来的</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E7%BC%96%E5%86%99/" data-id="cuid51Q56LMCF75Immdunq48K" data-title="【iOS开发】SDK开发之podspec编写" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】SDK开发之编译c-c++" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8B%E7%BC%96%E8%AF%91c-c++/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8B%E7%BC%96%E8%AF%91c-c++/">【iOS开发】SDK开发之编译c-c++</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>#介绍<br>  本系列是SDK打包的实践，主要解决一下3个问题，本篇是第一篇。<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">【iOS开发】SDK开发之编译c&#x2F;c++</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/daeaf5728100?v=1742283697172">【iOS开发】SDK开发之podspec编写</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/99ca9803cb48?v=1742283732210">【iOS开发】SDK开发之podspec内执行脚本</a></p>
+<p>#本期问题<br>  SDK的源码是由其他团队编写，使用的语言为c&#x2F;c++，且会依赖第三方的库(也是c&#x2F;c++编写)。<br>考虑有以下几种方案：1 Xcode编译  2 cmake编译</p>
+<p>##一 Xcode编译步骤</p>
+<p>###1 使用Xcode创建Framework项目<br><img src="https://upload-images.jianshu.io/upload_images/2791393-cfefb662c3c5f75b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>2 添加所有使用的c&#x2F;c++文件（依赖的第三方的文件）<br>3 调整暴露的头文件public headers<br>4 编译（command+B）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">优点：</span><br><span class="line">Xcode原生IDE加持，可视化好，操作简单</span><br><span class="line">缺点：</span><br><span class="line">1 需要运行在mac电脑上（iOS开发肯定有mac电脑，but如果需要编写团队来编译就不行了，因为他们是linux环境）</span><br><span class="line">2 第三方依赖需要我们手动配置（尤其在依赖文件有变化的时候，需要跨团队沟通）</span><br></pre></td></tr></table></figure>
+
+<p>##二 cmake编译步骤<br>1 编写cmake脚本<br>2 执行cmake脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">优点：</span><br><span class="line">1 运行在任何有cmake环境的电脑（linux/mac均可）</span><br><span class="line">2 cmake支持嵌套，直接嵌套使用编写团队使用的cmake</span><br><span class="line">3 脚本编写简单，维护成本低</span><br><span class="line">4 可接CI/CD</span><br></pre></td></tr></table></figure>
+<p>#最后附上打包SDK的cmake(嵌套的cmake就不贴了)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.14)</span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line">set(CMAKE_C_COMPILER &quot;clang&quot;)</span><br><span class="line"></span><br><span class="line">message(STATUS &quot;compile iOS&quot;)</span><br><span class="line"># 设置工程名称</span><br><span class="line">project(HelloFramework)</span><br><span class="line">set(BUILD_SHARED_LIBS ON)</span><br><span class="line"># 设置目标平台为 iOS</span><br><span class="line">set(CMAKE_SYSTEM_NAME Darwin)</span><br><span class="line">set(CMAKE_OSX_SYSROOT iphoneos)</span><br><span class="line">set(CMAKE_OSX_ARCHITECTURES arm64)</span><br><span class="line"></span><br><span class="line"># 设置生成的 iOS 最低版本，假设是 iOS 11.0</span><br><span class="line">set(CMAKE_OSX_DEPLOYMENT_TARGET &quot;11.0&quot;)</span><br><span class="line"></span><br><span class="line"># 设置为生成 Framework 类型</span><br><span class="line">set(CMAKE_MACOSX_BUNDLE YES)</span><br><span class="line">set(CMAKE_FRAMEWORK TRUE)</span><br><span class="line"></span><br><span class="line"># 添加源文件</span><br><span class="line">set(PUBLIC_INTERFACE $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/algorithms/mobie_lib_test/src/align_interface)</span><br><span class="line">set(SOURCE_FILES STATIC $&#123;PUBLIC_INTERFACE&#125;/incremental_align_c_api.h)</span><br><span class="line"></span><br><span class="line">set(CMAKE_MODULE_PATH $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/dependence/eigen337/cmake)</span><br><span class="line">set(EIGEN3_INCLUDE_DIR $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/dependence/eigen337)</span><br><span class="line">message(&quot;CMAKE_CURRENT_SOURCE_DIR&quot; $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;)</span><br><span class="line"></span><br><span class="line">find_package(Eigen3 REQUIRED)</span><br><span class="line">include_directories($&#123;EIGEN3_INCLUDE_DIR&#125;)</span><br><span class="line">message(&quot;EIGEN3_INCLUDE_DIR&quot; $&#123;EIGEN3_INCLUDE_DIR&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set(OpenCV_LIBS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/opencv2.framework/opencv2)</span><br><span class="line">set(OpenCV_INCLUDE_DIRS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/opencv2.framework/Headers)</span><br><span class="line">message(&quot;OpenCV_INCLUDE_DIRS&quot; $&#123;OpenCV_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set(Boost_LIBRARIES $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/boost/libboosttt.a)</span><br><span class="line">set(Boost_INCLUDE_DIRS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/boost/include)</span><br><span class="line">include_directories($&#123;Boost_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line">set(MNN_LIBS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/MNN.framework/MNN)</span><br><span class="line">set(MNN_INCLUDE_DIRS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/MNN.framework/Headers)</span><br><span class="line">message(&quot;MNN_INCLUDE_DIRS&quot; $&#123;MNN_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line">set(GLOG_INCLUDE_DIRS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/ceres/include/ceres/internal/miniglog  $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/ceres/include)</span><br><span class="line">message(&quot;GLOG_INCLUDE_DIRS&quot; $&#123;GLOG_INCLUDE_DIRS&#125;)</span><br><span class="line">include_directories($&#123;GLOG_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line">set(G2O_INCLUDE_DIRS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/g2o)</span><br><span class="line">include_directories($&#123;G2O_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line">set(PNG_INCLUDE_DIRS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/dependence/png)</span><br><span class="line">include_directories($&#123;PNG_INCLUDE_DIRS&#125;)</span><br><span class="line">message(&quot;PNG_INCLUDE_DIRS&quot; $&#123;PNG_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#设置libg2</span><br><span class="line">include_directories($&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/algorithms/mobile_pose_align_lib/third_part/g2o_tool/g2o/core)</span><br><span class="line">include_directories($&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/algorithms/mobile_pose_align_lib/third_part/g2o_tool) add_subdirectory($&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/algorithms/mobile_pose_align_lib/third_part/g2o_tool)</span><br><span class="line"></span><br><span class="line">add_subdirectory(algorithms)</span><br><span class="line"># # 设置输出路径（可选）</span><br><span class="line">set(CMAKE_LIBRARY_OUTPUT_DIRECTORY $&#123;CMAKE_BINARY_DIR&#125;/frameworks)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8B%E7%BC%96%E8%AF%91c-c++/" data-id="cuidI3FNLvlTu9UPBPF0yJrPJ" data-title="【iOS开发】SDK开发之编译c-c++" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】shell脚本打包SDK，并整合" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91shell%E8%84%9A%E6%9C%AC%E6%89%93%E5%8C%85SDK%EF%BC%8C%E5%B9%B6%E6%95%B4%E5%90%88/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91shell%E8%84%9A%E6%9C%AC%E6%89%93%E5%8C%85SDK%EF%BC%8C%E5%B9%B6%E6%95%B4%E5%90%88/">【iOS开发】shell脚本打包SDK，并整合</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近有需求需要我们打包很多<code>framework</code>(大概10多个,另外还有5个bundle),一直手动打包费时费力,还有可能会出错, 想到可以使用<code>shell</code>脚本来打包.</p>
+<p>#本文知识点:</p>
+<h2 id="变量定义-查看变量内容"><a href="#变量定义-查看变量内容" class="headerlink" title="变量定义,查看变量内容"></a>变量定义,查看变量内容</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">path=&quot;/Users/xxx/Library/Developer/Xcode/DerivedData&quot;</span><br><span class="line">echo &quot;打包开始: $path&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="删除文件夹"><a href="#删除文件夹" class="headerlink" title="删除文件夹"></a>删除文件夹</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf &quot;$path&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="杀掉进程"><a href="#杀掉进程" class="headerlink" title="杀掉进程"></a>杀掉进程</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#杀掉 Xcode</span><br><span class="line">pkill Xcode</span><br></pre></td></tr></table></figure>
+<h2 id="读取函数入参"><a href="#读取函数入参" class="headerlink" title="读取函数入参"></a>读取函数入参</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">packaging()&#123;</span><br><span class="line">#工程名称(Project的名字) </span><br><span class="line">#$1 表示第一个参数CaptureSDK</span><br><span class="line">ProjectName=$1</span><br><span class="line">#scheme名字 -</span><br><span class="line">#$2 表示第二个参数CaptureSDKScheme</span><br><span class="line">Scheme=$2</span><br><span class="line">&#125;</span><br><span class="line">packaging &quot;CaptureSDK&quot; &quot;CaptureSDKScheme&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="查找文件"><a href="#查找文件" class="headerlink" title="查找文件"></a>查找文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#其中“**”是通配符, 下边代码代表“CaptureSDK-”开头的文件</span><br><span class="line">find $path -name &quot;CaptureSDK-*&quot;</span><br><span class="line"></span><br><span class="line">#-maxdepth 1 代表查找深度1也就是在path目录下找文件,不在下一级目录查找</span><br><span class="line">find $path -name &quot;CaptureSDK-*&quot; -maxdepth 1</span><br></pre></td></tr></table></figure>
+<h2 id="for循环遍历"><a href="#for循环遍历" class="headerlink" title="for循环遍历"></a>for循环遍历</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">typeArray=&quot;all</span><br><span class="line">all_framework</span><br><span class="line">all_bundle</span><br><span class="line">phone</span><br><span class="line">gimbal</span><br><span class="line">galois</span><br><span class="line">camera</span><br><span class="line">phone_bundle</span><br><span class="line">gimbal_bundle</span><br><span class="line">galois_bundle</span><br><span class="line">camera_bundle&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i in $&#123;typeArray[@]&#125;</span><br><span class="line">do</span><br><span class="line">    echo &#x27;$i&#x27;</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<h2 id="if-语句"><a href="#if-语句" class="headerlink" title="if 语句"></a>if 语句</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#if [ condition ];then,condition所有两边和中括号之前必须有空格</span><br><span class="line">c=1</span><br><span class="line">    if [ $c == 0 ];then</span><br><span class="line">        echo &quot;不支持的参数&quot;</span><br><span class="line">        return</span><br><span class="line">    fi</span><br></pre></td></tr></table></figure>
+<h2 id="等待用户输入"><a href="#等待用户输入" class="headerlink" title="等待用户输入"></a>等待用户输入</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">read -p &quot;请输入:&quot; CURRENTTYPE</span><br><span class="line">echo &quot;输入了: $CURRENTTYPE&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="获取系统时间-年月日时分秒"><a href="#获取系统时间-年月日时分秒" class="headerlink" title="获取系统时间 年月日时分秒"></a>获取系统时间 年月日时分秒</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nowDate=$(date &quot;+%Y-%m-%d %H:%M:%S&quot;)</span><br><span class="line">echo &quot;nowData:$nowDate&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="监听control-c中止"><a href="#监听control-c中止" class="headerlink" title="监听control+c中止"></a>监听control+c中止</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#control+c 中止后当前函数返回</span><br><span class="line">trap return INT</span><br></pre></td></tr></table></figure>
+<h2 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp $sourecepath $toPath</span><br></pre></td></tr></table></figure>
+<h2 id="文件夹复制"><a href="#文件夹复制" class="headerlink" title="文件夹复制"></a>文件夹复制</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r $sourecepath $toPath</span><br></pre></td></tr></table></figure>
+<h2 id="播放音频文件"><a href="#播放音频文件" class="headerlink" title="播放音频文件"></a>播放音频文件</h2><p>   brew 安装 SoX</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#终端命令</span><br><span class="line">brew install SoX</span><br><span class="line"></span><br><span class="line">#播放,在脚本里写, 播放当前目录下success.mp3</span><br><span class="line">play success.mp3</span><br></pre></td></tr></table></figure>
+<hr>
+<p>以上为脚本内使用到的<code>知识点</code>,想深入学习的自己查资料吧</p>
+<p>#目标</p>
+<ul>
+<li>打包framework</li>
+</ul>
+<p>#方法<br>使用xcodebuild build</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild build \</span><br><span class="line">-workspace &quot;$XXX.xcworkspace&quot; \</span><br><span class="line">-scheme &quot;$XXX&quot; \</span><br><span class="line">-configuration &quot;$XXX&quot;</span><br></pre></td></tr></table></figure>
+
+<p>好,大功告成! <strong>别急这是只是1%….</strong></p>
+<p>#优化</p>
+<ol>
+<li>xcode有的时候缓存会出现奇怪的问题,所以我们要clean一下</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild clean \</span><br><span class="line">-workspace &quot;$XXX.xcworkspace&quot; \</span><br><span class="line">-scheme &quot;$XXX&quot; \</span><br><span class="line">-configuration &quot;$XXX&quot;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>framework工程使用cocopods依赖了第三方SDK,要pod update</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod update</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>打包完毕之后,需要把framework挪动到一个文件夹,方便分发</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp $sourecepath $toPath</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>打包完毕播放提示音</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">play success.mp3</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>打包参数,打包部分framework</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">allType=&quot;</span><br><span class="line">all:                    all framework and bundle;</span><br><span class="line">all_framework:          all framework;</span><br><span class="line">all_bundle:             all bundle;</span><br><span class="line">&quot;</span><br><span class="line">typeArray=&quot;all</span><br><span class="line">all_framework</span><br><span class="line">all_bundle&quot;</span><br><span class="line"></span><br><span class="line">read -p &quot;请输入打包文件,可选值有: $allType&quot; CURRENTTYPE</span><br><span class="line"></span><br><span class="line">#echo &quot;输入了: $CURRENTTYPE&quot;</span><br><span class="line"></span><br><span class="line">c=0</span><br><span class="line"></span><br><span class="line">for j in $&#123;CURRENTTYPE[@]&#125;</span><br><span class="line"></span><br><span class="line">do</span><br><span class="line"></span><br><span class="line">    for i in $&#123;typeArray[@]&#125;</span><br><span class="line">    do</span><br><span class="line">        if [ $i == $j ]; then</span><br><span class="line">        c=1</span><br><span class="line">        break</span><br><span class="line">        fi</span><br><span class="line">    done</span><br><span class="line">    if [ $c == 0 ];then</span><br><span class="line">        echo &quot;不支持的参数 $j&quot;</span><br><span class="line">        return</span><br><span class="line">    fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>输出时间</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nowDate=$(date &quot;+%Y-%m-%d %H:%M:%S&quot;)</span><br><span class="line">echo &quot;nowData:$nowDate&quot;</span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li>打包过程中control+C中断之后停止</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trap return INT</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91shell%E8%84%9A%E6%9C%AC%E6%89%93%E5%8C%85SDK%EF%BC%8C%E5%B9%B6%E6%95%B4%E5%90%88/" data-id="cuidvufy6t4u11imCP-Jfiv7H" data-title="【iOS开发】shell脚本打包SDK，并整合" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】如果让AI把figma的UI稿1：1还原出来" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%A6%82%E6%9E%9C%E8%AE%A9AI%E6%8A%8Afigma%E7%9A%84UI%E7%A8%BF1%EF%BC%9A1%E8%BF%98%E5%8E%9F%E5%87%BA%E6%9D%A5/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%A6%82%E6%9E%9C%E8%AE%A9AI%E6%8A%8Afigma%E7%9A%84UI%E7%A8%BF1%EF%BC%9A1%E8%BF%98%E5%8E%9F%E5%87%BA%E6%9D%A5/">【iOS开发】如果让AI把figma的UI稿1：1还原出来</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>一款好用的免费 figma MCP：<a target="_blank" rel="noopener" href="https://github.com/GLips/Figma-Context-MCP">https://github.com/GLips/Figma-Context-MCP</a></p>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><ol>
+<li>打开 IDE 的聊天（例如：Cursor 的代理模式）。</li>
+<li>粘贴 Figma 文件、框架或组的链接。</li>
+<li>要求 Cursor 对 Figma 文件执行某些操作（例如：实现设计）。</li>
+<li>Cursor 将从 Figma 获取相关元数据并使用它来编写代码。</li>
+</ol>
+<p>此 MCP 服务器专为与 Cursor 一起使用而设计。在从 <a target="_blank" rel="noopener" href="https://www.figma.com/developers/api">Figma API</a> 响应上下文之前，它会简化和翻译响应，以便只向模型提供最相关的布局和样式信息。</p>
+<p>减少提供给模型的上下文数量有助于提高 AI 的准确性并使响应更具相关性。</p>
+<h2 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h2><p>许多代码编辑器和其他 AI 客户端使用配置文件来管理 MCP 服务器。</p>
+<p>可以通过将以下内容添加到配置文件中来设置 <code>figma-developer-mcp</code> 服务器。</p>
+<blockquote>
+<p>注意：您需要创建 Figma 访问令牌才能使用此服务器。有关如何创建 Figma API 访问令牌的说明，请参见<a target="_blank" rel="noopener" href="https://help.figma.com/hc/en-us/articles/8085703771159-Manage-personal-access-tokens">此处</a>。</p>
+</blockquote>
+<h3 id="MacOS-Linux"><a href="#MacOS-Linux" class="headerlink" title="MacOS &#x2F; Linux"></a>MacOS &#x2F; Linux</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;mcpServers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;Framelink MCP for Figma&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npx&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;-y&quot;</span><span class="punctuation">,</span> <span class="string">&quot;figma-developer-mcp&quot;</span><span class="punctuation">,</span> <span class="string">&quot;--figma-api-key=YOUR-KEY&quot;</span><span class="punctuation">,</span> <span class="string">&quot;--stdio&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;mcpServers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;Framelink MCP for Figma&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cmd&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;/c&quot;</span><span class="punctuation">,</span> <span class="string">&quot;npx&quot;</span><span class="punctuation">,</span> <span class="string">&quot;-y&quot;</span><span class="punctuation">,</span> <span class="string">&quot;figma-developer-mcp&quot;</span><span class="punctuation">,</span> <span class="string">&quot;--figma-api-key=YOUR-KEY&quot;</span><span class="punctuation">,</span> <span class="string">&quot;--stdio&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>或者您可以在 <code>env</code> 字段中设置 <code>FIGMA_API_KEY</code> 和 <code>PORT</code>。</p>
+<p>有关如何配置 Framelink MCP for Figma 服务器的更多信息，请参阅 <a target="_blank" rel="noopener" href="https://www.framelink.ai/docs/quickstart?utm_source=github&utm_medium=readme&utm_campaign=readme">Framelink 文档</a>。</p>
+<h2 id="了解更多"><a href="#了解更多" class="headerlink" title="了解更多"></a>了解更多</h2><p>Framelink MCP for Figma 服务器简单但功能强大。在 <a target="_blank" rel="noopener" href="https://framelink.ai/?utm_source=github&utm_medium=readme&utm_campaign=readme">Framelink</a> 网站上了解更多信息。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%A6%82%E6%9E%9C%E8%AE%A9AI%E6%8A%8Afigma%E7%9A%84UI%E7%A8%BF1%EF%BC%9A1%E8%BF%98%E5%8E%9F%E5%87%BA%E6%9D%A5/" data-id="cuidAnKRZh31boXFi7sQumGfg" data-title="【iOS开发】如果让AI把figma的UI稿1：1还原出来" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/hexo-site/page/8/">&laquo; 上一页</a><a class="page-number" href="/hexo-site/">1</a><span class="space">&hellip;</span><a class="page-number" href="/hexo-site/page/7/">7</a><a class="page-number" href="/hexo-site/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/hexo-site/page/10/">10</a><a class="page-number" href="/hexo-site/page/11/">11</a><a class="extend next" rel="next" href="/hexo-site/page/10/">下一页 &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/%E6%95%99%E7%A8%8B/" rel="tag">教程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/hexo-site/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/hexo-site/tags/%E6%95%99%E7%A8%8B/" style="font-size: 10px;">教程</a> <a href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 20px;">笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2018/04/">四月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E4%B8%AD%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E7%9A%84%E8%AF%B4%E6%98%8E%E4%BB%A5%E5%8F%8A%E7%94%A8%E6%B3%95/">OC中按位枚举的说明以及用法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 博主<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/hexo-site/" class="mobile-nav-link">Home</a>
+  
+    <a href="/hexo-site/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/hexo-site/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/hexo-site/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/hexo-site/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

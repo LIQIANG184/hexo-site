@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>我的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="基于 Hexo 的个人静态博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="我的博客">
+<meta property="og:url" content="https://liqiang184.github.io/hexo-site/page/5/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="基于 Hexo 的个人静态博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="博主">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/hexo-site/atom.xml" title="我的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/hexo-site/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/hexo-site/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/hexo-site/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/hexo-site/" id="logo">我的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/hexo-site/" id="subtitle">记录与分享</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/hexo-site/">Home</a>
+        
+          <a class="main-nav-link" href="/hexo-site/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/hexo-site/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://liqiang184.github.io/hexo-site"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-2026-03-18-iOS工具-解压缩" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%B7%A5%E5%85%B7-%E8%A7%A3%E5%8E%8B%E7%BC%A9/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%B7%A5%E5%85%B7-%E8%A7%A3%E5%8E%8B%E7%BC%A9/">iOS工具--解压缩</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近的项目中涉及到了将zip文件从服务上下载下来，然后解压使用。搜索了一下发现有一个压缩与解压zip文件的第三方“SSZipArchive”：<a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=https://github.com/ZipArchive/ZipArchive">https://github.com/ZipArchive/ZipArchive</a> 是用C语言实现的，包装用于OC与swift.</p>
+<h5 id="一、在使用过程中遇到过几个坑："><a href="#一、在使用过程中遇到过几个坑：" class="headerlink" title="一、在使用过程中遇到过几个坑："></a>一、在使用过程中遇到过几个坑：</h5><ol>
+<li>导入头文件冲突，我在pch文件里面导入了一些OC的头文件，而SSZipArchive是由C语言实现的，所以报了很多的系统错误。解决办法：将pch里面的导入头文件代码放在<br>“#ifdef <strong>OBJC</strong><br>&#x2F;&#x2F;导入头文件<br>“#endif 里面”<br>或者删除里面导入头文件的代码，去具体需要的文件里面导入，有一点暴力哈。</li>
+<li>我每一次下载的文件样式都是一样的，所以希望覆盖式的解压，一开始没有注意以为它只有解压方法：+ (BOOL)unzipFileAtPath:(NSString *)path toDestination:(NSString *)destination;<br>就自己去判定是否存在然后删除，后来去仔细的看源码才发现它是有带是否覆盖式解压的方法：+ (BOOL)unzipFileAtPath:(NSString *)path toDestination:(NSString *)destination overwrite:(BOOL)overwrite password:(NSString *)password error:(NSError * *)error;<br>当然它还有很多方法，包括带有代理方法，带有密码，带有完成后的block回调方法，<br><a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=http://blog.csdn.net/zhengang007/article/details/51019479">http://blog.csdn.net/zhengang007/article/details/51019479</a><br>这里有每一个方法的详细说明。</li>
+</ol>
+<h5 id="二、我的实现："><a href="#二、我的实现：" class="headerlink" title="二、我的实现："></a>二、我的实现：</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">- (void)downFileFromServer&#123;</span><br><span class="line">//远程地址</span><br><span class="line">NSURL *URL = [NSURL URLWithString:DOWN_URL];</span><br><span class="line">//默认配置</span><br><span class="line">NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];</span><br><span class="line">//AFN3.0+基于封住URLSession的句柄</span><br><span class="line">AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];</span><br><span class="line">//请求</span><br><span class="line">NSURLRequest *request = [NSURLRequest requestWithURL:URL];</span><br><span class="line">//下载Task操作</span><br><span class="line">_downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) &#123;</span><br><span class="line">// 下载进度</span><br><span class="line">&#125; destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) &#123;</span><br><span class="line">//- block的返回值, 要求返回一个URL, 返回的这个URL就是文件的位置的路径</span><br><span class="line">NSString *cachesPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];</span><br><span class="line">NSString *path = [cachesPath stringByAppendingPathComponent:response.suggestedFilename];</span><br><span class="line">return [NSURL fileURLWithPath:path];</span><br><span class="line">&#125; completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) &#123;</span><br><span class="line">//设置下载完成操作</span><br><span class="line">// filePath就是你下载文件的位置，你可以解压，也可以直接拿来使用</span><br><span class="line">NSString *imgFilePath = [filePath path];// 将NSURL转成NSString</span><br><span class="line">MyLog(@&quot;imgFilePath = %@&quot;,imgFilePath);</span><br><span class="line">NSArray *documentArray =  NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);</span><br><span class="line">NSString *path = [[documentArray lastObject] stringByAppendingPathComponent:@&quot;Preferences&quot;];</span><br><span class="line">[self releaseZipFilesWithUnzipFileAtPath:imgFilePath Destination:path];</span><br><span class="line">&#125;];</span><br><span class="line">[_downloadTask resume];</span><br><span class="line">&#125;</span><br><span class="line">// 解压</span><br><span class="line">- (void)releaseZipFilesWithUnzipFileAtPath:(NSString *)zipPath Destination:(NSString *)unzipPath&#123;</span><br><span class="line">NSError *error;</span><br><span class="line">if ([SSZipArchive unzipFileAtPath:zipPath toDestination:unzipPath overwrite:YES password:nil error:&amp;error delegate:self]) &#123;</span><br><span class="line">MyLog(@&quot;success&quot;);</span><br><span class="line">MyLog(@&quot;unzipPath = %@&quot;,unzipPath);</span><br><span class="line">&#125;else &#123;</span><br><span class="line">MyLog(@&quot;%@&quot;,error);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">#pragma mark - SSZipArchiveDelegate</span><br><span class="line">- (void)zipArchiveWillUnzipArchiveAtPath:(NSString *)path zipInfo:(unz_global_info)zipInfo &#123;</span><br><span class="line">MyLog(@&quot;将要解压。&quot;);</span><br><span class="line">&#125;</span><br><span class="line">- (void)zipArchiveDidUnzipArchiveAtPath:(NSString *)path zipInfo:(unz_global_info)zipInfo unzippedPath:(NSString *)unzippedPat uniqueId:(NSString *)uniqueId &#123;</span><br><span class="line">MyLog(@&quot;解压完成！&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当然还得遵守协议：SSZipArchiveDelegate<br>以上就是我使用SSZipArchive的体会，欢迎各位指正。</p>
+<p>作者：gavincarter<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e69d77d97a5e">https://www.jianshu.com/p/e69d77d97a5e</a><br>來源：简书<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%B7%A5%E5%85%B7-%E8%A7%A3%E5%8E%8B%E7%BC%A9/" data-id="cuid6VTFZx6Je6F1CUy5O-VFa" data-title="iOS工具--解压缩" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-AVPlayer教程(常用功能都在这里了)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/">iOS开发--AVPlayer教程(常用功能都在这里了)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>如果我只是简单的播放一个视频，而不需要考虑播放器的界面。iOS9.0 之前使用 MPMoviePlayerController, 或者内部自带一个 view 的 MPMoviePlayerViewController.  iOS9.0 之后，可以使用AVPictureInPictureController, AVPlayerViewController, 或者 WKWebView。</p>
+<p>以上系统提供的播放器由于高度的封装性， 使得自定义播放器变的很难。 所以，如果我需要自定义播放器样式的时候，可以使用 AVPlayer。 </p>
+<p>AVPlayer 存在于 AVFoundtion 中，更接近于底层，也更加灵活。<br><img src="http://upload-images.jianshu.io/upload_images/2791393-3ade0b22e8345e7f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1474352198387328.jpg"></p>
+<p>Representing and Using Media with AVFoundation<br>AVFoundtion 框架中主要使用 AVAsset<br> 类来展示媒体信息，比如： title， duration， size 等等。<br>AVAsset : 存储媒体信息的一个抽象类，不能直接使用。</p>
+<p>AVURLAsset : AVAsset 的一个子类，使用 URL 进行实例化，实例化对象包换 URL 对应视频资源的所有信息。</p>
+<p>AVPlayerItem :  有一个属性为 asset。起到观察和管理视频信息的作用。 比如，asset, tracks ， status， duration ，loadedTimeRange 等。</p>
+<p>我的理解是， AVPlayItem 相当于 Model 层，包含 Media 的信息和播放状态，并提供这些数据给视频观察者 比如：属性 asset，URL视频的信息. loadedTimeRanges,已缓冲进度。</p>
+<p>#AVPlayerItem 使用<br> 初始化</p>
+<p>playerItemWithURL或者 initWithURL:<br>在使用 AVPlayer 播放视频时，提供视频信息的是 AVPlayerItem，一个 AVPlayerItem 对应着一个URL视频资源。<br>初始化一个 AVPlayItem 对象后，其属性并不是马上就可以使用。我们必须确保 AVPlayerItem 已经被加载好了，可以播放了，才能使用。 毕竟凡是和网络扯上关系的都需要时间去加载。 那么，什么时候属性才能正常使用呢。 官方文档给出了解决方案：<br>直到 AVPlayerItem 的 status<br> 属性为 AVPlayerItemStatusReadyToPlay.</p>
+<p>使用 KVO 键值观察者，其属性。</p>
+<p>因此我们在使用的时候，使用 URL 初始化 AVPlayerItem 后，还要给它添加观察者。</p>
+<p>添加观察者</p>
+<p>AVPlayreItem 的属性需要当 status 为 ReadyToPlay 的时候才可以正常使用。<br><strong>观察status属性</strong><br>[_playerItem addObserver:self forKeyPath:@”status” options:(NSKeyValueObservingOptionNew) context:nil]; &#x2F;&#x2F; 观察status属性，<br><strong>观察loadedTimeRanges</strong><br>如果想做缓冲进度条，显示当前视频的缓存进度，则需要观察 loadedTimeRanges.<br>[_playerItem addObserver:self forKeyPath:@”loadedTimeRanges” options:NSKeyValueObservingOptionNew context:nil]; &#x2F;&#x2F; 观察缓冲进度</p>
+<p>#AVPlayer &amp; AVPlayerLayer<br><strong>AVPlayer创建方式</strong><br>AVPlayer 有三种创建方式：<br>init,initWithURL:,initWithPlayerItem:（URL，Item遍历构造器方法）<br>使用 AVPlayer 时需要注意，AVPlayer 本身并不能显示视频， 显示视频的是 AVPlayerLayer。 AVPlayerLayer 继承自 CALayer，添加到 view.layer 上就可以使用了。<br><strong>AVPlayerLayer创建方式</strong><br>AVPlayerLayer *playerLayer &#x3D; [AVPlayerLayer playerLayerWithPlayer:player];[superlayer addSublayer:playerLayer];</p>
+<p>AVPlayerLayer 显示视频，AVPlayerItem 提供视频信息， AVPlayer 管理和调控。 这是不是非常熟悉。 我觉得这里也体现了 MVC 的思想（虽然AVPlayer继承自NSObject）， 把响应层， 显示层， 信息层， 三层分离了。 明确了每层做的任务，使用起来就会更加得心应手。<br>使用 AVPlayer 的核心，在于 AVPlayer 和 AVPlayerItem， AVPlayerLayer 添加到视图的layer 上后，就没有什么事儿了。 思考一下，整个播放视频的步骤。</p>
+<p>首先，得到视频的URL</p>
+<p>根据URL创建AVPlayerItem</p>
+<p>把AVPlayerItem 提供给 AVPlayer</p>
+<p>AVPlayerLayer 显示视频。</p>
+<p>AVPlayer 控制视频， 播放， 暂停， 跳转 等等。</p>
+<p>播放过程中获取缓冲进度，获取播放进度。</p>
+<p>视频播放完成后做些什么，是暂停还是循环播放，还是获取最后一帧图像。</p>
+<p>播放步骤<br>#1.布局页面，初始化 AVPlayer 和 AVPlayerLayer<br> &#x2F;&#x2F; setAVPlayer</p>
+<pre><code>   self.player = [[AVPlayer alloc] init]; 
+   _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player]; 
+   [self.playerView.layer addSublayer:_playerLayer];
+</code></pre>
+<p>#2.根据 URL 获取 AVPayerItem，并替换 AVPlayer 的 AVPlayerItem<br>在第一步，布局初始化时，AVPlayer 并没有 AVPlayerItem，<br>AVPlayer 提供了<br>     - (void)replaceCurrentItemWithPlayerItem:(nullable AVPlayerItem *)item;<br>  方法，用于切换视频。</p>
+<pre><code> - (void)updatePlayerWithURL:(NSURL *)url {    
+ // create item 
+_playerItem = [AVPlayerItem playerItemWithURL:url]; 
+</code></pre>
+<p>    &#x2F;&#x2F; replaceCurrentItem  <br>    [_player  replaceCurrentItemWithPlayerItem:_playerItem];<br>    &#x2F;&#x2F; 注册观察者，通知<br>    [self addObserverAndNotification]; <br>    }<br>#3.KVO 获取视频信息， 观察缓冲进度<br>观察 AVPlayerItem 的 status属性，当状态变为 AVPlayerStatusReadyToPlay时才可以使用。也可以观察 loadedTimeRanges获取缓冲进度<br>注册观察者：</p>
+<pre><code>// 观察status属性
+</code></pre>
+<p>    [_playerItem addObserver:self forKeyPath:@”status” options:(NSKeyValueObservingOptionNew) context:nil]; </p>
+<p>执行观察者方法：</p>
+<pre><code>- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    AVPlayerItem *item = (AVPlayerItem *)object;
+    if ([keyPath isEqualToString:@&quot;status&quot;]) {
+         //获取更改后的状态
+        AVPlayerStatus status = [[change objectForKey:@&quot;new&quot;] intValue];
+        if (status == AVPlayerStatusReadyToPlay) {
+            CMTime duration = item.duration; // 获取视频长度
+            // 设置视频时间
+            [self setMaxDuration:CMTimeGetSeconds(duration)];
+             // 播放
+            [self play];
+        } else if (status == AVPlayerStatusFailed) {
+            NSLog(@&quot;AVPlayerStatusFailed&quot;);
+        } else {
+            NSLog(@&quot;AVPlayerStatusUnknown&quot;);
+        }
+    } else if ([keyPath isEqualToString:@&quot;loadedTimeRanges&quot;]) {
+         NSTimeInterval timeInterval = [self availableDurationRanges]; // 缓冲时间
+         CGFloat totalDuration = CMTimeGetSeconds(_playerItem.duration); // 总时间
+        [self.loadedProgress setProgress:timeInterval / totalDuration animated:YES]; // 更新缓冲条
+    }
+}
+</code></pre>
+<p>#4. 播放过程中响应：播放、 暂停、 跳转<br>AVPlayer 提供了 play , pause, 和 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler<br> 方法。<br>在看 AVPlayer 的 seekToTime 之前，先来认识一个结构体。</p>
+<p><strong>CMTime</strong> 是专门用于标识电影时间的结构体.</p>
+<pre><code>typedef struct{    
+    CMTimeValue    value;     // 帧数    
+    CMTimeScale    timescale;  // 帧率（影片每秒有几帧）    
+    CMTimeFlags    flags;            
+    CMTimeEpoch    epoch;
+} CMTime;
+</code></pre>
+<p>AVPlayerItem 的 duration 属性就是一个 CMTime 类型的数据。 如果我们想要获取影片的总秒数那么就可以用 duration.value &#x2F; duration.timeScale 计算出来。<br>也可以使用 CMTimeGetSeconds 函数<br><strong>CMTimeGetSeconds(CMtime time)</strong></p>
+<pre><code>double seconds = CMTimeGetSeconds(item.duration);  // 相当于 duration.value / duration.timeScale
+</code></pre>
+<p>如果一个影片为60frame（帧）每秒， 当前想要跳转到 120帧的位置，也就是两秒的位置，那么就可以创建一个 CMTime 类型数据。<br>CMTime,通常用如下两个函数来创建.</p>
+<p><strong>CMTimeMake(int64_t value, int32_t scale)</strong></p>
+<pre><code>    CMTime time1 = CMTimeMake(120, 60);
+</code></pre>
+<p><strong>CMTimeMakeWithSeconds(Flout64 seconds, int32_t scale)</strong></p>
+<pre><code>   CMTime time2 = CMTimeWithSeconds(120, 60);
+</code></pre>
+<p>CMTimeMakeWithSeconds 和CMTimeMake 区别在于，第一个函数的第一个参数可以是float，其他一样。</p>
+<p>拖拽方法如下：<br>    - (IBAction)playerSliderValueChanged:(id)sender {   <br>     _isSliding &#x3D; YES;  <br>      [self pause];    <br>    &#x2F;&#x2F; 跳转到拖拽秒处    <br>    &#x2F;&#x2F; self.playProgress.maxValue &#x3D; value &#x2F; timeScale    <br>    &#x2F;&#x2F; value &#x3D; progress.value * timeScale    <br>    &#x2F;&#x2F; CMTimemake(value, timeScale) &#x3D;  (progress.value, 1.0)    <br>    CMTime changedTime &#x3D; CMTimeMakeWithSeconds(self.playProgress.value, 1.0);   <br>     [_playerItem seekToTime:changedTime completionHandler:^(BOOL finished) {            <br>    &#x2F;&#x2F; 跳转完成后    <br>    }];<br>    }</p>
+<p>#5.观察 AVPlayer 播放进度<br>AVPlayerItem 是使用 KVO 模式观察状态，和 缓冲进度。而 AVPlayer 给我们直接提供了 观察播放进度更为方便的方法。</p>
+<pre><code>- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(nullable dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
+</code></pre>
+<p>方法名如其意， “添加周期时间观察者” ，<br>参数1 interal 为CMTime 类型的，<br>参数2 为一个 返回值为空，参数为 CMTime 的block类型。<br>简而言之就是，每隔一段时间后执行 block。<br>比如： 我把时间间隔设置为， 1&#x2F; 30 秒，然后 block 里面更新 UI。就是一秒钟更新 30次UI。</p>
+<p>播放进度代码如下：<br>&#x2F;&#x2F; 观察播放进度<br>    - (void)monitoringPlayback:(AVPlayerItem *)item {<br>        __weak typeof(self)WeakSelf &#x3D; self;<br>        &#x2F;&#x2F; 观察间隔, CMTime 为30分之一秒<br>         _playTimeObserver &#x3D; [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30.0) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {<br>            if (_touchMode !&#x3D; TouchPlayerViewModeHorizontal) {<br>                &#x2F;&#x2F; 获取 item 当前播放秒<br>                 float currentPlayTime &#x3D; (double)item.currentTime.value&#x2F; item.currentTime.timescale;<br>                &#x2F;&#x2F; 更新slider, 如果正在滑动则不更新<br>                 if (_isSliding &#x3D;&#x3D; NO) {<br>                     [WeakSelf updateVideoSlider:currentPlayTime];<br>                }<br>            } else {<br>                return;<br>            }<br>        }];<br>    }<br><strong>注意：</strong> 给 palyer 添加了 timeObserver 后，不使用的时候记得移除 removeTimeObserver, 否则会占用大量内存。比如，我在dealloc里面做了移除：</p>
+<pre><code>- (void)dealloc {   
+</code></pre>
+<p>    [self removeObserveAndNOtification];    <br>    [_player removeTimeObserver:_playTimeObserver]; &#x2F;&#x2F; 移除playTimeObserver<br>    }</p>
+<p>#6.AVPlayerItem 通知<br>AVPlaerItem 播放完成后，系统会自动发送通知，通知的定义详情请见 AVPlayerItem.h.</p>
+<pre><code>/* Note that NSNotifications posted by AVPlayerItem may be posted on a 
+different thread from the one on which the observer was registered. */
+// notifications description
+AVF_EXPORT NSString *const AVPlayerItemTimeJumpedNotification			 NS_AVAILABLE(10_7, 5_0);	// the item&#39;s current time has changed discontinuously
+AVF_EXPORT NSString *const AVPlayerItemDidPlayToEndTimeNotification      NS_AVAILABLE(10_7, 4_0);   // item has played to its end time
+AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeNotification NS_AVAILABLE(10_7, 4_3);   // item has failed to play to its end time
+AVF_EXPORT NSString *const AVPlayerItemPlaybackStalledNotification       NS_AVAILABLE(10_9, 6_0);    // media did not arrive in time to continue playback
+AVF_EXPORT NSString *const AVPlayerItemNewAccessLogEntryNotification	 NS_AVAILABLE(10_9, 6_0);	// a new access log entry has been added
+AVF_EXPORT NSString *const AVPlayerItemNewErrorLogEntryNotification		 NS_AVAILABLE(10_9, 6_0);	// a new error log entry has been added
+
+// notification userInfo key                                                                    type
+AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAILABLE(10_7, 4_3);   // NSError
+</code></pre>
+<p>因此，如果我们想要在某个状态下，执行某些操作。监听 AVPlayerItem 的相关通知就行了。 比如，我想要播放完成后，暂停播放。 给AVPlayerItemDidPlayToEndTimeNotification<br> 添加观察者。  </p>
+<pre><code>[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector
+(playbackFinished:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil]; 
+</code></pre>
+<p>&#x2F;&#x2F; 播放完成后 <br>    - (void)playbackFinished:(NSNotification *)notification {    <br>      NSLog(@”视频播放完成通知”);    <br>    _playerItem &#x3D; [notification object];   <br>     [_playerItem seekToTime:kCMTimeZero]; &#x2F;&#x2F; item 跳转到初始      <br>    &#x2F;&#x2F;[_player play]; &#x2F;&#x2F; 循环播放<br>    }<br>#最后<br>使用 AVPlayer 的时候，一定要注意 AVPlayer 、 AVPlayerLayer 和 AVPlayerItem 三者之间的关系。 AVPlayer 负责控制播放， layer 显示播放， item 提供数据，当前播放时间， 已加载情况。 Item 中一些基本的属性, status, duration, loadedTimeRanges， currentTime（当前播放时间）。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/" data-id="cuidC-i94H-w4P-_ARrEfnWN8" data-title="iOS开发--AVPlayer教程(常用功能都在这里了)" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-BUG定位,符号化crash地址" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/">iOS开发--BUG定位,符号化crash地址</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在umeng或者其他的BUG收集的第三方里边大多数的BUG是能够通过crash前的调用信息,定位到具体的方法,从而想办法解决,但是有些BUG信息量很少,只有一个内存地址:</p>
+<p>例如: </p>
+<pre><code>  appname                            0x97525 appname + 615717 
+</code></pre>
+<p>下面本文将介绍通过内存地址,定位BUG文件,调用方法</p>
+<p>步骤:</p>
+<p>1 检查log中的dSYM UUID与本地的dYSM文件是否匹配<br>方法: 打开终端(不知道终端的请略过此文),输入命令</p>
+<pre><code> $1 cd /Users/username/Library/Developer/Xcode/Archives/ xx.xcarchive/dSYMs  
+ $2 dwarfdump --uuid appname.app.dSYM  
+</code></pre>
+<p>注:  $1里cd 后的地址是打包时生成的xcode自动生成的本地文件的地址<br>找到此地址的方法打开: xcode-&gt;Window-&gt;Organizer,然后找到对应的release包,右键 Show in Finder</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-2eb4aa6802e733d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>会看到扩展名为.xcarchive的文件,这个文件路径(最好用拖文件的方式获取文件路径)后边拼接dSYMs即为这个地址.</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-3ee1b5e94674a712.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>$2里dwarfdump –uuid appname.app.dSYM的 appname 替换为你的app的包名就行,别的不用动<br>输出结果:<br>UUID: 9F0AEFA6-4349-30AF-8420-BCEE739DA0B4 (armv7) appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>UUID: 365EF56E-D598-3B94-AD36-BFA13772A4E3 (armv7s) appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>这两个匹配后继续第二步</p>
+<p>2  继续在终端输入命令<br>dwarfdump –arch&#x3D;armv7 –lookup 0x97525  &#x2F;Users&#x2F;username&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;Archives&#x2F;2013-08-30&#x2F;appname\xx.xcarchive&#x2F;dSYMs&#x2F;appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>注: 在$1步的路径后继续拼接 &#x2F;appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>就可以 其中的 appname 替换成自己的包名(也可以自己找到DWARF下的appname文件拖到终端)<br>输出结果为:</p>
+<pre><code>Looking up address: 0x0000000000097525 in .debug_info... found!  
+
+0x00359c67: Compile Unit: length = 0x000066f1  version =     0x0002  abbr_offset = 0x00000000  addr_size = 0x04  (next CU at 0x0036035c)  
+
+0x00359c72: TAG_compile_unit [1] *  
+     AT_producer( &quot;Apple LLVM version 4.2 (clang-425.0.28) (based on LLVM 3.2svn)&quot; )  
+     AT_language( DW_LANG_ObjC )  
+     AT_name( &quot;xxx/EGOImageView.m&quot; )  
+     AT_low_pc( 0x0009710c )  
+     AT_stmt_list( 0x000655c1 )  
+     AT_comp_dir( &quot;xxx&quot; )  
+     AT_APPLE_optimized( 0x01 )  
+     AT_APPLE_major_runtime_vers( 0x02 )  
+
+0x00359e57:     TAG_subprogram [10] *  
+         AT_name( &quot;-[EGOImageView imageLoaderDidFailToLoad:]&quot; )  
+         AT_decl_file( &quot;xxx/EGOImageView.m&quot; )  
+         AT_decl_line( 96 )  
+         AT_prototyped( 0x01 )  
+         AT_APPLE_isa( 0x01 )  
+         AT_low_pc( 0x00097490 )  
+         AT_high_pc( 0x00097572 )  
+         AT_frame_base( r7 )  
+         AT_object_pointer( {0x00359e6e} )  
+Line table dir : &#39;xxx&#39;  
+Line table file: &#39;EGOImageView.m&#39; line 99, column 2 with start address 0x00000000000974fe  
+
+Looking up address: 0x0000000000097525 in .debug_frame... found!  
+
+0x0000c620: FDE  
+length: 0x0000000c  
+CIE_pointer: 0x00000000  
+start_addr: 0x00097490 -[EGOImageView imageLoaderDidFailToLoad:]  
+range_size: 0x000000e2 (end_addr = 0x00097572)  
+Instructions: 0x00097490: CFA=4294967295+4294967295  
+</code></pre>
+<p>信息中的AT_name( “xxx&#x2F;EGOImageView.m” )  就是crash文件,<br> start_addr:就是crash方法<br>此文结束</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" data-id="cuidJD3hsdSE5_-T2-HriprD1" data-title="iOS开发--BUG定位,符号化crash地址" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-Application-received-signal-5" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Application-received-signal-5/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Application-received-signal-5/">iOS开发-Application-received-signal-5</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>首先先明确一下类似此类的错误”Application received signal 5”,是linux系统级别的信号,引起的程序进程结束,表现出来的就是程序非正常退出.</p>
+<p>1 捕获信号核心代码:</p>
+<pre><code>//例如三个信号的处理方法 
+signal(SIGHUP, sigroutine); 
+signal(SIGINT, sigroutine); 
+signal(SIGQUIT, sigroutine);
+
+ //函数实现
+void  sigroutine(int sig) {
+//代码实现
+}
+</code></pre>
+<p>2 封装后的主要代码:</p>
+<pre><code>/*!
+ *  异常的处理方法
+ *
+ *  @param install   是否开启捕获异常
+ *  @param showAlert 是否在发生异常时弹出alertView
+ */
++ (void)installUncaughtExceptionHandler:(BOOL)install showAlert:(BOOL)showAlert {
+    
+    if (install &amp;&amp; showAlert) {
+        [[self alloc] alertView:showAlert];
+    }
+    
+    NSSetUncaughtExceptionHandler(install ? HandleException : NULL);
+    signal(SIGABRT, install ? SignalHandler : SIG_DFL);
+    signal(SIGILL, install ? SignalHandler : SIG_DFL);
+    signal(SIGSEGV, install ? SignalHandler : SIG_DFL);
+    signal(SIGFPE, install ? SignalHandler : SIG_DFL);
+    signal(SIGBUS, install ? SignalHandler : SIG_DFL);
+    signal(SIGPIPE, install ? SignalHandler : SIG_DFL);
+}
+
+//处理signal报错第一步
+void SignalHandler(int signal) {
+    
+    int32_t exceptionCount = OSAtomicIncrement32(&amp;UncaughtExceptionCount);
+    // 如果太多不用处理
+    if (exceptionCount &gt; UncaughtExceptionMaximum) {
+        return;
+    }
+    
+    NSString* description = nil;
+    switch (signal) {
+        case SIGABRT:
+            description = [NSString stringWithFormat:@&quot;Signal SIGABRT was raised!\n&quot;];
+            break;
+        case SIGILL:
+            description = [NSString stringWithFormat:@&quot;Signal SIGILL was raised!\n&quot;];
+            break;
+        case SIGSEGV:
+            description = [NSString stringWithFormat:@&quot;Signal SIGSEGV was raised!\n&quot;];
+            break;
+        case SIGFPE:
+            description = [NSString stringWithFormat:@&quot;Signal SIGFPE was raised!\n&quot;];
+            break;
+        case SIGBUS:
+            description = [NSString stringWithFormat:@&quot;Signal SIGBUS was raised!\n&quot;];
+            break;
+        case SIGPIPE:
+            description = [NSString stringWithFormat:@&quot;Signal SIGPIPE was raised!\n&quot;];
+            break;
+        default:
+            description = [NSString stringWithFormat:@&quot;Signal %d was raised!&quot;,signal];
+    }
+    
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    //获取调用堆栈
+    NSArray *callStack = [UncaughtExceptionHandler backtrace];
+    [userInfo setObject:callStack forKey:UncaughtExceptionHandlerAddressesKey];
+    [userInfo setObject:[NSNumber numberWithInt:signal] forKey:UncaughtExceptionHandlerSignalKey];
+    
+    //在主线程中，执行指定的方法, withObject是执行方法传入的参数
+    [[[UncaughtExceptionHandler alloc] init]
+     performSelectorOnMainThread:@selector(handleException:)
+     withObject:
+     [NSException exceptionWithName:UncaughtExceptionHandlerSignalExceptionName
+                             reason: description
+                           userInfo: userInfo]
+     waitUntilDone:YES];
+}
+- (void)handleException:(NSException *)exception {
+    
+    [self validateAndSaveCriticalApplicationData:exception];
+    
+    //不显示alertView就不执行下面的代码
+    if (!showAlertView) {
+        return;
+    }
+    
+    //alertView
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored &quot;-Wdeprecated-declarations&quot;
+    UIAlertView *alert =
+    [[UIAlertView alloc]
+     initWithTitle:@&quot;出错啦&quot;
+     message:[NSString stringWithFormat:@&quot;你可以尝试继续操作，但是应用可能无法正常运行.\n&quot;]
+     delegate:self
+     cancelButtonTitle:@&quot;退出&quot;
+     otherButtonTitles:@&quot;继续&quot;, nil];
+    [alert show];
+#pragma clang diagnostic pop
+    
+    CFRunLoopRef runLoop = CFRunLoopGetCurrent();
+    CFArrayRef allModes = CFRunLoopCopyAllModes(runLoop);
+    
+    while (!self.dismissed) {
+        //点击继续
+        for (NSString *mode in (NSArray *)allModes) {
+            //快速切换Mode
+            CFRunLoopRunInMode((CFStringRef)mode, 0.001, false);
+        }
+    }
+    
+    //点击退出
+    CFRelease(allModes);
+    
+    NSSetUncaughtExceptionHandler(NULL);
+    signal(SIGABRT, SIG_DFL);
+    signal(SIGILL, SIG_DFL);
+    signal(SIGSEGV, SIG_DFL);
+    signal(SIGFPE, SIG_DFL);
+    signal(SIGBUS, SIG_DFL);
+    signal(SIGPIPE, SIG_DFL);
+    
+    if ([[exception name] isEqual:UncaughtExceptionHandlerSignalExceptionName]) {
+        
+        kill(getpid(), [[[exception userInfo] objectForKey:UncaughtExceptionHandlerSignalKey] intValue]);
+        
+    } else {
+        
+        [exception raise];
+    }
+}
+
+
+
+//获取调用堆栈
++ (NSArray *)backtrace {
+    
+    //指针列表
+    void* callstack[128];
+    //backtrace用来获取当前线程的调用堆栈，获取的信息存放在这里的callstack中
+    //128用来指定当前的buffer中可以保存多少个void*元素
+    //返回值是实际获取的指针个数
+    int frames = backtrace(callstack, 128);
+    //backtrace_symbols将从backtrace函数获取的信息转化为一个字符串数组
+    //返回一个指向字符串数组的指针
+    //每个字符串包含了一个相对于callstack中对应元素的可打印信息，包括函数名、偏移地址、实际返回地址
+    char **strs = backtrace_symbols(callstack, frames);
+    
+    int i;
+    NSMutableArray *backtrace = [NSMutableArray arrayWithCapacity:frames];
+    for (i = 0; i &lt; frames; i ++) {
+        
+        [backtrace addObject:[NSString stringWithUTF8String:strs[i]]];
+    }
+    free(strs);
+    
+    return backtrace;
+}
+</code></pre>
+<p> 附:  signal信号的可能类型</p>
+<ol>
+<li><p>#define SIGHUP 1 &#x2F;* hangup *&#x2F;<br>SIGHUP是Unix系统管理员很常用的一个信号。许多后台服务进程在接受到该信号后将会重新读取它们的配置文件。然而，该信号的实际功能是通知进程它的控制终端被断开。缺省行为是终止进程。</p>
+</li>
+<li><p>#define SIGINT 2 &#x2F;* interrupt *&#x2F;<br>对于Unix使用者来说，SIGINT是另外一个常用的信号。许多shell的CTRL-C组合使得这个信号被大家所熟知。该信号的正式名字是中断信号。缺省行为是终止进程。</p>
+</li>
+<li><p>#define SIGQUIT 3 &#x2F;* quit *&#x2F;<br>SIGQUIT信号被用于接收shell的CTRL-&#x2F;组合。另外，它还用于告知进程退出。这是一个常用信号，用来通知应用程序从容的（译注:即在结束前执行一些退出动作）关闭。缺省行为是终止进程，并且创建一个核心转储。</p>
+</li>
+<li><p>#define SIGILL 4 &#x2F;* illegal instr. (not reset when caught) *&#x2F;<br>如果正在执行的进程中包含非法指令，操作系统将向该进程发送SIGILL信号。如果你的程序使用了线程，或者pointer functions，那么可能的话可以尝试捕获该信号来协助调试。（[color&#x3D;Red]注意：原文这句为：“If your program makes use of use of threads, or pointer functions, try to catch this signal if possible for aid in debugging.”。中间的两个use of use of，不知是原书排版的瑕疵还是我确实没有明白其意义；另外，偶经常听说functions pointer，对于pointer functions，google了一下，应该是fortran里面的东西，不管怎样，还真不知道，确切含义还请知道的兄弟斧正。[&#x2F;color]）缺省行为是终止进程，并且创建一个核心转储。</p>
+</li>
+<li><p>#define SIGTRAP 5 &#x2F;* trace trap (not reset when caught) *&#x2F;<br>SIGTRAP这个信号是由POSIX标准定义的，用于调试目的。当被调试进程接收到该信号时，就意味着它到达了某一个调试断点。一旦这个信号被交付，被调试的进程就会停止，并且它的父进程将接到通知。缺省行为是终止进程，并且创建一个核心转储。</p>
+</li>
+<li><p>#define SIGABRT 6 &#x2F;* abort() *&#x2F;<br>SIGABRT提供了一种在异常终止(abort)一个进程的同时创建一个核心转储的方法。然而如果该信号被捕获，并且信号处理句柄没有返回，那么进程不会终止。缺省行为是终止进程，并且创建一个核心转储。</p>
+</li>
+<li><p>#define SIGFPE 8 &#x2F;* floating point exception *&#x2F;<br>当进程发生一个浮点错误时，SIGFPE信号被发送给该进程。对于那些处理复杂数学运算的程序，一般会建议你捕获该信号。缺省行为是终止进程，并且创建一个核心转储。</p>
+</li>
+<li><p>#define SIGKILL 9 &#x2F;* kill (cannot be caught or ignored) *&#x2F;<br>SIGKILL是这些信号中最难对付的一个。正如你在它旁边的注释中看到的那样，这个信号不能被捕获或忽略。一旦该信号被交付给一个进程，那么这个进程就会终止。然而，会有一些极少数情况SIGKILL不会终止进程。这些罕见的情形在处理一个“非中断操作”（比如磁盘I&#x2F;O）的时候发生。虽然这样的情形极少发生，然而一旦发生的话，会造成进程死锁。唯一结束进程的办法就只有重新启动了。缺省行为是终止进程。</p>
+</li>
+<li><p>#define SIGBUS 10 &#x2F;* bus error *&#x2F;<br>如同它的名字暗示的那样，CPU检测到数据总线上的错误时将产生SIGBUS信号。当程序尝试去访问一个没有正确对齐的内存地址时就会产生该信号。缺省行为是终止进程，并且创建一个核心转储。</p>
+</li>
+<li><p>#define SIGSEGV 11 &#x2F;* segmentation violation *&#x2F;</p>
+</li>
+</ol>
+<p>   SIGSEGV是另一个C&#x2F;C++程序员很熟悉的信号。当程序没有权利访问一个受保护的内存地址时，或者访问无效的虚拟内存地址（脏指针，dirty pointers，译注：由于没有和后备存储器中内容进行同步而造成。关于野指针，可以参见<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Wild_pointer">http://en.wikipedia.org/wiki/Wild_pointer</a> 的解释。）时，会产生这个信号。缺省行为是终止进程，并且创建一个核心转储。</p>
+<ol start="11">
+<li>#define SIGSYS 12 &#x2F;* non-existent system call invoked *&#x2F;</li>
+</ol>
+<p>   SIGSYS信号会在进程执行一个不存在的系统调用时被交付。操作系统会交付该信号，并且进程会被终止。缺省行为是终止进程，并且创建一个核心转储。</p>
+<ol start="12">
+<li>#define SIGPIPE 13 &#x2F;* write on a pipe with no one to read it *&#x2F;</li>
+</ol>
+<p>   管道的作用就像电话一样，允许进程之间的通信。如果进程尝试对管道执行写操作，然而管道的另一边却没有回应者时，操作系统会将SIGPIPE信号交付给这个讨厌的进程（这里就是那个打算写入的进程）。缺省行为是终止进程。</p>
+<ol start="13">
+<li>#define SIGALRM 14 &#x2F;* alarm clock *&#x2F;</li>
+</ol>
+<p>   在进程的计时器到期的时候，SIGALRM信号会被交付（delivered）给进程。这些计时器由本章后面将会提及<br>的setitimer和alarm调用设置。缺省行为是终止进程。</p>
+<ol start="14">
+<li>#define SIGTERM 15 &#x2F;* software termination signal from kill *&#x2F;</li>
+</ol>
+<p>   SIGTERM信号被发送给进程，通知该进程是时候终止了，并且在终止之前做一些清理活动。SIGTERM信号是Unix的kill命令发送的缺省信号，同时也是操作系统关闭时向进程发送的缺省信号。缺省行为是终止进程。</p>
+<ol start="15">
+<li>#define SIGURG 16 &#x2F;* urgent condition on IO channel *&#x2F;</li>
+</ol>
+<p>   在进程已打开的套接字上发生某些情况时，SIGURG将被发送给该进程。如果进程不捕获这个信号的话，那么将被丢弃。缺省行为是丢弃这个信号。</p>
+<ol start="16">
+<li>#define SIGSTOP 17 &#x2F;* sendable stop signal not from tty *&#x2F;</li>
+</ol>
+<p>   本信号不能被捕获或忽略。一旦进程接收到SIGSTOP信号，它会立即停止(stop)，直到接收到另一个SIGCONT<br>信号为止。缺省行为是停止进程，直到接收到一个SIGCONT信号为止。</p>
+<ol start="17">
+<li>#define SIGTSTP 18 &#x2F;* stop signal from tty *&#x2F;</li>
+</ol>
+<p>   SIGSTP与SIGSTOP类似，它们的区别在于SIGSTP信号可以被捕获或忽略。当shell从键盘接收到CTRL-Z的时候就会交付（deliver）这个信号给进程。缺省行为是停止进程，直到接收到一个SIGCONT信号为止。</p>
+<ol start="18">
+<li>#define SIGCONT 19 &#x2F;* continue a stopped process *&#x2F;</li>
+</ol>
+<p>   SIGCONT也是一个有意思的信号。如前所述，当进程停止的时候，这个信号用来告诉进程恢复运行。该信号的有趣的地方在于：它不能被忽略或阻塞，但可以被捕获。这样做很有意义：因为进程大概不愿意忽略或阻塞SIGCONT信号，否则，如果进程接收到SIGSTOP或SIGSTP的时候该怎么办？缺省行为是丢弃该信号。</p>
+<ol start="19">
+<li>#define SIGCHLD 20 &#x2F;* to parent on child stop or exit *&#x2F;</li>
+</ol>
+<p>   SIGCHLD是由Berkeley Unix引入的，并且比SRV 4 Unix上的实现有更好的接口。（如果信号是一个没有追溯能力的过程(not a retroactive process)，那么BSD的SIGCHID信号实现会比较好。在system V Unix的实现中，如果进程要求捕获该信号，操作系统会检查是否存在有任何未完成的子进程（这些子进程是已经退出exit)的子进程，并且在等待调用wait的父进程收集它们的状态）。如果子进程退出的时候附带有一些终止信息(terminating information），那么信号处理句柄就会被调用。所以，仅仅要求捕获这个信号会导致信号处理句柄被调用(译注：即是上面说的“信号的追溯能力”)，而这是却一种相当混乱的状况。）一旦一个进程的子进程状态发生改变，SIGCHLD信号就会被发送给该进程。就像我在前面章节提到的，父进程虽然可以fork出子进程，但没有必要等待子进程退出。一般来说这是不太好的，因为这样的话，一旦进程退出就可能会变成一个僵尸进程。可是如果父进程捕获SIGCHLD信号的话，它就可以使用wait系列调用中的某一个去收集子进程状态，或者判断发生了什么事情。当发送SIGSTOP,SIGSTP或SIGCONF信号给子进程时，SIGCHLD信号也会被发送给父进程。缺省行为是丢弃该信号。</p>
+<ol start="20">
+<li>#define SIGTTIN 21 &#x2F;* to readers pgrp upon background tty read *&#x2F;</li>
+</ol>
+<p>   当一个后台进程尝试进行一个读操作时，SIGTTIN信号被发送给该进程。进程将会阻塞直到接收到SIGCONT信号为止。缺省行为是停止进程，直到接收到SIGCONT信号。</p>
+<ol start="21">
+<li>#define SIGTTOU 22 &#x2F;* like TTIN if (tp-&gt;t_local&amp;LTOSTOP) *&#x2F;</li>
+</ol>
+<p>   SIGTTOU信号与SIGTTIN很相似，不同之处在于SIGTTOU信号是由于后台进程尝试对一个设置了TOSTOP属性的tty执行写操作时才会产生。然而，如果tty没有设置这个属性，SIGTTOU就不会被发送。缺省行为是停止进程，直到接收到SIGCONT信号。</p>
+<ol start="22">
+<li>#define SIGIO 23 &#x2F;* input&#x2F;output possible signal *&#x2F;</li>
+</ol>
+<p>   如果进程在一个文件描述符上有I&#x2F;O操作的话，SIGIO信号将被发送给这个进程。进程可以通过fcntl调用来设置。缺省行为是丢弃该信号。</p>
+<ol start="23">
+<li>#define SIGXCPU 24 &#x2F;* exceeded CPU time limit *&#x2F;</li>
+</ol>
+<p>   如果一旦进程超出了它可以使用的CPU限制（CPU limit），SIGXCPU信号就被发送给它。这个限制可以使用随后讨论的setrlimit设置。缺省行为是终止进程。</p>
+<ol start="24">
+<li>#define SIGXFSZ 25 &#x2F;* exceeded file size limit *&#x2F;</li>
+</ol>
+<p>   如果一旦进程超出了它可以使用的文件大小限制，SIGXFSZ信号就被发送给它。稍后我们会继续讨论这个信号。缺省行为是终止进程。</p>
+<ol start="25">
+<li>#define SIGVTALRM 26 &#x2F;* virtual time alarm *&#x2F;</li>
+</ol>
+<p>   如果一旦进程超过了它设定的虚拟计时器计数时，SIGVTALRM信号就被发送给它。缺省行为是终止进程。</p>
+<ol start="26">
+<li>#define SIGPROF 27 &#x2F;* profiling time alarm *&#x2F;</li>
+</ol>
+<p>   当设置了计时器时，SIGPROF是另一个将会发送给进程的信号。缺省行为是终止进程。</p>
+<ol start="27">
+<li>#define SIGWINCH 28 &#x2F;* window size changes *&#x2F;</li>
+</ol>
+<p>   当进程调整了终端的行或列时（比如增大你的xterm的尺寸），SIGWINCH信号被发送给该进程。缺省行为是丢弃该信号。</p>
+<ol start="28">
+<li>#define SIGUSR1 29 &#x2F;* user defined signal 1 *&#x2F;</li>
+<li>#define SIGUSR2 30 &#x2F;* user defined signal 2 *&#x2F;</li>
+</ol>
+<p>   SIGUSR1和SIGUSR2这两个信号被设计为用户指定。它们可以被设定来完成你的任何需要。换句话说，操作系统没有任何行为与这两个信号关联。缺省行为是终止进程。(译注：按原文的意思翻译出来似乎这两句话有点矛盾。)</p>
+<p>另外,有两篇很详尽的文章介绍signal有兴趣的可以看一下:<a target="_blank" rel="noopener" href="http://www.cnblogs.com/lidabo/p/4581026.html">http://www.cnblogs.com/lidabo/p/4581026.html</a><br>进阶 <a target="_blank" rel="noopener" href="http://www.cnblogs.com/lidabo/p/4581065.html">http://www.cnblogs.com/lidabo/p/4581065.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Application-received-signal-5/" data-id="cuidhL1gy7rbM2LD5vJvGlCpF" data-title="iOS开发-Application-received-signal-5" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-DES对称加密封装" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-DES%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E5%B0%81%E8%A3%85/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-DES%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E5%B0%81%E8%A3%85/">iOS开发--DES对称加密封装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近项目里需要对URL的参数进行DES加密,研究了一下,现分享一下.</p>
+<pre><code>#封装好的DES加密逻辑,具体调用如下:
+//加密的密匙(也是解密的密匙)
+NSString *str = @&quot;abcdefghigklmnopqrstuvwxyz&quot;;
+//加密
+NSString *eStr = [DesEncrypt base64StringFromText:str];
+NSLog(@&quot;--%@&quot;,eStr);
+//解密
+NSLog(@&quot;--%@&quot;,[DesEncrypt textFromBase64String:eStr]);
+</code></pre>
+<h1 id="注-偏移量在内部已经给出-可修改-如有任何疑问欢迎留言交流"><a href="#注-偏移量在内部已经给出-可修改-如有任何疑问欢迎留言交流" class="headerlink" title="注:偏移量在内部已经给出(可修改),如有任何疑问欢迎留言交流!"></a>注:偏移量在内部已经给出(可修改),如有任何疑问欢迎留言交流!</h1><p>具体实现参考以下代码,也可以进入github<a target="_blank" rel="noopener" href="https://github.com/CoderLi-Q/HelloWorld-">直接下载</a></p>
+<p>DesEncrypt.h<br>    #import &lt;Foundation&#x2F;Foundation.h&gt;</p>
+<pre><code>/******字符串转base64（包括DES加密）******/
+#define __BASE64( text )        [Base64codeFunc base64StringFromText:text]
+
+/******base64（通过DES解密）转字符串******/
+#define __TEXT( base64 )        [Base64codeFunc textFromBase64String:base64]
+
+@interface DesEncrypt : NSObject
+
+/************************************************************
+ 函数名称 : + (NSString *)base64StringFromText:(NSString *)text
+ 函数描述 : 将文本转换为base64格式字符串
+ 输入参数 : (NSString *)text    文本
+ 输出参数 : N/A
+ 返回参数 : (NSString *)    base64格式字符串
+ 备注信息 :
+ **********************************************************/
++ (NSString *)base64StringFromText:(NSString *)text;
+
+/************************************************************
+ 函数名称 : + (NSString *)textFromBase64String:(NSString *)base64
+ 函数描述 : 将base64格式字符串转换为文本
+ 输入参数 : (NSString *)base64  base64格式字符串
+ 输出参数 : N/A
+ 返回参数 : (NSString *)    文本
+ 备注信息 :
+ **********************************************************/
++ (NSString *)textFromBase64String:(NSString *)base64;
+</code></pre>
+<p>DesEncrypt.m</p>
+<pre><code>#import &quot;DesEncrypt.h&quot;
+
+//引入IOS自带密码库
+#import &lt;CommonCrypto/CommonCryptor.h&gt;
+
+//空字符串
+#define     LocalStr_None           @&quot;&quot;
+
+static const char encodingTable[] = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;;
+
+#define     ENCRYPTKEY  @&quot;123456789&quot;
+#define     ENCRYPTIV   @&quot;CCCrypr&quot;
+
+
+@implementation DesEncrypt
+
++ (NSString *)base64StringFromText:(NSString *)text
+{
+    if (text &amp;&amp; ![text isEqualToString:LocalStr_None]) {
+        //取项目的bundleIdentifier作为KEY
+        NSString *key = ENCRYPTKEY;//[[NSBundle mainBundle] bundleIdentifier];
+        NSData *data = [text dataUsingEncoding:NSUTF8StringEncoding];
+        //IOS 自带DES加密 Begin
+        data = [self DESEncrypt:data WithKey:key];
+        //IOS 自带DES加密 End
+        return [self base64EncodedStringFrom:data];
+    }
+    else {
+        return LocalStr_None;
+    }
+}
+
++ (NSString *)textFromBase64String:(NSString *)base64
+{
+    if (base64 &amp;&amp; ![base64 isEqualToString:LocalStr_None]) {
+        //取项目的bundleIdentifier作为KEY
+        NSString *key = ENCRYPTKEY;//[[NSBundle mainBundle] bundleIdentifier];
+        NSData *data = [self dataWithBase64EncodedString:base64];
+        //IOS 自带DES解密 Begin
+        data = [self DESDecrypt:data WithKey:key];
+        //IOS 自带DES加密 End
+        return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
+    else {
+        return LocalStr_None;
+    }
+}
+
+/************************************************************
+ 函数名称 : + (NSData *)DESEncrypt:(NSData *)data WithKey:(NSString *)key
+ 函数描述 : 文本数据进行DES加密
+ 输入参数 : (NSData *)data
+ (NSString *)key
+ 输出参数 : N/A
+ 返回参数 : (NSData *)
+ 备注信息 : 此函数不可用于过长文本
+ **********************************************************/
++ (NSData *)DESEncrypt:(NSData *)data WithKey:(NSString *)key
+{
+    char keyPtr[kCCKeySizeAES256+1];
+    bzero(keyPtr, sizeof(keyPtr));
+    [key getCString:keyPtr maxLength:sizeof(keyPtr) encoding:NSUTF8StringEncoding];
+    
+    char ivPtr[kCCKeySizeAES256+1];
+    bzero(ivPtr, sizeof(ivPtr));
+    [ENCRYPTIV getCString:ivPtr maxLength:sizeof(ivPtr) encoding:NSUTF8StringEncoding];
+    
+    NSUInteger dataLength = [data length];
+    
+    size_t bufferSize = dataLength + kCCBlockSizeAES128;
+    void *buffer = malloc(bufferSize);
+    
+    size_t numBytesEncrypted = 0;
+    CCCryptorStatus cryptStatus = CCCrypt(0, kCCAlgorithmDES,
+                                          kCCOptionPKCS7Padding | kCCOptionECBMode,
+                                          keyPtr, kCCBlockSizeDES,
+                                          ivPtr,
+                                          [data bytes], dataLength,
+                                          buffer, bufferSize,
+                                          &amp;numBytesEncrypted);
+
+    if (cryptStatus == kCCSuccess) {
+        return [NSData dataWithBytesNoCopy:buffer length:numBytesEncrypted];
+    }
+    
+    free(buffer);
+    return nil;
+}
+
+/************************************************************
+ 函数名称 : + (NSData *)DESEncrypt:(NSData *)data WithKey:(NSString *)key
+ 函数描述 : 文本数据进行DES解密
+ 输入参数 : (NSData *)data
+ (NSString *)key
+ 输出参数 : N/A
+ 返回参数 : (NSData *)
+ 备注信息 : 此函数不可用于过长文本
+ **********************************************************/
++ (NSData *)DESDecrypt:(NSData *)data WithKey:(NSString *)key
+{
+    char keyPtr[kCCKeySizeAES256+1];
+    bzero(keyPtr, sizeof(keyPtr));
+    [key getCString:keyPtr maxLength:sizeof(keyPtr) encoding:NSUTF8StringEncoding];
+    
+    char ivPtr[kCCKeySizeAES256+1];
+    bzero(ivPtr, sizeof(ivPtr));
+    [ENCRYPTIV getCString:ivPtr maxLength:sizeof(ivPtr) encoding:NSUTF8StringEncoding];
+    
+    NSUInteger dataLength = [data length];
+    size_t bufferSize = dataLength + kCCBlockSizeAES128;
+    void *buffer = malloc(bufferSize);
+    size_t numBytesDecrypted = 0;
+    CCCryptorStatus cryptStatus = CCCrypt(kCCDecrypt, kCCAlgorithmDES,
+                                          kCCOptionPKCS7Padding | kCCOptionECBMode,
+                                          keyPtr, kCCBlockSizeDES,
+                                          ivPtr,
+                                          [data bytes], dataLength,
+                                          buffer, bufferSize,
+                                          &amp;numBytesDecrypted);
+    
+    if (cryptStatus == kCCSuccess) {
+        return [NSData dataWithBytesNoCopy:buffer length:numBytesDecrypted];
+    }
+    
+    free(buffer);
+    return nil;
+}
+
+/************************************************************
+ 函数名称 : + (NSData *)dataWithBase64EncodedString:(NSString *)string
+ 函数描述 : base64格式字符串转换为文本数据
+ 输入参数 : (NSString *)string
+ 输出参数 : N/A
+ 返回参数 : (NSData *)
+ 备注信息 :
+ **********************************************************/
++ (NSData *)dataWithBase64EncodedString:(NSString *)string
+{
+    if (string == nil)
+        [NSException raise:NSInvalidArgumentException format:nil];
+    if ([string length] == 0)
+        return [NSData data];
+    
+    static char *decodingTable = NULL;
+    if (decodingTable == NULL)
+    {
+        decodingTable = malloc(256);
+        if (decodingTable == NULL)
+            return nil;
+        memset(decodingTable, CHAR_MAX, 256);
+        NSUInteger i;
+        for (i = 0; i &lt; 64; i++)
+            decodingTable[(short)encodingTable[i]] = i;
+    }
+    
+    const char *characters = [string cStringUsingEncoding:NSASCIIStringEncoding];
+    if (characters == NULL)     //  Not an ASCII string!
+        return nil;
+    char *bytes = malloc((([string length] + 3) / 4) * 3);
+    if (bytes == NULL)
+        return nil;
+    NSUInteger length = 0;
+    
+    NSUInteger i = 0;
+    while (YES)
+    {
+        char buffer[4];
+        short bufferLength;
+        for (bufferLength = 0; bufferLength &lt; 4; i++)
+        {
+            if (characters[i] == &#39;\0&#39;)
+                break;
+            if (isspace(characters[i]) || characters[i] == &#39;=&#39;)
+                continue;
+            buffer[bufferLength] = decodingTable[(short)characters[i]];
+            if (buffer[bufferLength++] == CHAR_MAX)      //  Illegal character!
+            {
+                free(bytes);
+                return nil;
+            }
+        }
+        
+        if (bufferLength == 0)
+            break;
+        if (bufferLength == 1)      //  At least two characters are needed to produce one byte!
+        {
+            free(bytes);
+            return nil;
+        }
+        
+        //  Decode the characters in the buffer to bytes.
+        bytes[length++] = (buffer[0] &lt;&lt; 2) | (buffer[1] &gt;&gt; 4);
+        if (bufferLength &gt; 2)
+            bytes[length++] = (buffer[1] &lt;&lt; 4) | (buffer[2] &gt;&gt; 2);
+        if (bufferLength &gt; 3)
+            bytes[length++] = (buffer[2] &lt;&lt; 6) | buffer[3];
+    }
+    
+    bytes = realloc(bytes, length);
+    return [NSData dataWithBytesNoCopy:bytes length:length];
+}
+
+/************************************************************
+ 函数名称 : + (NSString *)base64EncodedStringFrom:(NSData *)data
+ 函数描述 : 文本数据转换为base64格式字符串
+ 输入参数 : (NSData *)data
+ 输出参数 : N/A
+ 返回参数 : (NSString *)
+ 备注信息 :
+ **********************************************************/
++ (NSString *)base64EncodedStringFrom:(NSData *)data
+{
+    if ([data length] == 0)
+        return @&quot;&quot;;
+    
+    char *characters = malloc((([data length] + 2) / 3) * 4);
+    if (characters == NULL)
+        return nil;
+    NSUInteger length = 0;
+    
+    NSUInteger i = 0;
+    while (i &lt; [data length])
+    {
+        char buffer[3] = {0,0,0};
+        short bufferLength = 0;
+        while (bufferLength &lt; 3 &amp;&amp; i &lt; [data length])
+            buffer[bufferLength++] = ((char *)[data bytes])[i++];
+        
+        //  Encode the bytes in the buffer to four characters, including padding &quot;=&quot; characters if necessary.
+        characters[length++] = encodingTable[(buffer[0] &amp; 0xFC) &gt;&gt; 2];
+        characters[length++] = encodingTable[((buffer[0] &amp; 0x03) &lt;&lt; 4) | ((buffer[1] &amp; 0xF0) &gt;&gt; 4)];
+        if (bufferLength &gt; 1)
+            characters[length++] = encodingTable[((buffer[1] &amp; 0x0F) &lt;&lt; 2) | ((buffer[2] &amp; 0xC0) &gt;&gt; 6)];
+        else characters[length++] = &#39;=&#39;;
+        if (bufferLength &gt; 2)
+            characters[length++] = encodingTable[buffer[2] &amp; 0x3F];
+        else characters[length++] = &#39;=&#39;;
+    }
+    
+    return [[NSString alloc] initWithBytesNoCopy:characters length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
+}
+
+@end
+</code></pre>
+<p>如果想详细了解DES算法原理,请参考<a target="_blank" rel="noopener" href="http://www.cocoachina.com/bbs/read.php?tid=105524">http://www.cocoachina.com/bbs/read.php?tid=105524</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-DES%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E5%B0%81%E8%A3%85/" data-id="cuidcPJLDePRy31QSh197YoJT" data-title="iOS开发--DES对称加密封装" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS-截取视频当前时间的一帧图片" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS-%E6%88%AA%E5%8F%96%E8%A7%86%E9%A2%91%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E7%9A%84%E4%B8%80%E5%B8%A7%E5%9B%BE%E7%89%87/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS-%E6%88%AA%E5%8F%96%E8%A7%86%E9%A2%91%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E7%9A%84%E4%B8%80%E5%B8%A7%E5%9B%BE%E7%89%87/">iOS-截取视频当前时间的一帧图片</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近某视频观看软件新增了几个新的功能—截取视频当前时间的一帧图片进行分享,截取一段视频生成gif图片进行分享,截取一段视频进行分享.</p>
+<p>我们的应用也想要做这几个功能<br>本文重点介绍截取视频当前时间的一帧图片.<br>阅读本文,我假设你对AVPlayer的使用有一定的了解,如果有疑问可以参考<a target="_blank" rel="noopener" href="http://www.jianshu.com/p/6cb137340732">此文章</a></p>
+<p>截取视频当前时间的一帧图片:需要进行以下2步:</p>
+<p>1  给需要截图的视频对应的AVPlayerItem绑定一个AVPlayerItemVideoOutput</p>
+<pre><code>//生成playerItem
+playerItem  = [[AVPlayerItem alloc]initWithURL:url];
+//准备参数字典
+NSDictionary *settings = @{(id)kCVPixelBufferPixelFormatTypeKey: 
+                               [NSNumber numberWithInt:kCVPixelFormatType_32BGRA]
+                           };
+//创建AVPlayerItemVideoOutput
+videoOutput = [[AVPlayerItemVideoOutput alloc] initWithPixelBufferAttributes:settings];
+//向playerItem添加AVPlayerItemVideoOutput
+[playerItem addOutput:videoOutput];
+
+注:videoOutput是一个强指针的属性,截图的时候需要用到它
+</code></pre>
+<p>2 截图</p>
+<pre><code> if(player.currentItem.status == AVPlayerStatusReadyToPlay){
+      //获取player的当前播放时间
+      CMTime currentTime = player.currentItem.currentTime;
+      //获取对应时间的缓存上下文
+      CVPixelBufferRef buffer = [videoOutput copyPixelBufferForItemTime:currentTime itemTimeForDisplay:nil];
+      //生成CIImage
+      CIImage *ciImage = [CIImage imageWithCVPixelBuffer:buffer];
+      //生成CGImage
+      CIContext *temporaryContext = [CIContext contextWithOptions:nil];
+      CGImageRef videoImage = [temporaryContext createCGImage:ciImage fromRect:CGRectMake(0, 0, CVPixelBufferGetWidth(buffer), CVPixelBufferGetHeight(buffer))];
+      //转化成UIImage
+      UIImage *image = [UIImage imageWithCGImage:videoImage];
+      //将图片添加到数组(为后续生成GIF图做准备)
+       [self.thumbnailArray addObject:image];
+ }
+</code></pre>
+<p>如有疑问可以留言交流,也可以到这里下载<a target="_blank" rel="noopener" href="https://github.com/CoderLi-Q/AVPlayerDemo">Demo工程</a><br>友情提示:<br>1 通过AVAssetImageGenerator截取视频的当前时间的图片,只能对本地视频生效(经过本人实际测试说明);<br>2 本文说的截图方式适用于AVPlayer的所有视频播放,包括直播视频流&#x2F;点播视频流&#x2F;本地视频流&#x2F;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS-%E6%88%AA%E5%8F%96%E8%A7%86%E9%A2%91%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E7%9A%84%E4%B8%80%E5%B8%A7%E5%9B%BE%E7%89%87/" data-id="cuidihO7nPtDMspr4PGQh7N60" data-title="iOS-截取视频当前时间的一帧图片" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-GIF图片的选取,压缩,上传" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-GIF%E5%9B%BE%E7%89%87%E7%9A%84%E9%80%89%E5%8F%96,%E5%8E%8B%E7%BC%A9,%E4%B8%8A%E4%BC%A0/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-GIF%E5%9B%BE%E7%89%87%E7%9A%84%E9%80%89%E5%8F%96,%E5%8E%8B%E7%BC%A9,%E4%B8%8A%E4%BC%A0/">iOS开发--GIF图片的选取,压缩,上传</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>之前写了一篇关于PNG&#x2F;JPEG图片的选取,压缩,上传(下边统一简称前文): <a target="_blank" rel="noopener" href="http://www.jianshu.com/p/011b5ef47675">http://www.jianshu.com/p/011b5ef47675</a>, 文本依赖前文的UIImage+ZipSizeAndLength分类进行图片的压缩等.<br>总结一下: 用原生的 UIImagePickerController 选取图片; 用原生的UIImageJPEGRepresentation()和图形上下文对图片进行压缩; 用AFN进行上传操作.<br>好了,总结完之后进入今天的主题—–GIF图片的选取,压缩,上传;</p>
+<hr>
+<p>目录:<br>一 前言<br>二 选取图片(重点)<br>三 获取GIF图片的原始完整二进制数据(重点)<br>四 压缩图片(重点)<br>五 上传图片</p>
+<hr>
+<p>一 前言</p>
+<pre><code>  有的同学会疑惑,难道gif图片不能用前文说的PNG/JPEG图片的方法进行选取,压缩和上传吗?
+</code></pre>
+<p> 我可以肯定的给你回答—不能(自己亲身敲代码做的test,如有疑问,欢迎留言)<br>原因如下:<br>       1 前文说的选取图片的代码如下:<br>     - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info<br>    {<br>      UIImage *image &#x3D; [info objectForKey:@”UIImagePickerControllerEditedImage”];<br>    }<br>对于GIF图片只能选取到第一帧,无法取到所有帧.<br>    2 无法取到GIF所有帧,就不能对图片进行压缩<br>    3 无法取到GIF所有帧,也不能将图片转化成二进制数据<br>    4 没有二进制数据就无法进行上传操作<br>所以需要换另外一个方法,具体如下.</p>
+<hr>
+<p>二 选取图片<br>首先判断是不是GIF图片,如果是才需要走GIF的逻辑,判断方法有如下两种:</p>
+<p>第一种(比较取巧):<br>    - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info<br>    {<br>       NSString *assetString &#x3D; [[info objectForKey:UIImagePickerControllerReferenceURL] absoluteString];<br>       if([assetString hasSuffix:@”GIF”]){<br>           &#x2F;&#x2F;这个图片是GIF图片<br>        } else {<br>       }<br>    }<br>第二种:利用iOS9.0以后出的 Photos&#x2F;Photos.h 里边的API进行判断,代码如下:</p>
+<pre><code>NSURL *url = [info objectForKey:UIImagePickerControllerReferenceURL];
+PHFetchOptions *options = [[PHFetchOptions alloc]init];
+PHFetchResult *set = [PHAsset fetchAssetsWithALAssetURLs:@[url] options:options];
+ //转化NSData
+PHCachingImageManager *imageManager = [[PHCachingImageManager alloc] init];
+PHImageRequestOptions *option = [PHImageRequestOptions new];
+option.resizeMode = PHImageRequestOptionsResizeModeFast;
+option.synchronous = YES;
+PHAsset *asset = set.firstObject;//本文只是选取一张
+[imageManager requestImageDataForAsset:asset
+               options:option
+         resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                 if ([dataUTI isEqualToString:(__bridge NSString *)kUTTypeGIF]) {
+                      //这个图片是GIF图片
+                      }else if([dataUTI isEqualToString:(__bridge NSString *)kUTTypePNG]){
+                            NSLog(@&quot;PNG图片&quot;);
+                      }else if([dataUTI isEqualToString:(__bridge NSString *)kUTTypeJPEG]){
+                            NSLog(@&quot;JPEG图片&quot;);
+                      }else if([dataUTI isEqualToString:(__bridge NSString *)kUTTypeJPEG2000]){
+                            NSLog(@&quot;JPEG2000图片&quot;);
+                      }else {
+                      }
+}];
+</code></pre>
+<p>本文用的是第一种(比较简单,效率高)</p>
+<hr>
+<p>三 获取GIF图片的原始完整二进制数据(所有帧)<br>代码如下:</p>
+<pre><code>- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{      
+   NSString *assetString = [[info objectForKey:UIImagePickerControllerReferenceURL] absoluteString];
+   if([assetString hasSuffix:@&quot;GIF&quot;]){
+       //这个图片是GIF图片
+       ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc]init];
+       [assetLibrary assetForURL:[info objectForKey:UIImagePickerControllerReferenceURL] resultBlock:^(ALAsset *asset) {
+        ALAssetRepresentation *re = [asset representationForUTI:(__bridge NSString *)kUTTypeGIF];;
+        NSUInteger size = (NSUInteger)re.size;
+        uint8_t *buffer = malloc(size);
+        NSError *error;
+        NSUInteger bytes = [re getBytes:buffer fromOffset:0 length:size error:&amp;error];
+        NSData *data = [NSData dataWithBytes:buffer length:bytes];//这个就是选取的GIF图片的原二进制数据
+        free(buffer);
+        } failureBlock:^(NSError *error) {
+        
+    }];
+    } else {
+   }
+}
+</code></pre>
+<hr>
+<p>四 压缩图片</p>
+<p>利用CoreGraphics&#x2F;CoreGraphics.h API转换GIF图片并再次转成符合要求的图片的二进制文件:<br>封装方法如下:<br>    + (NSData *)zipGIFWithData:(NSData *)data {<br>        if (!data) {<br>            return nil;<br>        }<br>        CGImageSourceRef source &#x3D; CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);<br>        size_t count &#x3D; CGImageSourceGetCount(source);<br>        UIImage *animatedImage &#x3D; nil;<br>        NSMutableArray *images &#x3D; [NSMutableArray array];<br>        NSTimeInterval duration &#x3D; 0.0f;<br>        for (size_t i &#x3D; 0; i &lt; count; i++) {<br>            CGImageRef image &#x3D; CGImageSourceCreateImageAtIndex(source, i, NULL);<br>            duration +&#x3D; [self frameDurationAtIndex:i source:source];<br>            UIImage *ima &#x3D; [UIImage imageWithCGImage:image scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];<br>            ima &#x3D; [ima zip];<br>            [images addObject:ima];<br>            CGImageRelease(image);<br>        if (!duration) {<br>            duration &#x3D; (1.0f &#x2F; 10.0f) * count;<br>        }<br>        animatedImage &#x3D; [UIImage animatedImageWithImages:images duration:duration];<br>     }<br>     CFRelease(source);<br>     return UIImagePNGRepresentation(animatedImage);<br>    }<br>将三种得到的gif图片的二进制数据精心压缩:<br>   代码如下:</p>
+<pre><code> ....
+NSData *data = [NSData dataWithBytes:buffer length:bytes];//这个就是选取的GIF图片的原二进制数据
+data = [self zipGIFWithData:data];
+//上传二进制数据
+</code></pre>
+<hr>
+<p>五 上传图片,与前文上传图片一样</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-GIF%E5%9B%BE%E7%89%87%E7%9A%84%E9%80%89%E5%8F%96,%E5%8E%8B%E7%BC%A9,%E4%B8%8A%E4%BC%A0/" data-id="cuidL5AVDhX3oYoPVZB68CO-g" data-title="iOS开发--GIF图片的选取,压缩,上传" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-PNG-JPEG图片的选取,压缩,上传" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-PNG-JPEG%E5%9B%BE%E7%89%87%E7%9A%84%E9%80%89%E5%8F%96,%E5%8E%8B%E7%BC%A9,%E4%B8%8A%E4%BC%A0/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-PNG-JPEG%E5%9B%BE%E7%89%87%E7%9A%84%E9%80%89%E5%8F%96,%E5%8E%8B%E7%BC%A9,%E4%B8%8A%E4%BC%A0/">iOS开发--PNG-JPEG图片的选取,压缩,上传</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="前段时间项目中有一个上传头像的需求-对图片有一些要求-图片不能超过2M-宽高最大为200-并且相等-支持JPG-GIF-PNG格式图片-本文先写JPG-PNG-后续会再发GIF图片的选取-压缩-上传"><a href="#前段时间项目中有一个上传头像的需求-对图片有一些要求-图片不能超过2M-宽高最大为200-并且相等-支持JPG-GIF-PNG格式图片-本文先写JPG-PNG-后续会再发GIF图片的选取-压缩-上传" class="headerlink" title="前段时间项目中有一个上传头像的需求,对图片有一些要求: 图片不能超过2M,宽高最大为200 并且相等,支持JPG&#x2F;GIF&#x2F;PNG格式图片,本文先写JPG&#x2F;PNG,后续会再发GIF图片的选取,压缩,上传."></a>前段时间项目中有一个上传头像的需求,对图片有一些要求: 图片不能超过2M,宽高最大为200 并且相等,支持JPG&#x2F;GIF&#x2F;PNG格式图片,本文先写JPG&#x2F;PNG,后续会再发GIF图片的选取,压缩,上传.</h2><p>思考的步骤:</p>
+<ul>
+<li>1 从相册选取图片</li>
+<li>2 把图片的二进制数据准备好</li>
+<li>3 封装上传图片的方法</li>
+<li>4 上传图片</li>
+</ul>
+<p>下面详细讲解如何实现每一步:<br>1 从相册选取图片,我这里是用的原生API,上代码:</p>
+<pre><code>//这部分代码是用来打开相册的
+UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+picker.delegate = self;
+picker.allowsEditing = YES;//是否允许编辑
+picker.sourceType = sourceType;
+[self presentViewController:picker animated:YES completion:nil];
+</code></pre>
+<p>下面是选取图片后代理方法内的代码:</p>
+<pre><code>- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+ {
+  __block UIImage *image = [info objectForKey:@&quot;UIImagePickerControllerEditedImage&quot;];
+  [self dismissViewControllerAnimated:YES completion:nil];
+  NSString *assetString = [[info objectForKey:UIImagePickerControllerReferenceURL] absoluteString];
+  __block NSData *data = [NSData data];
+  if([assetString hasSuffix:@&quot;GIF&quot;]){
+  //这个图片是GIF图,这一部分后续文章会出怎么处理
+  } else {
+    //准备图片的二进制数据
+    //上传图片
+  }
+}
+</code></pre>
+<p>2 准备图片的二进制数据:<br>   根据要求对图片的处理分为两步,第一步压缩体积,减小尺寸,第二步转化成二进制数据<br>2.1 对PNG和JPEG格式图片的处理<br>2.1.1 对图片进行压缩<br>我的做法是利用图形上下文减小尺寸,利用UIImageJPEGRepresentation()压缩体积,上代码(我做了一个分类,方便调用):</p>
+<p>UIImage+ZipSizeAndLength.h</p>
+<pre><code>#import &lt;UIKit/UIKit.h&gt;
+@interface UIImage (ZipSizeAndLength)
+- (UIImage *)compressToByte:(NSUInteger)maxLength;
+//直接调用这个方法进行压缩体积,减小大小
+- (UIImage *)zip;
+@end
+</code></pre>
+<p>   UIImage+ZipSizeAndLength.m</p>
+<pre><code>@implementation UIImage (ZipSizeAndLength)
+- (UIImage *)compressToByte:(NSUInteger)maxLength {
+// Compress by quality
+CGFloat compression = 1;
+NSData *data = UIImageJPEGRepresentation(self, compression);
+if (data.length &lt; maxLength) return self;
+
+CGFloat max = 1;
+CGFloat min = 0;
+for (int i = 0; i &lt; 6; ++i) {
+    compression = (max + min) / 2;
+    data = UIImageJPEGRepresentation(self, compression);
+    if (data.length &lt; maxLength * 0.9) {
+        min = compression;
+    } else if (data.length &gt; maxLength) {
+        max = compression;
+    } else {
+        break;
+    }
+}
+UIImage *resultImage = [UIImage imageWithData:data];
+if (data.length &lt; maxLength) return resultImage;
+
+// Compress by size
+NSUInteger lastDataLength = 0;
+while (data.length &gt; maxLength &amp;&amp; data.length != lastDataLength) {
+    lastDataLength = data.length;
+
+    CGSize size = CGSizeMake(200, 200);
+    UIGraphicsBeginImageContext(size);
+    [resultImage drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    resultImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    data = UIImageJPEGRepresentation(resultImage, compression);
+}
+resultImage = [UIImage imageWithData:data];
+return resultImage;
+}
+- (UIImage *)zipSize{
+if (self.size.width &lt; 200) {
+    return self;
+}
+CGSize size = CGSizeMake(200, 200);
+UIGraphicsBeginImageContext(size);
+[self drawInRect:CGRectMake(0, 0, size.width, size.height)];
+UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+UIGraphicsEndImageContext();
+return  image;
+}
+
+- (UIImage *)zip{
+UIImage *image = [self compressToByte:2*1024*1024];
+return  [image zipSize];
+}
+</code></pre>
+<p>2.1.2  图片压缩完成之后,需要转成二进制数据,对于PNG和JPEG格式的图片转二进制数据很简单,苹果提供了非常简单实用的API:</p>
+<pre><code>// return image as PNG. May return nil if image has no CGImageRef or invalid bitmap format
+UIKIT_EXTERN  NSData * __nullable UIImagePNGRepresentation(UIImage * __nonnull image);    
+// return image as JPEG. May return nil if image has no CGImageRef or invalid bitmap format. compression is 0(most)..1(least)                           
+UIKIT_EXTERN  NSData * __nullable UIImageJPEGRepresentation(UIImage * __nonnull image, CGFloat compressionQuality);  
+</code></pre>
+<p>所以,上文中的准备图片的二进制数据,代码为:</p>
+<pre><code>    //准备图片的二进制数据
+    image = [image zip];
+    data = UIImagePNGRepresentation(image);
+    //上传图片
+</code></pre>
+<p>3 上传文件的方法:<br>我用AFN做的上传,代码如下:</p>
+<pre><code>+(void)requestUrl:(NSString*)urlString paras:(id)paras datas:(NSArray *)datas 
+success:(SuccessBlock)successBlock failure:(FailureBlock)failureBlock{
+   NSURLSessionDataTask *datatask = [sessionManager POST:urlString 
+                                              parameters:paras 
+                               constructingBodyWithBlock:^(id&lt;AFMultipartFormData&gt;  _Nonnull formData) {
+            for (int i = 0 ; i &lt; datas.count ; i++){
+                NSData *data = datas[i];
+                [formData appendPartWithFileData:data name:@&quot;facefile&quot; fileName:@&quot;facefile&quot; mimeType:@&quot;image/gif&quot;];
+            }
+            
+        } progress:^(NSProgress * _Nonnull uploadProgress) {
+            NSLog(@&quot;-----%@&quot;,uploadProgress);
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSLog(@&quot;上传成功--%@&quot;,responseObject);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@&quot;上传失败%@&quot;,error);
+     }];
+ }
+</code></pre>
+<p>这里需要注意的一点是: 数据流的name和faileName mimeType 不能为空; 并且name是跟后台约定好的.<br>所以上文中的上传图片部分的代码为:</p>
+<pre><code>//上传图片
+[self uploadImageWithData:data];
+</code></pre>
+<p>uploadImageWithData方法实现为:<br>    - (void)uploadImageWithData:(NSData *)data{<br>    NSMutableDictionary *dic &#x3D; [[NSMutableDictionary alloc]init];<br>    [dic setValue:@”xx” forKey:@”xxx”];<br>    [dic setValue:@”xx” forKey:@”yyy”];<br>    [dic setValue:@”xx” forKey:@”zzz”];<br>    NSString <em>str &#x3D; @”<a target="_blank" rel="noopener" href="http://xx.xx.com/">http://xx.xx.com</a>“;<br>    requestUrl:(NSString</em>)urlString paras:(id)paras datas:(NSArray *)datas<br>    [Request requestUrl:str paras:dic datas:@[data]  success:^(id responds) {<br>          &#x2F;&#x2F;成功回调<br>    } failure:^(NSError *error) {<br>          &#x2F;&#x2F;失败回调<br>    }];<br>    }</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-PNG-JPEG%E5%9B%BE%E7%89%87%E7%9A%84%E9%80%89%E5%8F%96,%E5%8E%8B%E7%BC%A9,%E4%B8%8A%E4%BC%A0/" data-id="cuid2dpILrxo1odRvyo5jzjyx" data-title="iOS开发--PNG-JPEG图片的选取,压缩,上传" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-NSURL大部分人都用错了" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-NSURL%E5%A4%A7%E9%83%A8%E5%88%86%E4%BA%BA%E9%83%BD%E7%94%A8%E9%94%99%E4%BA%86/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-NSURL%E5%A4%A7%E9%83%A8%E5%88%86%E4%BA%BA%E9%83%BD%E7%94%A8%E9%94%99%E4%BA%86/">iOS开发--NSURL大部分人都用错了</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>大部分人拼接URL参数&#x2F;路径时, 都会选择字符串拼接,因为直观,容易理解.这样真的好吗? 本文带你认识NSURL的用法</p>
+<p>#一 对URL的操作:<br>##1 域名固定,拼接path<br>APP内域名统一,各个接口只需要拼接不同的path就可以得到对应的完成的URL字符串</p>
+<blockquote>
+<p>host &#x3D; <a target="_blank" rel="noopener" href="http://baidu.com/">http://baidu.com/</a></p>
+</blockquote>
+<p>###1.1 有人这样封装到APIManger:</p>
+<pre><code>+(NSString *)loginUrl{
+return @&quot;http://baidu.com/t1&quot;;
+}
++(NSString *)logoutUrl{
+return @&quot;http://baidu.com/l2&quot;;
+}
+</code></pre>
+<p>###1.2 有人这样,方便切换host:</p>
+<pre><code>static NSString * host = @&quot;http://baidu.com&quot;;
+
++(NSString *)loginUrl{
+return [NSString stringWithFormat:@&quot;%@/t1&quot;,host];
+}
++(NSString *)logoutUrl{
+return [NSString stringWithFormat:@&quot;%@/l2&quot;,host];
+}
+</code></pre>
+<p>###1.3  有人为了更方便会这样,使用宏定义:</p>
+<pre><code>static NSString * host = @&quot;http://baidu.com&quot;;
+
+#define KLOGINURL [APIManger share].loginUrl
+#define KLOGOUTURL [APIManger share].logoutUrl
+-(NSString *)loginUrl{
+return [NSString stringWithFormat:@&quot;%@/t1&quot;,host];
+}
+-(NSString *)logoutUrl{
+return [NSString stringWithFormat:@&quot;%@/l2&quot;,host];
+}
+</code></pre>
+<p>###1.4 以上3种均没有问题.上线运行不会出现问题,但是以上3种方式均是使用了普通字符串的操作得到URL的完整路径<br>###1.5 大部分APP域名是服务端获取的.这对APP来说会产生不确定性</p>
+<p>服务器下发URL,请求的时候需要APP拼接参数,需要考虑到各种情况比如:</p>
+<blockquote>
+<p>服务器下发: host &#x3D; @“<a target="_blank" rel="noopener" href="http://www.baidu.com”/">http://www.baidu.com”</a> 改成  @“<a target="_blank" rel="noopener" href="http://www.baidu.com/?client=ios%E2%80%9D">http://www.baidu.com?client=ios”</a></p>
+</blockquote>
+<pre><code>+(NSString *)logoutUrl{
+return [NSString stringWithFormat:@&quot;%@?userName=%@&amp;passWord=%@&quot;,host,@&quot;userName&quot;,@&quot;passWord&quot;];
+}
+</code></pre>
+<blockquote>
+<p>拼接完毕是: <a target="_blank" rel="noopener" href="http://www.baidu.com/?userName=un&passWord=pwd">http://www.baidu.com?userName=un&amp;passWord=pwd</a></p>
+</blockquote>
+<p>服务器下发: host &#x3D; @“<a target="_blank" rel="noopener" href="http://www.baidu.com/?c=ios%E2%80%9D">http://www.baidu.com?c=ios”</a></p>
+<blockquote>
+<p>拼接完毕是: <a target="_blank" rel="noopener" href="http://www.baidu.com/?c=ios?userName=un&passWord=pwd">http://www.baidu.com?c=ios?userName=un&amp;passWord=pwd</a></p>
+</blockquote>
+<p>拼接的就会出问题.<br>##2 获取url的某个部分</p>
+<p>###2.1 获取host,参数,协议,path等等<br>有人会使用字符串截取,有人会用正则表达式</p>
+<p>#反思</p>
+<blockquote>
+<p>苹果的NSURL对象对这种常规操作有没有支持?<br>如何优雅的避免拼接的url格式不对<br>NSURL有没有属性可以直接获取host,参数,协议,path等等</p>
+</blockquote>
+<p>#二 避免url拼接错误</p>
+<p>##1 拼接key value (下文有测试代码)</p>
+<pre><code>NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+NSMutableArray *array = [NSMutableArray arrayWithArray:components.queryItems];
+NSURLQueryItem *item = [NSURLQueryItem queryItemWithName:@&quot;dd&quot; value:@&quot;4&quot;];
+[array addObject:item];
+components.queryItems = array;
+</code></pre>
+<p>##2 拼接path</p>
+<pre><code>NSString *base = @&quot;http://www.baidu.com/&quot;;
+url = [NSURL URLWithString:@&quot;at/bt/ct&quot; relativeToURL:[NSURL URLWithString:base]];
+</code></pre>
+<p>#三 NSURL常用接口</p>
+<pre><code> NSString *domain = @&quot;http://username:password@www.baidu.com:80/at/bt/ct?ad=1&amp;bd=2&amp;cd=3#asdf&quot;;
+
+NSURL *url = [NSURL URLWithString:domain];
+
+NSLog(@&quot;absoluteString = %@ \n baseURL = %@\n scheme = %@\n resourceSpecifier =%@\n host = %@\n user = %@\n password = %@ \n path = %@ \n fragment = %@ \n query = %@ \n  relativePath =%@ \n port = %@&quot;,
+      url.absoluteString,
+      url.baseURL,
+      url.scheme,
+      url.resourceSpecifier,
+      url.host,
+      url.user,
+      
+      url.password,
+      url.path,
+      url.fragment,
+      url.query,
+      url.relativePath,
+      url.port
+      );
+
+NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+
+NSMutableArray *array = [NSMutableArray arrayWithArray:components.queryItems];
+
+NSURLQueryItem *item = [NSURLQueryItem queryItemWithName:@&quot;dd&quot; value:@&quot;4&quot;];
+[array addObject:item];
+
+NSLog(@&quot;queryItems = %@&quot;,components.queryItems);
+NSLog(@&quot;path = %@&quot;,components.queryItems);
+components.queryItems = array;
+NSLog(@&quot;queryItems-1 = %@&quot;,components.queryItems);
+NSLog(@&quot;queryItems-2 = %@&quot;,[components URLRelativeToURL:nil]);
+
+components.path = [components.path stringByAppendingPathComponent:@&quot;dt/et&quot;];
+NSLog(@&quot;queryItems-3 = %@&quot;,[components URLRelativeToURL:nil]);
+
+
+NSString *base = @&quot;http://www.baidu.com/&quot;;
+url = [NSURL URLWithString:@&quot;at/bt/ct&quot; relativeToURL:[NSURL URLWithString:base]];
+
+NSLog(@&quot;url = %@, absoluteString = %@&quot;,url,url.absoluteString);
+</code></pre>
+<p>#注意:</p>
+<blockquote>
+<p>stringByAppendingPathComponent 方法会把双斜杠(&#x2F;&#x2F;)变成单斜杠(&#x2F;)</p>
+</blockquote>
+<pre><code>NSString *str = [domain stringByAppendingPathComponent:@&quot;t/12/324&quot;];
+NSLog(@&quot;%@---%@&quot;,domain,str);
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-NSURL%E5%A4%A7%E9%83%A8%E5%88%86%E4%BA%BA%E9%83%BD%E7%94%A8%E9%94%99%E4%BA%86/" data-id="cuids0RRJ4jW_-yPkJLAw4DZn" data-title="iOS开发--NSURL大部分人都用错了" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/">iOS开发--Thread-1--EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-subcode=0x0</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>   崩溃的截图：<br>  <img src="https://upload-images.jianshu.io/upload_images/2791393-f8f3119957fa530b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>  <img src="https://upload-images.jianshu.io/upload_images/2791393-467722a485cd44a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png">  </p>
+<p> 最近项目中有一个dispatch_group相关的巨坑（此问题解决方法很简单，难点是定位问题），特此记录下来并分享，希望帮助到有需要的人！</p>
+<p>   本文涉及的知识面较广，有一定的逻辑性，如果想真正明白各种原理，请细细读来，如时间紧迫，可记住正确使用方法亦可！</p>
+<p>   阅读本文需要的知识点：</p>
+<pre><code> 1 熟悉AFNetworking
+ 2 熟练使用dispatch_group
+ 3 了解接口的含义
+ 4 熟悉block工作原理
+ 5 熟悉地址引用含义
+</code></pre>
+<p>   先把crash场景和解决方案放在开头：</p>
+<p>   crash场景：</p>
+<pre><code>1 有一组多个接口地址
+2 利用  dispatch_group并发请求到数据后，统一回调（必要：利用AF进行网络请求）
+3 频繁调用2（必要）
+4 每次调用2中的请求是同一组接口地址（必要）
+注：频繁的意思是一秒调用3次或3次以上
+</code></pre>
+<p>问题核心： </p>
+<pre><code>对dispatch_group进行了额外的leave操作
+</code></pre>
+<p>问题代码：</p>
+<pre><code>-(void)request{
+    dispatch_group_t group = dispatch_group_create();
+    self.group = group;
+
+   enter代码....
+  [request  requestGetUrl:url success:^(id responds) {
+    leave代码....
+  }];     
+} 
+</code></pre>
+<p>修正后代码：</p>
+<pre><code>-(void)request{
+  if(self.group == nil){
+    dispatch_group_t group = dispatch_group_create();
+    self.group = group;
+  }
+   enter代码....
+  [request  requestGetUrl:url success:^(id responds) {
+    leave代码....
+  }];     
+} 
+</code></pre>
+<p> 我想你肯定在疑惑加一个if判断就解决了问题了，那这个坑应该不大，分分钟搞定，请往下看</p>
+<p>产生此问题的原因：概括的说是dispatch_group的原理和AFNetworking网络请求回调block的缓存回调原理的协作问题</p>
+<p>举例详细说明，流程图如下：<br><img src="https://upload-images.jianshu.io/upload_images/2791393-20cd54e3726c0564.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<pre><code>正常情况下：执行步骤1 的间隔时间充分长，或者只执行一次，此逻辑没有问题，不会crash；
+非正常情况：开头所说的crash出现场景下，即频繁执行上图中步骤1到步骤3
+</code></pre>
+<p>   因为网络请求的耗时和异步特性，这时候会发生一种情况</p>
+<pre><code>1 第一次在步骤1创建了一个新的group1，这时网络请求n1到n4请求未返回，也就是b1到b4
+   还未调用；
+2 此时又执行了一次步骤一创建了一个新的group，命名为group2（这是一个新的，代码见上图），
+  并且赋值给了self.group，又执行步骤二，对group2进行enter，发送网络请求;
+3 此时若是1中的网络请求返回了，b1到b4就会调用，会对步骤2中创建的新的group2进行
+  leave操作，当2中的网络请求返回，进行回调时，会发生对group2进行额外的leave操作，
+  从而造成crash；
+注：b1到b4因为leave的需要，会对group进行地址引用
+</code></pre>
+<p>作者受<a target="_blank" rel="noopener" href="http://satanwoo.github.io/2017/01/07/DispatchGroupCrash/">此文</a>启发，虽场景不同，但原理一致！</p>
+<hr>
+<p>—2018-03-14更新错误代码实例 –start<br>附1：<br>错误代码实例（崩溃截图见代码下边）：</p>
+<pre><code> - (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+dispatch_group_t group = dispatch_group_create();
+self.group = group;
+dispatch_group_enter(self.group);
+dispatch_group_enter(self.group);
+dispatch_group_enter(self.group);
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    dispatch_group_leave(self.group);
+    sleep(2);
+    dispatch_group_leave(self.group);
+     dispatch_group_leave(self.group);
+});
+dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
+    NSLog(@&quot;1234567&quot;);
+});   
+}
+</code></pre>
+<p><img src="https://upload-images.jianshu.io/upload_images/2791393-1b9f6d43af5babe1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="崩溃截图"></p>
+<p> 修正后代码：</p>
+<pre><code>- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+if(self.group == nil){
+    dispatch_group_t group = dispatch_group_create();
+    self.group = group;
+}
+dispatch_group_enter(self.group);
+dispatch_group_enter(self.group);
+dispatch_group_enter(self.group);
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    dispatch_group_leave(self.group);
+    sleep(2);
+    dispatch_group_leave(self.group);
+    dispatch_group_leave(self.group);
+});
+
+dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
+    NSLog(@&quot;1234567&quot;);
+});    
+}
+</code></pre>
+<p>—2018-03-14更新错误代码实例 –end</p>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/" data-id="cuiddVjn8xnexzf0xcCFiYcn7" data-title="iOS开发--Thread-1--EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-subcode=0x0" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/hexo-site/page/4/">&laquo; 上一页</a><a class="page-number" href="/hexo-site/">1</a><span class="space">&hellip;</span><a class="page-number" href="/hexo-site/page/3/">3</a><a class="page-number" href="/hexo-site/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/hexo-site/page/6/">6</a><a class="page-number" href="/hexo-site/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/hexo-site/page/11/">11</a><a class="extend next" rel="next" href="/hexo-site/page/6/">下一页 &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/%E6%95%99%E7%A8%8B/" rel="tag">教程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/hexo-site/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/hexo-site/tags/%E6%95%99%E7%A8%8B/" style="font-size: 10px;">教程</a> <a href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 20px;">笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2018/04/">四月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E4%B8%AD%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E7%9A%84%E8%AF%B4%E6%98%8E%E4%BB%A5%E5%8F%8A%E7%94%A8%E6%B3%95/">OC中按位枚举的说明以及用法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 博主<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/hexo-site/" class="mobile-nav-link">Home</a>
+  
+    <a href="/hexo-site/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/hexo-site/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/hexo-site/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/hexo-site/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

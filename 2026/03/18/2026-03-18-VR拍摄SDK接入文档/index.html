@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>VR拍摄SDK接入文档 | 我的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="VR拍摄SDK接入文档DepthSphere,需要单独引入 [TOC] ##项目管理项目管理分为两部分：服务端项目管理，本地拍摄数据管理 拍摄流程一般是：  创建本地项目 -&gt; 进行拍摄 -&gt; 拍摄完成点击生成vr -&gt; 创建服务端项目 -&gt; 关联本地项目 -&gt; 项目上传 -&gt; 服务端处理 -&gt; 处理完成  ###服务端项目管理(api)服务端项目管理，是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VR拍摄SDK接入文档">
+<meta property="og:url" content="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-VR%E6%8B%8D%E6%91%84SDK%E6%8E%A5%E5%85%A5%E6%96%87%E6%A1%A3/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="VR拍摄SDK接入文档DepthSphere,需要单独引入 [TOC] ##项目管理项目管理分为两部分：服务端项目管理，本地拍摄数据管理 拍摄流程一般是：  创建本地项目 -&gt; 进行拍摄 -&gt; 拍摄完成点击生成vr -&gt; 创建服务端项目 -&gt; 关联本地项目 -&gt; 项目上传 -&gt; 服务端处理 -&gt; 处理完成  ###服务端项目管理(api)服务端项目管理，是">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-18T10:04:06.000Z">
+<meta property="article:modified_time" content="2026-03-18T10:11:47.000Z">
+<meta property="article:author" content="博主">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/hexo-site/atom.xml" title="我的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/hexo-site/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/hexo-site/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/hexo-site/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/hexo-site/" id="logo">我的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/hexo-site/" id="subtitle">记录与分享</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/hexo-site/">Home</a>
+        
+          <a class="main-nav-link" href="/hexo-site/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/hexo-site/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://liqiang184.github.io/hexo-site"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-2026-03-18-VR拍摄SDK接入文档" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-VR%E6%8B%8D%E6%91%84SDK%E6%8E%A5%E5%85%A5%E6%96%87%E6%A1%A3/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      VR拍摄SDK接入文档
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="VR拍摄SDK接入文档"><a href="#VR拍摄SDK接入文档" class="headerlink" title="VR拍摄SDK接入文档"></a>VR拍摄SDK接入文档</h1><p>DepthSphere,需要单独引入</p>
+<p>[TOC]</p>
+<p>##项目管理<br>项目管理分为两部分：服务端项目管理，本地拍摄数据管理</p>
+<p>拍摄流程一般是：</p>
+<blockquote>
+<p>创建本地项目 -&gt; 进行拍摄 -&gt; 拍摄完成点击生成vr -&gt; 创建服务端项目 -&gt; 关联本地项目 -&gt; 项目上传 -&gt; 服务端处理 -&gt; 处理完成</p>
+</blockquote>
+<p>###服务端项目管理(api)<br>服务端项目管理，是通过我们开放平台接口进行操作的，下面会介绍接口的参数和返回，demo中对所有接口进行了封装，可进行参考实现<br><code>AppDelegate+CaptureSDK</code></p>
+<p>我们开放平台的 host 为：<br><code>http://app-gateway.realsee.com</code></p>
+<p>####获取token<br>demo中参考<br><code>AppDelegate+CaptureSDK</code>和token缓存机制<code>BSToken</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">RSConfig.shareConfig.ticket = ^(RSCaptureTicketBlock  _Nonnull block) &#123;</span><br><span class="line">        //先判断是否存在有效token</span><br><span class="line">        if (BSToken.share.currentToken != nil) &#123;</span><br><span class="line">            if(block)&#123;</span><br><span class="line">                block (BSToken.share.currentToken);</span><br><span class="line">            &#125;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        NSDictionary *dict = @&#123;@&quot;app_key&quot;:BSAPI.appKey,</span><br><span class="line">                               @&quot;app_secret&quot;:BSAPI.appSecret</span><br><span class="line">        &#125;;</span><br><span class="line">        [BSNetworkManager sendRequestWithMethod:BSRequestMethodTypePost path:BSAPI.accessToken parameters:dict config:nil completionBlock:^(id  _Nullable responseObject, NSError * _Nullable error) &#123;</span><br><span class="line">            if(error)&#123;</span><br><span class="line">                block(nil);</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                NSDictionary *dict = responseObject[@&quot;data&quot;];</span><br><span class="line">                NSString *access_token = dict[@&quot;access_token&quot;];</span><br><span class="line">                BSToken.share.currentToken = access_token;</span><br><span class="line">                if(block)&#123;</span><br><span class="line">                    block (access_token);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>每一个接口调用，都要携带正确的 <code>accessToken</code>,获取它的方式如下：</p>
+<p>path: <code>/auth/access_token</code><br>方法：POST请求<br>参数：<br>|参数名称|参数类型|是否必须|说明-|<br>|app_key| String | 是|在如视申请的 appId<br>|app_secret|String|是|在如视申请的 appSecret<br>|user_id|String|否|区分用户的id，可以为空<br>返回示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;request_id&quot;: &quot;20230313203110-102725348-e6439c37fb4bedccfc8dad9f4b6abbc3&quot;,</span><br><span class="line">	&quot;trace_id&quot;: &quot;ece0a225-f07a-4c2a-baf5-39149e48e457&quot;,</span><br><span class="line">	&quot;business_code&quot;: &quot;&quot;,</span><br><span class="line">	&quot;osi_request_id&quot;: &quot;&quot;,</span><br><span class="line">	&quot;code&quot;: 0,</span><br><span class="line">	&quot;status&quot;: &quot;success&quot;,</span><br><span class="line">	&quot;data&quot;: &#123;</span><br><span class="line">		&quot;access_token&quot;: &quot;VE9LRU5fVjJSZ05Rb0RwS3RWc1EwRElEMUNpWGgwTElSZmRRZjVzOU9aVzFuZDZ0ZUdvPQ&quot;,</span><br><span class="line">		&quot;expire_at&quot;: 1678714270</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;cost&quot;: 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>code</code> 为 0 代表正常返回，<code>access_token</code> 为要获取的最终token， <code>expire_at</code>为过期时间<br>可参考demo中处理 <code>com.realsee.android.capture.demo.project.VrTokenProvider</code></p>
+</blockquote>
+<p>####获取项目列表<br>demo中参考<br><code>ProjectListViewModel</code></p>
+<p>path: <code>/open/v1/entity/project/list</code><br>方法：GET请求</p>
+<p>参数：</p>
+<p>|参数名称|参数类型|是否必须|说明<br>-|<br>|page| String | 是|页面index，从1开始<br>|page_size|String|是|一页中的数据数量<br>|user_id|String|否|区分用户的id，可以为空<br>|sort|String|是|排序方式：<code>desc</code> 或者 <code>asc</code><br>|order|String|是|排序规则一般为 <code>create_time</code> 按照创建时间排序</p>
+<p>headers：<br><code>Authorization</code>  值为获取到的 <code>accessToken</code></p>
+<p>返回示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;request_id&quot;: &quot;20230313203111-102725348-65ec49cdf30b1957df8d082a5f3ed443&quot;,</span><br><span class="line">	&quot;trace_id&quot;: &quot;a1e1e39b-2ded-4095-8912-584b15581e30&quot;,</span><br><span class="line">	&quot;business_code&quot;: &quot;0&quot;,</span><br><span class="line">	&quot;osi_request_id&quot;: &quot;&quot;,</span><br><span class="line">	&quot;code&quot;: 0,</span><br><span class="line">	&quot;status&quot;: &quot;success&quot;,</span><br><span class="line">	&quot;data&quot;: &#123;</span><br><span class="line">		&quot;list&quot;: [&#123;</span><br><span class="line">			&quot;create_time&quot;: &quot;2023-03-13 18:17:44&quot;,</span><br><span class="line">			&quot;db_version&quot;: &quot;1-213297cb65ed404ad3de7c91f52f9934&quot;,</span><br><span class="line">			&quot;device_info&quot;: &#123;&#125;,</span><br><span class="line">			&quot;device_type&quot;: 1,</span><br><span class="line">			&quot;download_produce_to_tf&quot;: &#123;</span><br><span class="line">				&quot;export_tf_message&quot;: &quot;&quot;,</span><br><span class="line">				&quot;export_tf_status&quot;: &quot;&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;expect_vr_task_duration&quot;: 0,</span><br><span class="line">			&quot;expect_vr_task_time&quot;: &quot;&quot;,</span><br><span class="line">			&quot;export_info&quot;: null,</span><br><span class="line">			&quot;is_deleted&quot;: 0,</span><br><span class="line">			&quot;is_shoot_16k&quot;: 0,</span><br><span class="line">			&quot;machine_id&quot;: &quot;cyclops&quot;,</span><br><span class="line">			&quot;modify_time&quot;: &quot;2023-03-13 18:21:56&quot;,</span><br><span class="line">			&quot;move_project_to_tf&quot;: &#123;</span><br><span class="line">				&quot;export_tf_message&quot;: &quot;&quot;,</span><br><span class="line">				&quot;export_tf_status&quot;: &quot;&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;move_trash_time&quot;: &quot;&quot;,</span><br><span class="line">			&quot;name&quot;: &quot;未命名项目&quot;,</span><br><span class="line">			&quot;observer_num&quot;: 1,</span><br><span class="line">			&quot;offline_id&quot;: &quot;project-1678695899207&quot;,</span><br><span class="line">			&quot;picture_url&quot;: &quot;https://test-vr-public.realsee-cdn.cn/test/auto3dhd/f49566642905b642ead610defad9dcff/screenshot/1678701767_0/pc1_GfBjFNigU.jpg&quot;,</span><br><span class="line">			&quot;pipeline_param&quot;: &#123;</span><br><span class="line">				&quot;model_patches&quot;: &quot;200000&quot;,</span><br><span class="line">				&quot;model_patches_large&quot;: &quot;200000&quot;,</span><br><span class="line">				&quot;remove_sky_and_trees&quot;: &quot;1&quot;,</span><br><span class="line">				&quot;repack_texture&quot;: &quot;1&quot;,</span><br><span class="line">				&quot;request_src_model&quot;: &quot;1&quot;,</span><br><span class="line">				&quot;request_src_pano&quot;: &quot;1&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;preview_url&quot;: &quot;&quot;,</span><br><span class="line">			&quot;project_id&quot;: &quot;cyclops-lJjKM8BrwmvZR3PW&quot;,</span><br><span class="line">			&quot;shoot_time&quot;: &quot;&quot;,</span><br><span class="line">			&quot;source&quot;: &quot;ALLIANCE&quot;,</span><br><span class="line">			&quot;status&quot;: 5,</span><br><span class="line">			&quot;status_text&quot;: &quot;生成成功&quot;,</span><br><span class="line">			&quot;title_picture_url&quot;: &quot;https://test-vr-public.realsee-cdn.cn/test/auto3dhd/f49566642905b642ead610defad9dcff/screenshot/1678701767_0/pc0_wmLnaqA9x.jpg&quot;,</span><br><span class="line">			&quot;trash_delete_time&quot;: 0,</span><br><span class="line">			&quot;vr_code&quot;: &quot;80yOJrMWELNEeDlvV1&quot;,</span><br><span class="line">			&quot;vr_deal_info&quot;: null,</span><br><span class="line">			&quot;vr_task_timeout_message&quot;: &quot;&quot;</span><br><span class="line">		&#125;, &#123;</span><br><span class="line">			&quot;create_time&quot;: &quot;2023-03-13 16:32:21&quot;,</span><br><span class="line">			&quot;db_version&quot;: &quot;1-f4307f301510f88bafe395a173a3746d&quot;,</span><br><span class="line">			&quot;device_info&quot;: &#123;&#125;,</span><br><span class="line">			&quot;device_type&quot;: 1,</span><br><span class="line">			&quot;download_produce_to_tf&quot;: &#123;</span><br><span class="line">				&quot;export_tf_message&quot;: &quot;&quot;,</span><br><span class="line">				&quot;export_tf_status&quot;: &quot;&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;expect_vr_task_duration&quot;: 0,</span><br><span class="line">			&quot;expect_vr_task_time&quot;: &quot;&quot;,</span><br><span class="line">			&quot;export_info&quot;: null,</span><br><span class="line">			&quot;is_deleted&quot;: 0,</span><br><span class="line">			&quot;is_shoot_16k&quot;: 0,</span><br><span class="line">			&quot;machine_id&quot;: &quot;cyclops&quot;,</span><br><span class="line">			&quot;modify_time&quot;: &quot;2023-03-13 17:57:18&quot;,</span><br><span class="line">			&quot;move_project_to_tf&quot;: &#123;</span><br><span class="line">				&quot;export_tf_message&quot;: &quot;&quot;,</span><br><span class="line">				&quot;export_tf_status&quot;: &quot;&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;move_trash_time&quot;: &quot;&quot;,</span><br><span class="line">			&quot;name&quot;: &quot;未命名&quot;,</span><br><span class="line">			&quot;observer_num&quot;: 1,</span><br><span class="line">			&quot;offline_id&quot;: &quot;project-1678695726431&quot;,</span><br><span class="line">			&quot;picture_url&quot;: &quot;https://test-vr-public.realsee-cdn.cn/test/auto3dhd/42c85bd4c754a3294f6a50c49cc88f75/screenshot/1678695735_0/pc1_yalwbXz8u.jpg&quot;,</span><br><span class="line">			&quot;pipeline_param&quot;: &#123;</span><br><span class="line">				&quot;model_patches&quot;: &quot;200000&quot;,</span><br><span class="line">				&quot;model_patches_large&quot;: &quot;200000&quot;,</span><br><span class="line">				&quot;remove_sky_and_trees&quot;: &quot;1&quot;,</span><br><span class="line">				&quot;repack_texture&quot;: &quot;1&quot;,</span><br><span class="line">				&quot;request_src_model&quot;: &quot;1&quot;,</span><br><span class="line">				&quot;request_src_pano&quot;: &quot;1&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;preview_url&quot;: &quot;&quot;,</span><br><span class="line">			&quot;project_id&quot;: &quot;cyclops-eGj1ZXeJXW72xOWd&quot;,</span><br><span class="line">			&quot;shoot_time&quot;: &quot;&quot;,</span><br><span class="line">			&quot;source&quot;: &quot;ALLIANCE&quot;,</span><br><span class="line">			&quot;status&quot;: 5,</span><br><span class="line">			&quot;status_text&quot;: &quot;生成成功&quot;,</span><br><span class="line">			&quot;title_picture_url&quot;: &quot;https://test-vr-public.realsee-cdn.cn/test/auto3dhd/42c85bd4c754a3294f6a50c49cc88f75/screenshot/1678695735_0/pc0_1Bh82LCmM.jpg&quot;,</span><br><span class="line">			&quot;trash_delete_time&quot;: 0,</span><br><span class="line">			&quot;vr_code&quot;: &quot;80K8xbMynoanP9A62d&quot;,</span><br><span class="line">			&quot;vr_deal_info&quot;: null,</span><br><span class="line">			&quot;vr_task_timeout_message&quot;: &quot;&quot;</span><br><span class="line">		&#125;],</span><br><span class="line">		&quot;page&quot;: 1,</span><br><span class="line">		&quot;page_size&quot;: 10,</span><br><span class="line">		&quot;total_page&quot;: 1</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;cost&quot;: 74</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>name</code> 项目名称<br><code>code</code> 为 0 代表正常返回<br><code>status</code> 为项目在服务端的状态：0 默认、1处理中、2处理失败、5处理成功<br><code>device_type</code> 采集类型：1手机拍、2全景相机、3云台拍、4伽罗华拍摄<br><code>is_shoot_16k</code> 1 代表为高清拍摄<br><code>title_picture_url</code> 项目封面图，只有处理成功的项目不为空<br><code>vr_code</code> 处理成功的项目会有，通过它可以进行本地预览<br><code>observer_num</code> 拍摄点位数量</p>
+</blockquote>
+<p>####创建项目<br>demo中参考<br><code>AppDelegate+CaptureSDK</code></p>
+<p>path: <code>/open/v1/entity/project/create</code></p>
+<p>方法：POST请求</p>
+<p>请求body示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;app_version&quot;: &quot;1.0&quot;,</span><br><span class="line">	&quot;device_info&quot;: &#123;</span><br><span class="line">		&quot;derived_id&quot;: &quot;&quot;,</span><br><span class="line">		&quot;device_model&quot;: &quot;Hera-BD00&quot;,</span><br><span class="line">		&quot;device_type&quot;: &quot;1&quot;,</span><br><span class="line">		&quot;device_uid&quot;: &quot;&quot;,</span><br><span class="line">		&quot;gps&quot;: &quot;&quot;,</span><br><span class="line">		&quot;index&quot;: 0,</span><br><span class="line">		&quot;is16k&quot;: 0,</span><br><span class="line">		&quot;orientation&quot;: &quot;&quot;,</span><br><span class="line">		&quot;phone_os&quot;: &quot;Android&quot;,</span><br><span class="line">		&quot;sensor_height&quot;: 0,</span><br><span class="line">		&quot;sensor_width&quot;: 0</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;device_type&quot;: 1,</span><br><span class="line">	&quot;machine_id&quot;: &quot;&quot;,</span><br><span class="line">	&quot;name&quot;: &quot;未命名项目&quot;,</span><br><span class="line">	&quot;offline_id&quot;: &quot;project-1678704252669&quot;,</span><br><span class="line">	&quot;remark&quot;: &quot;&quot;,</span><br><span class="line">	&quot;sdk_version&quot;: &quot;1.0.4&quot;,</span><br><span class="line">	&quot;user_id&quot;: &quot;13938492907yi&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>|参数名称|参数类型|是否必须|说明<br>-|<br>|app_version| String | 否|app的版本号<br>|device_model|String|是|设备的model型号<br>|device_type|String|是|采集类型：1手机拍、2全景相机、3云台拍、4伽罗华拍摄<br>|is16k|String|是|是否为高清拍摄 1是、0不是<br>|phone_os|String|是|os类型 <code>Android</code> 或者 <code>iOS</code><br>|machine_id|String|否|拍摄机器ID<br>|name|String|是|项目名称<br>|offline_id|String|是|本地项目id<br>|sdk_version|String|是|sdk版本号<br>|user_id|String|否|用户区分id，要通过 <code>RsOpenSdk#getBelongedId</code> 获取</p>
+<blockquote>
+<p>其他参数可以忽略，最好保留以上结构</p>
+</blockquote>
+<p>headers：<br><code>Authorization</code>  值为获取到的 <code>accessToken</code></p>
+<p>返回结果示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;request_id&quot;: &quot;20230313210151-102725348-1cb2b37fd7b79b4519a60bb44f1e5734&quot;,</span><br><span class="line">	&quot;trace_id&quot;: &quot;b2d0b276-7803-41a7-84cd-2190071aa1c9&quot;,</span><br><span class="line">	&quot;business_code&quot;: &quot;0&quot;,</span><br><span class="line">	&quot;osi_request_id&quot;: &quot;&quot;,</span><br><span class="line">	&quot;code&quot;: 0,</span><br><span class="line">	&quot;status&quot;: &quot;success&quot;,</span><br><span class="line">	&quot;data&quot;: &#123;</span><br><span class="line">		&quot;project_id&quot;: &quot;cyclops-7jomZemJAAvZNXBA&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;cost&quot;: 57</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>code</code> 为 0，代表返回成功<br><code>project_id</code> 是项目的服务端id</p>
+</blockquote>
+<p>####删除项目<br>demo中参考<br><code>AppDelegate+CaptureSDK</code></p>
+<p>path: <code>/open/v1/entity/project/delete</code></p>
+<p>方法：POST请求</p>
+<p>请求body示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;project_id&quot;: &quot;cyclops-lJjKM8BrwmvZR3PW&quot;,</span><br><span class="line">	&quot;user_id&quot;: &quot;13938492907yi&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>|参数名称|参数类型|是否必须|说明<br>-|<br>|project_id| String | 是|要删除项目的服务端id<br>|user_id|String|否|用户区分id，要通过 <code>RsOpenSdk#getBelongedId</code> 获取</p>
+<p>headers：<br><code>Authorization</code>  值为获取到的 <code>accessToken</code></p>
+<p>返回结果示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;request_id&quot;: &quot;20230314104123-102725348-972f50a55ceb2ca7e1dbdbec32212c45&quot;,</span><br><span class="line">	&quot;trace_id&quot;: &quot;68571c9f-097f-4aa8-a25f-1ac7c232e572&quot;,</span><br><span class="line">	&quot;business_code&quot;: &quot;0&quot;,</span><br><span class="line">	&quot;osi_request_id&quot;: &quot;&quot;,</span><br><span class="line">	&quot;code&quot;: 0,</span><br><span class="line">	&quot;status&quot;: &quot;success&quot;,</span><br><span class="line">	&quot;data&quot;: &#123;&#125;,</span><br><span class="line">	&quot;cost&quot;: 58</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>code</code> 为 0，代表返回成功</p>
+</blockquote>
+<p>####修改项目名称<br>demo中参考<br><code>cAppDelegate+CaptureSDK</code></p>
+<p>path: <code>/open/v1/entity/project/modify</code></p>
+<p>方法：POST请求</p>
+<p>请求body示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;name&quot;: &quot;未命&quot;,</span><br><span class="line">	&quot;project_id&quot;: &quot;cyclops-lJjKM8BrwmvZR3PW&quot;,</span><br><span class="line">	&quot;user_id&quot;: &quot;13938492907yi&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>|参数名称|参数类型|是否必须|说明<br>-|<br>|name| String | 是|新名称<br>|project_id| String | 是|要删除项目的服务端id<br>|user_id|String|否|用户区分id，要通过 <code>RsOpenSdk#getBelongedId</code> 获取</p>
+<p>headers：<br><code>Authorization</code>  值为获取到的 <code>accessToken</code></p>
+<p>返回结果示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;request_id&quot;: &quot;20230314104119-102725348-ed415dc1bb2af5a02aafdff406a24e8e&quot;,</span><br><span class="line">	&quot;trace_id&quot;: &quot;ead2c633-5647-4ff1-9530-84f62c89a206&quot;,</span><br><span class="line">	&quot;business_code&quot;: &quot;0&quot;,</span><br><span class="line">	&quot;osi_request_id&quot;: &quot;&quot;,</span><br><span class="line">	&quot;code&quot;: 0,</span><br><span class="line">	&quot;status&quot;: &quot;success&quot;,</span><br><span class="line">	&quot;data&quot;: &#123;&#125;,</span><br><span class="line">	&quot;cost&quot;: 89</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>code</code> 为 0，代表返回成功</p>
+</blockquote>
+<p>####获取项目详情<br>demo中参考<br><code>com.realsee.android.capture.demo.project.ProjectApi#projectInfos</code></p>
+<p>path: <code>/open/v1/entity/project/list</code></p>
+<p>方法：GET请求</p>
+<p>请求参数：</p>
+<p>|参数名称|参数类型|是否必须|说明<br>-|<br>|project_ids| String | 是|项目服务端id，多个id直接用 <code>,</code> 分割<br>|user_id|String|否|用户区分id，要通过 <code>RsOpenSdk#getBelongedId</code> 获取</p>
+<p>headers：<br><code>Authorization</code>  值为获取到的 <code>accessToken</code></p>
+<p>返回结果跟项目列表返回一致，可参考项目列表接口</p>
+<p>###本地项目管理<br>本地项目是指在手机或者平板上创建的项目，这些项目有可能是纯本地项目（还没有关联服务端项目），这些项目的<code>serverProjectId</code> 为空；有些项目关联了服务端项目，<code>serverProjectId</code> 为关联的服务端id<br>使用本地项目管理功能，需要先接入SDK</p>
+<p>使用本地项目管理功能，需要用到<br><code>com.realseei.android.viewmodel.LocalProjectManageVModel</code></p>
+<p>####获取项目列表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">LocalProjectManageVModel.getAllProjects().forEach &#123; projectModel -&gt;</span><br><span class="line">                    projectModel.projectName//项目名称</span><br><span class="line">                    projectModel.serverProjectId//项目服务端id</span><br><span class="line">                    projectModel.offLineId//项目本地id</span><br><span class="line">                    projectModel.status//项目状态 0默认、1020拍摄中、1处理中、2处理失败、5处理成功</span><br><span class="line">                    projectModel.device_type//采集类型：1手机拍、2全景相机、3云台拍、4伽罗华拍摄</span><br><span class="line">                    projectModel.projectCreateTime//项目创建时间 2023-03-13 21:08:52</span><br><span class="line">                    projectModel.titlePictureUrl//项目封面图</span><br><span class="line">                    projectModel.is16kShoot//是否是高清拍摄</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>demo 中可参考 <code>com.realsee.android.capture.demo.main.ProjectListFragment#refreshData</code></p>
+</blockquote>
+<p>####创建项目</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//子线程中操作</span><br><span class="line">thread &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        val offlineId =</span><br><span class="line">            LocalProjectManageVModel.createProject(name, getCreateDeviceType().value)</span><br><span class="line">        ui &#123;</span><br><span class="line">            //创建成功，获取创建好的projectModel</span><br><span class="line">            val projectModel: ProjectModel = ProjectDataManager.getProjectModel(offlineId)!!</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (e: Exception) &#123;</span><br><span class="line">        //捕获异常</span><br><span class="line">        ui &#123;</span><br><span class="line">            ToastUtil.showCommonToast(&quot;创建失败$&#123;e.message&#125;&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>demo 中可参考 <code>com.realsee.android.capture.demo.main.ProjectCreateFragment#createLocalProject</code></p>
+</blockquote>
+<p>####删除项目</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//子线程中操作</span><br><span class="line">    thread &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            LocalProjectManageVModel.deleteProjects(listOf(data.offlineId))</span><br><span class="line">        &#125; catch (e: Exception) &#123;</span><br><span class="line">            //捕获异常</span><br><span class="line">            ui &#123;</span><br><span class="line">                ToastUtil.showCommonToast(&quot;删除失败:$&#123;e.message&#125;&quot;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>demo 中可参考 <code>com.realsee.android.capture.demo.main.ProjectListFragment#deleteDialog</code></p>
+</blockquote>
+<p>####修改项目名称</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">thread &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            LocalProjectManageVModel.renameProject(</span><br><span class="line">                projectCardModel.offlineId,</span><br><span class="line">                newName,</span><br><span class="line">            )</span><br><span class="line">        &#125; catch (e: Exception) &#123;</span><br><span class="line">            ui &#123;</span><br><span class="line">                ToastUtil.showCommonToast(&quot;修改失败:$&#123;e.message&#125;&quot;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>demo 中可参考 <code>com.realsee.android.capture.demo.main.ProjectListFragment#doRename</code></p>
+</blockquote>
+<p>####获取项目详情</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val projectModel:ProjectModel = ProjectDataManager.getProjectModel(offlineId)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>demo 中可参考 <code>com.realsee.android.capture.demo.detail.ProjectDetailActivity#refresh</code></p>
+</blockquote>
+<h2 id="SDK接入"><a href="#SDK接入" class="headerlink" title="SDK接入"></a>SDK接入</h2><p>为了顺利接入和正常使用，请确保接入环境如下：</p>
+<ul>
+<li><code>compileSdkVersion</code> &lt; 31</li>
+<li><code>targetSdkVersion</code> &lt;31</li>
+<li><code>kotlin</code> 环境</li>
+<li><code>AndroidX</code>支持</li>
+</ul>
+<p>###<code>kotlin</code>环境搭建（已使用<code>kotlin</code>可忽略）</p>
+<p>由于SDK和文档以及demo都是使用 	<code>kotlin</code> 语言开发，所以最好接入环境为 <code>kotlin</code> 语言开发环境</p>
+<blockquote>
+<p>以下接入过程只供参考   <a target="_blank" rel="noopener" href="https://developer.android.com/kotlin/add-kotlin#groovy">官方接入文档</a> </p>
+</blockquote>
+<p>1、在工程的 <code>build.gradle</code> 中添加如下</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">        ...</span><br><span class="line">        classpath <span class="string">&quot;org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10&quot;</span></span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2、在所有模块的 <code>build.gradle</code> 中添加如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//最上面添加</span><br><span class="line">apply plugin: &#x27;com.android.application&#x27;</span><br><span class="line">apply plugin: &#x27;kotlin-android&#x27;</span><br><span class="line">//添加这个是为了使用一些扩展功能，如：直接访问 view 对象，不用 findViewById</span><br><span class="line">apply plugin: &#x27;kotlin-android-extensions&#x27;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    implementation &#x27;androidx.core:core-ktx:1.2.0&#x27;</span><br><span class="line">    implementation &quot;org.jetbrains.kotlin:kotlin-stdlib:1.4.32&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>以上使用的 <code>kotlin</code> 相关版本最好跟文档中的保持一致</p>
+</blockquote>
+<h3 id="SDK依赖添加"><a href="#SDK依赖添加" class="headerlink" title="SDK依赖添加"></a>SDK依赖添加</h3><p>1、在主模块的目录下新建 <code>rssdk</code> 目录，将SDK的 aar 包放入其中，添加依赖：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    ...</span><br><span class="line">    implementation fileTree(include: [&#x27;*.aar&#x27;], dir: &#x27;rssdk&#x27;)</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>2、第三方依赖接入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    //kotlin 依赖包</span><br><span class="line">    implementation &quot;org.jetbrains.kotlin:kotlin-stdlib:1.4.32&quot;</span><br><span class="line">    //andriodx 官方包</span><br><span class="line">    implementation &#x27;androidx.core:core-ktx:1.2.0&#x27;</span><br><span class="line">    implementation &#x27;androidx.appcompat:appcompat:1.1.0&#x27;</span><br><span class="line">    //sdk 部分页面有依赖</span><br><span class="line">    implementation &#x27;com.google.android.material:material:1.1.0&#x27;</span><br><span class="line">    implementation &#x27;androidx.constraintlayout:constraintlayout:2.1.3&#x27;</span><br><span class="line">    </span><br><span class="line">    //kotlin 扩展包，方便 viewModel 和 liveData 的使用，sdk 内部页面需要</span><br><span class="line">    implementation &quot;androidx.activity:activity-ktx:1.2.0&quot;</span><br><span class="line">    implementation &quot;androidx.fragment:fragment-ktx:1.3.0&quot;</span><br><span class="line"></span><br><span class="line">    //sdk 内部使用的图片网络框架</span><br><span class="line">    implementation &#x27;com.github.bumptech.glide:glide:4.13.2&#x27;</span><br><span class="line">    </span><br><span class="line">    //sdk 使用的网络框架</span><br><span class="line">    implementation &#x27;com.google.code.gson:gson:2.8.6&#x27;</span><br><span class="line">    implementation &#x27;com.squareup.retrofit2:retrofit:2.9.0&#x27;</span><br><span class="line">    implementation &#x27;com.squareup.retrofit2:converter-gson:2.9.0&#x27;</span><br><span class="line"></span><br><span class="line">    //sdk 内部传递消息使用</span><br><span class="line">    implementation &#x27;androidx.localbroadcastmanager:localbroadcastmanager:1.0.0&#x27;</span><br><span class="line"></span><br><span class="line">    //exoplayer播放器，sdk 内部使用播放使用</span><br><span class="line">    def exoVersion = &quot;2.11.8&quot;</span><br><span class="line">    implementation &quot;com.google.android.exoplayer:exoplayer-core:$&#123;exoVersion&#125;&quot;</span><br><span class="line">    implementation &quot;com.google.android.exoplayer:exoplayer-ui:$&#123;exoVersion&#125;&quot;</span><br><span class="line">    implementation &quot;com.google.android.exoplayer:extension-okhttp:$&#123;exoVersion&#125;&quot;</span><br><span class="line"></span><br><span class="line">    //机器学习相关库，sdk 内部算法使用</span><br><span class="line">    implementation &#x27;org.pytorch:pytorch_android:1.8.0&#x27;</span><br><span class="line">    implementation &#x27;org.pytorch:pytorch_android_torchvision:1.8.0&#x27;</span><br><span class="line"></span><br><span class="line">    //cameraX，云台拍摄使用</span><br><span class="line">    def camerax_version = &quot;1.0.0-beta07&quot;</span><br><span class="line">    // CameraX core library using camera2 implementation</span><br><span class="line">    implementation &quot;androidx.camera:camera-camera2:$camerax_version&quot;</span><br><span class="line">    // CameraX Lifecycle Library</span><br><span class="line">    implementation &quot;androidx.camera:camera-lifecycle:$camerax_version&quot;</span><br><span class="line">    // CameraX View class</span><br><span class="line">    implementation &quot;androidx.camera:camera-view:1.0.0-alpha14&quot;</span><br><span class="line"></span><br><span class="line">    //项目上传使用</span><br><span class="line">    implementation &#x27;com.qcloud.cos:cos-android:5.7.+&#x27;</span><br><span class="line"></span><br><span class="line">    //SDK 能力库，包含 拍摄、项目管理、设备管理、本地预览、项目打包api</span><br><span class="line">    implementation fileTree(include: [&#x27;*.aar&#x27;], dir: &#x27;rssdk&#x27;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>以上使用的三方库相关版本最好跟文档中的保持一致</p>
+</blockquote>
+<p>##功能开发<br>###初始化</p>
+<p>使用之前需要初始化一次，确保只初始化一次，可放到 Applicaiton 中初始化</p>
+<p>demo 实例位置：<br><code>com.realsee.android.capture.demo.App</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">//初始化SDK</span><br><span class="line">RsOpenSdk.initSdk(this, object : SdkCallback() &#123;</span><br><span class="line">    override fun appId(): String &#123;</span><br><span class="line">        //后台申请的 APPID</span><br><span class="line">        return &quot;E0y67lyrQjyZRJr9&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun appSecret(): String &#123;</span><br><span class="line">        //后台申请的 APPSECRET</span><br><span class="line">        return &quot;BRQK3CUYOMZMIHU7DKI3LELXQ63MHTNC&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun debug(): Boolean &#123;</span><br><span class="line">        //是否开启debug</span><br><span class="line">        return BuildConfig.DEBUG</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun identity(): String &#123;</span><br><span class="line">        //如果不用区分用户身份，可以不重新这个方法</span><br><span class="line">        return UserCenter.getIdentityId()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun userId(): String &#123;</span><br><span class="line">        //如果不用区分用户，可以不重新这个方法</span><br><span class="line">        return UserCenter.getUid()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun host(): String &#123;</span><br><span class="line">        //设置所有的网络请求的host，本地化定制需求，无特殊需求，不要重新此方法</span><br><span class="line">        return &quot;http://app-gateway.realsee.com&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">     @WorkerThread</span><br><span class="line">    override fun onCreateAndBindServiceProject(projectModel: ProjectModel): String &#123;</span><br><span class="line">        //拍摄sdk内部需要创建服务端项目时调用，返回创建好的服务端项目 id</span><br><span class="line">        //会在子线程中调用</span><br><span class="line">        VrProjectDataModel.createProject(</span><br><span class="line">            projectModel.projectName,</span><br><span class="line">            projectModel.offLineId,</span><br><span class="line">            projectModel.device_type,</span><br><span class="line">            projectModel.is16kShoot,</span><br><span class="line">            projectModel.cmosWidth,</span><br><span class="line">            projectModel.cmosHeight</span><br><span class="line">        ).let &#123;</span><br><span class="line">            return it.projectId</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<p>###项目拍摄</p>
+<p>项目拍摄需要授予如下权限：</p>
+<blockquote>
+<p><code>WRITE_EXTERNAL_STORAGE</code><br><code>CAMERA</code></p>
+</blockquote>
+<p>具体使用可参考demo<br><code>com.realsee.android.capture.demo.main.ProjectListFragment#openShotPage</code></p>
+<p>####进入拍摄页面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">RsCapture.openShoot(</span><br><span class="line">                ShootConfig.Builder()</span><br><span class="line">                    .projectId(projectModel.serverProjectId)//项目服务端ID</span><br><span class="line">                    .localProjectId(projectModel.projectId)//项目本地ID（offlineId）</span><br><span class="line">                    .build(),</span><br><span class="line">                object : ProjectShootResult() &#123;</span><br><span class="line">                    override fun onError(</span><br><span class="line">                        projectId: String,</span><br><span class="line">                        entered: Boolean,</span><br><span class="line">                        captureException: CaptureException</span><br><span class="line">                    ) &#123;</span><br><span class="line">                        //发生错误</span><br><span class="line">                        // entered ：true 代表已经进入页面</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    override fun onEntered(projectId: String) &#123;</span><br><span class="line">                        super.onEntered(projectId)</span><br><span class="line">                        needRefreshWhenResume = true</span><br><span class="line">                        //进入页面</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    override fun onExit(projectId: String, captureException: CaptureException?) &#123;</span><br><span class="line">                        super.onExit(projectId, captureException)</span><br><span class="line">                        //退出页面</span><br><span class="line">                        //captureException 不为空，说明退出是有异常</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    override fun onGenerate(projectId: String) &#123;</span><br><span class="line">                        super.onGenerate(projectId)</span><br><span class="line">                        //开始上传（生成）VR</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br></pre></td></tr></table></figure>
+
+
+<p>##设备管理<br>手机拍可以忽略</p>
+<p>设备管理用到的功能都在<br><code>com.realsee.module_device_manage.DeviceVModel</code></p>
+<p>demo 参考位置<br><code>com.realsee.android.capture.demo.device.*</code></p>
+<p>####设备信息字段释义</p>
+<p><code>com.realsee.module_device_manage.wifi.models.DeviceInfo</code></p>
+<blockquote>
+<p><code>connected</code> 是否已连接<br><code>scanResultModel</code> 设备的详细信息model<br><code>deviceType</code> 设备类型  <code>DeviceType.PAN</code> 代表云台</p>
+<blockquote>
+<p>方法 <code>fun asPanDevice()</code> 可以将 <code>DeviceInfo</code> 转换成 <code>com.realsee.module_device_manage.wifi.models.PanDeviceInfo</code></p>
+</blockquote>
+</blockquote>
+<p>获取 云台 SN name ：<br><code>PanDeviceInfo#getPanSnName</code><br>获取云台 mac 地址：<br><code>PanDeviceInfo#getPanMac</code></p>
+<p>####扫描设备</p>
+<ul>
+<li><strong>注意</strong> ：扫描设备需要授予位置权限，打开系统GPS（位置），云台设备还需要开启蓝牙<blockquote>
+<p>可参考demo<br><code>com.realsee.android.capture.demo.device.PanConnectGuideFragment</code></p>
+</blockquote>
+</li>
+</ul>
+<p>扫描蓝牙设备</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DeviceVModel.scan(DeviceType.PAN)//扫描 5s</span><br></pre></td></tr></table></figure>
+<p>接受扫描结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//this 是 LifecycleOwner 实例，可传入 fragment 和 activity 对象</span><br><span class="line">DeviceVModel.scanResult(DeviceType.PAN).observe(this) &#123;scanResult-&gt;</span><br><span class="line">            when (scanResult.state) &#123;</span><br><span class="line">                State.STARTED -&gt; &#123;</span><br><span class="line">                    //开始搜索</span><br><span class="line">                &#125;</span><br><span class="line">                State.SUCCESS -&gt; &#123;</span><br><span class="line">                    //搜索结束</span><br><span class="line">                    scanResult.deviceInfoList?.let &#123; devices-&gt;</span><br><span class="line">                        //devices 是搜索到的设备信息 List&lt;DeviceInfo&gt;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                State.FAILED -&gt; &#123;</span><br><span class="line">                    //遇到问题</span><br><span class="line">                    scanResult.rsException?.let &#123;e-&gt;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>DeviceInfo</code> 字段说明请参考 <a href="">设备信息字段解释</a></p>
+</blockquote>
+<p>####连接设备</p>
+<p>连接时需要传入扫描的一个结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DeviceVModel.connect(deviceInfo)</span><br></pre></td></tr></table></figure>
+<p>接收连接过程结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">DeviceVModel.connectingDevice.observe(this) &#123;</span><br><span class="line">            when(it?.state)&#123;</span><br><span class="line">                State.STARTED-&gt;&#123;</span><br><span class="line">                    //开始连接</span><br><span class="line">                &#125;</span><br><span class="line">                State.SUCCESS-&gt;&#123;</span><br><span class="line">                    //连接成功</span><br><span class="line">                    it.deviceInfo?.let &#123; deviceInfo -&gt;  </span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                State.FAILED-&gt;&#123;</span><br><span class="line">                    //连接失败</span><br><span class="line">                    it.rsException?.let &#123; e-&gt;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>接受连接状态变化</p>
+<blockquote>
+<p>连接成功后，设备会面临着再次断开或者重新连接，这个时候就要使用<br><code>DeviceVModel.inUsedDevice</code></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">DeviceVModel.inUsedDevice.observe(this) &#123;</span><br><span class="line">           when(it?.state)&#123;</span><br><span class="line">               State.STARTED-&gt;&#123;</span><br><span class="line">                   //开始连接</span><br><span class="line">               &#125;</span><br><span class="line">               State.SUCCESS-&gt;&#123;</span><br><span class="line">                   //连接成功</span><br><span class="line">                   it.deviceInfo?.let &#123; deviceInfo -&gt;  </span><br><span class="line">                       </span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">               State.FAILED-&gt;&#123;</span><br><span class="line">                   //连接失败</span><br><span class="line">                   it.rsException?.let &#123; e-&gt;</span><br><span class="line">                       </span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>####获取历史连接列表</p>
+<blockquote>
+<p>连接过的云台设备，信息会存入本地</p>
+</blockquote>
+<p>获取列表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">DeviceVModel.getHistory(DeviceType.PAN).let &#123; deviceHistoryResult -&gt;</span><br><span class="line">                            deviceHistoryResult.rsException?.let &#123;</span><br><span class="line">                                //发生异常</span><br><span class="line">                                return</span><br><span class="line">                            &#125;</span><br><span class="line">                            </span><br><span class="line">                            deviceHistoryResult.deviceInfoList.let &#123; list-&gt;</span><br><span class="line">                                //list 是 DeviceInfo 集合</span><br><span class="line">                            &#125;</span><br><span class="line"></span><br><span class="line">                        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>####从历史列表中移除</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//userId 是用户的标识，SDK 初始化时传入的 userId，可以为 &quot;&quot;</span><br><span class="line">DeviceVModel.removeHistoryDevice(deviceInfo,userId,object :DeviceHistoryCallback&#123;</span><br><span class="line">                       override fun onResult(result: Boolean, rsException: RsException?) &#123;</span><br><span class="line">                           if(result)&#123;</span><br><span class="line">                               //删除成功</span><br><span class="line">                           &#125;else&#123;</span><br><span class="line">                               //删除失败</span><br><span class="line">                           &#125;</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>##项目本地预览<br>项目预览，是针对已经生成完成的项目，预览时，会先下载预览数据到本地，然后通过 <code>RsWebview</code> 进行本地预览</p>
+<p>####初始化</p>
+<p>使用项目本地预览功能需要初始化，可以在 <code>Application</code> 中初始化一次即可</p>
+<p>demo 实例位置：<br><code>com.realsee.android.capture.demo.App</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">RsWebView.initCache(</span><br><span class="line">            context,</span><br><span class="line">            false,//是否在线预览，本地预览为 false</span><br><span class="line">            RsWebView.CacheConfig().apply &#123;</span><br><span class="line">                //重新定义logo</span><br><span class="line">                logoAssertName = &quot;logo.png&quot;</span><br><span class="line">                //重新定义 poweredBy</span><br><span class="line">                poweredByAssertName = &quot;poweredBy.png&quot;</span><br><span class="line">                //内部会判断和保存这个版本号，如果大于已经保存的版本号，会重新设置缓存：eg，如果更换了loge 或者 poweredBy，一定要升级一下</span><br><span class="line">                h5CacheVersion = 1</span><br><span class="line">            &#125;,</span><br><span class="line">            packageName,</span><br><span class="line">            RsOpenSdk.webViewRequestInterceptor</span><br><span class="line">        )</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>####下载预览数据<br>demo 实例位置：<br><code>com.realsee.android.capture.demo.main.ProjectListFragment</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">RsOpenSdk.downloadVrPreViewData(projectModel, &#123; result -&gt;</span><br><span class="line">       when (result.state) &#123;</span><br><span class="line">            WorkPreviewDownloadResult.State.PROGRESS -&gt; &#123;</span><br><span class="line">	            //下载进度 result.progress</span><br><span class="line">            &#125;</span><br><span class="line">            WorkPreviewDownloadResult.State.FAILED -&gt; &#123;</span><br><span class="line">                 //下载失败 result.rsException</span><br><span class="line">            &#125;</span><br><span class="line">            WorkPreviewDownloadResult.State.SUCCESS -&gt; &#123;</span><br><span class="line">	            //下载完成</span><br><span class="line">            &#125;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>####进入预览页面</p>
+<p>进入预览页面，要确保是已经处理完成的项目</p>
+<p>demo 实例位置：<br><code>com.realsee.android.capture.demo.main.ProjectListFragment</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//处理完成的，打开预览页面</span><br><span class="line">val openPreview = &#123;</span><br><span class="line">    RsWebView.openVrLocalPreview(</span><br><span class="line">        requireActivity(),</span><br><span class="line">        //要预览的 vr_code（== workCode）</span><br><span class="line">        workCode,</span><br><span class="line">        //预览加载时，要显示的封面图，可以为 &quot;&quot;</span><br><span class="line">        coverUrl,</span><br><span class="line">        //可以为 null，转场动画使用，会从view的位置做动画展开</span><br><span class="line">        view</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>##混淆配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-keep class com.realsee.** &#123; *; &#125;</span><br><span class="line">-keep class com.realseei.** &#123; *; &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-VR%E6%8B%8D%E6%91%84SDK%E6%8E%A5%E5%85%A5%E6%96%87%E6%A1%A3/" data-id="cuidhMnI-NOpCdpxI-Wgkcw1T" data-title="VR拍摄SDK接入文档" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/hexo-site/2026/03/18/2026-03-18-Swift%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95-Swift-Compiler-Error/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          Swift错误提示解决办法--Swift-Compiler-Error
+        
+      </div>
+    </a>
+  
+  
+    <a href="/hexo-site/2026/03/18/2026-03-18-%5Bflutter%5DFFI-%E8%B0%83%E7%94%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E7%AC%A6%E5%8F%B7%EF%BC%9AFailed-to-lookup-symbol/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">[flutter]FFI-调用找不到符号：Failed-to-lookup-symbol</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/%E6%95%99%E7%A8%8B/" rel="tag">教程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/hexo-site/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/hexo-site/tags/%E6%95%99%E7%A8%8B/" style="font-size: 10px;">教程</a> <a href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 20px;">笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2018/04/">四月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E4%B8%AD%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E7%9A%84%E8%AF%B4%E6%98%8E%E4%BB%A5%E5%8F%8A%E7%94%A8%E6%B3%95/">OC中按位枚举的说明以及用法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 博主<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/hexo-site/" class="mobile-nav-link">Home</a>
+  
+    <a href="/hexo-site/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/hexo-site/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/hexo-site/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/hexo-site/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

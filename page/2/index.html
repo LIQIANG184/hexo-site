@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>我的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="基于 Hexo 的个人静态博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="我的博客">
+<meta property="og:url" content="https://liqiang184.github.io/hexo-site/page/2/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="基于 Hexo 的个人静态博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="博主">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/hexo-site/atom.xml" title="我的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/hexo-site/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/hexo-site/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/hexo-site/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/hexo-site/" id="logo">我的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/hexo-site/" id="subtitle">记录与分享</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/hexo-site/">Home</a>
+        
+          <a class="main-nav-link" href="/hexo-site/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/hexo-site/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://liqiang184.github.io/hexo-site"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-2026-03-18-VR拍摄SDK接入文档" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-VR%E6%8B%8D%E6%91%84SDK%E6%8E%A5%E5%85%A5%E6%96%87%E6%A1%A3/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-VR%E6%8B%8D%E6%91%84SDK%E6%8E%A5%E5%85%A5%E6%96%87%E6%A1%A3/">VR拍摄SDK接入文档</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="VR拍摄SDK接入文档"><a href="#VR拍摄SDK接入文档" class="headerlink" title="VR拍摄SDK接入文档"></a>VR拍摄SDK接入文档</h1><p>DepthSphere,需要单独引入</p>
+<p>[TOC]</p>
+<p>##项目管理<br>项目管理分为两部分：服务端项目管理，本地拍摄数据管理</p>
+<p>拍摄流程一般是：</p>
+<blockquote>
+<p>创建本地项目 -&gt; 进行拍摄 -&gt; 拍摄完成点击生成vr -&gt; 创建服务端项目 -&gt; 关联本地项目 -&gt; 项目上传 -&gt; 服务端处理 -&gt; 处理完成</p>
+</blockquote>
+<p>###服务端项目管理(api)<br>服务端项目管理，是通过我们开放平台接口进行操作的，下面会介绍接口的参数和返回，demo中对所有接口进行了封装，可进行参考实现<br><code>AppDelegate+CaptureSDK</code></p>
+<p>我们开放平台的 host 为：<br><code>http://app-gateway.realsee.com</code></p>
+<p>####获取token<br>demo中参考<br><code>AppDelegate+CaptureSDK</code>和token缓存机制<code>BSToken</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">RSConfig.shareConfig.ticket = ^(RSCaptureTicketBlock  _Nonnull block) &#123;</span><br><span class="line">        //先判断是否存在有效token</span><br><span class="line">        if (BSToken.share.currentToken != nil) &#123;</span><br><span class="line">            if(block)&#123;</span><br><span class="line">                block (BSToken.share.currentToken);</span><br><span class="line">            &#125;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        NSDictionary *dict = @&#123;@&quot;app_key&quot;:BSAPI.appKey,</span><br><span class="line">                               @&quot;app_secret&quot;:BSAPI.appSecret</span><br><span class="line">        &#125;;</span><br><span class="line">        [BSNetworkManager sendRequestWithMethod:BSRequestMethodTypePost path:BSAPI.accessToken parameters:dict config:nil completionBlock:^(id  _Nullable responseObject, NSError * _Nullable error) &#123;</span><br><span class="line">            if(error)&#123;</span><br><span class="line">                block(nil);</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                NSDictionary *dict = responseObject[@&quot;data&quot;];</span><br><span class="line">                NSString *access_token = dict[@&quot;access_token&quot;];</span><br><span class="line">                BSToken.share.currentToken = access_token;</span><br><span class="line">                if(block)&#123;</span><br><span class="line">                    block (access_token);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>每一个接口调用，都要携带正确的 <code>accessToken</code>,获取它的方式如下：</p>
+<p>path: <code>/auth/access_token</code><br>方法：POST请求<br>参数：<br>|参数名称|参数类型|是否必须|说明-|<br>|app_key| String | 是|在如视申请的 appId<br>|app_secret|String|是|在如视申请的 appSecret<br>|user_id|String|否|区分用户的id，可以为空<br>返回示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;request_id&quot;: &quot;20230313203110-102725348-e6439c37fb4bedccfc8dad9f4b6abbc3&quot;,</span><br><span class="line">	&quot;trace_id&quot;: &quot;ece0a225-f07a-4c2a-baf5-39149e48e457&quot;,</span><br><span class="line">	&quot;business_code&quot;: &quot;&quot;,</span><br><span class="line">	&quot;osi_request_id&quot;: &quot;&quot;,</span><br><span class="line">	&quot;code&quot;: 0,</span><br><span class="line">	&quot;status&quot;: &quot;success&quot;,</span><br><span class="line">	&quot;data&quot;: &#123;</span><br><span class="line">		&quot;access_token&quot;: &quot;VE9LRU5fVjJSZ05Rb0RwS3RWc1EwRElEMUNpWGgwTElSZmRRZjVzOU9aVzFuZDZ0ZUdvPQ&quot;,</span><br><span class="line">		&quot;expire_at&quot;: 1678714270</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;cost&quot;: 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>code</code> 为 0 代表正常返回，<code>access_token</code> 为要获取的最终token， <code>expire_at</code>为过期时间<br>可参考demo中处理 <code>com.realsee.android.capture.demo.project.VrTokenProvider</code></p>
+</blockquote>
+<p>####获取项目列表<br>demo中参考<br><code>ProjectListViewModel</code></p>
+<p>path: <code>/open/v1/entity/project/list</code><br>方法：GET请求</p>
+<p>参数：</p>
+<p>|参数名称|参数类型|是否必须|说明<br>-|<br>|page| String | 是|页面index，从1开始<br>|page_size|String|是|一页中的数据数量<br>|user_id|String|否|区分用户的id，可以为空<br>|sort|String|是|排序方式：<code>desc</code> 或者 <code>asc</code><br>|order|String|是|排序规则一般为 <code>create_time</code> 按照创建时间排序</p>
+<p>headers：<br><code>Authorization</code>  值为获取到的 <code>accessToken</code></p>
+<p>返回示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;request_id&quot;: &quot;20230313203111-102725348-65ec49cdf30b1957df8d082a5f3ed443&quot;,</span><br><span class="line">	&quot;trace_id&quot;: &quot;a1e1e39b-2ded-4095-8912-584b15581e30&quot;,</span><br><span class="line">	&quot;business_code&quot;: &quot;0&quot;,</span><br><span class="line">	&quot;osi_request_id&quot;: &quot;&quot;,</span><br><span class="line">	&quot;code&quot;: 0,</span><br><span class="line">	&quot;status&quot;: &quot;success&quot;,</span><br><span class="line">	&quot;data&quot;: &#123;</span><br><span class="line">		&quot;list&quot;: [&#123;</span><br><span class="line">			&quot;create_time&quot;: &quot;2023-03-13 18:17:44&quot;,</span><br><span class="line">			&quot;db_version&quot;: &quot;1-213297cb65ed404ad3de7c91f52f9934&quot;,</span><br><span class="line">			&quot;device_info&quot;: &#123;&#125;,</span><br><span class="line">			&quot;device_type&quot;: 1,</span><br><span class="line">			&quot;download_produce_to_tf&quot;: &#123;</span><br><span class="line">				&quot;export_tf_message&quot;: &quot;&quot;,</span><br><span class="line">				&quot;export_tf_status&quot;: &quot;&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;expect_vr_task_duration&quot;: 0,</span><br><span class="line">			&quot;expect_vr_task_time&quot;: &quot;&quot;,</span><br><span class="line">			&quot;export_info&quot;: null,</span><br><span class="line">			&quot;is_deleted&quot;: 0,</span><br><span class="line">			&quot;is_shoot_16k&quot;: 0,</span><br><span class="line">			&quot;machine_id&quot;: &quot;cyclops&quot;,</span><br><span class="line">			&quot;modify_time&quot;: &quot;2023-03-13 18:21:56&quot;,</span><br><span class="line">			&quot;move_project_to_tf&quot;: &#123;</span><br><span class="line">				&quot;export_tf_message&quot;: &quot;&quot;,</span><br><span class="line">				&quot;export_tf_status&quot;: &quot;&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;move_trash_time&quot;: &quot;&quot;,</span><br><span class="line">			&quot;name&quot;: &quot;未命名项目&quot;,</span><br><span class="line">			&quot;observer_num&quot;: 1,</span><br><span class="line">			&quot;offline_id&quot;: &quot;project-1678695899207&quot;,</span><br><span class="line">			&quot;picture_url&quot;: &quot;https://test-vr-public.realsee-cdn.cn/test/auto3dhd/f49566642905b642ead610defad9dcff/screenshot/1678701767_0/pc1_GfBjFNigU.jpg&quot;,</span><br><span class="line">			&quot;pipeline_param&quot;: &#123;</span><br><span class="line">				&quot;model_patches&quot;: &quot;200000&quot;,</span><br><span class="line">				&quot;model_patches_large&quot;: &quot;200000&quot;,</span><br><span class="line">				&quot;remove_sky_and_trees&quot;: &quot;1&quot;,</span><br><span class="line">				&quot;repack_texture&quot;: &quot;1&quot;,</span><br><span class="line">				&quot;request_src_model&quot;: &quot;1&quot;,</span><br><span class="line">				&quot;request_src_pano&quot;: &quot;1&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;preview_url&quot;: &quot;&quot;,</span><br><span class="line">			&quot;project_id&quot;: &quot;cyclops-lJjKM8BrwmvZR3PW&quot;,</span><br><span class="line">			&quot;shoot_time&quot;: &quot;&quot;,</span><br><span class="line">			&quot;source&quot;: &quot;ALLIANCE&quot;,</span><br><span class="line">			&quot;status&quot;: 5,</span><br><span class="line">			&quot;status_text&quot;: &quot;生成成功&quot;,</span><br><span class="line">			&quot;title_picture_url&quot;: &quot;https://test-vr-public.realsee-cdn.cn/test/auto3dhd/f49566642905b642ead610defad9dcff/screenshot/1678701767_0/pc0_wmLnaqA9x.jpg&quot;,</span><br><span class="line">			&quot;trash_delete_time&quot;: 0,</span><br><span class="line">			&quot;vr_code&quot;: &quot;80yOJrMWELNEeDlvV1&quot;,</span><br><span class="line">			&quot;vr_deal_info&quot;: null,</span><br><span class="line">			&quot;vr_task_timeout_message&quot;: &quot;&quot;</span><br><span class="line">		&#125;, &#123;</span><br><span class="line">			&quot;create_time&quot;: &quot;2023-03-13 16:32:21&quot;,</span><br><span class="line">			&quot;db_version&quot;: &quot;1-f4307f301510f88bafe395a173a3746d&quot;,</span><br><span class="line">			&quot;device_info&quot;: &#123;&#125;,</span><br><span class="line">			&quot;device_type&quot;: 1,</span><br><span class="line">			&quot;download_produce_to_tf&quot;: &#123;</span><br><span class="line">				&quot;export_tf_message&quot;: &quot;&quot;,</span><br><span class="line">				&quot;export_tf_status&quot;: &quot;&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;expect_vr_task_duration&quot;: 0,</span><br><span class="line">			&quot;expect_vr_task_time&quot;: &quot;&quot;,</span><br><span class="line">			&quot;export_info&quot;: null,</span><br><span class="line">			&quot;is_deleted&quot;: 0,</span><br><span class="line">			&quot;is_shoot_16k&quot;: 0,</span><br><span class="line">			&quot;machine_id&quot;: &quot;cyclops&quot;,</span><br><span class="line">			&quot;modify_time&quot;: &quot;2023-03-13 17:57:18&quot;,</span><br><span class="line">			&quot;move_project_to_tf&quot;: &#123;</span><br><span class="line">				&quot;export_tf_message&quot;: &quot;&quot;,</span><br><span class="line">				&quot;export_tf_status&quot;: &quot;&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;move_trash_time&quot;: &quot;&quot;,</span><br><span class="line">			&quot;name&quot;: &quot;未命名&quot;,</span><br><span class="line">			&quot;observer_num&quot;: 1,</span><br><span class="line">			&quot;offline_id&quot;: &quot;project-1678695726431&quot;,</span><br><span class="line">			&quot;picture_url&quot;: &quot;https://test-vr-public.realsee-cdn.cn/test/auto3dhd/42c85bd4c754a3294f6a50c49cc88f75/screenshot/1678695735_0/pc1_yalwbXz8u.jpg&quot;,</span><br><span class="line">			&quot;pipeline_param&quot;: &#123;</span><br><span class="line">				&quot;model_patches&quot;: &quot;200000&quot;,</span><br><span class="line">				&quot;model_patches_large&quot;: &quot;200000&quot;,</span><br><span class="line">				&quot;remove_sky_and_trees&quot;: &quot;1&quot;,</span><br><span class="line">				&quot;repack_texture&quot;: &quot;1&quot;,</span><br><span class="line">				&quot;request_src_model&quot;: &quot;1&quot;,</span><br><span class="line">				&quot;request_src_pano&quot;: &quot;1&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;preview_url&quot;: &quot;&quot;,</span><br><span class="line">			&quot;project_id&quot;: &quot;cyclops-eGj1ZXeJXW72xOWd&quot;,</span><br><span class="line">			&quot;shoot_time&quot;: &quot;&quot;,</span><br><span class="line">			&quot;source&quot;: &quot;ALLIANCE&quot;,</span><br><span class="line">			&quot;status&quot;: 5,</span><br><span class="line">			&quot;status_text&quot;: &quot;生成成功&quot;,</span><br><span class="line">			&quot;title_picture_url&quot;: &quot;https://test-vr-public.realsee-cdn.cn/test/auto3dhd/42c85bd4c754a3294f6a50c49cc88f75/screenshot/1678695735_0/pc0_1Bh82LCmM.jpg&quot;,</span><br><span class="line">			&quot;trash_delete_time&quot;: 0,</span><br><span class="line">			&quot;vr_code&quot;: &quot;80K8xbMynoanP9A62d&quot;,</span><br><span class="line">			&quot;vr_deal_info&quot;: null,</span><br><span class="line">			&quot;vr_task_timeout_message&quot;: &quot;&quot;</span><br><span class="line">		&#125;],</span><br><span class="line">		&quot;page&quot;: 1,</span><br><span class="line">		&quot;page_size&quot;: 10,</span><br><span class="line">		&quot;total_page&quot;: 1</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;cost&quot;: 74</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>name</code> 项目名称<br><code>code</code> 为 0 代表正常返回<br><code>status</code> 为项目在服务端的状态：0 默认、1处理中、2处理失败、5处理成功<br><code>device_type</code> 采集类型：1手机拍、2全景相机、3云台拍、4伽罗华拍摄<br><code>is_shoot_16k</code> 1 代表为高清拍摄<br><code>title_picture_url</code> 项目封面图，只有处理成功的项目不为空<br><code>vr_code</code> 处理成功的项目会有，通过它可以进行本地预览<br><code>observer_num</code> 拍摄点位数量</p>
+</blockquote>
+<p>####创建项目<br>demo中参考<br><code>AppDelegate+CaptureSDK</code></p>
+<p>path: <code>/open/v1/entity/project/create</code></p>
+<p>方法：POST请求</p>
+<p>请求body示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;app_version&quot;: &quot;1.0&quot;,</span><br><span class="line">	&quot;device_info&quot;: &#123;</span><br><span class="line">		&quot;derived_id&quot;: &quot;&quot;,</span><br><span class="line">		&quot;device_model&quot;: &quot;Hera-BD00&quot;,</span><br><span class="line">		&quot;device_type&quot;: &quot;1&quot;,</span><br><span class="line">		&quot;device_uid&quot;: &quot;&quot;,</span><br><span class="line">		&quot;gps&quot;: &quot;&quot;,</span><br><span class="line">		&quot;index&quot;: 0,</span><br><span class="line">		&quot;is16k&quot;: 0,</span><br><span class="line">		&quot;orientation&quot;: &quot;&quot;,</span><br><span class="line">		&quot;phone_os&quot;: &quot;Android&quot;,</span><br><span class="line">		&quot;sensor_height&quot;: 0,</span><br><span class="line">		&quot;sensor_width&quot;: 0</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;device_type&quot;: 1,</span><br><span class="line">	&quot;machine_id&quot;: &quot;&quot;,</span><br><span class="line">	&quot;name&quot;: &quot;未命名项目&quot;,</span><br><span class="line">	&quot;offline_id&quot;: &quot;project-1678704252669&quot;,</span><br><span class="line">	&quot;remark&quot;: &quot;&quot;,</span><br><span class="line">	&quot;sdk_version&quot;: &quot;1.0.4&quot;,</span><br><span class="line">	&quot;user_id&quot;: &quot;13938492907yi&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>|参数名称|参数类型|是否必须|说明<br>-|<br>|app_version| String | 否|app的版本号<br>|device_model|String|是|设备的model型号<br>|device_type|String|是|采集类型：1手机拍、2全景相机、3云台拍、4伽罗华拍摄<br>|is16k|String|是|是否为高清拍摄 1是、0不是<br>|phone_os|String|是|os类型 <code>Android</code> 或者 <code>iOS</code><br>|machine_id|String|否|拍摄机器ID<br>|name|String|是|项目名称<br>|offline_id|String|是|本地项目id<br>|sdk_version|String|是|sdk版本号<br>|user_id|String|否|用户区分id，要通过 <code>RsOpenSdk#getBelongedId</code> 获取</p>
+<blockquote>
+<p>其他参数可以忽略，最好保留以上结构</p>
+</blockquote>
+<p>headers：<br><code>Authorization</code>  值为获取到的 <code>accessToken</code></p>
+<p>返回结果示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;request_id&quot;: &quot;20230313210151-102725348-1cb2b37fd7b79b4519a60bb44f1e5734&quot;,</span><br><span class="line">	&quot;trace_id&quot;: &quot;b2d0b276-7803-41a7-84cd-2190071aa1c9&quot;,</span><br><span class="line">	&quot;business_code&quot;: &quot;0&quot;,</span><br><span class="line">	&quot;osi_request_id&quot;: &quot;&quot;,</span><br><span class="line">	&quot;code&quot;: 0,</span><br><span class="line">	&quot;status&quot;: &quot;success&quot;,</span><br><span class="line">	&quot;data&quot;: &#123;</span><br><span class="line">		&quot;project_id&quot;: &quot;cyclops-7jomZemJAAvZNXBA&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;cost&quot;: 57</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>code</code> 为 0，代表返回成功<br><code>project_id</code> 是项目的服务端id</p>
+</blockquote>
+<p>####删除项目<br>demo中参考<br><code>AppDelegate+CaptureSDK</code></p>
+<p>path: <code>/open/v1/entity/project/delete</code></p>
+<p>方法：POST请求</p>
+<p>请求body示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;project_id&quot;: &quot;cyclops-lJjKM8BrwmvZR3PW&quot;,</span><br><span class="line">	&quot;user_id&quot;: &quot;13938492907yi&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>|参数名称|参数类型|是否必须|说明<br>-|<br>|project_id| String | 是|要删除项目的服务端id<br>|user_id|String|否|用户区分id，要通过 <code>RsOpenSdk#getBelongedId</code> 获取</p>
+<p>headers：<br><code>Authorization</code>  值为获取到的 <code>accessToken</code></p>
+<p>返回结果示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;request_id&quot;: &quot;20230314104123-102725348-972f50a55ceb2ca7e1dbdbec32212c45&quot;,</span><br><span class="line">	&quot;trace_id&quot;: &quot;68571c9f-097f-4aa8-a25f-1ac7c232e572&quot;,</span><br><span class="line">	&quot;business_code&quot;: &quot;0&quot;,</span><br><span class="line">	&quot;osi_request_id&quot;: &quot;&quot;,</span><br><span class="line">	&quot;code&quot;: 0,</span><br><span class="line">	&quot;status&quot;: &quot;success&quot;,</span><br><span class="line">	&quot;data&quot;: &#123;&#125;,</span><br><span class="line">	&quot;cost&quot;: 58</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>code</code> 为 0，代表返回成功</p>
+</blockquote>
+<p>####修改项目名称<br>demo中参考<br><code>cAppDelegate+CaptureSDK</code></p>
+<p>path: <code>/open/v1/entity/project/modify</code></p>
+<p>方法：POST请求</p>
+<p>请求body示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;name&quot;: &quot;未命&quot;,</span><br><span class="line">	&quot;project_id&quot;: &quot;cyclops-lJjKM8BrwmvZR3PW&quot;,</span><br><span class="line">	&quot;user_id&quot;: &quot;13938492907yi&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>|参数名称|参数类型|是否必须|说明<br>-|<br>|name| String | 是|新名称<br>|project_id| String | 是|要删除项目的服务端id<br>|user_id|String|否|用户区分id，要通过 <code>RsOpenSdk#getBelongedId</code> 获取</p>
+<p>headers：<br><code>Authorization</code>  值为获取到的 <code>accessToken</code></p>
+<p>返回结果示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;request_id&quot;: &quot;20230314104119-102725348-ed415dc1bb2af5a02aafdff406a24e8e&quot;,</span><br><span class="line">	&quot;trace_id&quot;: &quot;ead2c633-5647-4ff1-9530-84f62c89a206&quot;,</span><br><span class="line">	&quot;business_code&quot;: &quot;0&quot;,</span><br><span class="line">	&quot;osi_request_id&quot;: &quot;&quot;,</span><br><span class="line">	&quot;code&quot;: 0,</span><br><span class="line">	&quot;status&quot;: &quot;success&quot;,</span><br><span class="line">	&quot;data&quot;: &#123;&#125;,</span><br><span class="line">	&quot;cost&quot;: 89</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>code</code> 为 0，代表返回成功</p>
+</blockquote>
+<p>####获取项目详情<br>demo中参考<br><code>com.realsee.android.capture.demo.project.ProjectApi#projectInfos</code></p>
+<p>path: <code>/open/v1/entity/project/list</code></p>
+<p>方法：GET请求</p>
+<p>请求参数：</p>
+<p>|参数名称|参数类型|是否必须|说明<br>-|<br>|project_ids| String | 是|项目服务端id，多个id直接用 <code>,</code> 分割<br>|user_id|String|否|用户区分id，要通过 <code>RsOpenSdk#getBelongedId</code> 获取</p>
+<p>headers：<br><code>Authorization</code>  值为获取到的 <code>accessToken</code></p>
+<p>返回结果跟项目列表返回一致，可参考项目列表接口</p>
+<p>###本地项目管理<br>本地项目是指在手机或者平板上创建的项目，这些项目有可能是纯本地项目（还没有关联服务端项目），这些项目的<code>serverProjectId</code> 为空；有些项目关联了服务端项目，<code>serverProjectId</code> 为关联的服务端id<br>使用本地项目管理功能，需要先接入SDK</p>
+<p>使用本地项目管理功能，需要用到<br><code>com.realseei.android.viewmodel.LocalProjectManageVModel</code></p>
+<p>####获取项目列表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">LocalProjectManageVModel.getAllProjects().forEach &#123; projectModel -&gt;</span><br><span class="line">                    projectModel.projectName//项目名称</span><br><span class="line">                    projectModel.serverProjectId//项目服务端id</span><br><span class="line">                    projectModel.offLineId//项目本地id</span><br><span class="line">                    projectModel.status//项目状态 0默认、1020拍摄中、1处理中、2处理失败、5处理成功</span><br><span class="line">                    projectModel.device_type//采集类型：1手机拍、2全景相机、3云台拍、4伽罗华拍摄</span><br><span class="line">                    projectModel.projectCreateTime//项目创建时间 2023-03-13 21:08:52</span><br><span class="line">                    projectModel.titlePictureUrl//项目封面图</span><br><span class="line">                    projectModel.is16kShoot//是否是高清拍摄</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>demo 中可参考 <code>com.realsee.android.capture.demo.main.ProjectListFragment#refreshData</code></p>
+</blockquote>
+<p>####创建项目</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//子线程中操作</span><br><span class="line">thread &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        val offlineId =</span><br><span class="line">            LocalProjectManageVModel.createProject(name, getCreateDeviceType().value)</span><br><span class="line">        ui &#123;</span><br><span class="line">            //创建成功，获取创建好的projectModel</span><br><span class="line">            val projectModel: ProjectModel = ProjectDataManager.getProjectModel(offlineId)!!</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (e: Exception) &#123;</span><br><span class="line">        //捕获异常</span><br><span class="line">        ui &#123;</span><br><span class="line">            ToastUtil.showCommonToast(&quot;创建失败$&#123;e.message&#125;&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>demo 中可参考 <code>com.realsee.android.capture.demo.main.ProjectCreateFragment#createLocalProject</code></p>
+</blockquote>
+<p>####删除项目</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//子线程中操作</span><br><span class="line">    thread &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            LocalProjectManageVModel.deleteProjects(listOf(data.offlineId))</span><br><span class="line">        &#125; catch (e: Exception) &#123;</span><br><span class="line">            //捕获异常</span><br><span class="line">            ui &#123;</span><br><span class="line">                ToastUtil.showCommonToast(&quot;删除失败:$&#123;e.message&#125;&quot;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>demo 中可参考 <code>com.realsee.android.capture.demo.main.ProjectListFragment#deleteDialog</code></p>
+</blockquote>
+<p>####修改项目名称</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">thread &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            LocalProjectManageVModel.renameProject(</span><br><span class="line">                projectCardModel.offlineId,</span><br><span class="line">                newName,</span><br><span class="line">            )</span><br><span class="line">        &#125; catch (e: Exception) &#123;</span><br><span class="line">            ui &#123;</span><br><span class="line">                ToastUtil.showCommonToast(&quot;修改失败:$&#123;e.message&#125;&quot;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>demo 中可参考 <code>com.realsee.android.capture.demo.main.ProjectListFragment#doRename</code></p>
+</blockquote>
+<p>####获取项目详情</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val projectModel:ProjectModel = ProjectDataManager.getProjectModel(offlineId)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>demo 中可参考 <code>com.realsee.android.capture.demo.detail.ProjectDetailActivity#refresh</code></p>
+</blockquote>
+<h2 id="SDK接入"><a href="#SDK接入" class="headerlink" title="SDK接入"></a>SDK接入</h2><p>为了顺利接入和正常使用，请确保接入环境如下：</p>
+<ul>
+<li><code>compileSdkVersion</code> &lt; 31</li>
+<li><code>targetSdkVersion</code> &lt;31</li>
+<li><code>kotlin</code> 环境</li>
+<li><code>AndroidX</code>支持</li>
+</ul>
+<p>###<code>kotlin</code>环境搭建（已使用<code>kotlin</code>可忽略）</p>
+<p>由于SDK和文档以及demo都是使用 	<code>kotlin</code> 语言开发，所以最好接入环境为 <code>kotlin</code> 语言开发环境</p>
+<blockquote>
+<p>以下接入过程只供参考   <a target="_blank" rel="noopener" href="https://developer.android.com/kotlin/add-kotlin#groovy">官方接入文档</a> </p>
+</blockquote>
+<p>1、在工程的 <code>build.gradle</code> 中添加如下</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">        ...</span><br><span class="line">        classpath <span class="string">&quot;org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10&quot;</span></span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2、在所有模块的 <code>build.gradle</code> 中添加如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//最上面添加</span><br><span class="line">apply plugin: &#x27;com.android.application&#x27;</span><br><span class="line">apply plugin: &#x27;kotlin-android&#x27;</span><br><span class="line">//添加这个是为了使用一些扩展功能，如：直接访问 view 对象，不用 findViewById</span><br><span class="line">apply plugin: &#x27;kotlin-android-extensions&#x27;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    implementation &#x27;androidx.core:core-ktx:1.2.0&#x27;</span><br><span class="line">    implementation &quot;org.jetbrains.kotlin:kotlin-stdlib:1.4.32&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>以上使用的 <code>kotlin</code> 相关版本最好跟文档中的保持一致</p>
+</blockquote>
+<h3 id="SDK依赖添加"><a href="#SDK依赖添加" class="headerlink" title="SDK依赖添加"></a>SDK依赖添加</h3><p>1、在主模块的目录下新建 <code>rssdk</code> 目录，将SDK的 aar 包放入其中，添加依赖：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    ...</span><br><span class="line">    implementation fileTree(include: [&#x27;*.aar&#x27;], dir: &#x27;rssdk&#x27;)</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>2、第三方依赖接入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    //kotlin 依赖包</span><br><span class="line">    implementation &quot;org.jetbrains.kotlin:kotlin-stdlib:1.4.32&quot;</span><br><span class="line">    //andriodx 官方包</span><br><span class="line">    implementation &#x27;androidx.core:core-ktx:1.2.0&#x27;</span><br><span class="line">    implementation &#x27;androidx.appcompat:appcompat:1.1.0&#x27;</span><br><span class="line">    //sdk 部分页面有依赖</span><br><span class="line">    implementation &#x27;com.google.android.material:material:1.1.0&#x27;</span><br><span class="line">    implementation &#x27;androidx.constraintlayout:constraintlayout:2.1.3&#x27;</span><br><span class="line">    </span><br><span class="line">    //kotlin 扩展包，方便 viewModel 和 liveData 的使用，sdk 内部页面需要</span><br><span class="line">    implementation &quot;androidx.activity:activity-ktx:1.2.0&quot;</span><br><span class="line">    implementation &quot;androidx.fragment:fragment-ktx:1.3.0&quot;</span><br><span class="line"></span><br><span class="line">    //sdk 内部使用的图片网络框架</span><br><span class="line">    implementation &#x27;com.github.bumptech.glide:glide:4.13.2&#x27;</span><br><span class="line">    </span><br><span class="line">    //sdk 使用的网络框架</span><br><span class="line">    implementation &#x27;com.google.code.gson:gson:2.8.6&#x27;</span><br><span class="line">    implementation &#x27;com.squareup.retrofit2:retrofit:2.9.0&#x27;</span><br><span class="line">    implementation &#x27;com.squareup.retrofit2:converter-gson:2.9.0&#x27;</span><br><span class="line"></span><br><span class="line">    //sdk 内部传递消息使用</span><br><span class="line">    implementation &#x27;androidx.localbroadcastmanager:localbroadcastmanager:1.0.0&#x27;</span><br><span class="line"></span><br><span class="line">    //exoplayer播放器，sdk 内部使用播放使用</span><br><span class="line">    def exoVersion = &quot;2.11.8&quot;</span><br><span class="line">    implementation &quot;com.google.android.exoplayer:exoplayer-core:$&#123;exoVersion&#125;&quot;</span><br><span class="line">    implementation &quot;com.google.android.exoplayer:exoplayer-ui:$&#123;exoVersion&#125;&quot;</span><br><span class="line">    implementation &quot;com.google.android.exoplayer:extension-okhttp:$&#123;exoVersion&#125;&quot;</span><br><span class="line"></span><br><span class="line">    //机器学习相关库，sdk 内部算法使用</span><br><span class="line">    implementation &#x27;org.pytorch:pytorch_android:1.8.0&#x27;</span><br><span class="line">    implementation &#x27;org.pytorch:pytorch_android_torchvision:1.8.0&#x27;</span><br><span class="line"></span><br><span class="line">    //cameraX，云台拍摄使用</span><br><span class="line">    def camerax_version = &quot;1.0.0-beta07&quot;</span><br><span class="line">    // CameraX core library using camera2 implementation</span><br><span class="line">    implementation &quot;androidx.camera:camera-camera2:$camerax_version&quot;</span><br><span class="line">    // CameraX Lifecycle Library</span><br><span class="line">    implementation &quot;androidx.camera:camera-lifecycle:$camerax_version&quot;</span><br><span class="line">    // CameraX View class</span><br><span class="line">    implementation &quot;androidx.camera:camera-view:1.0.0-alpha14&quot;</span><br><span class="line"></span><br><span class="line">    //项目上传使用</span><br><span class="line">    implementation &#x27;com.qcloud.cos:cos-android:5.7.+&#x27;</span><br><span class="line"></span><br><span class="line">    //SDK 能力库，包含 拍摄、项目管理、设备管理、本地预览、项目打包api</span><br><span class="line">    implementation fileTree(include: [&#x27;*.aar&#x27;], dir: &#x27;rssdk&#x27;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>以上使用的三方库相关版本最好跟文档中的保持一致</p>
+</blockquote>
+<p>##功能开发<br>###初始化</p>
+<p>使用之前需要初始化一次，确保只初始化一次，可放到 Applicaiton 中初始化</p>
+<p>demo 实例位置：<br><code>com.realsee.android.capture.demo.App</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">//初始化SDK</span><br><span class="line">RsOpenSdk.initSdk(this, object : SdkCallback() &#123;</span><br><span class="line">    override fun appId(): String &#123;</span><br><span class="line">        //后台申请的 APPID</span><br><span class="line">        return &quot;E0y67lyrQjyZRJr9&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun appSecret(): String &#123;</span><br><span class="line">        //后台申请的 APPSECRET</span><br><span class="line">        return &quot;BRQK3CUYOMZMIHU7DKI3LELXQ63MHTNC&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun debug(): Boolean &#123;</span><br><span class="line">        //是否开启debug</span><br><span class="line">        return BuildConfig.DEBUG</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun identity(): String &#123;</span><br><span class="line">        //如果不用区分用户身份，可以不重新这个方法</span><br><span class="line">        return UserCenter.getIdentityId()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun userId(): String &#123;</span><br><span class="line">        //如果不用区分用户，可以不重新这个方法</span><br><span class="line">        return UserCenter.getUid()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun host(): String &#123;</span><br><span class="line">        //设置所有的网络请求的host，本地化定制需求，无特殊需求，不要重新此方法</span><br><span class="line">        return &quot;http://app-gateway.realsee.com&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">     @WorkerThread</span><br><span class="line">    override fun onCreateAndBindServiceProject(projectModel: ProjectModel): String &#123;</span><br><span class="line">        //拍摄sdk内部需要创建服务端项目时调用，返回创建好的服务端项目 id</span><br><span class="line">        //会在子线程中调用</span><br><span class="line">        VrProjectDataModel.createProject(</span><br><span class="line">            projectModel.projectName,</span><br><span class="line">            projectModel.offLineId,</span><br><span class="line">            projectModel.device_type,</span><br><span class="line">            projectModel.is16kShoot,</span><br><span class="line">            projectModel.cmosWidth,</span><br><span class="line">            projectModel.cmosHeight</span><br><span class="line">        ).let &#123;</span><br><span class="line">            return it.projectId</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<p>###项目拍摄</p>
+<p>项目拍摄需要授予如下权限：</p>
+<blockquote>
+<p><code>WRITE_EXTERNAL_STORAGE</code><br><code>CAMERA</code></p>
+</blockquote>
+<p>具体使用可参考demo<br><code>com.realsee.android.capture.demo.main.ProjectListFragment#openShotPage</code></p>
+<p>####进入拍摄页面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">RsCapture.openShoot(</span><br><span class="line">                ShootConfig.Builder()</span><br><span class="line">                    .projectId(projectModel.serverProjectId)//项目服务端ID</span><br><span class="line">                    .localProjectId(projectModel.projectId)//项目本地ID（offlineId）</span><br><span class="line">                    .build(),</span><br><span class="line">                object : ProjectShootResult() &#123;</span><br><span class="line">                    override fun onError(</span><br><span class="line">                        projectId: String,</span><br><span class="line">                        entered: Boolean,</span><br><span class="line">                        captureException: CaptureException</span><br><span class="line">                    ) &#123;</span><br><span class="line">                        //发生错误</span><br><span class="line">                        // entered ：true 代表已经进入页面</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    override fun onEntered(projectId: String) &#123;</span><br><span class="line">                        super.onEntered(projectId)</span><br><span class="line">                        needRefreshWhenResume = true</span><br><span class="line">                        //进入页面</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    override fun onExit(projectId: String, captureException: CaptureException?) &#123;</span><br><span class="line">                        super.onExit(projectId, captureException)</span><br><span class="line">                        //退出页面</span><br><span class="line">                        //captureException 不为空，说明退出是有异常</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    override fun onGenerate(projectId: String) &#123;</span><br><span class="line">                        super.onGenerate(projectId)</span><br><span class="line">                        //开始上传（生成）VR</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br></pre></td></tr></table></figure>
+
+
+<p>##设备管理<br>手机拍可以忽略</p>
+<p>设备管理用到的功能都在<br><code>com.realsee.module_device_manage.DeviceVModel</code></p>
+<p>demo 参考位置<br><code>com.realsee.android.capture.demo.device.*</code></p>
+<p>####设备信息字段释义</p>
+<p><code>com.realsee.module_device_manage.wifi.models.DeviceInfo</code></p>
+<blockquote>
+<p><code>connected</code> 是否已连接<br><code>scanResultModel</code> 设备的详细信息model<br><code>deviceType</code> 设备类型  <code>DeviceType.PAN</code> 代表云台</p>
+<blockquote>
+<p>方法 <code>fun asPanDevice()</code> 可以将 <code>DeviceInfo</code> 转换成 <code>com.realsee.module_device_manage.wifi.models.PanDeviceInfo</code></p>
+</blockquote>
+</blockquote>
+<p>获取 云台 SN name ：<br><code>PanDeviceInfo#getPanSnName</code><br>获取云台 mac 地址：<br><code>PanDeviceInfo#getPanMac</code></p>
+<p>####扫描设备</p>
+<ul>
+<li><strong>注意</strong> ：扫描设备需要授予位置权限，打开系统GPS（位置），云台设备还需要开启蓝牙<blockquote>
+<p>可参考demo<br><code>com.realsee.android.capture.demo.device.PanConnectGuideFragment</code></p>
+</blockquote>
+</li>
+</ul>
+<p>扫描蓝牙设备</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DeviceVModel.scan(DeviceType.PAN)//扫描 5s</span><br></pre></td></tr></table></figure>
+<p>接受扫描结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//this 是 LifecycleOwner 实例，可传入 fragment 和 activity 对象</span><br><span class="line">DeviceVModel.scanResult(DeviceType.PAN).observe(this) &#123;scanResult-&gt;</span><br><span class="line">            when (scanResult.state) &#123;</span><br><span class="line">                State.STARTED -&gt; &#123;</span><br><span class="line">                    //开始搜索</span><br><span class="line">                &#125;</span><br><span class="line">                State.SUCCESS -&gt; &#123;</span><br><span class="line">                    //搜索结束</span><br><span class="line">                    scanResult.deviceInfoList?.let &#123; devices-&gt;</span><br><span class="line">                        //devices 是搜索到的设备信息 List&lt;DeviceInfo&gt;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                State.FAILED -&gt; &#123;</span><br><span class="line">                    //遇到问题</span><br><span class="line">                    scanResult.rsException?.let &#123;e-&gt;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>DeviceInfo</code> 字段说明请参考 <a href="">设备信息字段解释</a></p>
+</blockquote>
+<p>####连接设备</p>
+<p>连接时需要传入扫描的一个结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DeviceVModel.connect(deviceInfo)</span><br></pre></td></tr></table></figure>
+<p>接收连接过程结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">DeviceVModel.connectingDevice.observe(this) &#123;</span><br><span class="line">            when(it?.state)&#123;</span><br><span class="line">                State.STARTED-&gt;&#123;</span><br><span class="line">                    //开始连接</span><br><span class="line">                &#125;</span><br><span class="line">                State.SUCCESS-&gt;&#123;</span><br><span class="line">                    //连接成功</span><br><span class="line">                    it.deviceInfo?.let &#123; deviceInfo -&gt;  </span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                State.FAILED-&gt;&#123;</span><br><span class="line">                    //连接失败</span><br><span class="line">                    it.rsException?.let &#123; e-&gt;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>接受连接状态变化</p>
+<blockquote>
+<p>连接成功后，设备会面临着再次断开或者重新连接，这个时候就要使用<br><code>DeviceVModel.inUsedDevice</code></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">DeviceVModel.inUsedDevice.observe(this) &#123;</span><br><span class="line">           when(it?.state)&#123;</span><br><span class="line">               State.STARTED-&gt;&#123;</span><br><span class="line">                   //开始连接</span><br><span class="line">               &#125;</span><br><span class="line">               State.SUCCESS-&gt;&#123;</span><br><span class="line">                   //连接成功</span><br><span class="line">                   it.deviceInfo?.let &#123; deviceInfo -&gt;  </span><br><span class="line">                       </span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">               State.FAILED-&gt;&#123;</span><br><span class="line">                   //连接失败</span><br><span class="line">                   it.rsException?.let &#123; e-&gt;</span><br><span class="line">                       </span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>####获取历史连接列表</p>
+<blockquote>
+<p>连接过的云台设备，信息会存入本地</p>
+</blockquote>
+<p>获取列表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">DeviceVModel.getHistory(DeviceType.PAN).let &#123; deviceHistoryResult -&gt;</span><br><span class="line">                            deviceHistoryResult.rsException?.let &#123;</span><br><span class="line">                                //发生异常</span><br><span class="line">                                return</span><br><span class="line">                            &#125;</span><br><span class="line">                            </span><br><span class="line">                            deviceHistoryResult.deviceInfoList.let &#123; list-&gt;</span><br><span class="line">                                //list 是 DeviceInfo 集合</span><br><span class="line">                            &#125;</span><br><span class="line"></span><br><span class="line">                        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>####从历史列表中移除</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//userId 是用户的标识，SDK 初始化时传入的 userId，可以为 &quot;&quot;</span><br><span class="line">DeviceVModel.removeHistoryDevice(deviceInfo,userId,object :DeviceHistoryCallback&#123;</span><br><span class="line">                       override fun onResult(result: Boolean, rsException: RsException?) &#123;</span><br><span class="line">                           if(result)&#123;</span><br><span class="line">                               //删除成功</span><br><span class="line">                           &#125;else&#123;</span><br><span class="line">                               //删除失败</span><br><span class="line">                           &#125;</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>##项目本地预览<br>项目预览，是针对已经生成完成的项目，预览时，会先下载预览数据到本地，然后通过 <code>RsWebview</code> 进行本地预览</p>
+<p>####初始化</p>
+<p>使用项目本地预览功能需要初始化，可以在 <code>Application</code> 中初始化一次即可</p>
+<p>demo 实例位置：<br><code>com.realsee.android.capture.demo.App</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">RsWebView.initCache(</span><br><span class="line">            context,</span><br><span class="line">            false,//是否在线预览，本地预览为 false</span><br><span class="line">            RsWebView.CacheConfig().apply &#123;</span><br><span class="line">                //重新定义logo</span><br><span class="line">                logoAssertName = &quot;logo.png&quot;</span><br><span class="line">                //重新定义 poweredBy</span><br><span class="line">                poweredByAssertName = &quot;poweredBy.png&quot;</span><br><span class="line">                //内部会判断和保存这个版本号，如果大于已经保存的版本号，会重新设置缓存：eg，如果更换了loge 或者 poweredBy，一定要升级一下</span><br><span class="line">                h5CacheVersion = 1</span><br><span class="line">            &#125;,</span><br><span class="line">            packageName,</span><br><span class="line">            RsOpenSdk.webViewRequestInterceptor</span><br><span class="line">        )</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>####下载预览数据<br>demo 实例位置：<br><code>com.realsee.android.capture.demo.main.ProjectListFragment</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">RsOpenSdk.downloadVrPreViewData(projectModel, &#123; result -&gt;</span><br><span class="line">       when (result.state) &#123;</span><br><span class="line">            WorkPreviewDownloadResult.State.PROGRESS -&gt; &#123;</span><br><span class="line">	            //下载进度 result.progress</span><br><span class="line">            &#125;</span><br><span class="line">            WorkPreviewDownloadResult.State.FAILED -&gt; &#123;</span><br><span class="line">                 //下载失败 result.rsException</span><br><span class="line">            &#125;</span><br><span class="line">            WorkPreviewDownloadResult.State.SUCCESS -&gt; &#123;</span><br><span class="line">	            //下载完成</span><br><span class="line">            &#125;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>####进入预览页面</p>
+<p>进入预览页面，要确保是已经处理完成的项目</p>
+<p>demo 实例位置：<br><code>com.realsee.android.capture.demo.main.ProjectListFragment</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//处理完成的，打开预览页面</span><br><span class="line">val openPreview = &#123;</span><br><span class="line">    RsWebView.openVrLocalPreview(</span><br><span class="line">        requireActivity(),</span><br><span class="line">        //要预览的 vr_code（== workCode）</span><br><span class="line">        workCode,</span><br><span class="line">        //预览加载时，要显示的封面图，可以为 &quot;&quot;</span><br><span class="line">        coverUrl,</span><br><span class="line">        //可以为 null，转场动画使用，会从view的位置做动画展开</span><br><span class="line">        view</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>##混淆配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-keep class com.realsee.** &#123; *; &#125;</span><br><span class="line">-keep class com.realseei.** &#123; *; &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-VR%E6%8B%8D%E6%91%84SDK%E6%8E%A5%E5%85%A5%E6%96%87%E6%A1%A3/" data-id="cuidhMnI-NOpCdpxI-Wgkcw1T" data-title="VR拍摄SDK接入文档" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-[flutter]FFI-调用找不到符号：Failed-to-lookup-symbol" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%5Bflutter%5DFFI-%E8%B0%83%E7%94%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E7%AC%A6%E5%8F%B7%EF%BC%9AFailed-to-lookup-symbol/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%5Bflutter%5DFFI-%E8%B0%83%E7%94%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E7%AC%A6%E5%8F%B7%EF%BC%9AFailed-to-lookup-symbol/">[flutter]FFI-调用找不到符号：Failed-to-lookup-symbol</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[VERBOSE-2:dart_vm_initializer.cc(41)] Unhandled Exception: Invalid argument(s): Failed to lookup symbol &#x27;ffi_RsFileDownloadCallback_Constructor&#x27;: dlsym(RTLD_DEFAULT, ffi_RsFileDownloadCallback_Constructor): symbol not found</span><br><span class="line">#0      DynamicLibrary.lookup (dart:ffi-patch/ffi_dynamic_library_patch.dart:33:70)</span><br><span class="line">#1      ptr_ffi_RsFileDownloadCallback_Constructor (package:rs_device_controller/RsFileDownloadState_ffiapi.dart:133:88)</span><br><span class="line">#2      ptr_ffi_RsFileDownloadCallback_Constructor (package:rs_device_controller/RsFileDownloadState_ffiapi.dart)</span><br><span class="line">#3      ffi_RsFileDownloadCallback_Constructor (package:rs_device_controller/RsFileDownloadState_ffiapi.dart:134:53)</span><br><span class="line">#4      ffi_RsFileDownloadCallback_Constructor (package:rs_device_controller/RsFileDownloadState_ffiapi.dart)</span><br><span class="line">#5      new RsFileDownloadCallback.Constructor (package:rs_device_controller/RsFileDownloadState.dart:406:22)</span><br><span class="line">#6      _RSPoincareDeviceManager.getProductRawData (package:rs_poincare_main_page/rs_poincare_device_vm.dart:541:62)</span><br><span class="line">#7      RSPoincareDeviceViewModel.getProductRawData (package:rs_poincare_main_page/rs_poincare_device_vm.dart:300:51)</span><br><span class="line">#8      RSPoincareCaptureViewModel.checkAndPrepareUploadData (package:rs_poincare_main_page/rs_poincare_main_page_vm.dart:766:26)</span><br><span class="line">&lt;asynchronous suspension&gt;</span><br></pre></td></tr></table></figure>
+<p>#解决办法<br>AppDelegate里调用一下这个函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</span><br><span class="line">    ffi_RsFileDownloadCallback_Constructor();</span><br><span class="line">    return [super application:application didFinishLaunchingWithOptions:launchOptions];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%5Bflutter%5DFFI-%E8%B0%83%E7%94%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E7%AC%A6%E5%8F%B7%EF%BC%9AFailed-to-lookup-symbol/" data-id="cuid4U-UgTt47u86JcrDGwAG2" data-title="[flutter]FFI-调用找不到符号：Failed-to-lookup-symbol" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-[MAC]两个命令轻松帮你清理MAC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%5BMAC%5D%E4%B8%A4%E4%B8%AA%E5%91%BD%E4%BB%A4%E8%BD%BB%E6%9D%BE%E5%B8%AE%E4%BD%A0%E6%B8%85%E7%90%86MAC/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%5BMAC%5D%E4%B8%A4%E4%B8%AA%E5%91%BD%E4%BB%A4%E8%BD%BB%E6%9D%BE%E5%B8%AE%E4%BD%A0%E6%B8%85%E7%90%86MAC/">[MAC]两个命令轻松帮你清理MAC</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><strong>背景：</strong></p>
+<p>最近老提示空间不够，这就比较讨厌了，为什么存储空间这么快就花完了。。。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-b16a3a95782043d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>40)</p>
+<p>如图，128的空间，就剩下几个G了，其中最大头的系统占用：62G，占比50%多</p>
+<p>正常情况下：一般我们能够通过 **清理文稿 **和 **回收箱 **来解决空间不够的问题。</p>
+<p>1、清空回收站。</p>
+<p>2、在文稿里，按文件大小排序，删除不需要的文件。</p>
+<p>3、对于GarageBand，这个是系统上的模拟乐器，一般都使用不到。</p>
+<p>清除方法：</p>
+<blockquote>
+<p>rm -rf &#x2F;Library&#x2F;Application\ Support&#x2F;GarageBand<br>rm -rf &#x2F;Library&#x2F;Application\ Support&#x2F;Logic<br>rm -rf &#x2F;Library&#x2F;Audio&#x2F;Apple\ Loops</p>
+</blockquote>
+<p>不过，对于罪魁祸首，系统的160G，我们怎么才能知道她的内部存储分布呢？</p>
+<p><strong>正文：</strong></p>
+<p>下面就是重点了：关于如何查看系统的文件占用详情。</p>
+<p>一、首先打开终端，输入</p>
+<blockquote>
+<p>du -sh *</p>
+</blockquote>
+<p>这个命令用来查看根目录下，所有文件的大小分布，如图所示：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-67ffb038a7541235.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>其中，我们很容易能看到每个文件的大小占比，快速定位到最大占比的文件：Library</p>
+<p>二、输入命令，进入到Library文件路径</p>
+<blockquote>
+<p>cd Library</p>
+</blockquote>
+<p>然后，查看Library下的所有文件大小分布。</p>
+<p>输入：</p>
+<blockquote>
+<p>du -sh *</p>
+</blockquote>
+<p>重复以上步骤,找到占用内存最大的文件,然后结合实际情况,进行删减,如果你是开发者,你会发现占用空间最大的,往往是<strong>Xcode&#x2F;DerivedData和Xcode&#x2F;Archives</strong>,这两个一般可以直接删除<br>希望能对大家有帮助～</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%5BMAC%5D%E4%B8%A4%E4%B8%AA%E5%91%BD%E4%BB%A4%E8%BD%BB%E6%9D%BE%E5%B8%AE%E4%BD%A0%E6%B8%85%E7%90%86MAC/" data-id="cuidyy0fOXyXhh5Xt5oHJnAwU" data-title="[MAC]两个命令轻松帮你清理MAC" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-Xcode证书问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-Xcode%E8%AF%81%E4%B9%A6%E9%97%AE%E9%A2%98/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-Xcode%E8%AF%81%E4%B9%A6%E9%97%AE%E9%A2%98/">Xcode证书问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/b10680a32d35">http://www.jianshu.com/p/b10680a32d35</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-Xcode%E8%AF%81%E4%B9%A6%E9%97%AE%E9%A2%98/" data-id="cuidtUI7tI7HCmnjZtgeD_-3t" data-title="Xcode证书问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-[iOS-开发]-xcode14-pod-update-报错" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%5BiOS-%E5%BC%80%E5%8F%91%5D-xcode14-pod-update-%E6%8A%A5%E9%94%99/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%5BiOS-%E5%BC%80%E5%8F%91%5D-xcode14-pod-update-%E6%8A%A5%E9%94%99/">[iOS-开发]-xcode14-pod-update-报错</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>#xcode14   pod update 的时候报错:</p>
+<p> ([Xcodeproj] Unknown object version (56). (RuntimeError))</p>
+<pre><code>Analyzing dependencies
+/Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/user_interface/error_report.rb:34:in `force_encoding&#39;: can&#39;t modify frozen String (FrozenError)
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/user_interface/error_report.rb:34:in `report&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/command.rb:66:in `report_error&#39;
+from /Library/Ruby/Gems/2.6.0/gems/claide-1.0.3/lib/claide/command.rb:396:in `handle_exception&#39;
+from /Library/Ruby/Gems/2.6.0/gems/claide-1.0.3/lib/claide/command.rb:337:in `rescue in run&#39;
+from /Library/Ruby/Gems/2.6.0/gems/claide-1.0.3/lib/claide/command.rb:324:in `run&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/command.rb:52:in `run&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/bin/pod:55:in `&lt;top (required)&gt;&#39;
+from /usr/local/bin/pod:23:in `load&#39;
+from /usr/local/bin/pod:23:in `&lt;main&gt;&#39;
+/Library/Ruby/Gems/2.6.0/gems/xcodeproj-1.21.0/lib/xcodeproj/project.rb:228:in `initialize_from_file&#39;: [Xcodeproj] Unknown object version (56). (RuntimeError)
+from /Library/Ruby/Gems/2.6.0/gems/xcodeproj-1.21.0/lib/xcodeproj/project.rb:113:in `open&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer/analyzer.rb:1190:in `block (2 levels) in inspect_targets_to_integrate&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer/analyzer.rb:1189:in `each&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer/analyzer.rb:1189:in `block in inspect_targets_to_integrate&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/user_interface.rb:64:in `section&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer/analyzer.rb:1184:in `inspect_targets_to_integrate&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer/analyzer.rb:106:in `analyze&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer.rb:416:in `analyze&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer.rb:241:in `block in resolve_dependencies&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/user_interface.rb:64:in `section&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer.rb:240:in `resolve_dependencies&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer.rb:161:in `install!&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/command/install.rb:52:in `run&#39;
+from /Library/Ruby/Gems/2.6.0/gems/claide-1.0.3/lib/claide/command.rb:334:in `run&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/command.rb:52:in `run&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/bin/pod:55:in `&lt;top (required)&gt;&#39;
+from /usr/local/bin/pod:23:in `load&#39;
+from /usr/local/bin/pod:23:in `&lt;main&gt;&#39;
+</code></pre>
+<p>这个问题一般是发生在Xcode升级后,新建的项目pod install, 然后 pod update</p>
+<p>#解决方法<br>把Project Format改到低版本然后pod update</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2791393-323d4b9c1655b0f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%5BiOS-%E5%BC%80%E5%8F%91%5D-xcode14-pod-update-%E6%8A%A5%E9%94%99/" data-id="cuido37Q-hyNfP46jKIWpXo_q" data-title="[iOS-开发]-xcode14-pod-update-报错" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-[iOS]-block内使用成员变量导致对象无法释放" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D-block%E5%86%85%E4%BD%BF%E7%94%A8%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%AF%BC%E8%87%B4%E5%AF%B9%E8%B1%A1%E6%97%A0%E6%B3%95%E9%87%8A%E6%94%BE/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D-block%E5%86%85%E4%BD%BF%E7%94%A8%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%AF%BC%E8%87%B4%E5%AF%B9%E8%B1%A1%E6%97%A0%E6%B3%95%E9%87%8A%E6%94%BE/">[iOS]-block内使用成员变量导致对象无法释放</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>遇到一个对象无法释放的问题，最后排查是因为一个Bool类型的成员变量的原因，已解决！</p>
+<p>问题截图：<br><img src="https://upload-images.jianshu.io/upload_images/2791393-b25ca0edfa042385.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="声明.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2791393-920eb87cc2c603f6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="block.png"></p>
+<p>解决方案：<br>1 修改声明为：<br><img src="https://upload-images.jianshu.io/upload_images/2791393-2650edbe6ecaef1f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>2 block内改为点方法<br><img src="https://upload-images.jianshu.io/upload_images/2791393-aee9cb68a9e77280.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="block.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D-block%E5%86%85%E4%BD%BF%E7%94%A8%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%AF%BC%E8%87%B4%E5%AF%B9%E8%B1%A1%E6%97%A0%E6%B3%95%E9%87%8A%E6%94%BE/" data-id="cuidA6gtKQv8MAc7JL7tfoTLX" data-title="[iOS]-block内使用成员变量导致对象无法释放" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-[iOS]-App-签名的原理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D-App-%E7%AD%BE%E5%90%8D%E7%9A%84%E5%8E%9F%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D-App-%E7%AD%BE%E5%90%8D%E7%9A%84%E5%8E%9F%E7%90%86/">[iOS]----App-签名的原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>iOS 签名机制挺复杂，各种证书，Provisioning Profile，entitlements，CertificateSigningRequest，p12，AppID，概念一堆，也很容易出错，本文尝试从原理出发，一步步推出为什么会有这么多概念，希望能有助于理解 iOS App 签名的原理和流程。</p>
+<h1 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h1><p>先来看看苹果的签名机制是为了做什么。在 iOS 出来之前，在主流操作系统(Mac&#x2F;Windows&#x2F;Linux)上开发和运行软件是不需要签名的，软件随便从哪里下载都能运行，导致平台对第三方软件难以控制，盗版流行。苹果希望解决这样的问题，在 iOS 平台对第三方 APP 有绝对的控制权，一定要保证每一个安装到 iOS 上的 APP 都是经过苹果官方允许的，怎样保证呢？就是通过签名机制。</p>
+<h1 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h1><p>通常我们说的签名就是数字签名，它是基于非对称加密算法实现的。对称加密是通过同一份密钥加密和解密数据，而非对称加密则有两份密钥，分别是公钥和私钥，用公钥加密的数据，要用私钥才能解密，用私钥加密的数据，要用公钥才能解密。</p>
+<p>简单说一下常用的非对称加密算法 RSA 的数学原理，理解简单的数学原理，就可以理解非对称加密是怎么做到的，为什么会是安全的：</p>
+<blockquote>
+<p>选两个质数 p 和 q，相乘得出一个大整数n，例如 p&#x3D;61，q&#x3D;53，n&#x3D;pq&#x3D;3233<br>选 1-n 间的随便一个质数 e，例如 e &#x3D; 17<br>经过一系列数学公式，算出一个数字 d，满足：<br>a. 通过 n 和 e 这两个数据一组数据进行数学运算后，可以通过 n 和 d 去反解运算，反过来也可以。<br>b. 如果只知道 n 和 e，要推导出 d，需要知道 p 和 q，也就是要需要把 n 因数分解。</p>
+</blockquote>
+<p>上述的 (n,e) 这两个数据在一起就是公钥，(n,d) 这两个数据就是私钥，满足用公钥加密，私钥解密，或反过来公钥加密，私钥解密，也满足在只暴露公钥（只知道 n 和 e）的情况下，要推导出私钥 (n,d)，需要把大整数 n 因数分解。目前因数分解只能靠暴力穷举，而n数字越大，越难以用穷举计算出因数 p 和 q，也就越安全，当 n 大到二进制 1024 位或 2048 位时，以目前技术要破解几乎不可能，所以非常安全。<br>若对数字 <code>d</code> 是怎样计算出来的感兴趣，可以详读这两篇文章：RSA 算法原理<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html">（一）</a><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html">（二）</a></p>
+<h1 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h1><p>现在知道了有非对称加密这东西，那数字签名是怎么回事呢？</p>
+<p>数字签名的作用是我对某一份数据打个标记，表示我认可了这份数据（签了个名），然后我发送给其他人，其他人可以知道这份数据是经过我认证的，数据没有被篡改过。</p>
+<p>有了上述非对称加密算法，就可以实现这个需求：<br><img src="https://upload-images.jianshu.io/upload_images/1742958-23b2a7d1219ff903.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="图片"></p>
+<blockquote>
+<p>1.首先用一种算法，算出原始数据的摘要。需满足 a.若原始数据有任何变化，计算出来的摘要值都会变化。 b.摘要要够短。这里最常用的算法是MD5。</p>
+<ol start="2">
+<li>生成一份非对称加密的公钥和私钥，私钥我自己拿着，公钥公布出去。</li>
+<li>对一份数据，算出摘要后，用私钥加密这个摘要，得到一份加密后的数据，称为原始数据的签名。把它跟原始数据一起发送给用户。</li>
+<li>用户收到数据和签名后，用公钥解密得到摘要。同时用户用同样的算法计算原始数据的摘要，对比这里计算出来的摘要和用公钥解密签名得到的摘要是否相等，若相等则表示这份数据中途没有被篡改过，因为如果篡改过，摘要会变化。</li>
+</ol>
+</blockquote>
+<p>之所以要有第一步计算摘要，是因为非对称加密的原理限制可加密的内容不能太大（不能大于上述 n 的位数，也就是一般不能大于 1024 位&#x2F; 2048 位），于是若要对任意大的数据签名，就需要改成对它的特征值签名，效果是一样的。</p>
+<p>好了，有了非对称加密的基础，知道了数字签名是什么，怎样可以保证一份数据是经过某个地方认证的，来看看怎样通过数字签名的机制保证每一个安装到 iOS 上的 APP 都是经过苹果认证允许的。</p>
+<h1 id="最简单的签名"><a href="#最简单的签名" class="headerlink" title="最简单的签名"></a>最简单的签名</h1><p>要实现这个需求很简单，最直接的方式，苹果官方生成一对公私钥，在 iOS 里内置一个公钥，私钥由苹果后台保存，我们传 App 上 AppStore 时，苹果后台用私钥对 APP 数据进行签名，iOS 系统下载这个 APP 后，用公钥验证这个签名，若签名正确，这个 APP 肯定是由苹果后台认证的，并且没有被修改过，也就达到了苹果的需求：保证安装的每一个 APP 都是经过苹果官方允许的。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2791393-50b0ae26b71e7e85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>如果我们 iOS 设备安装 APP 只有从 AppStore 下载这一种方式的话，这件事就结束了，没有任何复杂的东西，只有一个数字签名，非常简单地解决问题。</p>
+<p>但实际上因为除了从 AppStore 下载，我们还可以有三种方式安装一个 App：</p>
+<blockquote>
+<p>开发 App 时可以直接把开发中的应用安装进手机进行调试。<br>In-House 企业内部分发，可以直接安装企业证书签名后的 APP。<br>AD-Hoc 相当于企业分发的限制版，限制安装设备数量，较少用。</p>
+</blockquote>
+<p>苹果要对用这三种方式安装的 App 进行控制，就有了新的需求，无法像上面这样简单了。</p>
+<h1 id="新的需求"><a href="#新的需求" class="headerlink" title="新的需求"></a>新的需求</h1><p>我们先来看第一个，开发时安装APP，它有两个个需求：</p>
+<blockquote>
+<p>安装包不需要传到苹果服务器，可以直接安装到手机上。如果你编译一个 APP 到手机前要先传到苹果服务器签名，这显然是不能接受的。<br>苹果必须对这里的安装有控制权，包括<br>a.经过苹果允许才可以这样安装。<br>b.不能被滥用导致非开发app也能被安装。</p>
+</blockquote>
+<p>为了实现这些需求，iOS 签名的复杂度也就开始增加了。</p>
+<p>苹果这里给出的方案是使用了双层签名，会比较绕，流程大概是这样的：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2791393-27f600e838d67a16.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<blockquote>
+<ol>
+<li>在你的 Mac 开发机器生成一对公私钥，这里称为公钥L，私钥L。L:Local</li>
+<li>苹果自己有固定的一对公私钥，跟上面 AppStore 例子一样，私钥在苹果后台，公钥在每个 iOS 设备上。这里称为公钥A，私钥A。A:Apple</li>
+<li>把公钥 L 传到苹果后台，用苹果后台里的私钥 A 去签名公钥 L。得到一份数据包含了公钥 L 以及其签名，把这份数据称为证书。</li>
+<li>在开发时，编译完一个 APP 后，用本地的私钥 L 对这个 APP 进行签名，同时把第三步得到的证书一起打包进 APP 里，安装到手机上。</li>
+<li>在安装时，iOS 系统取得证书，通过系统内置的公钥 A，去验证证书的数字签名是否正确。</li>
+<li>验证证书后确保了公钥 L 是苹果认证过的，再用公钥 L 去验证 APP 的签名，这里就间接验证了这个 APP 安装行为是否经过苹果官方允许。（这里只验证安装行为，不验证APP 是否被改动，因为开发阶段 APP 内容总是不断变化的，苹果不需要管。）</li>
+</ol>
+</blockquote>
+<h1 id="加点东西"><a href="#加点东西" class="headerlink" title="加点东西"></a>加点东西</h1><p>上述流程只解决了上面第一个需求，也就是需要经过苹果允许才可以安装，还未解决第二个避免被滥用的问题。怎么解决呢？苹果再加了两个限制，一是限制在苹果后台注册过的设备才可以安装，二是限制签名只能针对某一个具体的 APP。</p>
+<p>怎么加的？在上述第三步，苹果用私钥 A 签名我们本地公钥 L 时，实际上除了签名公钥 L，还可以加上无限多数据，这些数据都可以保证是经过苹果官方认证的，不会有被篡改的可能。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2791393-5eab2a7b5e50f730.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>可以想到把 允许安装的设备 ID 列表 和 App对应的 AppID 等数据，都在第三步这里跟公钥L一起组成证书，再用苹果私钥 A 对这个证书签名。在最后第 5 步验证时就可以拿到设备 ID 列表，判断当前设备是否符合要求。根据数字签名的原理，只要数字签名通过验证，第 5 步这里的设备 IDs &#x2F; AppID &#x2F; 公钥 L 就都是经过苹果认证的，无法被修改，苹果就可以限制可安装的设备和 APP，避免滥用。</p>
+<h1 id="最终流程"><a href="#最终流程" class="headerlink" title="最终流程"></a>最终流程</h1><p>到这里这个证书已经变得很复杂了，有很多额外信息，实际上除了 设备 ID &#x2F; AppID，还有其他信息也需要在这里用苹果签名，像这个 APP 里 iCloud &#x2F; push &#x2F; 后台运行 等权限苹果都想控制，苹果把这些权限开关统一称为 Entitlements，它也需要通过签名去授权。</p>
+<p>实际上一个“证书”本来就有规定的格式规范，上面我们把各种额外信息塞入证书里是不合适的，于是苹果另外搞了个东西，叫 Provisioning Profile，一个 Provisioning Profile 里就包含了证书以及上述提到的所有额外信息，以及所有信息的签名。</p>
+<p>所以整个流程稍微变一下，就变成这样了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2791393-e4b0e9d778bd2f4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>因为步骤有小变动，这里我们不辞啰嗦重新再列一遍整个流程：</p>
+<blockquote>
+<ol>
+<li>在你的 Mac 开发机器生成一对公私钥，这里称为公钥L，私钥L。L:Local</li>
+<li>苹果自己有固定的一对公私钥，跟上面 AppStore 例子一样，私钥在苹果后台，公钥在每个 iOS 设备上。这里称为公钥A，私钥A。A:Apple</li>
+<li>把公钥 L 传到苹果后台，用苹果后台里的私钥 A 去签名公钥 L。得到一份数据包含了公钥 L 以及其签名，把这份数据称为证书。</li>
+<li>在苹果后台申请 AppID，配置好设备 ID 列表和 APP 可使用的权限，再加上第③步的证书，组成的数据用私钥 A 签名，把数据和签名一起组成一个 Provisioning Profile 文件，下载到本地 Mac 开发机。</li>
+<li>在开发时，编译完一个 APP 后，用本地的私钥 L 对这个 APP 进行签名，同时把第④步得到的 Provisioning Profile 文件打包进 APP 里，文件名为 embedded.mobileprovision，把 APP 安装到手机上。</li>
+<li>在安装时，iOS 系统取得证书，通过系统内置的公钥 A，去验证 embedded.mobileprovision 的数字签名是否正确，里面的证书签名也会再验一遍。</li>
+<li>确保了 embedded.mobileprovision 里的数据都是苹果授权以后，就可以取出里面的数据，做各种验证，包括用公钥 L 验证APP签名，验证设备 ID 是否在 ID 列表上，AppID 是否对应得上，权限开关是否跟 APP 里的 Entitlements 对应等。</li>
+</ol>
+</blockquote>
+<p>开发者证书从签名到认证最终苹果采用的流程大致是这样，还有一些细节像证书有效期&#x2F;证书类型等就不细说了。</p>
+<h1 id="概念和操作"><a href="#概念和操作" class="headerlink" title="概念和操作"></a>概念和操作</h1><p>上面的步骤对应到我们平常具体的操作和概念是这样的：</p>
+<blockquote>
+<ol>
+<li>第 1 步对应的是 keychain 里的 “从证书颁发机构请求证书”，这里就本地生成了一堆公私钥，保存的 CertificateSigningRequest 就是公钥，私钥保存在本地电脑里。</li>
+<li>第 2 步苹果处理，不用管。</li>
+<li>第 3 步对应把 CertificateSigningRequest 传到苹果后台生成证书，并下载到本地。这时本地有两个证书，一个是第 1 步生成的，一个是这里下载回来的，keychain 会把这两个证书关联起来，因为他们公私钥是对应的，在XCode选择下载回来的证书时，实际上会找到 keychain 里对应的私钥去签名。这里私钥只有生成它的这台 Mac 有，如果别的 Mac 也要编译签名这个 App 怎么办？答案是把私钥导出给其他 Mac 用，在 keychain 里导出私钥，就会存成 .p12 文件，其他 Mac 打开后就导入了这个私钥。</li>
+<li>第 4 步都是在苹果网站上操作，配置 AppID &#x2F; 权限 &#x2F; 设备等，最后下载 Provisioning Profile 文件。</li>
+<li>第 5 步 XCode 会通过第 3 步下载回来的证书（存着公钥），在本地找到对应的私钥（第一步生成的），用本地私钥去签名 App，并把 Provisioning Profile 文件命名为 embedded.mobileprovision 一起打包进去。这里对 App 的签名数据保存分两部分，Mach-O 可执行文件会把签名直接写入这个文件里，其他资源文件则会保存在 _CodeSignature 目录下。<br>第 6 - 7 步的打包和验证都是 Xcode 和 iOS 系统自动做的事。</li>
+</ol>
+</blockquote>
+<p>这里再总结一下这些概念：</p>
+<blockquote>
+<p>证书：内容是公钥或私钥，由其他机构对其签名组成的数据包。<br>Entitlements：包含了 App 权限开关列表。<br>CertificateSigningRequest：本地公钥。<br>p12：本地私钥，可以导入到其他电脑。<br>Provisioning Profile：包含了 证书 &#x2F; Entitlements 等数据，并由苹果后台私钥签名的数据包。</p>
+</blockquote>
+<h1 id="其他发布方式"><a href="#其他发布方式" class="headerlink" title="其他发布方式"></a>其他发布方式</h1><p>前面以开发包为例子说了签名和验证的流程，另外两种方式 In-House 企业签名和 AD-Hoc 流程也是差不多的，只是企业签名不限制安装的设备数，另外需要用户在 iOS 系统设置上手动点击信任这个企业才能通过验证。</p>
+<p>而 AppStore 的签名验证方式有些不一样，前面我们说到最简单的签名方式，苹果在后台直接用私钥签名 App 就可以了，实际上苹果确实是这样做的，如果去下载一个 AppStore 的安装包，会发现它里面是没有 embedded.mobileprovision 文件的，也就是它安装和启动的流程是不依赖这个文件，验证流程也就跟上述几种类型不一样了。</p>
+<p>据猜测，因为上传到 AppStore 的包苹果会重新对内容加密，原来的本地私钥签名就没有用了，需要重新签名，从 AppStore 下载的包苹果也并不打算控制它的有效期，不需要内置一个 embedded.mobileprovision 去做校验，直接在苹果用后台的私钥重新签名，iOS 安装时用本地公钥验证 App 签名就可以了。</p>
+<p>那为什么发布 AppStore 的包还是要跟开发版一样搞各种证书和 Provisioning Profile？猜测因为苹果想做统一管理，Provisioning Profile 里包含一些权限控制，AppID 的检验等，苹果不想在上传 AppStore 包时重新用另一种协议做一遍这些验证，就不如统一把这部分放在 Provisioning Profile 里，上传 AppStore 时只要用同样的流程验证这个 Provisioning Profile 是否合法就可以了。</p>
+<p>所以 App 上传到 AppStore 后，就跟你的 证书 &#x2F; Provisioning Profile 都没有关系了，无论他们是否过期或被废除，都不会影响 AppStore 上的安装包。</p>
+<p>到这里 iOS 签名机制的原理和主流程大致说完了，希望能对理解苹果签名和排查日常签名问题有所帮助。</p>
+<p>文章转载出处:<a target="_blank" rel="noopener" href="http://wereadteam.github.io/2017/03/13/Signature/">传送门</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D-App-%E7%AD%BE%E5%90%8D%E7%9A%84%E5%8E%9F%E7%90%86/" data-id="cuidzyM1bn9Q9rmzpyGl1j47E" data-title="[iOS]----App-签名的原理" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-[iOS]-url拼接参数封装方法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D-url%E6%8B%BC%E6%8E%A5%E5%8F%82%E6%95%B0%E5%B0%81%E8%A3%85%E6%96%B9%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D-url%E6%8B%BC%E6%8E%A5%E5%8F%82%E6%95%B0%E5%B0%81%E8%A3%85%E6%96%B9%E6%B3%95/">[iOS]---url拼接参数封装方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>近期项目中的一个URL拼接的地方出现了问题，跟接口方约定好规则–</p>
+<p>   他提供的原始URL是带“?”的，我们直接拼接参数就好了，</p>
+<p>但是他们更新接口后，提供的原始URL不带”?“了，导致线上出现问题。</p>
+<p>在新版本解决这个问题很简单，加上“?”就可以了，可是老版本怎么办? 或者以后他们的规则又变了怎么办？</p>
+<p>  最终考虑做一个URL拼接的封装，实现各种情况下拼接参数不会出问题：<br> 封装法法如下：</p>
+<p>NSString+Extention.h</p>
+<pre><code>  #import &lt;Foundation/Foundation.h&gt;
+
+@interface NSString (Extention)
+-(NSString *)urlAddCompnentForValue:(NSString *)value key:  (NSString *)key;
+@end
+</code></pre>
+<p>NSString+Extention.m</p>
+<pre><code>#import &quot;NSString+Extention.h&quot;
+
+@implementation NSString (Extention)
+-(NSString *)urlAddCompnentForValue:(NSString *)value key:(NSString *)key{
+    
+    NSMutableString *string = [[NSMutableString alloc]initWithString:self];
+    @try {
+        NSRange range = [string rangeOfString:@&quot;?&quot;];
+        if (range.location != NSNotFound) {//找到了
+            //如果?是最后一个直接拼接参数
+            if (string.length == (range.location + range.length)) {
+                NSLog(@&quot;最后一个是?&quot;);
+                string = (NSMutableString *)[string stringByAppendingString:[NSString stringWithFormat:@&quot;%@=%@&quot;,key,value]];
+            }else{//如果不是最后一个需要加&amp;
+                if([string hasSuffix:@&quot;&amp;&quot;]){//如果最后一个是&amp;,直接拼接
+                    string = (NSMutableString *)[string stringByAppendingString:[NSString stringWithFormat:@&quot;%@=%@&quot;,key,value]];
+                }else{//如果最后不是&amp;,需要加&amp;后拼接
+                    string = (NSMutableString *)[string stringByAppendingString:[NSString stringWithFormat:@&quot;&amp;%@=%@&quot;,key,value]];
+                }
+            }
+        }else{//没找到
+            if([string hasSuffix:@&quot;&amp;&quot;]){//如果最后一个是&amp;,去掉&amp;后拼接
+                string = (NSMutableString *)[string substringToIndex:string.length-1];
+            }
+            string = (NSMutableString *)[string stringByAppendingString:[NSString stringWithFormat:@&quot;?%@=%@&quot;,key,value]];
+        }
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
+    
+    return string.copy;
+}
+ @end
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D-url%E6%8B%BC%E6%8E%A5%E5%8F%82%E6%95%B0%E5%B0%81%E8%A3%85%E6%96%B9%E6%B3%95/" data-id="cuidAg-1eHDpkvIYcYtG99Bcu" data-title="[iOS]---url拼接参数封装方法" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-[iOS开发]-Framework之podspec坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%E5%BC%80%E5%8F%91%5D-Framework%E4%B9%8Bpodspec%E5%9D%91/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%E5%BC%80%E5%8F%91%5D-Framework%E4%B9%8Bpodspec%E5%9D%91/">[iOS开发]-Framework之podspec坑</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>vendored_frameworks 找不到</p>
+<p>错误示范<br>s.vendored_frameworks &#x3D; [‘..&#x2F;SDK&#x2F;<em>.framework’, ‘..&#x2F;SDK&#x2F;dependency&#x2F;</em>.framework’]</p>
+<p>正确示范<br>s.vendored_frameworks &#x3D; [‘SDK&#x2F;<em>.framework’, ‘SDK&#x2F;dependency&#x2F;</em>.framework’]</p>
+<p>现象结论:<br>podspec没有权限访问上级目录</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%5BiOS%E5%BC%80%E5%8F%91%5D-Framework%E4%B9%8Bpodspec%E5%9D%91/" data-id="cuidrsERWvJYbRHJWTUdFYlk1" data-title="[iOS开发]-Framework之podspec坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-[iOS]证书授权文件不匹配错误-关于Provisioning-profile-“”-doesn&#39;t-include-a" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D%E8%AF%81%E4%B9%A6%E6%8E%88%E6%9D%83%E6%96%87%E4%BB%B6%E4%B8%8D%E5%8C%B9%E9%85%8D%E9%94%99%E8%AF%AF-%E5%85%B3%E4%BA%8EProvisioning-profile-%E2%80%9C%E2%80%9D-doesn't-include-a/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D%E8%AF%81%E4%B9%A6%E6%8E%88%E6%9D%83%E6%96%87%E4%BB%B6%E4%B8%8D%E5%8C%B9%E9%85%8D%E9%94%99%E8%AF%AF-%E5%85%B3%E4%BA%8EProvisioning-profile-%E2%80%9C%E2%80%9D-doesn't-include-a/">[iOS]证书授权文件不匹配错误-关于Provisioning-profile-“”-doesn&#39;t-include-any-certifi</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>问题描述： </p>
+<p>日前，发布证书将要过期，重新做了一个证书，与其配套的授权文件同步更新。在这个过程中出现了问题，见下图：<br><img src="https://upload-images.jianshu.io/upload_images/2791393-890d0d02c430cff0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>报错信息：<br>    Provisioning profile “” doesn’t include any certificate for which the matching private key is install in the keychain</p>
+<blockquote>
+<p>大意：<br>授权文件不包含钥匙串中能匹配私钥的证书—</p>
+</blockquote>
+<blockquote>
+<p>简单说就是：<br>授权文件与证书不匹配</p>
+</blockquote>
+<blockquote>
+<p>纠结点：<br> 我是用新的证书，做的授权文件（这一点很确定）</p>
+</blockquote>
+<blockquote>
+<p>尝试解决：<br>1 重新安装证书（不行）<br>2 删除Xcode所有授权文件，重新导入新的授权文件（不行）</p>
+</blockquote>
+<p>最终解决方案：<br>    重启Xcode(对，你没有看错，就是这么简单)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%5BiOS%5D%E8%AF%81%E4%B9%A6%E6%8E%88%E6%9D%83%E6%96%87%E4%BB%B6%E4%B8%8D%E5%8C%B9%E9%85%8D%E9%94%99%E8%AF%AF-%E5%85%B3%E4%BA%8EProvisioning-profile-%E2%80%9C%E2%80%9D-doesn't-include-a/" data-id="cuidjRFH4fpc2q5gbdkhptUrP" data-title="[iOS]证书授权文件不匹配错误-关于Provisioning-profile-“”-doesn&#39;t-include-any-certifi" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/hexo-site/">&laquo; 上一页</a><a class="page-number" href="/hexo-site/">1</a><span class="page-number current">2</span><a class="page-number" href="/hexo-site/page/3/">3</a><a class="page-number" href="/hexo-site/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/hexo-site/page/11/">11</a><a class="extend next" rel="next" href="/hexo-site/page/3/">下一页 &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/%E6%95%99%E7%A8%8B/" rel="tag">教程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/hexo-site/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/hexo-site/tags/%E6%95%99%E7%A8%8B/" style="font-size: 10px;">教程</a> <a href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 20px;">笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2018/04/">四月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E4%B8%AD%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E7%9A%84%E8%AF%B4%E6%98%8E%E4%BB%A5%E5%8F%8A%E7%94%A8%E6%B3%95/">OC中按位枚举的说明以及用法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 博主<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/hexo-site/" class="mobile-nav-link">Home</a>
+  
+    <a href="/hexo-site/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/hexo-site/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/hexo-site/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/hexo-site/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

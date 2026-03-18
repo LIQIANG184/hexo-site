@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>iOS开发--iOS11&amp;&amp;iPhoneX适配 | 我的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一、前言 iOS11发布也有一段时间了，每次版本升级，相关的适配工作当然是下个版本的核心工作之一。而且这次iOS11的更新，相对于iOS10的更新来说，改动点还是比较多的。除了iOS11系统的更新之外，iPhoneX刘海的打理工作也是必不可少。以前我们总是庆幸作为iOS开发者，不必像Android开发者需要考虑各种不同机型的适配问题。但是现在，随着iPhone各种历史版本的存在，各种花式的新版本产">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS开发--iOS11&amp;&amp;iPhoneX适配">
+<meta property="og:url" content="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS11&&iPhoneX%E9%80%82%E9%85%8D/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="一、前言 iOS11发布也有一段时间了，每次版本升级，相关的适配工作当然是下个版本的核心工作之一。而且这次iOS11的更新，相对于iOS10的更新来说，改动点还是比较多的。除了iOS11系统的更新之外，iPhoneX刘海的打理工作也是必不可少。以前我们总是庆幸作为iOS开发者，不必像Android开发者需要考虑各种不同机型的适配问题。但是现在，随着iPhone各种历史版本的存在，各种花式的新版本产">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-b775b94658240a6d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-aa5177f55f4a57ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-6434796338e8161e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-ef2cda92e020c47e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-549af064690c00ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-39c74461c7d4020e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-aa007f074615bdb0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-023e1c2055342964.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-f9562b0e8af92884.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-86fae0b0b0c4f528.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-073b2caf6ebaa408.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-4ea9a6bcc282e4f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-03faebc42ec2781e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-1a27717d175575fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2791393-f34170d7fb16370d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2026-03-18T10:04:06.000Z">
+<meta property="article:modified_time" content="2026-03-18T10:11:47.000Z">
+<meta property="article:author" content="博主">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2791393-b775b94658240a6d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/hexo-site/atom.xml" title="我的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/hexo-site/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/hexo-site/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/hexo-site/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/hexo-site/" id="logo">我的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/hexo-site/" id="subtitle">记录与分享</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/hexo-site/">Home</a>
+        
+          <a class="main-nav-link" href="/hexo-site/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/hexo-site/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://liqiang184.github.io/hexo-site"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-2026-03-18-iOS开发-iOS11&amp;&amp;iPhoneX适配" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS11&&iPhoneX%E9%80%82%E9%85%8D/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      iOS开发--iOS11&amp;&amp;iPhoneX适配
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><strong>一、前言</strong></p>
+<p>iOS11发布也有一段时间了，每次版本升级，相关的适配工作当然是下个版本的核心工作之一。而且这次iOS11的更新，相对于iOS10的更新来说，改动点还是比较多的。除了iOS11系统的更新之外，iPhoneX刘海的打理工作也是必不可少。以前我们总是庆幸作为iOS开发者，不必像Android开发者需要考虑各种不同机型的适配问题。但是现在，随着iPhone各种历史版本的存在，各种花式的新版本产生，不同版本之间的适配问题，也是未来我们作为iOS开发者必然要考虑的重要问题之一。</p>
+<p>这次我主要负责我们这边两款App(滴滴代驾司机端+驾管App)iOS11&amp;iPhoneX适配工作。中间也躺过很多坑，一一记录了下来写成这篇文章，既是对自己工作的一次总结，也可以分享给其他iOS开发者，能够让大家少趟一些坑。</p>
+<p>本文将分为三个部分，分别从三方库适配、UI适配、权限适配、补充知识等方面分别进行展开。</p>
+<p><strong>二、三方库适配问题。</strong></p>
+<p><strong>2.1 CocoaLumberjack 编译出错</strong></p>
+<p><strong><img src="http://upload-images.jianshu.io/upload_images/2791393-b775b94658240a6d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521771491256554.png"></strong> </p>
+<p>CocoaLumberjack编译报错</p>
+<p><strong>问题原因：</strong></p>
+<p>从错误提示可以看出在Xcode9中os_log_error的第二个参数format必须要为不可变的string类型，而不是char*。</p>
+<p><strong>解决方案：</strong></p>
+<p>我们只要改成如下形式就可以了<br><code>os_log_error(OS_LOG_DEFAULT, &quot;%s&quot;, msg);</code></p>
+<p>如果你的工程是pod依赖的话，将pod版本升级到3.3.0版本即可。</p>
+<p><strong>2.2 WebViewJavascriptBridge崩溃处理</strong></p>
+<p>我们代驾司机端web容器使用的是WKWebView，jsBridge使用的是WebViewJavascriptBridge这个三方库，更新到Xcode9之后，只要进入WKWebView容器，就会产生如下crash:</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-aa5177f55f4a57ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521771550751368.png"></p>
+<p>WebViewJavascriptBridge crash</p>
+<p><strong>问题原因：</strong></p>
+<p>当你使用WKWebView作为你的H5容器的时候，WKNavigationDelegate有个回调就是</p>
+<p><code>- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void(^)(WKNavigationActionPolicy))decisionHandler;</code></p>
+<p>这个回调主要负责根据webView、navigationAction相关信息决定这次跳转是否可以继续进行。调用decisionHandler(WKNavigationActionPolicyAllow);响应这次跳转请求。调用decisionHandler(WKNavigationActionPolicyCancel);就是不响应这次跳转请求。</p>
+<p>查看WebViewJavascriptBridge源码可以看出，在WKWebViewJavascriptBridge.m文件中</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-6434796338e8161e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WKVebViewCrash.png" title="1521771604832877.png"></p>
+<p>在Xcode9中，如果连续看了两次调用decisionHandler方法就会crash。这个问题在之前版本的Xcode均是没有问题的。</p>
+<p><strong>解决方案：</strong></p>
+<ul>
+<li><p>方案一：修改源码</p>
+<p>在上面代码的149行和150行之间添加return;</p>
+</li>
+<li><p>方案二：pod依赖，原作者没有修改此问题，无法修改源码，也可以在业务代码中进行规避。</p>
+<p>在你自己业务代码的对应对调中添加排除代码，如下：</p>
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-ef2cda92e020c47e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WKWebViewCrash2.png" title="1521771633371153.png"></p>
+<p><strong>2.3 LumberjackConsole UI适配</strong></p>
+<p><strong><img src="http://upload-images.jianshu.io/upload_images/2791393-549af064690c00ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521771742682266.png"></strong> </p>
+<p><strong>问题原因:</strong></p>
+<p>iOS7之后，如何你设置self.edgesForExtendedLayout &#x3D; UIRectEdgeNone的话,系统通过设置UIViewController的automaticallyAdjustsScrollViewInsets属性来自动调整UIScrollView的contentInset，使UIscrollView能够呈现在我们的可是范围之内，而不会被navBar挡住。这个属性在iOS11中被废弃掉了，在iOS11中代替该属性功能的则是UIScrollView类中的contentInsetAdjustmentBehavior和adjustedContentInset属性.在iOS11中用来决定scrollView超出安全区域与边缘距离的属性是adjustedContentInset而不是contentInset。当scrollView超出安全区域时系统会自动调整SafeAreaInsets值，进而影</p>
+<p>响 adjustedContentInset，所以导致scrollView下移20pt或者64pt。当使用自定义的 navigationbar，并且scrollView的frame超出安全区域，SafeAreaInsets为(20,0,0,0);当使用系统的navigationbar，SafeAreaInsets为(64,0,0,0)。</p>
+<p><strong>解决方案:</strong></p>
+<p>在UIScrollView或者UITableView初始化的地方，加入如下代码即可。</p>
+<p>针对LumberjackConsole这个开源库，我们可以在PTEConsoleTableView.m文件中的commonInit最后加入如下代码即可。</p>
+<p><code>if([self respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]){</code><br><code>[self setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];</code><br><code>}</code></p>
+<p><strong>三、UI适配</strong></p>
+<p><strong>3.1 NavBar中右上角的customView产生偏移</strong></p>
+<p><strong><img src="http://upload-images.jianshu.io/upload_images/2791393-39c74461c7d4020e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521771807148487.png"></strong> </p>
+<p><strong>问题原因:</strong></p>
+<p>在iOS11中，新的导航视图，使用了AutoLayout布局。而我们这边右上角的两个按钮组合成一个customView，然后把这个customView设置给setRightBarButtonItems而来。customView内部都是frame布局，所以在自动布局下面出错。</p>
+<p><strong>解决方案:</strong></p>
+<p>NavBar中的customView里面针对iOS11，均要采用自动布局。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-aa007f074615bdb0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521771889744285.png"></p>
+<p><strong>3.2 NavBar中自定义TitleView产生偏移</strong></p>
+<p><strong><img src="http://upload-images.jianshu.io/upload_images/2791393-023e1c2055342964.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521771925217984.png"></strong> </p>
+<p><strong>问题原因:</strong></p>
+<p>同上</p>
+<p><strong>解决方案:</strong></p>
+<p>同上</p>
+<p>这里需要注意一点，自动布局的UI是延迟设置frame的。如果aView采用自动布局。然后你马上调用它的aView.bounds是不正确的。</p>
+<p><strong>3.3 NavBar中按钮的响应区域都变小了。</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-f9562b0e8af92884.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521771969320121.png"></p>
+<p><strong>问题原因:</strong></p>
+<p>iOS11之前，虽然我们设置了NavBar上每一个[btn sizeToFit]。苹果依然会帮我们把每一个按钮的点击区域扩大，可以点击区域如上图绿色区域所示。但是在iOS11中，你的按钮的bounds为多大，那你的点击区域就只有多大。估计这个改动也与这次NavBar的大概有关系。</p>
+<p><strong>解决方案:</strong></p>
+<p>扩大每一个btn的bounds，而不要使用sizeToFit方法。</p>
+<p><strong>3.4 NavBar的BarButtonItem无法贴边。有（非plus手机16pt，plus手机20pt）的区域浪费。造成UI偏移，并且最左侧和最右侧区域无法点击。</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-86fae0b0b0c4f528.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521772008284264.png"></p>
+<p><strong>问题原因:</strong></p>
+<p>这个UINavigationBarContentView平铺在导航栏中作为iOS11的各个按钮的父视图,该视图的所有的子视图都会有一个layoutMargins被占用,也就是系统调整的占位。</p>
+<p><strong>解决方案:</strong></p>
+<p>去掉系统默认占位。</p>
+<p>系统并没有提供我们直接去掉系统默认占位的方法，那怎么做呢？</p>
+<p>我们新建一个UINavigationBar的分类，hook住UINavigationBar的layoutSubviews方法。然后遍历View，重新设置layoutMargin约束。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-073b2caf6ebaa408.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521772030450415.png"></p>
+<p>重新设置layoutMargin约束</p>
+<p><strong>3.5 UITableView 默认开启Self-Sizing，导致UI显示有问题。</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-4ea9a6bcc282e4f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521772063265490.png"></p>
+<p><strong>问题原因:</strong></p>
+<p>在iOS11中UITableView会默认使 Self-Sizing,这会导致tableView</p>
+<p>的 estimatedRowHeight 、 estimatedSectionHeaderHeight 、 estimatedSectionFooterHeight 的高度估算属性由默认的0变成 UITableViewAutomaticDimension ,reloadData时可能会导致最后显示的contentSize与预想的不一致;</p>
+<p>同时在iOS11中如果不实现 -tableView: viewForHeaderInSection: 和 tableView: viewForFooterInSection: 方法，则 -tableView: heightForHeaderInSection: 和 - tableView: heightForFooterInSection: 不会被调用，而iOS11之前则没问题。上述都可能会导致界面出现错乱。</p>
+<p><strong>解决方案:</strong></p>
+<p>单独关闭摸一个UITableView的Self-Sizing。</p>
+<p><code>_tableView.estimatedRowHeight = 0;</code></p>
+<p><code>_tableView.estimatedSectionFooterHeight = 0;</code></p>
+<p><code>_tableView.estimatedSectionHeaderHeight = 0;</code></p>
+<p>关闭所有的UIScroolView、UITableView和UICollectionView的Self-Sizing：</p>
+<p><code>UIScrollView.appearance.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;</code></p>
+<p><code>UITableView.appearance.estimatedRowHeight = 0;</code></p>
+<p><code>UITableView.appearance.estimatedSectionFooterHeight = 0;</code></p>
+<p><code>UITableView.appearance.estimatedSectionHeaderHeight = 0;</code></p>
+<p><strong>3.6 keyWindow获取错误, 导致UI问题。</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-03faebc42ec2781e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521772110791559.png"></p>
+<p><strong>问题原因:</strong></p>
+<p>机器猫图标是一个UIWindow，windowLevel级别比UIWindowLevelStatusBar还高，所以可以常驻UI最上方。第一次进入该页面，点击“更多”，弹出popView，点击收藏，弹出系统UIAlertView，此时UIAlertView变成了keyWindow。当UIAlertView消失的时候，keyWindow会被谁接管呢？</p>
+<p>iOS11之前，弹出UIAlertView之前的keyWindow是[[UIApplication sharedApplication].delegate window]，那么消失的时候，keyWindow还是[[UIApplication sharedApplication].delegate window]。</p>
+<p>iOS11, 弹出UIAlertView之前的keyWindow是[[UIApplication sharedApplication].delegate window]，那么消失的时候，keyWindow变成z轴最高的UIWindow，即变成了机器猫那个window。所以导致popView被添加到机器猫window中，造成UI样式问题。</p>
+<p><strong>解决方案:</strong></p>
+<p>重写自定义UIWindow的becomeKeyWindow的方法，每次自定义window将会变为keyWindow的时候，把keyWindow改成[[UIApplication sharedApplication].delegate window]。</p>
+<p><code>- (void)becomeKeyWindow{</code></p>
+<p><code>UIWindow *appWindow = [[UIApplication sharedApplication].delegate window];</code></p>
+<p><code>[appWindow makeKeyWindow];</code></p>
+<p><code>}</code></p>
+<p><strong>3.7 状态栏高度写死为20pt，导致在iPhoneX上面遮挡住statusBar。</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2791393-1a27717d175575fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521772153502038.png"></p>
+<p><strong>问题原因:</strong></p>
+<p>iPhoneX上的statusBar的高度为44pt，跟其他iPhone型号的20pt不一样。所以以后我们在以statusBar为定位点的时候，不能写死20pt。而要使用[UIApplication sharedApplication].statusBarFrame.size.height来获取，为了方便，可以定义为宏，放到pch文件中，如下：</p>
+<p><code>#define kApplicationStatusBarHeight  [UIApplication sharedApplication].statusBarFrame.size.height </code>&#x2F;&#x2F;状态栏的高度&#96;</p>
+<p><strong>解决方案:</strong></p>
+<p>状态栏高度定位的时候不要写死20，要使用[UIApplication sharedApplication].statusBarFrame.size.height来获取。</p>
+<p><strong>补充</strong></p>
+<p>iOS11之前导航栏默认高度为64pt(这里高度指statusBar + NavigationBar)，iOS11之后如果设置 prefersLargeTitles &#x3D; YES则为96pt，默认情况下还是64pt，但在iPhoneX上由于刘海的出现 statusBar由以前的20pt变成 44pt，所以iPhoneX上高度变为88pt，如果项目里隐藏了导航栏加了自定义按钮之类的，这里需要注意适配一下。</p>
+<p><strong>3.8 通过遍历statusBar的subviews中的UIStatusBarDataNetworkItemView获取网络状态在iPhoneX上会crash。</strong></p>
+<p>问题原因:</p>
+<p>之前我们采用遍历statusBar，获取UIStatusBarDataNetworkItemView实例，再获取网络状态的。代码如下：<br><code>+ (NSNumber *) dataNetworkTypeFromStatusBar {</code></p>
+<p><code>UIApplication *app = [UIApplication sharedApplication];</code></p>
+<p><code>NSArray *subviews = [[[app valueForKey:@&quot;statusBar&quot;] valueForKey:@&quot;foregroundView&quot;] subviews];</code></p>
+<p><code>NSNumber *dataNetworkItemView = nil;</code></p>
+<p><code>@try{</code></p>
+<p><code>if</code> <code>([subviews count] &gt; 0) {</code></p>
+<p><code>for</code> <code>(id subview in subviews) {</code></p>
+<p><code>if([subview isKindOfClass:[NSClassFromString(@&quot;UIStatusBarDataNetworkItemView&quot;) class]]) {</code></p>
+<p><code>dataNetworkItemView = subview;</code></p>
+<p><code>break;</code></p>
+<p><code>}</code></p>
+<p><code>}</code></p>
+<p><code>}</code></p>
+<p><code>}</code></p>
+<p><code>@catch(NSException *exception) {</code></p>
+<p><code>}</code></p>
+<p><code>@finally</code> <code>{</code></p>
+<p><code>}</code></p>
+<p><code>return</code> <code>[dataNetworkItemView valueForKey:@&quot;dataNetworkType&quot;];</code></p>
+<p><code>}</code></p>
+<p> |</p>
+<p>但是在iphoneX的statusBar的内部结构已经改变，不能根据遍历获取UIStatusBarDataNetworkItemView的状态获取网络状态状态。</p>
+<p>可以通过**po [statusBar recursiveDescription]**打印出来iphoneX内部结构了，可以看出变化非常的大。</p>
+<p><strong>解决方案:</strong></p>
+<p>使用AFNetworking中的AFNetworkReachabilityManager类，或者使用<a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=https://github.com/tonymillion/Reachability">Reachability库</a>获取网络连接状态。</p>
+<p><strong>四、权限适配</strong></p>
+<p><strong>4.1 无法获取定位信息，第一次打开app也无法弹出定位权限提示框</strong></p>
+<p><strong>问题原因:</strong></p>
+<p>iOS11 定位相关的权限做了更改，在iOS11上使用了新的定位权限key。</p>
+<p><strong>解决方案:</strong></p>
+<p>如果原来申请的权限是始终允许NSLocationAlwaysUsageDescription，那么需要在保留原来的key的基础上增加NSLocationWhenInUseUsageDescription和NSLocationAlwaysAndWhenInUsageDescription。</p>
+<p><strong>五、其他一些补充</strong></p>
+<p><strong>5.1 如何判断该设备是不是iPhoneX</strong></p>
+<p><strong><img src="http://upload-images.jianshu.io/upload_images/2791393-f34170d7fb16370d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png" title="1521772277385416.png"></strong> </p>
+<p><strong>5.2 一些常用的宏定义</strong></p>
+<p><code>#define IS_IPHONE_X [KDDeviceHelper is_iPhone_X]</code></p>
+<p><code>#define IPHONE_NAVIGATIONBAR_HEIGHT  (IS_IPHONE_X ? 88: 64)</code></p>
+<p><code>#define IPHONE_STATUSBAR_HEIGHT      (IS_IPHONE_X ? 44: 20)</code></p>
+<p><code>#define IPHONE_SAFEBOTTOMAREA_HEIGHT (IS_IPHONE_X ? 34: 0)</code></p>
+<p><code>#define IPHONE_TOPSENSOR_HEIGHT      (IS_IPHONE_X ? 32: 0)</code></p>
+<p>转发自<a target="_blank" rel="noopener" href="http://www.cocoachina.com/ios/20180323/22731.html">此文</a>特此声明，如有问题，请联系我！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS11&&iPhoneX%E9%80%82%E9%85%8D/" data-id="cuidnowd7_PH3rhHZBUg_Wme2" data-title="iOS开发--iOS11&amp;&amp;iPhoneX适配" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-UITableView+FDTemplateLayoutCell%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          iOS开发-UITableView+FDTemplateLayoutCell遇到的坑
+        
+      </div>
+    </a>
+  
+  
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-YYLable-%E7%82%B9%E5%87%BB%E6%B2%A1%E5%8F%8D%E5%BA%94%E7%9A%84%E5%9D%91/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">iOS开发--YYLable-点击没反应的坑</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/%E6%95%99%E7%A8%8B/" rel="tag">教程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/hexo-site/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/hexo-site/tags/%E6%95%99%E7%A8%8B/" style="font-size: 10px;">教程</a> <a href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 20px;">笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2018/04/">四月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-DLNA/">DLNA</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E4%B8%AD%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E7%9A%84%E8%AF%B4%E6%98%8E%E4%BB%A5%E5%8F%8A%E7%94%A8%E6%B3%95/">OC中按位枚举的说明以及用法</a>
+          </li>
+        
+          <li>
+            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 博主<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/hexo-site/" class="mobile-nav-link">Home</a>
+  
+    <a href="/hexo-site/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/hexo-site/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/hexo-site/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/hexo-site/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
