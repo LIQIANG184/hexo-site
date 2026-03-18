@@ -108,7 +108,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>近期,各大视频APP都推出了一个新的功能—-在播放视频过程中录制GIF图片,并分享.</p>
-<p><img src="/hexo-site/hexo-site/images/note/3aecdc0ad657fcca2e7243f9df6e1a96.webp" alt="截图.png"></p>
+<p><img src="/hexo-site/images/note/3aecdc0ad657fcca2e7243f9df6e1a96.webp" alt="截图.png"></p>
 <p>我们项目刚好有这个需求,就写了一个demo,这里分享一下我的实现思路;</p>
 <p>技术点:<br>1 视频播放(略:可参考<a target="_blank" rel="noopener" href="http://www.jianshu.com/p/6cb137340732">http://www.jianshu.com/p/6cb137340732</a>)<br>2 LongPress手势的添加和使用(略)<br>3 视频截取帧图(略:可参考<a target="_blank" rel="noopener" href="http://www.jianshu.com/p/69be2869ad02">http://www.jianshu.com/p/69be2869ad02</a>)<br>4 多张图片合成GIF图(重点)<br>5 分享(略)</p>
 <p>本篇文章的视频播放是基于AVPlayer的,关于AVPlayer的详细使用手册可以参考:<a target="_blank" rel="noopener" href="http://www.jianshu.com/p/6cb137340732">http://www.jianshu.com/p/6cb137340732</a></p>
@@ -188,7 +188,7 @@ return [UIImage sd_animatedGIFWithData:data];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS-%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%BD%95%E5%88%B6GIF%E5%9B%BE/" data-id="cuidFUyOK3tKpeWSrA0dD5p3M" data-title="iOS-视频播放过程中录制GIF图" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS-%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%BD%95%E5%88%B6GIF%E5%9B%BE/" data-id="cuidHlavL2yGvhnS-QJ6AWk5l" data-title="iOS-视频播放过程中录制GIF图" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -231,17 +231,17 @@ return [UIImage sd_animatedGIFWithData:data];
         <p>集成教程： <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1f06b27b3ac0">http://www.jianshu.com/p/1f06b27b3ac0</a></p>
 <p>已经很详细了，照这个步骤走就行了。</p>
 <p>不过照找个步骤还是发现了一些坑，下面是我自己遇到的问题，菜鸟一个，大神勿喷。</p>
-<p>坑一:  直接盗图了，Show in Finder, 你可能打不开<br><img src="/hexo-site/hexo-site/images/note/319f16816dd27328cc0aa86a4242717d.webp" alt="3"></p>
-<p>显示不了这个<br><img src="/hexo-site/hexo-site/images/note/e82d341f1e752098a7ec1acbd375d74d.webp" alt="2"></p>
+<p>坑一:  直接盗图了，Show in Finder, 你可能打不开<br><img src="/hexo-site/images/note/319f16816dd27328cc0aa86a4242717d.webp" alt="3"></p>
+<p>显示不了这个<br><img src="/hexo-site/images/note/e82d341f1e752098a7ec1acbd375d74d.webp" alt="2"></p>
 <p>这是因为你需要在模拟器和真机上分别运行一下，才会显示出来，然后Show in Finder就会存在了</p>
 <p>坑二：lipo -create “真机版本路径” “模拟器版本路径” -output “合并后的文件路径”</p>
 <p>合并后的路径你需要，给出名字，如</p>
-<p><img src="/hexo-site/hexo-site/images/note/c2a207541b38358f8f392655a566d7f1.webp" alt="1"></p>
+<p><img src="/hexo-site/images/note/c2a207541b38358f8f392655a566d7f1.webp" alt="1"></p>
 <p>坑三: 其实这样按照步骤下去已经成功了，新建工程-导入IJKMediaFramework，但是如果你初始化IJKFFMoviePlayerController会报错</p>
 <p>Undefined symbols for architecture x86_64:  “operator delete(void*)”, referenced from:      _ijk_map_destroy in IJKMediaFramework(ijkstl.o)      std::__1::__tree, std::__1::__map_value_compare, std::__1::less, true&gt;, std::__1::allocator&gt; &gt;::destroy(std::__1::__tree_node, void*&gt;<em>) in IJKMediaFramework(ijkstl.o)      std::__1::__tree, std::__1::__map_value_compare, std::__1::less, true&gt;, std::__1::allocator&gt; &gt;::erase(std::__1::__tree_const_iterator, std::__1::__tree_node, void</em>&gt;<em>, long&gt;) in IJKMediaFramework(ijkstl.o)  “operator new(unsigned long)”, referenced from:      _ijk_map_create in IJKMediaFramework(ijkstl.o)      std::__1::pair, std::__1::__tree_node, void</em>&gt;*, long&gt;, bool&gt; std::__1::__tree, std::__1::__map_value_compare, std::__1::less, true&gt;, std::__1::allocator&gt; &gt;::__emplace_unique_key_args, std::__1::tuple&lt;&gt; &gt;(long long const&amp;, std::__1::piecewise_construct_t const&amp;&amp;&amp;, std::__1::tuple&amp;&amp;, std::__1::tuple&lt;&gt;&amp;&amp;) in IJKMediaFramework(ijkstl.o)</p>
 <p>ld: symbol(s) not found for architecture x86_64</p>
 <p>clang: error: linker command failed with exit code 1 (use -v to see invocation)</p>
-<p><img src="/hexo-site/hexo-site/images/note/4c337f29a03875bac56b23db11703e4d.webp" alt="123"></p>
+<p><img src="/hexo-site/images/note/4c337f29a03875bac56b23db11703e4d.webp" alt="123"></p>
 <p>需要添加一个库 -  libstdc++.tbd</p>
 <p>再运行, ok</p>
 <p>转载自：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9d99e3c85177">https://www.jianshu.com/p/9d99e3c85177</a></p>
@@ -249,7 +249,7 @@ return [UIImage sd_animatedGIFWithData:data];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS-%E9%9B%86%E6%88%90IJK%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" data-id="cuidnb3fUbg8bt3pmbS5jYr8O" data-title="iOS-集成IJK的那些坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS-%E9%9B%86%E6%88%90IJK%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" data-id="cuidbOveaWe6BDt0SNncCzEUL" data-title="iOS-集成IJK的那些坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -291,7 +291,7 @@ return [UIImage sd_animatedGIFWithData:data];
       
         <p>如果我只是简单的播放一个视频，而不需要考虑播放器的界面。iOS9.0 之前使用 MPMoviePlayerController, 或者内部自带一个 view 的 MPMoviePlayerViewController.  iOS9.0 之后，可以使用AVPictureInPictureController, AVPlayerViewController, 或者 WKWebView。</p>
 <p>以上系统提供的播放器由于高度的封装性， 使得自定义播放器变的很难。 所以，如果我需要自定义播放器样式的时候，可以使用 AVPlayer。 </p>
-<p>AVPlayer 存在于 AVFoundtion 中，更接近于底层，也更加灵活。<br><img src="/hexo-site/hexo-site/images/note/fdf039f5882fcd7875fa95b9f51eb43d.webp" alt="1474352198387328.jpg"></p>
+<p>AVPlayer 存在于 AVFoundtion 中，更接近于底层，也更加灵活。<br><img src="/hexo-site/images/note/fdf039f5882fcd7875fa95b9f51eb43d.webp" alt="1474352198387328.jpg"></p>
 <p>Representing and Using Media with AVFoundation<br>AVFoundtion 框架中主要使用 AVAsset<br> 类来展示媒体信息，比如： title， duration， size 等等。<br>AVAsset : 存储媒体信息的一个抽象类，不能直接使用。</p>
 <p>AVURLAsset : AVAsset 的一个子类，使用 URL 进行实例化，实例化对象包换 URL 对应视频资源的所有信息。</p>
 <p>AVPlayerItem :  有一个属性为 asset。起到观察和管理视频信息的作用。 比如，asset, tracks ， status， duration ，loadedTimeRange 等。</p>
@@ -401,7 +401,7 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/" data-id="cuidC-i94H-w4P-_ARrEfnWN8" data-title="iOS开发--AVPlayer教程(常用功能都在这里了)" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/" data-id="cuidVGRYIn3bdTr9R4ii5k8CQ" data-title="iOS开发--AVPlayer教程(常用功能都在这里了)" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -452,9 +452,9 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
  $2 dwarfdump --uuid appname.app.dSYM  
 </code></pre>
 <p>注:  $1里cd 后的地址是打包时生成的xcode自动生成的本地文件的地址<br>找到此地址的方法打开: xcode-&gt;Window-&gt;Organizer,然后找到对应的release包,右键 Show in Finder</p>
-<p><img src="/hexo-site/hexo-site/images/note/74d27b004018698c9cfa5f0d94a8f5d9.webp" alt="Paste_Image.png"></p>
+<p><img src="/hexo-site/images/note/74d27b004018698c9cfa5f0d94a8f5d9.webp" alt="Paste_Image.png"></p>
 <p>会看到扩展名为.xcarchive的文件,这个文件路径(最好用拖文件的方式获取文件路径)后边拼接dSYMs即为这个地址.</p>
-<p><img src="/hexo-site/hexo-site/images/note/617702c4e8b31be8ad6170e096752139.webp" alt="Paste_Image.png"></p>
+<p><img src="/hexo-site/images/note/617702c4e8b31be8ad6170e096752139.webp" alt="Paste_Image.png"></p>
 <p>$2里dwarfdump –uuid appname.app.dSYM的 appname 替换为你的app的包名就行,别的不用动<br>输出结果:<br>UUID: 9F0AEFA6-4349-30AF-8420-BCEE739DA0B4 (armv7) appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>UUID: 365EF56E-D598-3B94-AD36-BFA13772A4E3 (armv7s) appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>这两个匹配后继续第二步</p>
 <p>2  继续在终端输入命令<br>dwarfdump –arch&#x3D;armv7 –lookup 0x97525  &#x2F;Users&#x2F;username&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;Archives&#x2F;2013-08-30&#x2F;appname\xx.xcarchive&#x2F;dSYMs&#x2F;appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>注: 在$1步的路径后继续拼接 &#x2F;appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>就可以 其中的 appname 替换成自己的包名(也可以自己找到DWARF下的appname文件拖到终端)<br>输出结果为:</p>
 <pre><code>Looking up address: 0x0000000000097525 in .debug_info... found!  
@@ -498,7 +498,7 @@ Instructions: 0x00097490: CFA=4294967295+4294967295
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" data-id="cuidJD3hsdSE5_-T2-HriprD1" data-title="iOS开发--BUG定位,符号化crash地址" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" data-id="cuidEVh45iN45csMh2RODfgnQ" data-title="iOS开发--BUG定位,符号化crash地址" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -538,8 +538,8 @@ Instructions: 0x00097490: CFA=4294967295+4294967295
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>   崩溃的截图：<br>  <img src="/hexo-site/hexo-site/images/note/15f69cd324ef0ffbea5444bb70ba5875.webp" alt="image.png"></p>
-<p>  <img src="/hexo-site/hexo-site/images/note/8c0e06b090bda15a2631fb0dbff35734.webp" alt="image.png">  </p>
+        <p>   崩溃的截图：<br>  <img src="/hexo-site/images/note/15f69cd324ef0ffbea5444bb70ba5875.webp" alt="image.png"></p>
+<p>  <img src="/hexo-site/images/note/8c0e06b090bda15a2631fb0dbff35734.webp" alt="image.png">  </p>
 <p> 最近项目中有一个dispatch_group相关的巨坑（此问题解决方法很简单，难点是定位问题），特此记录下来并分享，希望帮助到有需要的人！</p>
 <p>   本文涉及的知识面较广，有一定的逻辑性，如果想真正明白各种原理，请细细读来，如时间紧迫，可记住正确使用方法亦可！</p>
 <p>   阅读本文需要的知识点：</p>
@@ -585,7 +585,7 @@ Instructions: 0x00097490: CFA=4294967295+4294967295
 </code></pre>
 <p> 我想你肯定在疑惑加一个if判断就解决了问题了，那这个坑应该不大，分分钟搞定，请往下看</p>
 <p>产生此问题的原因：概括的说是dispatch_group的原理和AFNetworking网络请求回调block的缓存回调原理的协作问题</p>
-<p>举例详细说明，流程图如下：<br><img src="/hexo-site/hexo-site/images/note/1ae39c1ded50e2853db32d8e2b8afde7.webp" alt="image.png"></p>
+<p>举例详细说明，流程图如下：<br><img src="/hexo-site/images/note/1ae39c1ded50e2853db32d8e2b8afde7.webp" alt="image.png"></p>
 <pre><code>正常情况下：执行步骤1 的间隔时间充分长，或者只执行一次，此逻辑没有问题，不会crash；
 非正常情况：开头所说的crash出现场景下，即频繁执行上图中步骤1到步骤3
 </code></pre>
@@ -619,7 +619,7 @@ dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
 });   
 }
 </code></pre>
-<p><img src="/hexo-site/hexo-site/images/note/b097bbe5cf702d7e5b1e07e3a6757f6d.webp" alt="崩溃截图"></p>
+<p><img src="/hexo-site/images/note/b097bbe5cf702d7e5b1e07e3a6757f6d.webp" alt="崩溃截图"></p>
 <p> 修正后代码：</p>
 <pre><code>- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
 if(self.group == nil){
@@ -647,7 +647,7 @@ dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/" data-id="cuiddVjn8xnexzf0xcCFiYcn7" data-title="iOS开发--Thread-1--EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-subcode=0x0" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/" data-id="cuidsBquIWAhcibrMumOi0K9P" data-title="iOS开发--Thread-1--EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-subcode=0x0" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -698,12 +698,12 @@ dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
 <p>#先说明踩坑经验：FD框架对影响横向布局的控件的hidden很敏感，会影响cell高度的计算准确度。建议对需要隐藏的控件做宽度布局修改为零。</p>
 <p>有兴趣了解”踩坑到出坑“过程的同学可以继续读下去，没兴趣的可以忙别的去了。</p>
 <hr>
-<p>##应用场景如下<br>先来看下cell样式：<br><img src="/hexo-site/hexo-site/images/note/e1c867c6b8b55e10ceacb16f0b8f2ce0.webp" alt="image.png"></p>
+<p>##应用场景如下<br>先来看下cell样式：<br><img src="/hexo-site/images/note/e1c867c6b8b55e10ceacb16f0b8f2ce0.webp" alt="image.png"></p>
 <blockquote>
 <p>简单说明：1 cell分为3种状态, 回看&#x2F;播放中&#x2F;预约</p>
 </blockquote>
-<p>#遇到的问题<br>有的时候cell高度计算不对，导致label无法全部展示。<br><img src="/hexo-site/hexo-site/images/note/4fe3985e038bb504dddc3396c082a99c.webp" alt="错误"></p>
-<p><img src="/hexo-site/hexo-site/images/note/68ac47192ed511e06746f77f47373995.webp" alt="正确"></p>
+<p>#遇到的问题<br>有的时候cell高度计算不对，导致label无法全部展示。<br><img src="/hexo-site/images/note/4fe3985e038bb504dddc3396c082a99c.webp" alt="错误"></p>
+<p><img src="/hexo-site/images/note/68ac47192ed511e06746f77f47373995.webp" alt="正确"></p>
 <p>##错误说明：<br>”环球综艺秀-2020-23“一行显示不下，需要折行展示；</p>
 <p>##上错误代码：<br>cell的setEpgModel方法内部代码是给cell控件赋值,同时刷新布局；</p>
 <pre><code>-(void)setEpgModel:(CNLiveEPGModel *)epgModel{
@@ -769,7 +769,7 @@ switch (type) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-UITableView+FDTemplateLayoutCell%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" data-id="cuiduTNs5lBbp-1_LfWuZ38yo" data-title="iOS开发-UITableView+FDTemplateLayoutCell遇到的坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-UITableView+FDTemplateLayoutCell%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" data-id="cuidYgHSuEokDbnMHpyFgYnYC" data-title="iOS开发-UITableView+FDTemplateLayoutCell遇到的坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -810,7 +810,7 @@ switch (type) {
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>项目中有一个用户协议入口,是使用YYLable显示的,有高亮和点击事件,点击事件不执行,困扰很久,最后发现是手势冲突的问题:</p>
-<p><img src="/hexo-site/hexo-site/images/note/534df043bd1e10e2bc1ee925a1ae4d63.webp" alt="IMG_0150.JPG"></p>
+<p><img src="/hexo-site/images/note/534df043bd1e10e2bc1ee925a1ae4d63.webp" alt="IMG_0150.JPG"></p>
 <p>界面内有一个textField, 为了收起键盘,在view上添加了tap手势来隐藏键盘:</p>
 <pre><code>UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
 [self.view addGestureRecognizer:tap];
@@ -914,53 +914,7 @@ NSLog(@&quot;touch end&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-YYLable-%E7%82%B9%E5%87%BB%E6%B2%A1%E5%8F%8D%E5%BA%94%E7%9A%84%E5%9D%91/" data-id="cuid2t1ZYfmQtcHk4K40erAv1" data-title="iOS开发--YYLable-点击没反应的坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-pod集成framework-找不到头文件" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-pod%E9%9B%86%E6%88%90framework-%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-pod%E9%9B%86%E6%88%90framework-%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6/">iOS开发-pod集成framework-找不到头文件</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>选中target –&gt;Build Setting –&gt; 搜索Module:  下图选中的值修改NO</p>
-<p><img src="/hexo-site/hexo-site/images/note/a48bc9251c1a21ed1922d769a7148cb2.webp" alt="image.png"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-pod%E9%9B%86%E6%88%90framework-%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6/" data-id="cuidE5y2ky3Mngr6fpiRAmWXq" data-title="iOS开发-pod集成framework-找不到头文件" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-YYLable-%E7%82%B9%E5%87%BB%E6%B2%A1%E5%8F%8D%E5%BA%94%E7%9A%84%E5%9D%91/" data-id="cuidnY0NomU9lgBB97CzAZTZX" data-title="iOS开发--YYLable-点击没反应的坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1001,7 +955,7 @@ NSLog(@&quot;touch end&quot;);
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>最近苹果推了iOS14，Xcode更新到了12，beta版本是12.2，第一时间更新了。跑一下老项目，暂时发现下列问题；</p>
-<h1 id="一-崩溃问题："><a href="#一-崩溃问题：" class="headerlink" title="一 崩溃问题："></a>一 崩溃问题：</h1><h2 id="1-1-由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。"><a href="#1-1-由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。" class="headerlink" title="1.1 由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。"></a>1.1 由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。</h2><p>听云收集的崩溃错误说明如下：<br>     <img src="/hexo-site/hexo-site/images/note/a75e2ceb80b8ea763439efa10ac4f41a.webp" alt="图片.png"></p>
+<h1 id="一-崩溃问题："><a href="#一-崩溃问题：" class="headerlink" title="一 崩溃问题："></a>一 崩溃问题：</h1><h2 id="1-1-由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。"><a href="#1-1-由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。" class="headerlink" title="1.1 由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。"></a>1.1 由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。</h2><p>听云收集的崩溃错误说明如下：<br>     <img src="/hexo-site/images/note/a75e2ceb80b8ea763439efa10ac4f41a.webp" alt="图片.png"></p>
 <p>##相关代码：</p>
 <p>###LQTextModel.h<br>     @interface LQTextModel : LQBaseModel<br>     @property (nonatomic,strong) NSMutableArray &lt;LQItemListModel *&gt; * rightItem;<br>     @end</p>
 <p>崩溃位置代码:</p>
@@ -1019,13 +973,59 @@ NSLog(@&quot;touch end&quot;);
 <pre><code>[_pageControl setValue:[UIImage imageNamed:@&quot;main_pageControl_dian&quot;] forKeyPath:@&quot;pageImage&quot;];
 [_pageControl setValue:[UIImage imageNamed:@&quot;main_pageControl_xian&quot;] forKeyPath:@&quot;currentPageImage&quot;];
 </code></pre>
-<h2 id="其他发现"><a href="#其他发现" class="headerlink" title="其他发现"></a>其他发现</h2><h3 id="1-Xcode图标变化"><a href="#1-Xcode图标变化" class="headerlink" title="1 Xcode图标变化"></a>1 Xcode图标变化</h3><p><img src="/hexo-site/hexo-site/images/note/5385fd55183a76f610a3f89716c89357.webp" alt="Xcode12之前.png"></p>
-<p><img src="/hexo-site/hexo-site/images/note/6553126313e74ccc514ad62bcde344a6.webp" alt="Xcode12.png"></p>
+<h2 id="其他发现"><a href="#其他发现" class="headerlink" title="其他发现"></a>其他发现</h2><h3 id="1-Xcode图标变化"><a href="#1-Xcode图标变化" class="headerlink" title="1 Xcode图标变化"></a>1 Xcode图标变化</h3><p><img src="/hexo-site/images/note/5385fd55183a76f610a3f89716c89357.webp" alt="Xcode12之前.png"></p>
+<p><img src="/hexo-site/images/note/6553126313e74ccc514ad62bcde344a6.webp" alt="Xcode12.png"></p>
 <h3 id="2-view-hierarchy-出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知"><a href="#2-view-hierarchy-出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知" class="headerlink" title="2 view hierarchy 出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知"></a>2 view hierarchy 出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知</h3><h3 id="3-archive-打包生成的ipa，名字将不会使用工程名字，而会使用-Display-Name（2020-9-23）"><a href="#3-archive-打包生成的ipa，名字将不会使用工程名字，而会使用-Display-Name（2020-9-23）" class="headerlink" title="3 archive 打包生成的ipa，名字将不会使用工程名字，而会使用 Display Name（2020-9-23）"></a>3 archive 打包生成的ipa，名字将不会使用工程名字，而会使用 Display Name（2020-9-23）</h3>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" data-id="cuidYihvm2kRwbU6pnxYiWMih" data-title="iOS开发--iOS14-Xcode12-适配问题-持续更新" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" data-id="cuidQcIybJZmf_67l9UhfIn8d" data-title="iOS开发--iOS14-Xcode12-适配问题-持续更新" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-pod集成framework-找不到头文件" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-pod%E9%9B%86%E6%88%90framework-%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-pod%E9%9B%86%E6%88%90framework-%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6/">iOS开发-pod集成framework-找不到头文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>选中target –&gt;Build Setting –&gt; 搜索Module:  下图选中的值修改NO</p>
+<p><img src="/hexo-site/images/note/a48bc9251c1a21ed1922d769a7148cb2.webp" alt="image.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-pod%E9%9B%86%E6%88%90framework-%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6/" data-id="cuidFEW1W6c-WwwhFkYfr0M0I" data-title="iOS开发-pod集成framework-找不到头文件" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1066,12 +1066,12 @@ NSLog(@&quot;touch end&quot;);
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>一张图简要说明MVVM分层工作:</p>
-<p><img src="/hexo-site/hexo-site/images/note/60248b240688369029d8d3681856721b.webp" alt="MVVM.png"></p>
+<p><img src="/hexo-site/images/note/60248b240688369029d8d3681856721b.webp" alt="MVVM.png"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E7%AE%80%E5%8D%95MVVM%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" data-id="cuidYSZEePhipjcaM6-DtBypu" data-title="iOS开发--简单MVVM设计模式" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E7%AE%80%E5%8D%95MVVM%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" data-id="cuidW8mNpsJMDbvnT-Fq6aQyn" data-title="iOS开发--简单MVVM设计模式" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1142,11 +1142,11 @@ NSLog(@&quot;touch end&quot;);
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
           </li>
         
           <li>

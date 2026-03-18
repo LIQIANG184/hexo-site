@@ -13,13 +13,13 @@
 <meta property="og:site_name" content="花间半缘">
 <meta property="og:description" content="#介绍  本系列是SDK打包的实践，主要解决一下3个问题，本篇是第一篇。【iOS开发】SDK开发之编译c&#x2F;c++【iOS开发】SDK开发之podspec编写【iOS开发】SDK开发之podspec内执行脚本 #本期问题  SDK的源码是由其他团队编写，使用的语言为c&#x2F;c++，且会依赖第三方的库(也是c&#x2F;c++编写)。考虑有以下几种方案：1 Xcode编译  2 cma">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/e5d81450b0b2599e6e882709573baa47.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/images/note/e5d81450b0b2599e6e882709573baa47.webp">
 <meta property="article:published_time" content="2026-03-18T10:30:13.000Z">
-<meta property="article:modified_time" content="2026-03-18T10:30:19.000Z">
+<meta property="article:modified_time" content="2026-03-18T10:36:04.000Z">
 <meta property="article:author" content="半缘君">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/e5d81450b0b2599e6e882709573baa47.webp">
+<meta name="twitter:image" content="https://liqiang184.github.io/hexo-site/images/note/e5d81450b0b2599e6e882709573baa47.webp">
   
     <link rel="alternate" href="/hexo-site/atom.xml" title="花间半缘" type="application/atom+xml">
   
@@ -109,7 +109,7 @@
         <p>#介绍<br>  本系列是SDK打包的实践，主要解决一下3个问题，本篇是第一篇。<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">【iOS开发】SDK开发之编译c&#x2F;c++</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/daeaf5728100?v=1742283697172">【iOS开发】SDK开发之podspec编写</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/99ca9803cb48?v=1742283732210">【iOS开发】SDK开发之podspec内执行脚本</a></p>
 <p>#本期问题<br>  SDK的源码是由其他团队编写，使用的语言为c&#x2F;c++，且会依赖第三方的库(也是c&#x2F;c++编写)。<br>考虑有以下几种方案：1 Xcode编译  2 cmake编译</p>
 <p>##一 Xcode编译步骤</p>
-<p>###1 使用Xcode创建Framework项目<br><img src="/hexo-site/hexo-site/images/note/e5d81450b0b2599e6e882709573baa47.webp" alt="image.png"><br>2 添加所有使用的c&#x2F;c++文件（依赖的第三方的文件）<br>3 调整暴露的头文件public headers<br>4 编译（command+B）</p>
+<p>###1 使用Xcode创建Framework项目<br><img src="/hexo-site/images/note/e5d81450b0b2599e6e882709573baa47.webp" alt="image.png"><br>2 添加所有使用的c&#x2F;c++文件（依赖的第三方的文件）<br>3 调整暴露的头文件public headers<br>4 编译（command+B）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">优点：</span><br><span class="line">Xcode原生IDE加持，可视化好，操作简单</span><br><span class="line">缺点：</span><br><span class="line">1 需要运行在mac电脑上（iOS开发肯定有mac电脑，but如果需要编写团队来编译就不行了，因为他们是linux环境）</span><br><span class="line">2 第三方依赖需要我们手动配置（尤其在依赖文件有变化的时候，需要跨团队沟通）</span><br></pre></td></tr></table></figure>
 
 <p>##二 cmake编译步骤<br>1 编写cmake脚本<br>2 执行cmake脚本</p>
@@ -120,7 +120,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8B%E7%BC%96%E8%AF%91c-c++/" data-id="cuidI3FNLvlTu9UPBPF0yJrPJ" data-title="【iOS开发】SDK开发之编译c-c++" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8B%E7%BC%96%E8%AF%91c-c++/" data-id="cuidWhnG7hTC7COm5uS4JSJQV" data-title="【iOS开发】SDK开发之编译c-c++" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -203,11 +203,11 @@
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
           </li>
         
           <li>

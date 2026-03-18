@@ -81,6 +81,164 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-2026-03-18-iOS自定义视图系列(二)-状态栏(点击状态栏返回到顶部效果)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%BA%8C)-%E7%8A%B6%E6%80%81%E6%A0%8F(%E7%82%B9%E5%87%BB%E7%8A%B6%E6%80%81%E6%A0%8F%E8%BF%94%E5%9B%9E%E5%88%B0%E9%A1%B6%E9%83%A8%E6%95%88%E6%9E%9C)/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%BA%8C)-%E7%8A%B6%E6%80%81%E6%A0%8F(%E7%82%B9%E5%87%BB%E7%8A%B6%E6%80%81%E6%A0%8F%E8%BF%94%E5%9B%9E%E5%88%B0%E9%A1%B6%E9%83%A8%E6%95%88%E6%9E%9C)/">iOS自定义视图系列(二)-状态栏(点击状态栏返回到顶部效果)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>iOS有一个特有的功能–点击状态栏会使UIScollView自动滚动到顶部,这个效果其实是系统API里UIScrollView的一个属性</p>
+<pre><code> @property(nonatomic) BOOL scrollsToTop
+</code></pre>
+<p>这个属性默认是YES,也就是支持点击状态栏会使UIScollView自动滚动到顶部的效果(如果不想要这个效果设置为NO就可以了).</p>
+<pre><code> 但是有一个局限就是如果在当前的屏幕上有
+ &quot;多于1个&quot;UIScollView(包括所有继承自UIScollView)视图的&quot;scrollsTop属性是YES&quot;的时候,
+ 这个效果会失效.
+</code></pre>
+<p>本篇文章就是要解决点击状态栏会使UIScollView自动滚动到顶部失效的问题.</p>
+<p>本人最终的解决思路是:</p>
+<pre><code>在点击状态栏的手势方法里把所有的scrollView的contentOffSize设置为CGPointZero
+</code></pre>
+<p>当然在此之前需要做一些判断的逻辑,针对我的项目我做了如下判断:</p>
+<pre><code>把不需要滚动到顶部的scrollView筛选掉
+if ([scrollView isKindOfClass:[TuiJianCollectionView class]])return;
+if ([scrollView isKindOfClass:[TopView class]]) return;
+if (scrollView.width &lt; ScreenWidth-100)return;
+//然后就可以滚动了
+[scrollView setContentOffset:CGPointZero animated:YES];
+</code></pre>
+<p>好了,核心的东西说完了,上代码<br>LQTopStatusWindow.h<br>    #import &lt;UIKit&#x2F;UIKit.h&gt;<br>    @interface LQTopStatusWindow : NSObject<br>    &#x2F;*<br>        在需要用到自定义状态栏的页面显示(具体用法见注2)<br>    <em>&#x2F;<br>    + (void)show;<br>    &#x2F;</em><br>        在不需要的页面隐藏(具体用法见注2)<br>    *&#x2F;<br>    +(void)hidden;<br>    @end<br>LQTopStatusWindow.m</p>
+<pre><code>#import &quot;LQTopStatusWindow.h&quot;
+@implementation LQTopStatusWindow
+
+static UIWindow *_topWindow = nil;
+/**
+</code></pre>
+<p>     * 显示顶部窗口<br>     *&#x2F;<br>    + (void)initialize<br>    {<br>        _topWindow &#x3D; [[UIWindow alloc] init];<br>        _topWindow.windowLevel &#x3D; UIWindowLevelAlert;<br>        CGRect frame &#x3D; [UIApplication sharedApplication].statusBarFrame;<br>       &#x2F;&#x2F;下边设置frame为什么需要加50,原因见注1<br>        _topWindow.frame &#x3D; CGRectMake(frame.origin.x + 50, frame.origin.y, frame.size.width, frame.size.height);<br>        _topWindow.backgroundColor &#x3D; [UIColor clearColor];<br>        _topWindow.hidden &#x3D; NO;<br>        [_topWindow addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(topWindowClick)]];<br>    <br>    }</p>
+<pre><code>+ (void)show{
+</code></pre>
+<p>        _topWindow.hidden &#x3D; NO;<br>    }<br>    + (void)hidden{<br>        _topWindow.hidden &#x3D; YES;<br>    }</p>
+<pre><code>/**
+</code></pre>
+<p>     * 监听顶部窗口点击<br>     *&#x2F;<br>    + (void)topWindowClick<br>    {<br>        UIWindow *keyWindow &#x3D; [UIApplication sharedApplication].keyWindow;<br>        [self searchAllScrollViewsInView:keyWindow];<br>    }</p>
+<pre><code>/**
+</code></pre>
+<p>     * 找到参数view中所有的UIScrollView<br>     *&#x2F;<br>    + (void)searchAllScrollViewsInView:(UIView *)view<br>    {<br>        &#x2F;&#x2F; 递归遍历所有的子控件<br>        for (UIView *subview in view.subviews) {<br>            [self searchAllScrollViewsInView:subview];<br>        }<br>        &#x2F;&#x2F; 判断子控件类型(如果不是UIScrollView，直接返回)<br>        if (![view isKindOfClass:[UIScrollView class]]) return;<br>    <br>        &#x2F;&#x2F; 找到了UIScrollView<br>        &#x2F;&#x2F;过滤掉不需要滚动到顶部的scrollview<br>        UIScrollView *scrollView &#x3D; (UIScrollView *)view;<br>        if ([scrollView isKindOfClass:[TopView class]]) return;<br>        if (scrollView.width &lt; ScreenWidth-100) return;<br>        &#x2F;&#x2F;让所有需要滚动到顶部的scrollView滚动到顶部<br>        [scrollView setContentOffset:CGPointZero animated:YES];<br>    }</p>
+<p>好了,代码贴完,具体用法是: 不用写别的代码.</p>
+<pre><code> 注1:此处没有让frame直接与frame(系统的状态栏的frame)完全相同,是因为,iOS应用间跳转的时候左
+    上角有&quot;返回XX&quot;按钮,为了不影响它的点击这里让自定义的_topWindow向右移动了50(这个是试出来的)
+    _topWindow.frame = CGRectMake(frame.origin.x + 50, frame.origin.y, frame.size.width, frame.size.height);
+
+ 注2:当你有需要在某些页面
+</code></pre>
+<hr>
+<p>如果您只是为了解决当前问题,请关闭本文;如果您有一颗程序猿的进取之心,想了解我解决此问题的过程,请继续往下读:</p>
+<p>解决过程一:</p>
+<pre><code>首先我知道了&quot;点击状态栏会使UIScollView自动滚动到顶部&quot;这个效果是由下边这个属性决定的
+   @property(nonatomic) BOOL scrollsToTop
+   而此效果失效的原因是当前的屏幕上有
+ &quot;多于1个&quot;UIScollView(包括所有继承自UIScollView)视图的&quot;scrollsTop属性是YES&quot;的时候,
+</code></pre>
+<p>我产生了两个解决办法:<br>一  减少UIScollView的数量,让当前屏幕中只有一个UIScollView,但是我的项目中界面比较多,如果每个界面都重构,替换scrollView的工作量会很大,而且时间不允许——PASS.<br>二   把其余不需要响应点击状态栏效果的scrollView的scrollsToTop设置为NO,由于办法一的原因—–PASS.</p>
+<p>解决过程二:</p>
+<p>求助度娘:果然有先贤已经处理过这个问题,下边附上我当时参考的两篇”简书”上的文章<br>一   <a target="_blank" rel="noopener" href="http://www.jianshu.com/p/e18356fccbc9">http://www.jianshu.com/p/e18356fccbc9</a><br>借鉴此文章,我自定义好了视图,并添加好了手势,但是有一个问题,这篇文章用了一个”bs_intersectsWithAnotherView:”方法,也没有写实现,我就暂时不知道该怎么办了,此路不通.<br>二  <a target="_blank" rel="noopener" href="http://www.jianshu.com/p/68632cbd6263">http://www.jianshu.com/p/68632cbd6263</a><br>后来我发现这篇文章中有”bs_intersectsWithAnotherView:”这个方法(不知道是不是一个作者,看名字好像不是),具体是</p>
+<pre><code>- (BOOL)bs_intersectsWithAnotherView:(UIView *)anotherView{ 
+   if (anotherView == nil){
+   anotherView = [UIApplication sharedApplication].keyWindow
+   }; 
+  // 判断self和anotherView是否重叠 
+  CGRect selfRect = [self convertRect:self.bounds toView:nil];    
+  CGRect anotherRect = [anotherView convertRect:anotherView.bounds toView:nil]; 
+  return CGRectIntersectsRect(selfRect, anotherRect);
+}
+</code></pre>
+<p>这个方法只用的判断两个矩形框是不是重叠的方法CGRectIntersectsRect()但是这个方法不适用于我的项目,因为与窗口重叠的scrollView也不是一个,此路不通.</p>
+<p>解决过程三:</p>
+<p>我观察了一下我需要此效果的scrollView的frame是一样的,而且只有一个,所以我在判断要不要滚动到顶部的手势方法里加了一个frame的判断,只有特定frame的scrollView需要滚动到顶部,然而因为不明原因(可能是判断太严格了)还是无法实现,此路不通.<br>解决过程三:<br>最后我无奈了,我发了一个大招,在点击状态栏的手势方法里把所有的scrollView的contentOffSize设置为CGPointZero.这下好了,果然在点击状态栏的时候,所有scrollView都滚动到顶部了.我以为这样就可以了,但是,但是,我发现我所有界面的scrollView包括大的,小的,继承自它的控件都滚动到顶部了.我最后加了几个判断,解决问题,详见上文中最终解决方案.</p>
+<p>总结:我觉得我解决这个问题的方法不是最好的解决办法,希望您能给我提出宝贵的意见或建议,欢迎各位指点,留言!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%BA%8C)-%E7%8A%B6%E6%80%81%E6%A0%8F(%E7%82%B9%E5%87%BB%E7%8A%B6%E6%80%81%E6%A0%8F%E8%BF%94%E5%9B%9E%E5%88%B0%E9%A1%B6%E9%83%A8%E6%95%88%E6%9E%9C)/" data-id="cuidO0YTP_X_9xgWrfGeOYVJz" data-title="iOS自定义视图系列(二)-状态栏(点击状态栏返回到顶部效果)" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【Linux】找到-svn文件并删除" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90Linux%E3%80%91%E6%89%BE%E5%88%B0-svn%E6%96%87%E4%BB%B6%E5%B9%B6%E5%88%A0%E9%99%A4/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90Linux%E3%80%91%E6%89%BE%E5%88%B0-svn%E6%96%87%E4%BB%B6%E5%B9%B6%E5%88%A0%E9%99%A4/">【Linux】找到-svn文件并删除</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>find XXXX  -name “.svn” |xargs rm -rf</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90Linux%E3%80%91%E6%89%BE%E5%88%B0-svn%E6%96%87%E4%BB%B6%E5%B9%B6%E5%88%A0%E9%99%A4/" data-id="cuidyzt4pEi4DviPuwEA7y4TZ" data-title="【Linux】找到-svn文件并删除" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-2026-03-18-runtime应用-将UIAlertView改造成UIAlertController" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/hexo-site/2026/03/18/2026-03-18-runtime%E5%BA%94%E7%94%A8-%E5%B0%86UIAlertView%E6%94%B9%E9%80%A0%E6%88%90UIAlertController/" class="article-date">
@@ -344,240 +502,7 @@ LQAlertAction *cancle = [LQAlertAction alertActionWithTitle:@&quot;取消&quot; 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-runtime%E5%BA%94%E7%94%A8-%E5%B0%86UIAlertView%E6%94%B9%E9%80%A0%E6%88%90UIAlertController/" data-id="cuidfbNQ0o0SZOLTWR3rUPuTP" data-title="runtime应用--将UIAlertView改造成UIAlertController" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-自定义airPlayView实现投电视功能" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/">iOS开发--自定义airPlayView实现投电视功能</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>最近APP内需要用到投电视功能,所以做了一个小小的封装,方便使用.</p>
-<blockquote>
-<p>更新日志：<br>1  2018-04-09 KVO监听alpha的变化</p>
-</blockquote>
-<p>苹果API有一个类叫”MPVolumeView”,它是用来实现投电视的控件,但是这个控件和UISlider类似,定制性不是很好,不能用frame改变大小,并且自带一个电视的小图标,对于个性的产品来说很难满足他的需求(我们就是这样…)—–故自己封装一个用起来比较方便的view.</p>
-<blockquote>
-<p>本文<a target="_blank" rel="noopener" href="https://github.com/CoderLi-Q/airPlayView">demo</a>地址</p>
-</blockquote>
-<p>废话不多说上~~代码:</p>
-<p> LQAirPlayView.h</p>
-<pre><code> #import &lt;UIKit/UIKit.h&gt;
-
-@interface LQAirPlayView : UIView
-
-/**
- 返回实例
-
- @param rect frame
- @param image 图片
- @return 实例
- */
-+ (instancetype)airPlayViewWithFrame:(CGRect)rect image:(UIImage *)image;
-@end
-</code></pre>
-<p> LQAirPlayView.m</p>
-<pre><code>#import &quot;LQAirPlayView.h&quot;
-#import &lt;MediaPlayer/MediaPlayer.h&gt;
-@interface LQAirPlayView ()
-@property (nonatomic, weak) UIImageView *imageView;
-@property (nonatomic, weak) MPVolumeView *mpAirplayView;
-@end
-
-@implementation LQAirPlayView
-
-+(instancetype)airPlayViewWithFrame:(CGRect)rect image:(UIImage *)image{
-    return [[self alloc] initWithFrame:rect image:image];
-}
-
-+ (instancetype)airPlayViewWithFrame:(CGRect)rect{
-    return [[self alloc] initWithFrame:rect];
-}
-- (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image
-{
-    self = [self initWithFrame:frame];
-    if (self) {
-        self.imageView.image = image;
-    }
-    return self;
-}
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor = [UIColor lightGrayColor];
-        UIImageView *imgView = [[UIImageView alloc]init];
-        _imageView = imgView;
-        [self addSubview:imgView];
-        
-        MPVolumeView *mpAirplayView = [[MPVolumeView alloc] init];
-        [mpAirplayView setRouteButtonImage:nil forState:UIControlStateNormal];
-        [mpAirplayView setShowsVolumeSlider:NO];
-        _mpAirplayView = mpAirplayView;
-        [self addSubview:mpAirplayView];
-
-        /*添加于2018-04-09*/
-        for (UIButton *button in mpAirplayView.subviews) {
-            if ([button isKindOfClass:[UIButton class]]) {
-                [button addObserver:self forKeyPath:@&quot;alpha&quot; options:NSKeyValueObservingOptionNew context:nil];
-            }
-        }
-        /*添加于2018-04-09*/
-
-    }
-    return self;
-}
- /*添加于2018-04-09*/
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-if ([object isKindOfClass:[UIButton class]] ) {
-    if([[change valueForKey:NSKeyValueChangeNewKey] intValue] == 1){
-        [(UIButton *)object setBounds:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-    }else{
-        self.mpAirplayView.hidden = NO;
-        [object setAlpha:1];
-    }
-}
-}
- /*添加于2018-04-09*/
--(void)layoutSubviews{
-    [super layoutSubviews];
-    CGFloat scaleW = self.frame.size.width/30;
-    CGFloat scaleH = self.frame.size.height/34;
-    CGFloat scale = scaleH &gt; scaleW ? scaleH : scaleW;
-    self.mpAirplayView.transform = CGAffineTransformMake(scale,0, 0, scale, self.frame.size.width/2, self.frame.size.height/2);
-    self.imageView.frame = self.bounds;
-    
-}
-
-@end
-</code></pre>
-<p>用法:</p>
-<pre><code>LQAirPlayView *airView = [LQAirPlayView airPlayViewWithFrame:CGRectMake(100, 100, w, w) image:[UIImage imageNamed:@&quot;icon]];
-[self.view addSubview:airView];
-</code></pre>
-<p>最后附上本文<a target="_blank" rel="noopener" href="https://github.com/CoderLi-Q/airPlayView">demo</a>地址！</p>
-<pre><code>        ————[半缘魔君](https://www.jianshu.com/u/5bf6c3f1b289)出品——————
-</code></pre>
-<p>AirPlay的API：</p>
-<pre><code>@property (nonatomic) BOOL showsVolumeSlider MP_API(ios(4.2)); // Default is YES.
-@property (nonatomic) BOOL showsRouteButton MP_API(ios(4.2));  // Default is YES.
-
-// Returns YES if wireless routes (AirPlay, Bluetooth, etc) are available for user selection.
-// Note that the view must be in present in a window hierarchy in order to discover some types of wireless routes.
-@property (nonatomic, readonly, getter=areWirelessRoutesAvailable) BOOL wirelessRoutesAvailable MP_API(ios(7.0));
-
-// Returns YES if a wireless route is active.
-@property (nonatomic, readonly, getter=isWirelessRouteActive) BOOL wirelessRouteActive MP_API(ios(7.0));
-
-// Volume slider customization
-
-- (void)setMinimumVolumeSliderImage:(nullable UIImage *)image forState:(UIControlState)state MP_API(ios(6.0));
-- (void)setMaximumVolumeSliderImage:(nullable UIImage *)image forState:(UIControlState)state MP_API(ios(6.0));
-- (void)setVolumeThumbImage:(nullable UIImage *)image forState:(UIControlState)state MP_API(ios(6.0));
-
-- (nullable UIImage *)minimumVolumeSliderImageForState:(UIControlState)state MP_API(ios(6.0));
-- (nullable UIImage *)maximumVolumeSliderImageForState:(UIControlState)state MP_API(ios(6.0));
-- (nullable UIImage *)volumeThumbImageForState:(UIControlState)state MP_API(ios(6.0));
-
-// Sets the image for the EU volume limit. When appropriate, this image will be displayed on top of the
-// maximumVolumeSliderImage. It must be visually distinct from the maximumVolumeSliderImage, and use
-// a color similar to the default, to convey a sense of warning to the user. The same image is used for
-// all control states. For debugging purposes, switch on the &quot;EU Volume Limit&quot; setting in the Developer
-// menu of the Settings application to always enable the volume limit.
-@property (nonatomic, strong, nullable) UIImage *volumeWarningSliderImage MP_API(ios(7.0));
-
-- (CGRect)volumeSliderRectForBounds:(CGRect)bounds MP_API(ios(6.0));
-- (CGRect)volumeThumbRectForBounds:(CGRect)bounds volumeSliderRect:(CGRect)rect value:(float)value MP_API(ios(6.0));
-
-// Route button customization
-
-- (void)setRouteButtonImage:(nullable UIImage *)image forState:(UIControlState)state MP_API(ios(6.0));
-- (nullable UIImage *)routeButtonImageForState:(UIControlState)state MP_API(ios(6.0));
-
-- (CGRect)routeButtonRectForBounds:(CGRect)bounds MP_API(ios(6.0));
-</code></pre>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/" data-id="cuidOdM6eWqPa6qE8jHD3othF" data-title="iOS开发--自定义airPlayView实现投电视功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【Linux】找到-svn文件并删除" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90Linux%E3%80%91%E6%89%BE%E5%88%B0-svn%E6%96%87%E4%BB%B6%E5%B9%B6%E5%88%A0%E9%99%A4/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90Linux%E3%80%91%E6%89%BE%E5%88%B0-svn%E6%96%87%E4%BB%B6%E5%B9%B6%E5%88%A0%E9%99%A4/">【Linux】找到-svn文件并删除</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>find XXXX  -name “.svn” |xargs rm -rf</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90Linux%E3%80%91%E6%89%BE%E5%88%B0-svn%E6%96%87%E4%BB%B6%E5%B9%B6%E5%88%A0%E9%99%A4/" data-id="cuid17n6eKSHyUKJf7Qq3etnE" data-title="【Linux】找到-svn文件并删除" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-runtime%E5%BA%94%E7%94%A8-%E5%B0%86UIAlertView%E6%94%B9%E9%80%A0%E6%88%90UIAlertController/" data-id="cuidMnOotCoQntIPytpY2eJgv" data-title="runtime应用--将UIAlertView改造成UIAlertController" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -622,7 +547,7 @@ if ([object isKindOfClass:[UIButton class]] ) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC-%E5%B0%8F%E7%9F%A5%E8%AF%86%E3%80%91host%E6%96%87%E4%BB%B6%E5%9C%B0%E5%9D%80/" data-id="cuid_3ubvJBnx0YVX_chBe4Jx" data-title="【MAC-小知识】host文件地址" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC-%E5%B0%8F%E7%9F%A5%E8%AF%86%E3%80%91host%E6%96%87%E4%BB%B6%E5%9C%B0%E5%9D%80/" data-id="cuidvonpxmxAY2xJHN847aqnP" data-title="【MAC-小知识】host文件地址" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -636,9 +561,9 @@ if ([object isKindOfClass:[UIButton class]] ) {
 
 
   
-    <article id="post-2026-03-18-【iOS开发—BUG定位】利用内存地址和符号表定位崩溃" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-18-【iOS】一行命令查找项目中的私有API" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E2%80%94BUG%E5%AE%9A%E4%BD%8D%E3%80%91%E5%88%A9%E7%94%A8%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E5%92%8C%E7%AC%A6%E5%8F%B7%E8%A1%A8%E5%AE%9A%E4%BD%8D%E5%B4%A9%E6%BA%83/" class="article-date">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E3%80%91%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BE%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E7%A7%81%E6%9C%89API/" class="article-date">
   <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
 </a>
     
@@ -654,7 +579,7 @@ if ([object isKindOfClass:[UIButton class]] ) {
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E2%80%94BUG%E5%AE%9A%E4%BD%8D%E3%80%91%E5%88%A9%E7%94%A8%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E5%92%8C%E7%AC%A6%E5%8F%B7%E8%A1%A8%E5%AE%9A%E4%BD%8D%E5%B4%A9%E6%BA%83/">【iOS开发—BUG定位】利用内存地址和符号表定位崩溃</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E3%80%91%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BE%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E7%A7%81%E6%9C%89API/">【iOS】一行命令查找项目中的私有API</a>
     </h1>
   
 
@@ -662,64 +587,17 @@ if ([object isKindOfClass:[UIButton class]] ) {
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>xcrun atos -arch (architecture) -o  （dsymfile）  address</p>
-<p>architecture : 取 arm64&#x2F;armv7<br>dsymfile： 取dsym的文件名字<br>address： 内存地址</p>
-<p>终端进入到对应版本的dsym文件目录下， 执行上述命令。 address和architecture可以在报表上看到的</p>
-<p>例如：</p>
-<pre><code>xcrun atos -arch arm64 -o dsym 0x120d13208
+        <pre><code>find . | grep &quot;.a&quot; | grep -v &quot;.app&quot; | xargs grep [API] &gt;[地址]
 </code></pre>
+<p>第一个括号替换成你要查找的私有API，</p>
+<p>第二个括号是查找到之后写入的文件路径</p>
+<p>例如，<br>查找 私有API：prefs:root&#x3D;<br>写入路径：&#x2F;Users&#x2F;zhangxiaohan&#x2F;Desktop&#x2F;ttt.txt</p>
+<p> 生成的命令如下：<br>    find . | grep “.a” | grep -v “.app” | xargs grep prefs:root&#x3D; &gt;&#x2F;Users&#x2F;xx&#x2F;Desktop&#x2F;ttt.txt</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E2%80%94BUG%E5%AE%9A%E4%BD%8D%E3%80%91%E5%88%A9%E7%94%A8%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E5%92%8C%E7%AC%A6%E5%8F%B7%E8%A1%A8%E5%AE%9A%E4%BD%8D%E5%B4%A9%E6%BA%83/" data-id="cuidop5ZtjsRFsu09Zu0JNKYD" data-title="【iOS开发—BUG定位】利用内存地址和符号表定位崩溃" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【iOS开发】-google第三方登录授权页面404解决方案" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83%E9%A1%B5%E9%9D%A2404%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83%E9%A1%B5%E9%9D%A2404%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">【iOS开发】-google第三方登录授权页面404解决方案</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>#iOS WKWebview需要去掉UA中“ OS”   </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> [webView evaluateJavaScript:@&quot;navigator.userAgent&quot; completionHandler:^(NSString * _Nullable UA, NSError * _Nullable error)&#123;</span><br><span class="line">     NSLog(@&quot;UA-%@&quot;,UA);</span><br><span class="line">     webView.customUserAgent = [UA stringByReplacingOccurrencesOfString:@&quot; OS&quot; withString:@&quot;&quot;];</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
-<p>#android 需要去掉UA中的“wv”</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83%E9%A1%B5%E9%9D%A2404%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" data-id="cuidpRiAVQTblmDATZuGCvw3W" data-title="【iOS开发】-google第三方登录授权页面404解决方案" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E3%80%91%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BE%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E7%A7%81%E6%9C%89API/" data-id="cuiddpY5JWZHCu3q9QYq-uR-A" data-title="【iOS】一行命令查找项目中的私有API" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -816,7 +694,7 @@ LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%B8%80)-%E5%AE%9E%E7%94%A8%E7%9A%84%E8%BF%9B%E5%BA%A6%E6%9D%A1/" data-id="cuidsxjZ_jABTBdhhUdsqj4Ha" data-title="iOS自定义视图系列(一)-实用的进度条" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%B8%80)-%E5%AE%9E%E7%94%A8%E7%9A%84%E8%BF%9B%E5%BA%A6%E6%9D%A1/" data-id="cuiduIXin1PE1xV0ZMAzNlAXZ" data-title="iOS自定义视图系列(一)-实用的进度条" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -830,9 +708,9 @@ LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;
 
 
   
-    <article id="post-2026-03-18-【iOS】一行命令查找项目中的私有API" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-18-【iOS开发—BUG定位】利用内存地址和符号表定位崩溃" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E3%80%91%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BE%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E7%A7%81%E6%9C%89API/" class="article-date">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E2%80%94BUG%E5%AE%9A%E4%BD%8D%E3%80%91%E5%88%A9%E7%94%A8%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E5%92%8C%E7%AC%A6%E5%8F%B7%E8%A1%A8%E5%AE%9A%E4%BD%8D%E5%B4%A9%E6%BA%83/" class="article-date">
   <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
 </a>
     
@@ -848,7 +726,7 @@ LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E3%80%91%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BE%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E7%A7%81%E6%9C%89API/">【iOS】一行命令查找项目中的私有API</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E2%80%94BUG%E5%AE%9A%E4%BD%8D%E3%80%91%E5%88%A9%E7%94%A8%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E5%92%8C%E7%AC%A6%E5%8F%B7%E8%A1%A8%E5%AE%9A%E4%BD%8D%E5%B4%A9%E6%BA%83/">【iOS开发—BUG定位】利用内存地址和符号表定位崩溃</a>
     </h1>
   
 
@@ -856,64 +734,17 @@ LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <pre><code>find . | grep &quot;.a&quot; | grep -v &quot;.app&quot; | xargs grep [API] &gt;[地址]
+        <p>xcrun atos -arch (architecture) -o  （dsymfile）  address</p>
+<p>architecture : 取 arm64&#x2F;armv7<br>dsymfile： 取dsym的文件名字<br>address： 内存地址</p>
+<p>终端进入到对应版本的dsym文件目录下， 执行上述命令。 address和architecture可以在报表上看到的</p>
+<p>例如：</p>
+<pre><code>xcrun atos -arch arm64 -o dsym 0x120d13208
 </code></pre>
-<p>第一个括号替换成你要查找的私有API，</p>
-<p>第二个括号是查找到之后写入的文件路径</p>
-<p>例如，<br>查找 私有API：prefs:root&#x3D;<br>写入路径：&#x2F;Users&#x2F;zhangxiaohan&#x2F;Desktop&#x2F;ttt.txt</p>
-<p> 生成的命令如下：<br>    find . | grep “.a” | grep -v “.app” | xargs grep prefs:root&#x3D; &gt;&#x2F;Users&#x2F;xx&#x2F;Desktop&#x2F;ttt.txt</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E3%80%91%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BE%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E7%A7%81%E6%9C%89API/" data-id="cuidEhiAXUfT6rPUcZvg0y2iB" data-title="【iOS】一行命令查找项目中的私有API" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【iOS开发】-google第三方登录终极解决方案" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">【iOS开发】-google第三方登录终极解决方案</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>google第三方登录使用WKWebview组件无法登录成功，<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3ce47f1d1403">之前魔改UA的方式已经不行了</a>,需要使用ASWebAuthenticationSession组件</p>
-<p>示例代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">-(void)login&#123;</span><br><span class="line">    [[ASWebAuthenticationSession alloc] initWithURL:deUrl callbackURLScheme:@&quot;scheme&quot; completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) &#123;</span><br><span class="line">        // 处理认证结果</span><br><span class="line">        if (callbackURL) &#123;</span><br><span class="line">            // 从回调URL中获取认证授权码</span><br><span class="line">            NSDictionary *dict = [callbackURL jk_parameters];</span><br><span class="line">            NSString *ticket = [dict valueForKey:@&quot;ticket&quot;];</span><br><span class="line">            NSString *login_type = [dict valueForKey:@&quot;login_type&quot;];</span><br><span class="line">            if (ticket != nil &amp;&amp; login_type != nil) &#123;</span><br><span class="line">                self.hasOpenLogin = NO;</span><br><span class="line">                __weak typeof(self) wself = self;</span><br><span class="line">                [BSNetworkManager loginWithTicket:ticket loginType:login_type success:^(BSBaseResponseModel * _Nonnull model) &#123;</span><br><span class="line">                    </span><br><span class="line">                    </span><br><span class="line">                &#125;fail:^(BSBaseResponseModel * _Nonnull model) &#123;</span><br><span class="line">                    if (wself.callback) wself.callback();</span><br><span class="line">                &#125;];</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // 认证失败</span><br><span class="line">            NSLog(@&quot;认证失败，错误: %@&quot;, error);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 清除认证会话引用</span><br><span class="line">        weakSelf.loginSession = nil;</span><br><span class="line">    &#125;];</span><br><span class="line">#if __IPHONE_OS_VERSION_MAX_ALLOWED &gt;= 130000</span><br><span class="line">    self.loginSession.presentationContextProvider = self;</span><br><span class="line">#endif</span><br><span class="line">    [self.loginSession start];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#if __IPHONE_OS_VERSION_MAX_ALLOWED &gt;= 130000</span><br><span class="line">- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session &#123;</span><br><span class="line">    return [UIApplication sharedApplication].delegate.window;</span><br><span class="line">&#125;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" data-id="cuid57YYYWJyE2cLaVUPHuCVF" data-title="【iOS开发】-google第三方登录终极解决方案" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E2%80%94BUG%E5%AE%9A%E4%BD%8D%E3%80%91%E5%88%A9%E7%94%A8%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E5%92%8C%E7%AC%A6%E5%8F%B7%E8%A1%A8%E5%AE%9A%E4%BD%8D%E5%B4%A9%E6%BA%83/" data-id="cuid-1sBRBpwFEngVUb19orbb" data-title="【iOS开发—BUG定位】利用内存地址和符号表定位崩溃" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -972,7 +803,101 @@ LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-podfile-%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/" data-id="cuidhsvW4U5YCw4vaHLjgaibK" data-title="【iOS开发】-podfile-高级用法" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-podfile-%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/" data-id="cuiddrkmr08ULW9o4DELlyT5k" data-title="【iOS开发】-podfile-高级用法" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】-google第三方登录终极解决方案" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">【iOS开发】-google第三方登录终极解决方案</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>google第三方登录使用WKWebview组件无法登录成功，<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3ce47f1d1403">之前魔改UA的方式已经不行了</a>,需要使用ASWebAuthenticationSession组件</p>
+<p>示例代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">-(void)login&#123;</span><br><span class="line">    [[ASWebAuthenticationSession alloc] initWithURL:deUrl callbackURLScheme:@&quot;scheme&quot; completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) &#123;</span><br><span class="line">        // 处理认证结果</span><br><span class="line">        if (callbackURL) &#123;</span><br><span class="line">            // 从回调URL中获取认证授权码</span><br><span class="line">            NSDictionary *dict = [callbackURL jk_parameters];</span><br><span class="line">            NSString *ticket = [dict valueForKey:@&quot;ticket&quot;];</span><br><span class="line">            NSString *login_type = [dict valueForKey:@&quot;login_type&quot;];</span><br><span class="line">            if (ticket != nil &amp;&amp; login_type != nil) &#123;</span><br><span class="line">                self.hasOpenLogin = NO;</span><br><span class="line">                __weak typeof(self) wself = self;</span><br><span class="line">                [BSNetworkManager loginWithTicket:ticket loginType:login_type success:^(BSBaseResponseModel * _Nonnull model) &#123;</span><br><span class="line">                    </span><br><span class="line">                    </span><br><span class="line">                &#125;fail:^(BSBaseResponseModel * _Nonnull model) &#123;</span><br><span class="line">                    if (wself.callback) wself.callback();</span><br><span class="line">                &#125;];</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // 认证失败</span><br><span class="line">            NSLog(@&quot;认证失败，错误: %@&quot;, error);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 清除认证会话引用</span><br><span class="line">        weakSelf.loginSession = nil;</span><br><span class="line">    &#125;];</span><br><span class="line">#if __IPHONE_OS_VERSION_MAX_ALLOWED &gt;= 130000</span><br><span class="line">    self.loginSession.presentationContextProvider = self;</span><br><span class="line">#endif</span><br><span class="line">    [self.loginSession start];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#if __IPHONE_OS_VERSION_MAX_ALLOWED &gt;= 130000</span><br><span class="line">- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session &#123;</span><br><span class="line">    return [UIApplication sharedApplication].delegate.window;</span><br><span class="line">&#125;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" data-id="cuidGxt9F49OMb2a9QmpDFHG1" data-title="【iOS开发】-google第三方登录终极解决方案" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-【iOS开发】-google第三方登录授权页面404解决方案" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83%E9%A1%B5%E9%9D%A2404%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83%E9%A1%B5%E9%9D%A2404%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">【iOS开发】-google第三方登录授权页面404解决方案</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>#iOS WKWebview需要去掉UA中“ OS”   </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> [webView evaluateJavaScript:@&quot;navigator.userAgent&quot; completionHandler:^(NSString * _Nullable UA, NSError * _Nullable error)&#123;</span><br><span class="line">     NSLog(@&quot;UA-%@&quot;,UA);</span><br><span class="line">     webView.customUserAgent = [UA stringByReplacingOccurrencesOfString:@&quot; OS&quot; withString:@&quot;&quot;];</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>#android 需要去掉UA中的“wv”</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-google%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E6%8E%88%E6%9D%83%E9%A1%B5%E9%9D%A2404%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" data-id="cuidRMJlcTbX7y-7y0BRHtd6Q" data-title="【iOS开发】-google第三方登录授权页面404解决方案" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1043,11 +968,11 @@ LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
           </li>
         
           <li>

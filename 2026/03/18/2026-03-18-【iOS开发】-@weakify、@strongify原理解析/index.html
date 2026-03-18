@@ -13,15 +13,15 @@
 <meta property="og:site_name" content="花间半缘">
 <meta property="og:description" content="很长的前言在block语句块中，如果需引用self，而self对象中又持有block对象，就会造成循环引用循环引用(retain cycle)，导致内存泄露，比如以下代码   self.block &#x3D; ^{     [self description]; };  一般我们是这么解决的，使用一个__weak修饰的weakSelf变量指向self对象，在block中使用weakSelf:  __wea">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/f1f78914433a4f2984e5bf9d4a6f7cff.webp">
-<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/273894f4f0cd379be7869da1388df4a1.webp">
-<meta property="og:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/39c2f0e4711d093abf8481f0e4e507ab.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/images/note/f1f78914433a4f2984e5bf9d4a6f7cff.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/images/note/273894f4f0cd379be7869da1388df4a1.webp">
+<meta property="og:image" content="https://liqiang184.github.io/hexo-site/images/note/39c2f0e4711d093abf8481f0e4e507ab.webp">
 <meta property="article:published_time" content="2026-03-18T10:30:13.000Z">
-<meta property="article:modified_time" content="2026-03-18T10:30:19.000Z">
+<meta property="article:modified_time" content="2026-03-18T10:36:04.000Z">
 <meta property="article:author" content="半缘君">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://liqiang184.github.io/hexo-site/hexo-site/images/note/f1f78914433a4f2984e5bf9d4a6f7cff.webp">
+<meta name="twitter:image" content="https://liqiang184.github.io/hexo-site/images/note/f1f78914433a4f2984e5bf9d4a6f7cff.webp">
   
     <link rel="alternate" href="/hexo-site/atom.xml" title="花间半缘" type="application/atom+xml">
   
@@ -170,7 +170,7 @@ obj.block();
 }];
 </code></pre>
 <p>只要在block外用了@weakify(self);然后再block里写@strongify(self);就可以了，@strongify(self);语句后的的self可以原封不动，好像很神奇，下面一起看看@weakify、@strongify 这两个神奇的宏最终替换了什么东西。导入RAC的头文件，把上面的测试代码替换成RAC中用的@weakify(self);和@strongify(self), 分屏显示Xcode，让右侧的显示内容改为 preprocess“,就可以看到宏最终替换的结果。</p>
-<p><img src="/hexo-site/hexo-site/images/note/f1f78914433a4f2984e5bf9d4a6f7cff.webp" alt="image.png"></p>
+<p><img src="/hexo-site/images/note/f1f78914433a4f2984e5bf9d4a6f7cff.webp" alt="image.png"></p>
 <ol>
 <li>@autoreleasepool {} 是什么鬼？</li>
 </ol>
@@ -230,7 +230,7 @@ metamacro_foreach_cxt ## 1 (rac_weakify_,  , __weak, self)
 metamacro_foreach_cxt1(rac_weakify_,  , __weak, self)
 </code></pre>
 <p>第三层：<code>metamacro_foreach_cxt1</code> 没错,不要怀疑，他还定义了metamacro_foreach_cxt1这个后面数组为1的宏，搜索一下：</p>
-<p><img src="/hexo-site/hexo-site/images/note/273894f4f0cd379be7869da1388df4a1.webp" alt="image.png"></p>
+<p><img src="/hexo-site/images/note/273894f4f0cd379be7869da1388df4a1.webp" alt="image.png"></p>
 <p>嗯，你没猜错，有metamacro_foreach_cxt1就有metamacro_foreach_cxt2、3、4、5、6、7、8…，这些是什么鬼，我们先不管，先看我们的metamacro_foreach_cxt1</p>
 <pre><code>#define metamacro_foreach_cxt1(MACRO, SEP, CONTEXT, _0) MACRO(0, CONTEXT, _0)
 </code></pre>
@@ -273,7 +273,7 @@ __weak type(obj20) obj20_weak_ = obj20;
 <pre><code>metamacro_at20(self, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
 </code></pre>
 <p>搜索<code>metamacro_at20</code></p>
-<p><img src="/hexo-site/hexo-site/images/note/39c2f0e4711d093abf8481f0e4e507ab.webp" alt="image.png"></p>
+<p><img src="/hexo-site/images/note/39c2f0e4711d093abf8481f0e4e507ab.webp" alt="image.png"></p>
 <p>呵呵 又是一堆乱七八糟的，没事看懂一个就全懂了。</p>
 <pre><code>#define metamacro_at20(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, ...) 
 metamacro_head(__VA_ARGS__)
@@ -332,7 +332,7 @@ __weak type(obj3) obj3_weak_ = obj3;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-@weakify%E3%80%81@strongify%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" data-id="cuidDpERMQ1o78ew9u4iMt_XR" data-title="【iOS开发】--@weakify、@strongify原理解析" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-@weakify%E3%80%81@strongify%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" data-id="cuidPCI0qZulYi7rXFPmd27nU" data-title="【iOS开发】--@weakify、@strongify原理解析" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -415,11 +415,11 @@ __weak type(obj3) obj3_weak_ = obj3;
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
           </li>
         
           <li>
