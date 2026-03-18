@@ -1,0 +1,151 @@
+/* 皮肤切换：通过 html 上的 .skin-xxx 覆盖 landscape 主题颜色，便于后续新增皮肤 */
+
+/* ========== 浅色（默认，与 landscape 一致） ========== */
+html.skin-default body,
+html.skin-default #wrap {
+  background: #eee;
+}
+html.skin-default .article-inner,
+html.skin-default .archive-article-inner,
+html.skin-default #page-nav {
+  background: #fff;
+}
+html.skin-default .article-title,
+html.skin-default .article-entry,
+html.skin-default .article-meta,
+html.skin-default .archive-article-title,
+html.skin-default .archive-article-date {
+  color: #555;
+}
+html.skin-default .article-entry a,
+html.skin-default #sidebar .widget a,
+html.skin-default .category-list-link,
+html.skin-default .tag-list-link,
+html.skin-default .archive-list-link {
+  color: #258fb8;
+}
+html.skin-default #footer {
+  background: #262a30;
+  border-top-color: #ddd;
+  color: #999;
+}
+html.skin-default #footer a {
+  color: #258fb8;
+}
+html.skin-default .widget {
+  color: #777;
+  background: #ddd;
+  box-shadow: 0 -1px 4px #ccc inset;
+  border-color: #ccc;
+}
+html.skin-default #header {
+  border-bottom-color: #ddd;
+}
+
+/* ========== 深色 ========== */
+html.skin-dark body,
+html.skin-dark #wrap {
+  background: #1a1a1a;
+}
+html.skin-dark .article-inner,
+html.skin-dark .archive-article-inner,
+html.skin-dark #page-nav {
+  background: #252525;
+  border-color: #333;
+}
+html.skin-dark .article-title,
+html.skin-dark .article-entry,
+html.skin-dark .article-meta,
+html.skin-dark .archive-article-title,
+html.skin-dark .archive-article-date,
+html.skin-dark .article-category-link {
+  color: #c9c9c9;
+}
+html.skin-dark .article-entry a,
+html.skin-dark #sidebar .widget a,
+html.skin-dark .category-list-link,
+html.skin-dark .tag-list-link,
+html.skin-dark .archive-list-link,
+html.skin-dark .archive-article-title {
+  color: #58a6ff;
+}
+html.skin-dark #footer {
+  background: #0d1117;
+  border-top-color: #333;
+  color: #8b949e;
+}
+html.skin-dark #footer a {
+  color: #58a6ff;
+}
+html.skin-dark .widget {
+  color: #c9c9c9;
+  background: #252525;
+  box-shadow: 0 -1px 4px #333 inset;
+  border-color: #333;
+}
+html.skin-dark .category-list-count,
+html.skin-dark .tag-list-count,
+html.skin-dark .archive-list-count {
+  color: #8b949e;
+}
+html.skin-dark #header {
+  border-bottom-color: #333;
+}
+
+/* ========== 护眼（暖黄） ========== */
+html.skin-sepia body,
+html.skin-sepia #wrap {
+  background: #f4ecd8;
+}
+html.skin-sepia .article-inner,
+html.skin-sepia .archive-article-inner,
+html.skin-sepia #page-nav {
+  background: #faf6ed;
+  border-color: #e8dfc8;
+}
+html.skin-sepia .article-title,
+html.skin-sepia .article-entry,
+html.skin-sepia .article-meta,
+html.skin-sepia .archive-article-title,
+html.skin-sepia .archive-article-date {
+  color: #5c4b37;
+}
+html.skin-sepia .article-entry a,
+html.skin-sepia #sidebar .widget a,
+html.skin-sepia .category-list-link,
+html.skin-sepia .tag-list-link,
+html.skin-sepia .archive-list-link,
+html.skin-sepia .archive-article-title {
+  color: #8b6914;
+}
+html.skin-sepia #footer {
+  background: #2c261e;
+  border-top-color: #e8dfc8;
+  color: #9a8f7f;
+}
+html.skin-sepia #footer a {
+  color: #c9a227;
+}
+html.skin-sepia .widget {
+  color: #5c4b37;
+  background: #ebe4d4;
+  box-shadow: 0 -1px 4px #e0d6c2 inset;
+  border-color: #e0d6c2;
+}
+html.skin-sepia #header {
+  border-bottom-color: #e8dfc8;
+}
+
+/* 过渡 */
+body,
+#wrap,
+.article-inner,
+.widget,
+.article-title,
+.article-entry,
+.article-meta,
+.article-entry a,
+#footer,
+#footer a {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}

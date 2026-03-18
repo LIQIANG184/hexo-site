@@ -37,7 +37,7 @@
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<meta name="generator" content="Hexo 8.1.1"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/hexo-site/css/skin.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
 
 <body>
   <div id="container">
@@ -188,7 +188,7 @@ return [UIImage sd_animatedGIFWithData:data];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS-%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%BD%95%E5%88%B6GIF%E5%9B%BE/" data-id="cuidHlavL2yGvhnS-QJ6AWk5l" data-title="iOS-视频播放过程中录制GIF图" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS-%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%BD%95%E5%88%B6GIF%E5%9B%BE/" data-id="cuiduvUhxtmrICXL5CYrCAsAv" data-title="iOS-视频播放过程中录制GIF图" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -249,7 +249,585 @@ return [UIImage sd_animatedGIFWithData:data];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS-%E9%9B%86%E6%88%90IJK%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" data-id="cuidbOveaWe6BDt0SNncCzEUL" data-title="iOS-集成IJK的那些坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS-%E9%9B%86%E6%88%90IJK%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" data-id="cuidPQ74O9r74uRokyLfEcb74" data-title="iOS-集成IJK的那些坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-BUG定位,符号化crash地址" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/">iOS开发--BUG定位,符号化crash地址</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在umeng或者其他的BUG收集的第三方里边大多数的BUG是能够通过crash前的调用信息,定位到具体的方法,从而想办法解决,但是有些BUG信息量很少,只有一个内存地址:</p>
+<p>例如: </p>
+<pre><code>  appname                            0x97525 appname + 615717 
+</code></pre>
+<p>下面本文将介绍通过内存地址,定位BUG文件,调用方法</p>
+<p>步骤:</p>
+<p>1 检查log中的dSYM UUID与本地的dYSM文件是否匹配<br>方法: 打开终端(不知道终端的请略过此文),输入命令</p>
+<pre><code> $1 cd /Users/username/Library/Developer/Xcode/Archives/ xx.xcarchive/dSYMs  
+ $2 dwarfdump --uuid appname.app.dSYM  
+</code></pre>
+<p>注:  $1里cd 后的地址是打包时生成的xcode自动生成的本地文件的地址<br>找到此地址的方法打开: xcode-&gt;Window-&gt;Organizer,然后找到对应的release包,右键 Show in Finder</p>
+<p><img src="/hexo-site/images/note/74d27b004018698c9cfa5f0d94a8f5d9.webp" alt="Paste_Image.png"></p>
+<p>会看到扩展名为.xcarchive的文件,这个文件路径(最好用拖文件的方式获取文件路径)后边拼接dSYMs即为这个地址.</p>
+<p><img src="/hexo-site/images/note/617702c4e8b31be8ad6170e096752139.webp" alt="Paste_Image.png"></p>
+<p>$2里dwarfdump –uuid appname.app.dSYM的 appname 替换为你的app的包名就行,别的不用动<br>输出结果:<br>UUID: 9F0AEFA6-4349-30AF-8420-BCEE739DA0B4 (armv7) appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>UUID: 365EF56E-D598-3B94-AD36-BFA13772A4E3 (armv7s) appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>这两个匹配后继续第二步</p>
+<p>2  继续在终端输入命令<br>dwarfdump –arch&#x3D;armv7 –lookup 0x97525  &#x2F;Users&#x2F;username&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;Archives&#x2F;2013-08-30&#x2F;appname\xx.xcarchive&#x2F;dSYMs&#x2F;appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>注: 在$1步的路径后继续拼接 &#x2F;appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>就可以 其中的 appname 替换成自己的包名(也可以自己找到DWARF下的appname文件拖到终端)<br>输出结果为:</p>
+<pre><code>Looking up address: 0x0000000000097525 in .debug_info... found!  
+
+0x00359c67: Compile Unit: length = 0x000066f1  version =     0x0002  abbr_offset = 0x00000000  addr_size = 0x04  (next CU at 0x0036035c)  
+
+0x00359c72: TAG_compile_unit [1] *  
+     AT_producer( &quot;Apple LLVM version 4.2 (clang-425.0.28) (based on LLVM 3.2svn)&quot; )  
+     AT_language( DW_LANG_ObjC )  
+     AT_name( &quot;xxx/EGOImageView.m&quot; )  
+     AT_low_pc( 0x0009710c )  
+     AT_stmt_list( 0x000655c1 )  
+     AT_comp_dir( &quot;xxx&quot; )  
+     AT_APPLE_optimized( 0x01 )  
+     AT_APPLE_major_runtime_vers( 0x02 )  
+
+0x00359e57:     TAG_subprogram [10] *  
+         AT_name( &quot;-[EGOImageView imageLoaderDidFailToLoad:]&quot; )  
+         AT_decl_file( &quot;xxx/EGOImageView.m&quot; )  
+         AT_decl_line( 96 )  
+         AT_prototyped( 0x01 )  
+         AT_APPLE_isa( 0x01 )  
+         AT_low_pc( 0x00097490 )  
+         AT_high_pc( 0x00097572 )  
+         AT_frame_base( r7 )  
+         AT_object_pointer( {0x00359e6e} )  
+Line table dir : &#39;xxx&#39;  
+Line table file: &#39;EGOImageView.m&#39; line 99, column 2 with start address 0x00000000000974fe  
+
+Looking up address: 0x0000000000097525 in .debug_frame... found!  
+
+0x0000c620: FDE  
+length: 0x0000000c  
+CIE_pointer: 0x00000000  
+start_addr: 0x00097490 -[EGOImageView imageLoaderDidFailToLoad:]  
+range_size: 0x000000e2 (end_addr = 0x00097572)  
+Instructions: 0x00097490: CFA=4294967295+4294967295  
+</code></pre>
+<p>信息中的AT_name( “xxx&#x2F;EGOImageView.m” )  就是crash文件,<br> start_addr:就是crash方法<br>此文结束</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" data-id="cuidCyXkmIifuIFP9dkYsvacj" data-title="iOS开发--BUG定位,符号化crash地址" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/">iOS开发--Thread-1--EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-subcode=0x0</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>   崩溃的截图：<br>  <img src="/hexo-site/images/note/15f69cd324ef0ffbea5444bb70ba5875.webp" alt="image.png"></p>
+<p>  <img src="/hexo-site/images/note/8c0e06b090bda15a2631fb0dbff35734.webp" alt="image.png">  </p>
+<p> 最近项目中有一个dispatch_group相关的巨坑（此问题解决方法很简单，难点是定位问题），特此记录下来并分享，希望帮助到有需要的人！</p>
+<p>   本文涉及的知识面较广，有一定的逻辑性，如果想真正明白各种原理，请细细读来，如时间紧迫，可记住正确使用方法亦可！</p>
+<p>   阅读本文需要的知识点：</p>
+<pre><code> 1 熟悉AFNetworking
+ 2 熟练使用dispatch_group
+ 3 了解接口的含义
+ 4 熟悉block工作原理
+ 5 熟悉地址引用含义
+</code></pre>
+<p>   先把crash场景和解决方案放在开头：</p>
+<p>   crash场景：</p>
+<pre><code>1 有一组多个接口地址
+2 利用  dispatch_group并发请求到数据后，统一回调（必要：利用AF进行网络请求）
+3 频繁调用2（必要）
+4 每次调用2中的请求是同一组接口地址（必要）
+注：频繁的意思是一秒调用3次或3次以上
+</code></pre>
+<p>问题核心： </p>
+<pre><code>对dispatch_group进行了额外的leave操作
+</code></pre>
+<p>问题代码：</p>
+<pre><code>-(void)request{
+    dispatch_group_t group = dispatch_group_create();
+    self.group = group;
+
+   enter代码....
+  [request  requestGetUrl:url success:^(id responds) {
+    leave代码....
+  }];     
+} 
+</code></pre>
+<p>修正后代码：</p>
+<pre><code>-(void)request{
+  if(self.group == nil){
+    dispatch_group_t group = dispatch_group_create();
+    self.group = group;
+  }
+   enter代码....
+  [request  requestGetUrl:url success:^(id responds) {
+    leave代码....
+  }];     
+} 
+</code></pre>
+<p> 我想你肯定在疑惑加一个if判断就解决了问题了，那这个坑应该不大，分分钟搞定，请往下看</p>
+<p>产生此问题的原因：概括的说是dispatch_group的原理和AFNetworking网络请求回调block的缓存回调原理的协作问题</p>
+<p>举例详细说明，流程图如下：<br><img src="/hexo-site/images/note/1ae39c1ded50e2853db32d8e2b8afde7.webp" alt="image.png"></p>
+<pre><code>正常情况下：执行步骤1 的间隔时间充分长，或者只执行一次，此逻辑没有问题，不会crash；
+非正常情况：开头所说的crash出现场景下，即频繁执行上图中步骤1到步骤3
+</code></pre>
+<p>   因为网络请求的耗时和异步特性，这时候会发生一种情况</p>
+<pre><code>1 第一次在步骤1创建了一个新的group1，这时网络请求n1到n4请求未返回，也就是b1到b4
+   还未调用；
+2 此时又执行了一次步骤一创建了一个新的group，命名为group2（这是一个新的，代码见上图），
+  并且赋值给了self.group，又执行步骤二，对group2进行enter，发送网络请求;
+3 此时若是1中的网络请求返回了，b1到b4就会调用，会对步骤2中创建的新的group2进行
+  leave操作，当2中的网络请求返回，进行回调时，会发生对group2进行额外的leave操作，
+  从而造成crash；
+注：b1到b4因为leave的需要，会对group进行地址引用
+</code></pre>
+<p>作者受<a target="_blank" rel="noopener" href="http://satanwoo.github.io/2017/01/07/DispatchGroupCrash/">此文</a>启发，虽场景不同，但原理一致！</p>
+<hr>
+<p>—2018-03-14更新错误代码实例 –start<br>附1：<br>错误代码实例（崩溃截图见代码下边）：</p>
+<pre><code> - (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+dispatch_group_t group = dispatch_group_create();
+self.group = group;
+dispatch_group_enter(self.group);
+dispatch_group_enter(self.group);
+dispatch_group_enter(self.group);
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    dispatch_group_leave(self.group);
+    sleep(2);
+    dispatch_group_leave(self.group);
+     dispatch_group_leave(self.group);
+});
+dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
+    NSLog(@&quot;1234567&quot;);
+});   
+}
+</code></pre>
+<p><img src="/hexo-site/images/note/b097bbe5cf702d7e5b1e07e3a6757f6d.webp" alt="崩溃截图"></p>
+<p> 修正后代码：</p>
+<pre><code>- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+if(self.group == nil){
+    dispatch_group_t group = dispatch_group_create();
+    self.group = group;
+}
+dispatch_group_enter(self.group);
+dispatch_group_enter(self.group);
+dispatch_group_enter(self.group);
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    dispatch_group_leave(self.group);
+    sleep(2);
+    dispatch_group_leave(self.group);
+    dispatch_group_leave(self.group);
+});
+
+dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
+    NSLog(@&quot;1234567&quot;);
+});    
+}
+</code></pre>
+<p>—2018-03-14更新错误代码实例 –end</p>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/" data-id="cuid0XHWPHJST3qFCOKT1XDu4" data-title="iOS开发--Thread-1--EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-subcode=0x0" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-UITableView+FDTemplateLayoutCell遇到的坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-UITableView+FDTemplateLayoutCell%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-UITableView+FDTemplateLayoutCell%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/">iOS开发-UITableView+FDTemplateLayoutCell遇到的坑</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近项目进入重构代码阶段，其中一个重构的方向是：把项目中的手动计算cell高度的逻辑，替换为使用UITableView+FDTemplateLayoutCell进行高度缓存。代码写起来很流畅，刚开始用起来很爽，直接写好约束，在heightForRow方法里调用</p>
+<pre><code>  - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+  return [tableView fd_heightForCellWithIdentifier:@&quot;&quot; configuration:^(UITableViewCell *cell) {
+        cell.epgModel = epgModel;//cell设置数据，更新数据
+    }];
+  }
+</code></pre>
+<p>对FD不熟的小伙伴可以去github搜索学习，这里不再赘述。</p>
+<p>#先说明踩坑经验：FD框架对影响横向布局的控件的hidden很敏感，会影响cell高度的计算准确度。建议对需要隐藏的控件做宽度布局修改为零。</p>
+<p>有兴趣了解”踩坑到出坑“过程的同学可以继续读下去，没兴趣的可以忙别的去了。</p>
+<hr>
+<p>##应用场景如下<br>先来看下cell样式：<br><img src="/hexo-site/images/note/e1c867c6b8b55e10ceacb16f0b8f2ce0.webp" alt="image.png"></p>
+<blockquote>
+<p>简单说明：1 cell分为3种状态, 回看&#x2F;播放中&#x2F;预约</p>
+</blockquote>
+<p>#遇到的问题<br>有的时候cell高度计算不对，导致label无法全部展示。<br><img src="/hexo-site/images/note/4fe3985e038bb504dddc3396c082a99c.webp" alt="错误"></p>
+<p><img src="/hexo-site/images/note/68ac47192ed511e06746f77f47373995.webp" alt="正确"></p>
+<p>##错误说明：<br>”环球综艺秀-2020-23“一行显示不下，需要折行展示；</p>
+<p>##上错误代码：<br>cell的setEpgModel方法内部代码是给cell控件赋值,同时刷新布局；</p>
+<pre><code>-(void)setEpgModel:(CNLiveEPGModel *)epgModel{
+ ....
+
+self.livingAnimationView.hidden = YES;
+switch (type) {
+        case Live_Playing:
+    {
+        
+        self.livingAnimationView.hidden = NO;
+  break;
+.....
+
+  }
+</code></pre>
+<p>##修改后代码</p>
+<pre><code>-(void)setEpgModel:(CNLiveEPGModel *)epgModel{
+   ....
+   [self.livingAnimationView mas_remakeConstraints:^(MASConstraintMaker *make) {
+    make.right.equalTo(self.typeButton.mas_left).with.offset(-6);
+    make.centerY.equalTo(self.typeButton);
+    make.height.mas_equalTo(14);
+    make.width.mas_equalTo(0);
+}];
+//self.livingAnimationView.hidden = YES;
+switch (type) {
+        case Live_Playing:
+    {
+   //self.livingAnimationView.hidden = NO;
+        [self.livingAnimationView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.typeButton.mas_left).with.offset(-6);
+            make.centerY.equalTo(self.typeButton);
+            make.height.mas_equalTo(14);
+            make.width.mas_equalTo(15);
+        }];
+  break;
+.....
+  }
+</code></pre>
+<hr>
+<p>#定位问题过程（前方高能）<br>1 看到label显示不全，怀疑是约束的问题，较劲脑汁换约束方法（不管用）<br>2 怀疑是行高cache的问题，打开fd的log，根据错误行高数据查找cache读取&#x2F;存储过程，发现行高方法会执行很多次，有的计算是对的，最后一次总会错误，错误行高有一个规律–只有正直播的数据会错误。<br>3 本着怀疑一切的态度，首先去掉了正直播的数据行高cache</p>
+<blockquote>
+<p>-(CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration;</p>
+</blockquote>
+<p>改为：</p>
+<blockquote>
+<p>-(CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration; （不管用）</p>
+</blockquote>
+<p>4 怀疑是正直播的行高计算问题，单步调试，发现一个问题<br>在cell高度计算不正确的时候，不执行 return [self fd_systemFittingHeightForConfiguratedCell:templateLayoutCell];<br>只会执行到if (configuration) { configuration(templateLayoutCell); }怀疑是这个block的问题</p>
+<blockquote>
+<p>-(CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration {<br>if (!identifier) {<br>    return 0;<br>}<br>UITableViewCell *templateLayoutCell &#x3D; [self fd_templateCellForReuseIdentifier:identifier];<br>&#x2F;&#x2F; Manually calls to ensure consistent behavior with actual cells. (that are displayed on screen)<br>[templateLayoutCell prepareForReuse];<br>&#x2F;&#x2F; Customize and provide content for our template cell.<br>if (configuration) {<br>    configuration(templateLayoutCell);<br>}<br>return [self fd_systemFittingHeightForConfiguratedCell:templateLayoutCell];<br>}</p>
+</blockquote>
+<p>5 把这个block内的代码去掉，发现所有的cell高度均会错误，只能放开block内的代码。</p>
+<pre><code>    - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+  return [tableView fd_heightForCellWithIdentifier:@&quot;&quot; configuration:^(UITableViewCell *cell) {
+        //cell.epgModel = epgModel;//cell设置数据，更新数据
+    }];
+  }
+</code></pre>
+<p>6  既然cell的设置数据有问题，那就需要定位到设置数据方法内具体哪些代码影响了cell高度计算。运用二分大法，最后定位到了是self.livingAnimationView.hidden&#x3D;YES的问题。<br>7 修改self.livingAnimationView.hidden的方案，最后修改为约束宽度为0来代替隐藏控件</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-UITableView+FDTemplateLayoutCell%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" data-id="cuidAuxp2TtjJ6LuPtrjvQSGr" data-title="iOS开发-UITableView+FDTemplateLayoutCell遇到的坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-YYLable-点击没反应的坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-YYLable-%E7%82%B9%E5%87%BB%E6%B2%A1%E5%8F%8D%E5%BA%94%E7%9A%84%E5%9D%91/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-YYLable-%E7%82%B9%E5%87%BB%E6%B2%A1%E5%8F%8D%E5%BA%94%E7%9A%84%E5%9D%91/">iOS开发--YYLable-点击没反应的坑</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>项目中有一个用户协议入口,是使用YYLable显示的,有高亮和点击事件,点击事件不执行,困扰很久,最后发现是手势冲突的问题:</p>
+<p><img src="/hexo-site/images/note/534df043bd1e10e2bc1ee925a1ae4d63.webp" alt="IMG_0150.JPG"></p>
+<p>界面内有一个textField, 为了收起键盘,在view上添加了tap手势来隐藏键盘:</p>
+<pre><code>UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
+[self.view addGestureRecognizer:tap];
+
+
+- (void)keyboardHide:(UITapGestureRecognizer *)tap {
+[self.view endEditing:true];
+return;
+}
+</code></pre>
+<p>YYLabel添加事件方法:</p>
+<pre><code> - (YYLabel *)readinglabel {
+if (!_readinglabel) {
+    _readinglabel = [[YYLabel alloc] init];
+    _readinglabel.numberOfLines = 2;
+    NSString *concealText = LocatizedStringForKey(@&quot;woyiyuedutongyixieyiheyinsi&quot;);
+    NSRange linkTextRange1 = [concealText rangeOfString:LocatizedStringForKey(@&quot;yonghuxieyi&quot;)];
+    NSRange linkTextRange2 = [concealText rangeOfString:LocatizedStringForKey(@&quot;yinsizhengce&quot;)];
+    NSMutableAttributedString *concealAttrText = [[NSMutableAttributedString alloc]initWithString:concealText attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12],NSForegroundColorAttributeName : [UIColor colorWithRed:180/255.0 green:183/255.0 blue:199/255.0 alpha:1/1.0]}];
+    
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    paragraphStyle.minimumLineHeight = 17;
+    paragraphStyle.lineSpacing = 5;
+    [concealAttrText addAttributes:@{NSParagraphStyleAttributeName : paragraphStyle} range:NSMakeRange(0, concealAttrText.length)];
+    
+    __weak __typeof(self)weakSelf = self;
+   
+    [concealAttrText yy_setTextHighlightRange:linkTextRange1 color:[UIColor lj_colorWithHexString:@&quot;3D6EFF&quot;] backgroundColor:nil tapAction:^(UIView * _Nonnull containerView, NSAttributedString * _Nonnull text, NSRange range, CGRect rect) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        UIViewController *vc = [LJVRSDK VRWebViewControllerWithURL:[NSString stringWithFormat:@&quot;%@%@&quot;,[RSDAPI h5Ycy],[SharedData sharedDataSingleton].NEW_USER_AGREEMENT_HTML] ext:nil showNav:YES showBackButton:NO delegate:nil];
+        [vc setHidesBottomBarWhenPushed:YES];
+        [strongSelf.navigationController pushViewController:vc animated:YES];
+    }];
+    [concealAttrText yy_setTextHighlightRange:linkTextRange2 color:[UIColor lj_colorWithHexString:@&quot;3D6EFF&quot;] backgroundColor:nil tapAction:^(UIView * _Nonnull containerView, NSAttributedString * _Nonnull text, NSRange range, CGRect rect) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        UIViewController *vc = [LJVRSDK VRWebViewControllerWithURL:[NSString stringWithFormat:@&quot;%@%@&quot;,[RSDAPI h5Realsee],[SharedData sharedDataSingleton].NEW_PRIVACY_POLICY_HTML] ext:nil showNav:YES showBackButton:NO delegate:nil];
+        [vc setHidesBottomBarWhenPushed:YES];
+        [strongSelf.navigationController pushViewController:vc animated:YES];
+    }];
+    _readinglabel.userInteractionEnabled = YES;
+    _readinglabel.attributedText = concealAttrText;
+    [self.view addSubview:_readinglabel];
+}
+return _readinglabel;
+}
+</code></pre>
+<p>这个手势和YYLabel的富文本添加事件有冲突,造成在点击YYLabel时执行了tap手势方法tap.</p>
+<p>查看 YYLabel的hitTest方法确实返回了YYLabel,但是没有执行.<br>通过查看YYLabel源码发现, YYLabel是通过touchBegin: touchEnd:捉对来确认点击事件,然后根据点击范围来执行对应的action</p>
+<p>所以冲突实质是 touchend 和tap手势的冲突</p>
+<p>以下是测试用例:</p>
+<pre><code>@implementation ViewController
+
+ - (void)viewDidLoad {
+[super viewDidLoad];
+// Do any additional setup after loading the view.
+
+UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
+[self.view addGestureRecognizer:tap];
+
+
+}
+-(void)viewDidAppear:(BOOL)animated{
+UILabel *label = [[LQLabel alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];
+label.backgroundColor = [UIColor grayColor];
+
+[self.view addSubview:label];
+label.userInteractionEnabled = YES;
+}
+-(void)tap{
+NSLog(@&quot;tap&quot;);
+}
+@end
+
+
+@implementation LQLabel
+
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect {
+// Drawing code
+}
+*/
+ -(void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+NSLog(@&quot;touch begin&quot;);
+ }
+ -(void)touchesEnded:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+NSLog(@&quot;touch end&quot;);
+ }
+
+ @end
+</code></pre>
+<p>点击view的时候 执行tap:</p>
+<pre><code> 2021-07-07 16:01:09.557891+0800 tapWithTouch[23171:2729459] tap
+</code></pre>
+<p>点击LQLabel的时候执行: touch begin 和 tap</p>
+<pre><code> 2021-07-07 16:01:33.989632+0800 tapWithTouch[23171:2729459] touch begin
+ 2021-07-07 16:01:34.070506+0800 tapWithTouch[23171:2729459] tap
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-YYLable-%E7%82%B9%E5%87%BB%E6%B2%A1%E5%8F%8D%E5%BA%94%E7%9A%84%E5%9D%91/" data-id="cuidb6ZYnD1zYLrk1NgR7e-AO" data-title="iOS开发--YYLable-点击没反应的坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-iOS14-Xcode12-适配问题-持续更新" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/">iOS开发--iOS14-Xcode12-适配问题-持续更新</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近苹果推了iOS14，Xcode更新到了12，beta版本是12.2，第一时间更新了。跑一下老项目，暂时发现下列问题；</p>
+<h1 id="一-崩溃问题："><a href="#一-崩溃问题：" class="headerlink" title="一 崩溃问题："></a>一 崩溃问题：</h1><h2 id="1-1-由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。"><a href="#1-1-由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。" class="headerlink" title="1.1 由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。"></a>1.1 由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。</h2><p>听云收集的崩溃错误说明如下：<br>     <img src="/hexo-site/images/note/a75e2ceb80b8ea763439efa10ac4f41a.webp" alt="图片.png"></p>
+<p>##相关代码：</p>
+<p>###LQTextModel.h<br>     @interface LQTextModel : LQBaseModel<br>     @property (nonatomic,strong) NSMutableArray &lt;LQItemListModel *&gt; * rightItem;<br>     @end</p>
+<p>崩溃位置代码:</p>
+<blockquote>
+<p>CNVLtemplateItemListModel *keyWord &#x3D; [_dataModel.rightItem firstObject];<br>  keyTitle &#x3D; keyWord.title;&#x2F;&#x2F;崩溃行</p>
+</blockquote>
+<p>##分析：<br>LQTextModel 在字典转模型的时候模型数组rightItem 没有转成功导致 rightItem里存的是字典数组，而不是模型数组，导致取title的时候崩溃。</p>
+<p>##解决方法：<br>使用MJExtension方法声明数组内的对象类名：</p>
+<pre><code>+(NSDictionary *)mj_objectClassInArray{
+    return @{@&quot;rightItem&quot;:@&quot;CNVLtemplateItemListModel&quot;};
+}
+</code></pre>
+<h1 id="1-2-UITableViewCell-点击事件无响应"><a href="#1-2-UITableViewCell-点击事件无响应" class="headerlink" title="1.2 UITableViewCell 点击事件无响应"></a>1.2 UITableViewCell 点击事件无响应</h1><p> UITableViewCell直接使用 [self addSubview:]，会导致点击事件无响应，解决方法是将 [self addSubview:] 换成 [self.contentView addSubview:];(<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3fb93f36026a">来源</a>)（2020-9-22）</p>
+<h1 id="1-3-iOS-14-UITableViewCell-长按手势-UILongPressGestureRecognizer-不生效的问题-需要把手势添加到self-contentView"><a href="#1-3-iOS-14-UITableViewCell-长按手势-UILongPressGestureRecognizer-不生效的问题-需要把手势添加到self-contentView" class="headerlink" title="1.3 iOS 14 UITableViewCell 长按手势 UILongPressGestureRecognizer 不生效的问题, 需要把手势添加到self.contentView"></a>1.3 iOS 14 UITableViewCell 长按手势 UILongPressGestureRecognizer 不生效的问题, 需要把手势添加到self.contentView</h1><h1 id="1-4-私有方法-KVC-不允许使用"><a href="#1-4-私有方法-KVC-不允许使用" class="headerlink" title="1.4 私有方法 KVC 不允许使用"></a>1.4 私有方法 KVC 不允许使用</h1><p>在iOS14下设置UIPageControl的pageimage，会导致奔溃，不能再用了。(<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3fb93f36026a">来源</a>)（2020-9-22）</p>
+<pre><code>[_pageControl setValue:[UIImage imageNamed:@&quot;main_pageControl_dian&quot;] forKeyPath:@&quot;pageImage&quot;];
+[_pageControl setValue:[UIImage imageNamed:@&quot;main_pageControl_xian&quot;] forKeyPath:@&quot;currentPageImage&quot;];
+</code></pre>
+<h2 id="其他发现"><a href="#其他发现" class="headerlink" title="其他发现"></a>其他发现</h2><h3 id="1-Xcode图标变化"><a href="#1-Xcode图标变化" class="headerlink" title="1 Xcode图标变化"></a>1 Xcode图标变化</h3><p><img src="/hexo-site/images/note/5385fd55183a76f610a3f89716c89357.webp" alt="Xcode12之前.png"></p>
+<p><img src="/hexo-site/images/note/6553126313e74ccc514ad62bcde344a6.webp" alt="Xcode12.png"></p>
+<h3 id="2-view-hierarchy-出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知"><a href="#2-view-hierarchy-出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知" class="headerlink" title="2 view hierarchy 出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知"></a>2 view hierarchy 出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知</h3><h3 id="3-archive-打包生成的ipa，名字将不会使用工程名字，而会使用-Display-Name（2020-9-23）"><a href="#3-archive-打包生成的ipa，名字将不会使用工程名字，而会使用-Display-Name（2020-9-23）" class="headerlink" title="3 archive 打包生成的ipa，名字将不会使用工程名字，而会使用 Display Name（2020-9-23）"></a>3 archive 打包生成的ipa，名字将不会使用工程名字，而会使用 Display Name（2020-9-23）</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" data-id="cuidoIFGhnsClH-mv45_0OPWp" data-title="iOS开发--iOS14-Xcode12-适配问题-持续更新" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -401,585 +979,7 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/" data-id="cuidVGRYIn3bdTr9R4ii5k8CQ" data-title="iOS开发--AVPlayer教程(常用功能都在这里了)" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-BUG定位,符号化crash地址" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/">iOS开发--BUG定位,符号化crash地址</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在umeng或者其他的BUG收集的第三方里边大多数的BUG是能够通过crash前的调用信息,定位到具体的方法,从而想办法解决,但是有些BUG信息量很少,只有一个内存地址:</p>
-<p>例如: </p>
-<pre><code>  appname                            0x97525 appname + 615717 
-</code></pre>
-<p>下面本文将介绍通过内存地址,定位BUG文件,调用方法</p>
-<p>步骤:</p>
-<p>1 检查log中的dSYM UUID与本地的dYSM文件是否匹配<br>方法: 打开终端(不知道终端的请略过此文),输入命令</p>
-<pre><code> $1 cd /Users/username/Library/Developer/Xcode/Archives/ xx.xcarchive/dSYMs  
- $2 dwarfdump --uuid appname.app.dSYM  
-</code></pre>
-<p>注:  $1里cd 后的地址是打包时生成的xcode自动生成的本地文件的地址<br>找到此地址的方法打开: xcode-&gt;Window-&gt;Organizer,然后找到对应的release包,右键 Show in Finder</p>
-<p><img src="/hexo-site/images/note/74d27b004018698c9cfa5f0d94a8f5d9.webp" alt="Paste_Image.png"></p>
-<p>会看到扩展名为.xcarchive的文件,这个文件路径(最好用拖文件的方式获取文件路径)后边拼接dSYMs即为这个地址.</p>
-<p><img src="/hexo-site/images/note/617702c4e8b31be8ad6170e096752139.webp" alt="Paste_Image.png"></p>
-<p>$2里dwarfdump –uuid appname.app.dSYM的 appname 替换为你的app的包名就行,别的不用动<br>输出结果:<br>UUID: 9F0AEFA6-4349-30AF-8420-BCEE739DA0B4 (armv7) appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>UUID: 365EF56E-D598-3B94-AD36-BFA13772A4E3 (armv7s) appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>这两个匹配后继续第二步</p>
-<p>2  继续在终端输入命令<br>dwarfdump –arch&#x3D;armv7 –lookup 0x97525  &#x2F;Users&#x2F;username&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;Archives&#x2F;2013-08-30&#x2F;appname\xx.xcarchive&#x2F;dSYMs&#x2F;appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>注: 在$1步的路径后继续拼接 &#x2F;appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>就可以 其中的 appname 替换成自己的包名(也可以自己找到DWARF下的appname文件拖到终端)<br>输出结果为:</p>
-<pre><code>Looking up address: 0x0000000000097525 in .debug_info... found!  
-
-0x00359c67: Compile Unit: length = 0x000066f1  version =     0x0002  abbr_offset = 0x00000000  addr_size = 0x04  (next CU at 0x0036035c)  
-
-0x00359c72: TAG_compile_unit [1] *  
-     AT_producer( &quot;Apple LLVM version 4.2 (clang-425.0.28) (based on LLVM 3.2svn)&quot; )  
-     AT_language( DW_LANG_ObjC )  
-     AT_name( &quot;xxx/EGOImageView.m&quot; )  
-     AT_low_pc( 0x0009710c )  
-     AT_stmt_list( 0x000655c1 )  
-     AT_comp_dir( &quot;xxx&quot; )  
-     AT_APPLE_optimized( 0x01 )  
-     AT_APPLE_major_runtime_vers( 0x02 )  
-
-0x00359e57:     TAG_subprogram [10] *  
-         AT_name( &quot;-[EGOImageView imageLoaderDidFailToLoad:]&quot; )  
-         AT_decl_file( &quot;xxx/EGOImageView.m&quot; )  
-         AT_decl_line( 96 )  
-         AT_prototyped( 0x01 )  
-         AT_APPLE_isa( 0x01 )  
-         AT_low_pc( 0x00097490 )  
-         AT_high_pc( 0x00097572 )  
-         AT_frame_base( r7 )  
-         AT_object_pointer( {0x00359e6e} )  
-Line table dir : &#39;xxx&#39;  
-Line table file: &#39;EGOImageView.m&#39; line 99, column 2 with start address 0x00000000000974fe  
-
-Looking up address: 0x0000000000097525 in .debug_frame... found!  
-
-0x0000c620: FDE  
-length: 0x0000000c  
-CIE_pointer: 0x00000000  
-start_addr: 0x00097490 -[EGOImageView imageLoaderDidFailToLoad:]  
-range_size: 0x000000e2 (end_addr = 0x00097572)  
-Instructions: 0x00097490: CFA=4294967295+4294967295  
-</code></pre>
-<p>信息中的AT_name( “xxx&#x2F;EGOImageView.m” )  就是crash文件,<br> start_addr:就是crash方法<br>此文结束</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" data-id="cuidEVh45iN45csMh2RODfgnQ" data-title="iOS开发--BUG定位,符号化crash地址" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/">iOS开发--Thread-1--EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-subcode=0x0</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>   崩溃的截图：<br>  <img src="/hexo-site/images/note/15f69cd324ef0ffbea5444bb70ba5875.webp" alt="image.png"></p>
-<p>  <img src="/hexo-site/images/note/8c0e06b090bda15a2631fb0dbff35734.webp" alt="image.png">  </p>
-<p> 最近项目中有一个dispatch_group相关的巨坑（此问题解决方法很简单，难点是定位问题），特此记录下来并分享，希望帮助到有需要的人！</p>
-<p>   本文涉及的知识面较广，有一定的逻辑性，如果想真正明白各种原理，请细细读来，如时间紧迫，可记住正确使用方法亦可！</p>
-<p>   阅读本文需要的知识点：</p>
-<pre><code> 1 熟悉AFNetworking
- 2 熟练使用dispatch_group
- 3 了解接口的含义
- 4 熟悉block工作原理
- 5 熟悉地址引用含义
-</code></pre>
-<p>   先把crash场景和解决方案放在开头：</p>
-<p>   crash场景：</p>
-<pre><code>1 有一组多个接口地址
-2 利用  dispatch_group并发请求到数据后，统一回调（必要：利用AF进行网络请求）
-3 频繁调用2（必要）
-4 每次调用2中的请求是同一组接口地址（必要）
-注：频繁的意思是一秒调用3次或3次以上
-</code></pre>
-<p>问题核心： </p>
-<pre><code>对dispatch_group进行了额外的leave操作
-</code></pre>
-<p>问题代码：</p>
-<pre><code>-(void)request{
-    dispatch_group_t group = dispatch_group_create();
-    self.group = group;
-
-   enter代码....
-  [request  requestGetUrl:url success:^(id responds) {
-    leave代码....
-  }];     
-} 
-</code></pre>
-<p>修正后代码：</p>
-<pre><code>-(void)request{
-  if(self.group == nil){
-    dispatch_group_t group = dispatch_group_create();
-    self.group = group;
-  }
-   enter代码....
-  [request  requestGetUrl:url success:^(id responds) {
-    leave代码....
-  }];     
-} 
-</code></pre>
-<p> 我想你肯定在疑惑加一个if判断就解决了问题了，那这个坑应该不大，分分钟搞定，请往下看</p>
-<p>产生此问题的原因：概括的说是dispatch_group的原理和AFNetworking网络请求回调block的缓存回调原理的协作问题</p>
-<p>举例详细说明，流程图如下：<br><img src="/hexo-site/images/note/1ae39c1ded50e2853db32d8e2b8afde7.webp" alt="image.png"></p>
-<pre><code>正常情况下：执行步骤1 的间隔时间充分长，或者只执行一次，此逻辑没有问题，不会crash；
-非正常情况：开头所说的crash出现场景下，即频繁执行上图中步骤1到步骤3
-</code></pre>
-<p>   因为网络请求的耗时和异步特性，这时候会发生一种情况</p>
-<pre><code>1 第一次在步骤1创建了一个新的group1，这时网络请求n1到n4请求未返回，也就是b1到b4
-   还未调用；
-2 此时又执行了一次步骤一创建了一个新的group，命名为group2（这是一个新的，代码见上图），
-  并且赋值给了self.group，又执行步骤二，对group2进行enter，发送网络请求;
-3 此时若是1中的网络请求返回了，b1到b4就会调用，会对步骤2中创建的新的group2进行
-  leave操作，当2中的网络请求返回，进行回调时，会发生对group2进行额外的leave操作，
-  从而造成crash；
-注：b1到b4因为leave的需要，会对group进行地址引用
-</code></pre>
-<p>作者受<a target="_blank" rel="noopener" href="http://satanwoo.github.io/2017/01/07/DispatchGroupCrash/">此文</a>启发，虽场景不同，但原理一致！</p>
-<hr>
-<p>—2018-03-14更新错误代码实例 –start<br>附1：<br>错误代码实例（崩溃截图见代码下边）：</p>
-<pre><code> - (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
-dispatch_group_t group = dispatch_group_create();
-self.group = group;
-dispatch_group_enter(self.group);
-dispatch_group_enter(self.group);
-dispatch_group_enter(self.group);
-dispatch_async(dispatch_get_global_queue(0, 0), ^{
-    dispatch_group_leave(self.group);
-    sleep(2);
-    dispatch_group_leave(self.group);
-     dispatch_group_leave(self.group);
-});
-dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
-    NSLog(@&quot;1234567&quot;);
-});   
-}
-</code></pre>
-<p><img src="/hexo-site/images/note/b097bbe5cf702d7e5b1e07e3a6757f6d.webp" alt="崩溃截图"></p>
-<p> 修正后代码：</p>
-<pre><code>- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
-if(self.group == nil){
-    dispatch_group_t group = dispatch_group_create();
-    self.group = group;
-}
-dispatch_group_enter(self.group);
-dispatch_group_enter(self.group);
-dispatch_group_enter(self.group);
-dispatch_async(dispatch_get_global_queue(0, 0), ^{
-    dispatch_group_leave(self.group);
-    sleep(2);
-    dispatch_group_leave(self.group);
-    dispatch_group_leave(self.group);
-});
-
-dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
-    NSLog(@&quot;1234567&quot;);
-});    
-}
-</code></pre>
-<p>—2018-03-14更新错误代码实例 –end</p>
-<hr>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/" data-id="cuidsBquIWAhcibrMumOi0K9P" data-title="iOS开发--Thread-1--EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-subcode=0x0" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-UITableView+FDTemplateLayoutCell遇到的坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-UITableView+FDTemplateLayoutCell%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-UITableView+FDTemplateLayoutCell%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/">iOS开发-UITableView+FDTemplateLayoutCell遇到的坑</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>最近项目进入重构代码阶段，其中一个重构的方向是：把项目中的手动计算cell高度的逻辑，替换为使用UITableView+FDTemplateLayoutCell进行高度缓存。代码写起来很流畅，刚开始用起来很爽，直接写好约束，在heightForRow方法里调用</p>
-<pre><code>  - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-  return [tableView fd_heightForCellWithIdentifier:@&quot;&quot; configuration:^(UITableViewCell *cell) {
-        cell.epgModel = epgModel;//cell设置数据，更新数据
-    }];
-  }
-</code></pre>
-<p>对FD不熟的小伙伴可以去github搜索学习，这里不再赘述。</p>
-<p>#先说明踩坑经验：FD框架对影响横向布局的控件的hidden很敏感，会影响cell高度的计算准确度。建议对需要隐藏的控件做宽度布局修改为零。</p>
-<p>有兴趣了解”踩坑到出坑“过程的同学可以继续读下去，没兴趣的可以忙别的去了。</p>
-<hr>
-<p>##应用场景如下<br>先来看下cell样式：<br><img src="/hexo-site/images/note/e1c867c6b8b55e10ceacb16f0b8f2ce0.webp" alt="image.png"></p>
-<blockquote>
-<p>简单说明：1 cell分为3种状态, 回看&#x2F;播放中&#x2F;预约</p>
-</blockquote>
-<p>#遇到的问题<br>有的时候cell高度计算不对，导致label无法全部展示。<br><img src="/hexo-site/images/note/4fe3985e038bb504dddc3396c082a99c.webp" alt="错误"></p>
-<p><img src="/hexo-site/images/note/68ac47192ed511e06746f77f47373995.webp" alt="正确"></p>
-<p>##错误说明：<br>”环球综艺秀-2020-23“一行显示不下，需要折行展示；</p>
-<p>##上错误代码：<br>cell的setEpgModel方法内部代码是给cell控件赋值,同时刷新布局；</p>
-<pre><code>-(void)setEpgModel:(CNLiveEPGModel *)epgModel{
- ....
-
-self.livingAnimationView.hidden = YES;
-switch (type) {
-        case Live_Playing:
-    {
-        
-        self.livingAnimationView.hidden = NO;
-  break;
-.....
-
-  }
-</code></pre>
-<p>##修改后代码</p>
-<pre><code>-(void)setEpgModel:(CNLiveEPGModel *)epgModel{
-   ....
-   [self.livingAnimationView mas_remakeConstraints:^(MASConstraintMaker *make) {
-    make.right.equalTo(self.typeButton.mas_left).with.offset(-6);
-    make.centerY.equalTo(self.typeButton);
-    make.height.mas_equalTo(14);
-    make.width.mas_equalTo(0);
-}];
-//self.livingAnimationView.hidden = YES;
-switch (type) {
-        case Live_Playing:
-    {
-   //self.livingAnimationView.hidden = NO;
-        [self.livingAnimationView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.typeButton.mas_left).with.offset(-6);
-            make.centerY.equalTo(self.typeButton);
-            make.height.mas_equalTo(14);
-            make.width.mas_equalTo(15);
-        }];
-  break;
-.....
-  }
-</code></pre>
-<hr>
-<p>#定位问题过程（前方高能）<br>1 看到label显示不全，怀疑是约束的问题，较劲脑汁换约束方法（不管用）<br>2 怀疑是行高cache的问题，打开fd的log，根据错误行高数据查找cache读取&#x2F;存储过程，发现行高方法会执行很多次，有的计算是对的，最后一次总会错误，错误行高有一个规律–只有正直播的数据会错误。<br>3 本着怀疑一切的态度，首先去掉了正直播的数据行高cache</p>
-<blockquote>
-<p>-(CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration;</p>
-</blockquote>
-<p>改为：</p>
-<blockquote>
-<p>-(CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration; （不管用）</p>
-</blockquote>
-<p>4 怀疑是正直播的行高计算问题，单步调试，发现一个问题<br>在cell高度计算不正确的时候，不执行 return [self fd_systemFittingHeightForConfiguratedCell:templateLayoutCell];<br>只会执行到if (configuration) { configuration(templateLayoutCell); }怀疑是这个block的问题</p>
-<blockquote>
-<p>-(CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration {<br>if (!identifier) {<br>    return 0;<br>}<br>UITableViewCell *templateLayoutCell &#x3D; [self fd_templateCellForReuseIdentifier:identifier];<br>&#x2F;&#x2F; Manually calls to ensure consistent behavior with actual cells. (that are displayed on screen)<br>[templateLayoutCell prepareForReuse];<br>&#x2F;&#x2F; Customize and provide content for our template cell.<br>if (configuration) {<br>    configuration(templateLayoutCell);<br>}<br>return [self fd_systemFittingHeightForConfiguratedCell:templateLayoutCell];<br>}</p>
-</blockquote>
-<p>5 把这个block内的代码去掉，发现所有的cell高度均会错误，只能放开block内的代码。</p>
-<pre><code>    - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-  return [tableView fd_heightForCellWithIdentifier:@&quot;&quot; configuration:^(UITableViewCell *cell) {
-        //cell.epgModel = epgModel;//cell设置数据，更新数据
-    }];
-  }
-</code></pre>
-<p>6  既然cell的设置数据有问题，那就需要定位到设置数据方法内具体哪些代码影响了cell高度计算。运用二分大法，最后定位到了是self.livingAnimationView.hidden&#x3D;YES的问题。<br>7 修改self.livingAnimationView.hidden的方案，最后修改为约束宽度为0来代替隐藏控件</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-UITableView+FDTemplateLayoutCell%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" data-id="cuidYgHSuEokDbnMHpyFgYnYC" data-title="iOS开发-UITableView+FDTemplateLayoutCell遇到的坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-YYLable-点击没反应的坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-YYLable-%E7%82%B9%E5%87%BB%E6%B2%A1%E5%8F%8D%E5%BA%94%E7%9A%84%E5%9D%91/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-YYLable-%E7%82%B9%E5%87%BB%E6%B2%A1%E5%8F%8D%E5%BA%94%E7%9A%84%E5%9D%91/">iOS开发--YYLable-点击没反应的坑</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>项目中有一个用户协议入口,是使用YYLable显示的,有高亮和点击事件,点击事件不执行,困扰很久,最后发现是手势冲突的问题:</p>
-<p><img src="/hexo-site/images/note/534df043bd1e10e2bc1ee925a1ae4d63.webp" alt="IMG_0150.JPG"></p>
-<p>界面内有一个textField, 为了收起键盘,在view上添加了tap手势来隐藏键盘:</p>
-<pre><code>UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
-[self.view addGestureRecognizer:tap];
-
-
-- (void)keyboardHide:(UITapGestureRecognizer *)tap {
-[self.view endEditing:true];
-return;
-}
-</code></pre>
-<p>YYLabel添加事件方法:</p>
-<pre><code> - (YYLabel *)readinglabel {
-if (!_readinglabel) {
-    _readinglabel = [[YYLabel alloc] init];
-    _readinglabel.numberOfLines = 2;
-    NSString *concealText = LocatizedStringForKey(@&quot;woyiyuedutongyixieyiheyinsi&quot;);
-    NSRange linkTextRange1 = [concealText rangeOfString:LocatizedStringForKey(@&quot;yonghuxieyi&quot;)];
-    NSRange linkTextRange2 = [concealText rangeOfString:LocatizedStringForKey(@&quot;yinsizhengce&quot;)];
-    NSMutableAttributedString *concealAttrText = [[NSMutableAttributedString alloc]initWithString:concealText attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12],NSForegroundColorAttributeName : [UIColor colorWithRed:180/255.0 green:183/255.0 blue:199/255.0 alpha:1/1.0]}];
-    
-    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
-    paragraphStyle.minimumLineHeight = 17;
-    paragraphStyle.lineSpacing = 5;
-    [concealAttrText addAttributes:@{NSParagraphStyleAttributeName : paragraphStyle} range:NSMakeRange(0, concealAttrText.length)];
-    
-    __weak __typeof(self)weakSelf = self;
-   
-    [concealAttrText yy_setTextHighlightRange:linkTextRange1 color:[UIColor lj_colorWithHexString:@&quot;3D6EFF&quot;] backgroundColor:nil tapAction:^(UIView * _Nonnull containerView, NSAttributedString * _Nonnull text, NSRange range, CGRect rect) {
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        UIViewController *vc = [LJVRSDK VRWebViewControllerWithURL:[NSString stringWithFormat:@&quot;%@%@&quot;,[RSDAPI h5Ycy],[SharedData sharedDataSingleton].NEW_USER_AGREEMENT_HTML] ext:nil showNav:YES showBackButton:NO delegate:nil];
-        [vc setHidesBottomBarWhenPushed:YES];
-        [strongSelf.navigationController pushViewController:vc animated:YES];
-    }];
-    [concealAttrText yy_setTextHighlightRange:linkTextRange2 color:[UIColor lj_colorWithHexString:@&quot;3D6EFF&quot;] backgroundColor:nil tapAction:^(UIView * _Nonnull containerView, NSAttributedString * _Nonnull text, NSRange range, CGRect rect) {
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        UIViewController *vc = [LJVRSDK VRWebViewControllerWithURL:[NSString stringWithFormat:@&quot;%@%@&quot;,[RSDAPI h5Realsee],[SharedData sharedDataSingleton].NEW_PRIVACY_POLICY_HTML] ext:nil showNav:YES showBackButton:NO delegate:nil];
-        [vc setHidesBottomBarWhenPushed:YES];
-        [strongSelf.navigationController pushViewController:vc animated:YES];
-    }];
-    _readinglabel.userInteractionEnabled = YES;
-    _readinglabel.attributedText = concealAttrText;
-    [self.view addSubview:_readinglabel];
-}
-return _readinglabel;
-}
-</code></pre>
-<p>这个手势和YYLabel的富文本添加事件有冲突,造成在点击YYLabel时执行了tap手势方法tap.</p>
-<p>查看 YYLabel的hitTest方法确实返回了YYLabel,但是没有执行.<br>通过查看YYLabel源码发现, YYLabel是通过touchBegin: touchEnd:捉对来确认点击事件,然后根据点击范围来执行对应的action</p>
-<p>所以冲突实质是 touchend 和tap手势的冲突</p>
-<p>以下是测试用例:</p>
-<pre><code>@implementation ViewController
-
- - (void)viewDidLoad {
-[super viewDidLoad];
-// Do any additional setup after loading the view.
-
-UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
-[self.view addGestureRecognizer:tap];
-
-
-}
--(void)viewDidAppear:(BOOL)animated{
-UILabel *label = [[LQLabel alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];
-label.backgroundColor = [UIColor grayColor];
-
-[self.view addSubview:label];
-label.userInteractionEnabled = YES;
-}
--(void)tap{
-NSLog(@&quot;tap&quot;);
-}
-@end
-
-
-@implementation LQLabel
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-// Drawing code
-}
-*/
- -(void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
-NSLog(@&quot;touch begin&quot;);
- }
- -(void)touchesEnded:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
-NSLog(@&quot;touch end&quot;);
- }
-
- @end
-</code></pre>
-<p>点击view的时候 执行tap:</p>
-<pre><code> 2021-07-07 16:01:09.557891+0800 tapWithTouch[23171:2729459] tap
-</code></pre>
-<p>点击LQLabel的时候执行: touch begin 和 tap</p>
-<pre><code> 2021-07-07 16:01:33.989632+0800 tapWithTouch[23171:2729459] touch begin
- 2021-07-07 16:01:34.070506+0800 tapWithTouch[23171:2729459] tap
-</code></pre>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-YYLable-%E7%82%B9%E5%87%BB%E6%B2%A1%E5%8F%8D%E5%BA%94%E7%9A%84%E5%9D%91/" data-id="cuidnY0NomU9lgBB97CzAZTZX" data-title="iOS开发--YYLable-点击没反应的坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-iOS14-Xcode12-适配问题-持续更新" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/">iOS开发--iOS14-Xcode12-适配问题-持续更新</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>最近苹果推了iOS14，Xcode更新到了12，beta版本是12.2，第一时间更新了。跑一下老项目，暂时发现下列问题；</p>
-<h1 id="一-崩溃问题："><a href="#一-崩溃问题：" class="headerlink" title="一 崩溃问题："></a>一 崩溃问题：</h1><h2 id="1-1-由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。"><a href="#1-1-由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。" class="headerlink" title="1.1 由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。"></a>1.1 由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。</h2><p>听云收集的崩溃错误说明如下：<br>     <img src="/hexo-site/images/note/a75e2ceb80b8ea763439efa10ac4f41a.webp" alt="图片.png"></p>
-<p>##相关代码：</p>
-<p>###LQTextModel.h<br>     @interface LQTextModel : LQBaseModel<br>     @property (nonatomic,strong) NSMutableArray &lt;LQItemListModel *&gt; * rightItem;<br>     @end</p>
-<p>崩溃位置代码:</p>
-<blockquote>
-<p>CNVLtemplateItemListModel *keyWord &#x3D; [_dataModel.rightItem firstObject];<br>  keyTitle &#x3D; keyWord.title;&#x2F;&#x2F;崩溃行</p>
-</blockquote>
-<p>##分析：<br>LQTextModel 在字典转模型的时候模型数组rightItem 没有转成功导致 rightItem里存的是字典数组，而不是模型数组，导致取title的时候崩溃。</p>
-<p>##解决方法：<br>使用MJExtension方法声明数组内的对象类名：</p>
-<pre><code>+(NSDictionary *)mj_objectClassInArray{
-    return @{@&quot;rightItem&quot;:@&quot;CNVLtemplateItemListModel&quot;};
-}
-</code></pre>
-<h1 id="1-2-UITableViewCell-点击事件无响应"><a href="#1-2-UITableViewCell-点击事件无响应" class="headerlink" title="1.2 UITableViewCell 点击事件无响应"></a>1.2 UITableViewCell 点击事件无响应</h1><p> UITableViewCell直接使用 [self addSubview:]，会导致点击事件无响应，解决方法是将 [self addSubview:] 换成 [self.contentView addSubview:];(<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3fb93f36026a">来源</a>)（2020-9-22）</p>
-<h1 id="1-3-iOS-14-UITableViewCell-长按手势-UILongPressGestureRecognizer-不生效的问题-需要把手势添加到self-contentView"><a href="#1-3-iOS-14-UITableViewCell-长按手势-UILongPressGestureRecognizer-不生效的问题-需要把手势添加到self-contentView" class="headerlink" title="1.3 iOS 14 UITableViewCell 长按手势 UILongPressGestureRecognizer 不生效的问题, 需要把手势添加到self.contentView"></a>1.3 iOS 14 UITableViewCell 长按手势 UILongPressGestureRecognizer 不生效的问题, 需要把手势添加到self.contentView</h1><h1 id="1-4-私有方法-KVC-不允许使用"><a href="#1-4-私有方法-KVC-不允许使用" class="headerlink" title="1.4 私有方法 KVC 不允许使用"></a>1.4 私有方法 KVC 不允许使用</h1><p>在iOS14下设置UIPageControl的pageimage，会导致奔溃，不能再用了。(<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3fb93f36026a">来源</a>)（2020-9-22）</p>
-<pre><code>[_pageControl setValue:[UIImage imageNamed:@&quot;main_pageControl_dian&quot;] forKeyPath:@&quot;pageImage&quot;];
-[_pageControl setValue:[UIImage imageNamed:@&quot;main_pageControl_xian&quot;] forKeyPath:@&quot;currentPageImage&quot;];
-</code></pre>
-<h2 id="其他发现"><a href="#其他发现" class="headerlink" title="其他发现"></a>其他发现</h2><h3 id="1-Xcode图标变化"><a href="#1-Xcode图标变化" class="headerlink" title="1 Xcode图标变化"></a>1 Xcode图标变化</h3><p><img src="/hexo-site/images/note/5385fd55183a76f610a3f89716c89357.webp" alt="Xcode12之前.png"></p>
-<p><img src="/hexo-site/images/note/6553126313e74ccc514ad62bcde344a6.webp" alt="Xcode12.png"></p>
-<h3 id="2-view-hierarchy-出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知"><a href="#2-view-hierarchy-出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知" class="headerlink" title="2 view hierarchy 出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知"></a>2 view hierarchy 出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知</h3><h3 id="3-archive-打包生成的ipa，名字将不会使用工程名字，而会使用-Display-Name（2020-9-23）"><a href="#3-archive-打包生成的ipa，名字将不会使用工程名字，而会使用-Display-Name（2020-9-23）" class="headerlink" title="3 archive 打包生成的ipa，名字将不会使用工程名字，而会使用 Display Name（2020-9-23）"></a>3 archive 打包生成的ipa，名字将不会使用工程名字，而会使用 Display Name（2020-9-23）</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" data-id="cuidQcIybJZmf_67l9UhfIn8d" data-title="iOS开发--iOS14-Xcode12-适配问题-持续更新" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/" data-id="cuidCLW-EYHOOfD4GgfHRMC9Y" data-title="iOS开发--AVPlayer教程(常用功能都在这里了)" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1025,7 +1025,7 @@ NSLog(@&quot;touch end&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-pod%E9%9B%86%E6%88%90framework-%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6/" data-id="cuidFEW1W6c-WwwhFkYfr0M0I" data-title="iOS开发-pod集成framework-找不到头文件" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-pod%E9%9B%86%E6%88%90framework-%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6/" data-id="cuidwEzctCazeL3_PeO1l9Fuz" data-title="iOS开发-pod集成framework-找不到头文件" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1071,7 +1071,7 @@ NSLog(@&quot;touch end&quot;);
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E7%AE%80%E5%8D%95MVVM%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" data-id="cuidW8mNpsJMDbvnT-Fq6aQyn" data-title="iOS开发--简单MVVM设计模式" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E7%AE%80%E5%8D%95MVVM%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" data-id="cuidGmUETRcgGIm8KStI1B9hk" data-title="iOS开发--简单MVVM设计模式" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1208,5 +1208,5 @@ NSLog(@&quot;touch end&quot;);
 
 
   </div>
-</body>
+<!-- hexo injector body_end start --><script src="/hexo-site/js/skin-switcher.js"></script><!-- hexo injector body_end end --></body>
 </html>
