@@ -12,6 +12,7 @@ import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import { fileURLToPath } from "url";
+import { listNoteMarkdownFiles } from "./note-walk.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -204,10 +205,7 @@ async function main() {
     process.exit(1);
   }
 
-  const mdFiles = fs
-    .readdirSync(NOTE_DIR)
-    .filter((f) => f.endsWith(".md"))
-    .map((f) => path.join(NOTE_DIR, f));
+  const mdFiles = listNoteMarkdownFiles(NOTE_DIR);
 
   const allUrls = new Set();
   for (const fp of mdFiles) {

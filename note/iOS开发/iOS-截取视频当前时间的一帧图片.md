@@ -1,0 +1,43 @@
+最近某视频观看软件新增了几个新的功能---截取视频当前时间的一帧图片进行分享,截取一段视频生成gif图片进行分享,截取一段视频进行分享.
+<!-- more -->
+我们的应用也想要做这几个功能
+本文重点介绍截取视频当前时间的一帧图片.
+阅读本文,我假设你对AVPlayer的使用有一定的了解,如果有疑问可以参考[此文章](http://www.jianshu.com/p/6cb137340732)
+
+截取视频当前时间的一帧图片:需要进行以下2步:
+
+1  给需要截图的视频对应的AVPlayerItem绑定一个AVPlayerItemVideoOutput
+  
+    //生成playerItem
+    playerItem  = [[AVPlayerItem alloc]initWithURL:url];
+    //准备参数字典
+    NSDictionary *settings = @{(id)kCVPixelBufferPixelFormatTypeKey: 
+                                   [NSNumber numberWithInt:kCVPixelFormatType_32BGRA]
+                               };
+    //创建AVPlayerItemVideoOutput
+    videoOutput = [[AVPlayerItemVideoOutput alloc] initWithPixelBufferAttributes:settings];
+    //向playerItem添加AVPlayerItemVideoOutput
+    [playerItem addOutput:videoOutput];
+
+    注:videoOutput是一个强指针的属性,截图的时候需要用到它
+2 截图
+
+     if(player.currentItem.status == AVPlayerStatusReadyToPlay){
+          //获取player的当前播放时间
+          CMTime currentTime = player.currentItem.currentTime;
+          //获取对应时间的缓存上下文
+          CVPixelBufferRef buffer = [videoOutput copyPixelBufferForItemTime:currentTime itemTimeForDisplay:nil];
+          //生成CIImage
+          CIImage *ciImage = [CIImage imageWithCVPixelBuffer:buffer];
+          //生成CGImage
+          CIContext *temporaryContext = [CIContext contextWithOptions:nil];
+          CGImageRef videoImage = [temporaryContext createCGImage:ciImage fromRect:CGRectMake(0, 0, CVPixelBufferGetWidth(buffer), CVPixelBufferGetHeight(buffer))];
+          //转化成UIImage
+          UIImage *image = [UIImage imageWithCGImage:videoImage];
+          //将图片添加到数组(为后续生成GIF图做准备)
+           [self.thumbnailArray addObject:image];
+     }
+如有疑问可以留言交流,也可以到这里下载[Demo工程](https://github.com/CoderLi-Q/AVPlayerDemo)
+友情提示: 
+1 通过AVAssetImageGenerator截取视频的当前时间的图片,只能对本地视频生效(经过本人实际测试说明);
+2 本文说的截图方式适用于AVPlayer的所有视频播放,包括直播视频流/点播视频流/本地视频流/

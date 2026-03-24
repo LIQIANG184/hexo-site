@@ -1,12 +1,12 @@
 ---
 title: "【iOS开发】-the-file-'xxx-app'-couldn't-be-opened-because-you-don't-have-p"
-date: 2026-03-18 18:30:13
+date: 2026-03-18 18:36:04
 tags:
   - 笔记
 categories:
-  - 笔记
+  - "iOS开发"
 from_note: true
-source_note: "【iOS开发】-the-file-'xxx-app'-couldn't-be-opened-because-you-don't-have-p.md"
+source_note: "iOS开发/【iOS开发】-the-file-'xxx-app'-couldn't-be-opened-because-you-don't-have-p.md"
 ---
 
 请确认这里是不是有4个架构，我出现此问题是因为我删除了”arm64“

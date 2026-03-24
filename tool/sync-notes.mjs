@@ -1,11 +1,17 @@
 /**
- * 将 note/ 目录下的 .md 同步为 source/_posts 下的 Hexo 文章。
+ * 将 note/ 目录下的 .md（含子文件夹）同步为 source/_posts 下的 Hexo 文章。
+ * 分类 categories：取 note 下的一级文件夹名；直接放在 note/ 根目录的归为「笔记」。
  * 放在 tool/ 而非 scripts/，避免被 Hexo 当作站点脚本加载。
  */
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import { fileURLToPath } from "url";
+import {
+  listNoteMarkdownFiles,
+  noteRelativePosix,
+  categoryFromNotePath,
+} from "./note-walk.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -63,20 +69,19 @@ function main() {
     }
   }
 
-  const files = fs
-    .readdirSync(NOTE_DIR)
-    .filter((f) => f.endsWith(".md"))
-    .sort((a, b) => a.localeCompare(b, "zh-CN"));
+  const absFiles = listNoteMarkdownFiles(NOTE_DIR);
 
   let n = 0;
   const used = new Set();
 
-  for (const file of files) {
-    const src = path.join(NOTE_DIR, file);
+  for (const src of absFiles) {
+    const relPosix = noteRelativePosix(NOTE_DIR, src);
+    const file = relPosix;
+    const category = categoryFromNotePath(NOTE_DIR, src, "笔记");
     let body = fs.readFileSync(src, "utf8");
-    const title = file.replace(/\.md$/i, "");
+    const title = path.basename(src, path.extname(src));
     const stat = fs.statSync(src);
-    let date = parseDateFromName(file) || stat.mtime;
+    let date = parseDateFromName(path.basename(src)) || stat.mtime;
 
     if (!body.trim()) {
       body = "_（原文为空）_\n";
@@ -89,7 +94,7 @@ function main() {
     let i = 0;
     while (used.has(outName)) {
       i += 1;
-      const h = crypto.createHash("md5").update(file + String(i)).digest("hex").slice(0, 6);
+      const h = crypto.createHash("md5").update(relPosix + String(i)).digest("hex").slice(0, 6);
       outName = `${base}-${h}.md`;
     }
     used.add(outName);
@@ -108,9 +113,9 @@ date: ${dateLine}
 tags:
   - 笔记
 categories:
-  - 笔记
+  - ${yamlString(category)}
 from_note: true
-source_note: ${yamlString(file)}
+source_note: ${yamlString(relPosix)}
 ---
 
 `;

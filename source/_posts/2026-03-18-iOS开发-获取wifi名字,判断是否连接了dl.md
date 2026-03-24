@@ -4,9 +4,9 @@ date: 2026-03-18 18:04:06
 tags:
   - 笔记
 categories:
-  - 笔记
+  - "iOS开发"
 from_note: true
-source_note: "iOS开发--获取wifi名字,判断是否连接了dl.md"
+source_note: "iOS开发/iOS开发--获取wifi名字,判断是否连接了dl.md"
 ---
 
     + (NSString *)wiFiName
