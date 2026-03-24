@@ -37,9 +37,9 @@
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<!-- hexo injector head_end start --><link rel="stylesheet" href="/hexo-site/css/skin.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/hexo-site/css/skin.css"><link rel="stylesheet" href="/hexo-site/css/layout.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
 
-<body>
+<body class="is-blog-index">
   <div id="container">
     <div id="wrap">
       <header id="header">
@@ -81,14 +81,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-2026-03-18-iOS系统控件UIButton的状态-你不知道的小秘密" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS开发-判断字符串内是否包含汉字" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E7%B3%BB%E7%BB%9F%E6%8E%A7%E4%BB%B6UIButton%E7%9A%84%E7%8A%B6%E6%80%81-%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%86%85%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E6%B1%89%E5%AD%97/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:57:12.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
   </div>
 
   </div>
@@ -99,7 +99,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E7%B3%BB%E7%BB%9F%E6%8E%A7%E4%BB%B6UIButton%E7%9A%84%E7%8A%B6%E6%80%81-%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86/">iOS系统控件UIButton的状态--你不知道的小秘密</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%86%85%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E6%B1%89%E5%AD%97/">iOS开发---判断字符串内是否包含汉字</a>
     </h1>
   
 
@@ -107,65 +107,16 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>一   偶然发现<br>  今天在项目中突然发现一个奇怪的问题,按钮在isSelected &#x3D;&#x3D; YES的时候再次点击,按钮的图片变成了normal状态的图片(其实这个问题不奇怪,只是之前一直没有注意这个细节).</p>
-<p>  1 源代码如下:</p>
-<p>  创建代码</p>
-<pre><code>  UIButton *arrowBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 900, 27)];
-  [arrowBtn setImage:[UIImage imageNamed:@&quot;jiantou1&quot;] forState:UIControlStateNormal];
-  [arrowBtn setImage:[UIImage imageNamed:@&quot;jiantou2&quot;] forState:UIControlStateSelected];
-  [superView addSubview:arrowBtn];
-
-  注:防止出现版权问题,其中变量的名字和图片的名字,我做了调整,但是方法是原来的方法;
-</code></pre>
-<p>点击效果如下:<br><img src="/hexo-site/images/note/eddf4484d6f4017bb2baf2b2a483247d.webp" alt="arrow.gif"></p>
-<p>2 解决方案(文章后边有更好的解决办法)<br>我自己想的最直接的办法解决这个问题是不用按钮自带的状态,直接在点击事件里动态改变按钮正常状态的图片<br>具体代码:</p>
-<p>创建代码  </p>
-<pre><code>  UIButton *arrowBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 900, 27)];
-  [arrowBtn setImage:[UIImage imageNamed:@&quot;jiantou1&quot;] forState:UIControlStateNormal];
-  [superView addSubview:arrowBtn];
-  [arrowBtn addTarget:self action:@selector(arrowBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-</code></pre>
-<p>点击事件</p>
-<pre><code>-(void)arrowBtnClicked:(UIButton*)btn{
-</code></pre>
-<p>        if(self.isSelected){<br>            self.isSelected &#x3D; NO;<br>            [btn setImage:[UIImage imageNamed:@”上”] forState:UIControlStateNormal];<br>        }else{<br>            self.isSelected &#x3D; YES;<br>            [btn setImage:[UIImage imageNamed:@”下”] forState:UIControlStateNormal];<br>        }<br>    }</p>
-<p>二 探索发现</p>
-<pre><code>按钮在isSelected == YES的时候再次点击,按钮的图片变成了normal状态的图片
-</code></pre>
-<p>通过这个现象我提出疑问,为什么会是这种效果,难道在isSelected &#x3D;&#x3D; YES的时候再次点击是normal状态吗?<br>为了解决这个问题,我首先想到的是看一下UIButton的状态的API</p>
-<pre><code>typedef NS_OPTIONS(NSUInteger, UIControlState) {
-</code></pre>
-<p>    UIControlStateNormal       &#x3D; 0,<br>    UIControlStateHighlighted  &#x3D; 1 &lt;&lt; 0,                  &#x2F;&#x2F; used when UIControl isHighlighted is set<br>    UIControlStateDisabled     &#x3D; 1 &lt;&lt; 1,<br>    UIControlStateSelected     &#x3D; 1 &lt;&lt; 2,                  &#x2F;&#x2F; flag usable by app (see below)<br>    UIControlStateFocused NS_ENUM_AVAILABLE_IOS(9_0) &#x3D; 1 &lt;&lt; 3, &#x2F;&#x2F; Applicable only when the screen supports focus<br>    UIControlStateApplication  &#x3D; 0x00FF0000,              &#x2F;&#x2F; additional flags available for application use<br>    UIControlStateReserved     &#x3D; 0xFF000000               &#x2F;&#x2F; flags reserved for internal framework use<br>    };<br>我发现按钮的状态是位枚举,不是普通的枚举,也就是说按钮可以有不止一个状态,那我猜想按钮在isSelected &#x3D;&#x3D; YES时,再点击的时候状态应该不是normal状态而是其他状态.<br>后来我搜索了一下相关的说明.在这里<br><a target="_blank" rel="noopener" href="http://commandshift.co.uk/blog/2013/04/16/uibutton-control-states/">http://commandshift.co.uk/blog/2013/04/16/uibutton-control-states/</a><br>发现了相关的说明:</p>
-<pre><code>So why would you care about this? Say you were implementing an edit button or 
-a selection button with text, a background image and an image. You want different 
-text and images for the selected and unselected states (e.g. Editand Done), 
-but you also want to modify the images or background images when highlighting -
-if you’re creating your own theme for the app then the default darkening or 
-dimming might not be what you want.
-So you actually need four images - normal, highlighted, selected 
-and selected + highlighted.
-This is achieved like so:
-
-[self.button setImage:normal     forState:UIControlStateNormal];
-[self.button setImage:highlighted forState:UIControlStateHighlighted];
-[self.button setImage:selected forState:UIControlStateSelected];
-[self.button setImage:selectedHighlighted forState:UIControlStateSelected | UIControlStateHighlighted];
-</code></pre>
-<p>也就是说按钮其实有两类,四种状态<br>1 在isSelected &#x3D;&#x3D; NO的时候,有两种分别对应 UIControlStateNormal 和 UIControlStateHighlighted<br>2 在isSelected &#x3D;&#x3D; YES的时候,有两种分别对应 UIControlStateSelected 和 UIControlStateSelected | UIControlStateHighlighted</p>
-<p>由以上的说明,我猜想出现 “按钮在isSelected &#x3D;&#x3D; YES的时候再次点击,按钮的图片变成了normal状态的图片”情况的原因就是没有设置UIControlStateSelected | UIControlStateHighlighted状态的图片,系统默认会显示UIControlStateNormal状态的图片</p>
-<p>所以又产生了第二种解决办法,将按钮的<br>UIControlStateSelected | UIControlStateHighlighted状态的图片<br>设置成UIControlStateSelected状态的图片<br>代码如下:</p>
-<pre><code>UIButton *arrowBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 900, 27)];
-[arrowBtn setImage:[UIImage imageNamed:@&quot;jiantou1&quot;] forState:UIControlStateNormal];
-[arrowBtn setImage:[UIImage imageNamed:@&quot;jiantou2&quot;] forState:UIControlStateSelected];
-[arrowBtn setImage:[UIImage imageNamed:@&quot;jiantou2&quot;] forState:UIControlStateSelected | UIControlStateHighlighted];
-[superView addSubview:arrowBtn];
-</code></pre>
-<p>三 延展<br>通过按钮的图片也就是image,我猜想类似的应该也适用于<br>    - (void)setTitle:(nullable NSString *)title forState:(UIControlState)state;                     &#x2F;&#x2F; default is nil. title is assumed to be single line<br>    - (void)setTitleColor:(nullable UIColor *)color forState:(UIControlState)state UI_APPEARANCE_SELECTOR; &#x2F;&#x2F; default if nil. use opaque white<br>    - (void)setTitleShadowColor:(nullable UIColor *)color forState:(UIControlState)state UI_APPEARANCE_SELECTOR; &#x2F;&#x2F; default is nil. use 50% black<br>    - (void)setImage:(nullable UIImage *)image forState:(UIControlState)state;                      &#x2F;&#x2F; default is nil. should be same size if different for different states<br>    - (void)setBackgroundImage:(nullable UIImage *)image forState:(UIControlState)state UI_APPEARANCE_SELECTOR; &#x2F;&#x2F; default is nil<br>    - (void)setAttributedTitle:(nullable NSAttributedString *)title forState:(UIControlState)state NS_AVAILABLE_IOS(6_0); &#x2F;&#x2F; default is nil. title is assumed to be single line<br>本文就不做相关测试了,有兴趣的同学可以试试!</p>
-
+        <p class="article-excerpt-auto">废话不多说直接上代码: -(BOOL) isChinese:(NSString *) str { for(int i&#x3D;0; i&lt; [str length];i++) { int a &#x3D; [str characterAtIndex:i]; if( a &gt; 0x4E00 &amp;&amp; a &lt; 0x9FFF) { return YES; } } return NO; }</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%86%85%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E6%B1%89%E5%AD%97/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E7%B3%BB%E7%BB%9F%E6%8E%A7%E4%BB%B6UIButton%E7%9A%84%E7%8A%B6%E6%80%81-%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86/" data-id="cuiduVotBJg4y4XrPKOZ_TI5h" data-title="iOS系统控件UIButton的状态--你不知道的小秘密" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%86%85%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E6%B1%89%E5%AD%97/" data-id="cuid4bqk05lSNtADEXQ5MnyOt" data-title="iOS开发---判断字符串内是否包含汉字" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -179,14 +130,14 @@ This is achieved like so:
 
 
   
-    <article id="post-2026-03-18-【MAC软件】-StarUML简单使用教程" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS开发-解析json出错-NSCocoaErrorDomain-Code=3840" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC%E8%BD%AF%E4%BB%B6%E3%80%91-StarUML%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%A7%A3%E6%9E%90json%E5%87%BA%E9%94%99-NSCocoaErrorDomain-Code=3840/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:57:04.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
   </div>
 
   </div>
@@ -197,7 +148,7 @@ This is achieved like so:
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC%E8%BD%AF%E4%BB%B6%E3%80%91-StarUML%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/">【MAC软件】---StarUML简单使用教程</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%A7%A3%E6%9E%90json%E5%87%BA%E9%94%99-NSCocoaErrorDomain-Code=3840/">iOS开发---解析json出错-NSCocoaErrorDomain-Code=3840</a>
     </h1>
   
 
@@ -205,51 +156,16 @@ This is achieved like so:
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>最近了解到StarUML比较多，所以写一篇教程供大家，不足之处，请见谅。</p>
-<p>StarUML(简称SU)，是一种创建UML类图，生成类图和其他类型的统一建模语言(UML)图表的工具。StarUML是一个开源项目之一发展快、灵活、可扩展性强(zj).</p>
-<p>StarUML官方下载地址： <a target="_blank" rel="noopener" href="http://staruml.io/download">http://staruml.io/download</a></p>
-<p>安装教程：<br>安装步骤很简单，省略。<br>注意：付费软件，如需破解网上很多教程，不破解不影响使用</p>
-<p>安装之后的主界面简介如图所示：<br><img src="/hexo-site/images/note/c0133780020d84a2a3d47516f57ffb01.webp" alt="image.png"></p>
-<p>2.创建工程<br>在启动star UML时，系统会默认帮我们创建一个工程</p>
-<p>如果这个工程不是你想要的工程，你可以点击File–》new from template中修改为你需要的工程类型。如图所示。<br> <img src="/hexo-site/images/note/d49f6b6a0a618c666f1b3c98c0a78599.webp" alt="image.png"></p>
-<p>3.介绍类与类之间的关系<br>既然介绍类图，我们首先了解，什么是类？<br>类图: 类图是面向对象系统建模中最常用和最重要的图，是定义其它图的基础。类图主要是用来显示系统中的类、接口以及它们之间的静态结构和关系的一种静态模型。<br>类图的3个基本组件：类名、属性、方法。<br>类的几个主要关系：实现，关联，泛化，聚合，组合，依赖<br>在StarUML中默认打开的“toolbox”工具中就是类相关的一下基础功能组件，以及组件的功能简介基础组件中有类实例，以及描述类的各个功能组件。如图所示。 </p>
-<p><img src="/hexo-site/images/note/a608fe28e613ae138d4f0e02f8d4c1f1.webp" alt="image.png"></p>
-<p>类组件的基本操作介绍：<br>单击选择Class，至工作区域内单机左键，即可创建一个class实例。创建实例后，周围会出现一堆，功能按钮，去描述这个类，如图所示。图后会有介绍各个租价功能的介绍。<br> <img src="/hexo-site/images/note/2e2fcad3f62ff6e346a93ed8889cea19.webp" alt="image.png"></p>
-<p>功能介绍： </p>
-<ol>
-<li>用来标识Class的可见性（默认为public） </li>
-<li>用来添加note的，比如：类的说明 </li>
-<li>增加类的属性 </li>
-<li>增加类的操作方法。 </li>
-<li>增加Reception </li>
-<li>增加子类 </li>
-<li>增加父类 </li>
-<li>添加已有的接口 </li>
-<li>添加需要的接口 </li>
-<li>添加关联 </li>
-<li>添加聚合 </li>
-<li>添加组合 </li>
-<li>添加端口 </li>
-<li>添加部件</li>
-</ol>
-<p>泛化（继承）<br>泛化关系是类元的一般描述和具体描述之间的关系，具体描述建立在一般描述的基础之上，并对其进行了扩展。具体描述完全拥有一般描述的特性、成员和关系， 并且包含补充的信息。在Java中用“extend”来表示此关系。举个计算机的例子来说：冯诺依曼结构是最初的计算机结构，无论是个人计算机，服务器，还是超级计算机，都具有该特性，并在此特性上进行了扩展。<br>UML图中实现泛化管理的描述，在类图中使用带空心三角箭头的实线表示，箭头从子类、子接口指向父类、父接口。具体如图所示。<br><img src="/hexo-site/images/note/74a00e10333f56043777d4c7a7268ccf.webp" alt="image.png"></p>
-<p>实现<br>实现指的是一个class类实现interface接口（可以是多个）的功能，实现是类与接口之间最常见的关系。在类图中使用带空心三角箭头的虚线表示，箭头从实现类指向接口。如图。<br><img src="/hexo-site/images/note/d546bd64eea2b8861b818b8497801636.webp" alt="image.png"></p>
-<ol start="3">
-<li>依赖<br>类A的实现需要引用类B，这就是依赖，这种使用关系是具有偶然性的、临时性的、非常弱的，而B类的变化会影响到A，则A与B存在依赖关系，依赖关系是弱的关联关系。例如：人依赖计算机去做软件开发。在UML类图设计中，依赖关系用由类A指向类B的带箭头虚线表示。如图所示。<br><img src="/hexo-site/images/note/b9c6df4baab000055496a8e230f7dd1a.webp" alt="image.png"></li>
-</ol>
-<p>聚合<br>聚合是关联关系的一种特例，它体现的是整体与部分的关系，是has-a的关系，此时整体与部分之间是可分离的，即没有了整体，局部也可单独存在。就比如我们航母战斗群：驱逐舰，巡洋舰，护卫舰，航空母舰等。在UML类图设计中，聚合关系以空心菱形加实线箭头表示如图所示。<br><img src="/hexo-site/images/note/51eb12cfa8524e8e1e953d48a6c2f153.webp" alt="image.png"></p>
-<ol start="5">
-<li>组合<br>是一种contains-a的关系，部分不能脱离整体存在。这是一种比聚合更强的关系，又称强聚合。整体的生命周期即为组成部分的生命周期。例如：人和人的构成部分大脑，心脏等。在UML类图设计中，组合关系以实心菱形加实线箭头表示。 如图所示。<br><img src="/hexo-site/images/note/6a809fd064453a695e4ac40a1068de27.webp" alt="image.png"></li>
-</ol>
-<p>StarUML制作用例图<br>该软件最常用的功能就是制作用例图，时序图，序列图等，本节以用例图为基础讲解基本使用。<br>单击Model选择Add Diagram 会出现许多模型，选择你想要使用的，如我想要使用：用例图，则我选择Use Case Diagram如图所示。选择后，tool box会产生相应的变化，更新出配套的功能组件，如图所示。<br> <img src="/hexo-site/images/note/2b60435e31b53a11c4d9b9f7162c593b.webp" alt="image.png"></p>
-<p>Tool box工具盒中有用例图的参与者（Actor）、用例 （Use Case）、系统边界、箭头等工具组成。我们可以根据需要选择恰当的工具。模拟制作图书馆的一部分用例：学生借书的操作如图所示。<br><img src="/hexo-site/images/note/de4e79aae10879e04d13f5557acd684b.webp" alt="image.png"></p>
-<hr>
-<p>作者：luansha0<br>来源：CSDN<br>原文：<a target="_blank" rel="noopener" href="https://blog.csdn.net/luansha0/article/details/82260678">https://blog.csdn.net/luansha0/article/details/82260678</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p>
-
+        <p>  最近线上版本发现一个页面无法正常显示数据，经过排查，定位到是接口返回的json有问题，导致无法正确解析。</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%A7%A3%E6%9E%90json%E5%87%BA%E9%94%99-NSCocoaErrorDomain-Code=3840/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC%E8%BD%AF%E4%BB%B6%E3%80%91-StarUML%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" data-id="cuidKHZWgc7RH7-xOzD1kvkTp" data-title="【MAC软件】---StarUML简单使用教程" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%A7%A3%E6%9E%90json%E5%87%BA%E9%94%99-NSCocoaErrorDomain-Code=3840/" data-id="cuidoqcWCXQYWTnxWQhYDERds" data-title="iOS开发---解析json出错-NSCocoaErrorDomain-Code=3840" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -263,14 +179,14 @@ This is achieved like so:
 
 
   
-    <article id="post-2026-03-18-【iOS开发】-UICollectionView复用的坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS工具-解压缩" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-UICollectionView%E5%A4%8D%E7%94%A8%E7%9A%84%E5%9D%91/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%B7%A5%E5%85%B7-%E8%A7%A3%E5%8E%8B%E7%BC%A9/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:57:00.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/">工具分享</a>
   </div>
 
   </div>
@@ -281,7 +197,7 @@ This is achieved like so:
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-UICollectionView%E5%A4%8D%E7%94%A8%E7%9A%84%E5%9D%91/">【iOS开发】--UICollectionView复用的坑</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%B7%A5%E5%85%B7-%E8%A7%A3%E5%8E%8B%E7%BC%A9/">iOS工具--解压缩</a>
     </h1>
   
 
@@ -289,68 +205,16 @@ This is achieved like so:
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>最近项目需要用到UICollectionView显示网络图片，在写demo时遇到一个BUG我想要这个效果（最后一个是加号，点击进入相册）<br><img src="/hexo-site/images/note/cd4a420a2b6b2e892cd4e6dda4b6c277.webp" alt="image.png"><br>这个很简单，很快写完，运行如下图：<br><img src="/hexo-site/images/note/3035784dad5bd14dff64b1242844f74e.webp" alt="image.png"><br>怎么回事？为什么加号没有显示？</p>
-<p>有此BUG的代码在这里，有想挑战一下的可以去<a target="_blank" rel="noopener" href="https://github.com/CoderLi-Q/CollectionviewBUG">下载</a><br>,解决完了，记得回来看看。</p>
-<p>显示加号的逻辑很简单，在cellForItemAtIndexPath：数据源方法里判断一下：</p>
-<pre><code>    CollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@&quot;CollectionCell&quot; forIndexPath:indexPath];
- if (indexPath.item == self.dataSourses.count) {
-    //显示加号,隐藏叉号：
-    cell.image = [UIImage imageNamed:@&quot;123&quot;];
-    cell.deleteButton.hidden = YES;
-} else {
-   //显示图片
-   cell.model = self.dataSourses[indexPath.item];
-}
-</code></pre>
-<p>CollectionCell.m</p>
-<pre><code>- (void)setMedia:(Model *)media {
-     _media = media;
-    [self.imageV sd_setImageWithURL:[NSURL URLWithString:media.imagUrl]];
-}
-</code></pre>
-<p>赋值图片的时候,很简单的用了SD，不应该有问题啊,通过观察可知，貌似是因为复用的问题。</p>
-<p>   在此先给出此问题的解决方法：</p>
-<p>解法1：在reload的时候不要加异步主线程（此方法不推荐）</p>
-<pre><code>    //dispatch_async(dispatch_get_main_queue(), ^{
-    [self.collectionView reloadData];
-  // });
-</code></pre>
-<p>解法2：在赋值dataSourses地方加延迟</p>
-<pre><code>dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-
-    collectionV.dataSources = @[
-                                @&quot;http://pic32.nipic.com/20130823/13339320_183302468194_2.jpg&quot;,
-                                @&quot;http://pic40.nipic.com/20140412/18428321_144447597175_2.jpg&quot;,
-                                @&quot;http://k.zol-img.com.cn/sjbbs/7692/a7691515_s.jpg&quot;];
-});
-</code></pre>
-<p>解法3：让reloadData方法在SD的线程安全宏里执行</p>
-<pre><code> dispatch_main_async_safe(^{
-    [self.collectionView reloadData];
-);
-</code></pre>
-<p>解法4：cellForItemAtIndexPath里的代码加一行代码</p>
-<pre><code>CollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@&quot;CollectionCell&quot; forIndexPath:indexPath];
- if (indexPath.item == self.dataSourses.count) {
-    cell.imageV sd_cancelCurrentImageLoad]；//加上此行代码
-    //显示加号,隐藏叉号：
-    cell.image = [UIImage imageNamed:@&quot;123&quot;];
-    cell.deleteButton.hidden = YES;
-} else {
-   //显示图片
-   cell.model = self.dataSourses[indexPath.item];
-}
-</code></pre>
-<p>分析过程：<br>   1  在cellForItemAtIndexPath方法里的打断点：<br> <img src="/hexo-site/images/note/4a12a878565b0f1f7314125b82a69e60.webp" alt="image.png"><br>发现执行过程没有太大问题，有个小问题是方法走了 2*4&#x3D;8次；也就是说有两次reloadData的过程。<br>2 在reload方法里打个断点，发现只执行了一次，那为什么执行两遍数据源方法呢？<br>   <img src="/hexo-site/images/note/47b297baeebbe9839aad2c044a51ebec.webp" alt="image.png"><br>3 得出结论系统会隐式调用一遍数据源方法<br>4 到这里还是没有找打问题的原因，既然imageview有问题，那我就看一下imageview的setImage方法执行的细节，我把cell中的imageV换成了继承与UIImageView的LQImageView，重写了setImage方法:<br><img src="/hexo-site/images/note/cd3a4560b7169194689ae183bbfa8bd1.webp" alt="image.png"><br>打印结果：<br><img src="/hexo-site/images/note/35069bb07579727d5704e62c9c17da5b.webp" alt="image.png"><br>经过分析得出结论：</p>
-<pre><code>两次reload的 加号的那个cell有问题，reload2 覆盖了reload1 的所有图片，除了reload2
-的加号，因为reload2的加号cell是直接setImage了，随后SD异步图片回来了，又赋值一次，
-这个图片是reload1的异步图片
-</code></pre>
-
+        <p>最近的项目中涉及到了将zip文件从服务上下载下来，然后解压使用。搜索了一下发现有一个压缩与解压zip文件的第三方“SSZipArchive”：<a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=https://github.com/ZipArchive/ZipArchive">https://github.com/ZipArchive/ZipArchive</a> 是用C语言实现的，包装用于OC与swift.</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%B7%A5%E5%85%B7-%E8%A7%A3%E5%8E%8B%E7%BC%A9/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-UICollectionView%E5%A4%8D%E7%94%A8%E7%9A%84%E5%9D%91/" data-id="cuidrvKrJj7J5waCCauMcq177" data-title="【iOS开发】--UICollectionView复用的坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%B7%A5%E5%85%B7-%E8%A7%A3%E5%8E%8B%E7%BC%A9/" data-id="cuidCEu7BU8ysO-CaVjZQGlH6" data-title="iOS工具--解压缩" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -364,14 +228,14 @@ This is achieved like so:
 
 
   
-    <article id="post-2026-03-18-【iOS开发】-@weakify、@strongify原理解析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS-drawRect-实现小船随波浪起伏的动画" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-@weakify%E3%80%81@strongify%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS-drawRect-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E8%88%B9%E9%9A%8F%E6%B3%A2%E6%B5%AA%E8%B5%B7%E4%BC%8F%E7%9A%84%E5%8A%A8%E7%94%BB/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:56:46.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a>
   </div>
 
   </div>
@@ -382,7 +246,7 @@ This is achieved like so:
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-@weakify%E3%80%81@strongify%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/">【iOS开发】--@weakify、@strongify原理解析</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS-drawRect-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E8%88%B9%E9%9A%8F%E6%B3%A2%E6%B5%AA%E8%B5%B7%E4%BC%8F%E7%9A%84%E5%8A%A8%E7%94%BB/">iOS-drawRect-实现小船随波浪起伏的动画</a>
     </h1>
   
 
@@ -390,231 +254,18 @@ This is achieved like so:
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="很长的前言"><a href="#很长的前言" class="headerlink" title="很长的前言"></a>很长的前言</h2><p>在block语句块中，如果需引用self，而self对象中又持有block对象，就会造成循环引用<code>循环引用(retain cycle)</code>，导致内存泄露，比如以下代码</p>
-<pre><code>  self.block = ^{
-    [self description];
-};
+        <p>最近有朋友让我帮他看一个demo的实现,这个demo需求描述很简单: </p>
+<pre><code> 实现小船随波浪起伏的动画    
 </code></pre>
-<p>一般我们是这么解决的，使用一个<code>__weak</code>修饰的weakSelf变量指向self对象，在block中使用weakSelf:</p>
-<pre><code> __weak typeof(self) weakSelf = self;
-self.block = ^{
-    [weakSelf description];
-};
-</code></pre>
-<p>但是酱紫写，还是可能出问题，因为weakSelf是弱引用，而self一旦释放了，weakSelf可能为nil，还是举个栗子吧:1.先定义一个TestObj对象，他的属性有一个block对象</p>
-<pre><code>@interface TestObj : NSObject
-@property (nonatomic, copy)void(^block)();
-@end
-
-@implementation TestObj
-- (void)dealloc {
-NSLog(@&quot;%s&quot;,__func__);
-}
-- (instancetype)init {
-self = [super init];
-if (self) {
-    __weak typeof(self) weakSelf = self;
-    self.block = ^{
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            [NSThread sleepForTimeInterval:1];
-            NSLog(@&quot;%@&quot;,weakSelf);
-        });
-    };
-}
-return self;
-}
-
-@end
-</code></pre>
-<p>2.再另一个类实例中定义一个testFunc方法</p>
-<pre><code>- (void)testFunc{
-TestObj *obj = [TestObj new];
-obj.block();
-</code></pre>
-<p>}</p>
-<p>执行<code>testFunc</code>方法，结果是打印的是(null)，因为block里打印的方法是异步执行的，在 <code>NSLog(@&quot;%@&quot;,weakSelf);</code>这句代码执行之前<code>testFunc</code>函数就结束，所以<code>obj</code>对象已经被release了。怎么解决呢？所以再对<code>weakSelf</code>做一次 <code>__strong</code>就可以了:</p>
-<pre><code>__weak typeof(self) weakSelf = self;
-    self.block = ^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            [NSThread sleepForTimeInterval:1];
-            NSLog(@&quot;%@&quot;,strongSelf);
-        });
-    };
-}
-</code></pre>
-<p>使用了<code>__strong</code>在dispatch_async 里边 block 代码执行完毕之前，对<code>self</code>有一个引用，防止对象(self)提前被释放。而作用域一过，<code>strongSelf</code>不存在了，对象(self)也会被释放，具体可以看看我之前写的<a target="_blank" rel="noopener" href="http://ziecho.com/post/ios/2015-09-02">这篇文章</a>。</p>
-<h2 id="1-问题"><a href="#1-问题" class="headerlink" title="1.问题"></a>1.问题</h2><p>前面的写法虽然严谨了，也解决了问题了，但是作为喜欢偷懒的程序猿，会不会觉得很啰嗦？每次都要写那两条长长的<code>__weak</code>和<code>__strong</code>，而且在block里用到的self的全部要改成strongSelf，假设把一段很多self的代码拷贝到block里，一个个改成strongSelf是不是很蛋疼？</p>
-<h2 id="2-RAC是怎么解决的"><a href="#2-RAC是怎么解决的" class="headerlink" title="2.RAC是怎么解决的"></a>2.RAC是怎么解决的</h2><pre><code>@weakify(self);
-[[button rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
-@strongify(self);
-[self popViewControllerAnimated:YES];
-}];
-</code></pre>
-<p>只要在block外用了@weakify(self);然后再block里写@strongify(self);就可以了，@strongify(self);语句后的的self可以原封不动，好像很神奇，下面一起看看@weakify、@strongify 这两个神奇的宏最终替换了什么东西。导入RAC的头文件，把上面的测试代码替换成RAC中用的@weakify(self);和@strongify(self), 分屏显示Xcode，让右侧的显示内容改为 preprocess“,就可以看到宏最终替换的结果。</p>
-<p><img src="/hexo-site/images/note/f1f78914433a4f2984e5bf9d4a6f7cff.webp" alt="image.png"></p>
-<ol>
-<li>@autoreleasepool {} 是什么鬼？</li>
-</ol>
-<p>注意到@weakify(self)前面的@颜色并不是橙色没有？<code>@</code>并不属于宏的一部分，当然你不能平白无故写个@对吧，所以RAC的weakify宏定义机智地给你补了一句<code>autoreleasepool {}</code> 这样一前一后就变成了啥事都没干的@autoreleasepool {}</p>
-<ol>
-<li><p><strong>attribute</strong>((objc_ownership(weak)))是什么鬼？</p>
-<p>这个就是__weak在编译前被编译器替换的结果，而weakify这个宏最终替换的代码包含有__weak（后面说到），所以编译器再替换就成了__attribute__((objc_ownership(weak)))</p>
-</li>
-</ol>
-<h2 id="2-weakify、strongify的定义"><a href="#2-weakify、strongify的定义" class="headerlink" title="2.weakify、strongify的定义"></a>2.weakify、strongify的定义</h2><h3 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h3><ol>
-<li><code>...</code>和 <code>__VA_ARGS__</code></li>
-</ol>
-<p>看下<code>NSLog</code>和<code>printf</code>，他们的传入参数有多个，用…表示不确定参数个数，看看NSLog的定义：<code>NSLog(NSString *format, ...)</code>在宏里也可以用<code>...</code>来表示多个参数，而<code>__VA_ARGS__</code>就对应多个参数的部分。举个例子，你觉得NSLog太难看，想造一个自己的log打印函数，比如Zlog你就可以这么写：<code>#define Zlog(...) NSLog(__VA_ARGS__)</code></p>
-<ol>
-<li>宏连接符<code>##</code>:</li>
-</ol>
-<p><code>##</code>这个符号 会将出现在 <code>##</code> 左右两边连接的东西起来,举个例子：宏定义为<code>#define XLink(n) x ## n</code>，这宏的意思是把x和传入的n连接起来书写:</p>
-<pre><code>#define XLink(n) x ## n
-int x1 = 1;
-int x2 = 2;
-int x3 = 3;
-//打印x1 x2 x3
-NSLog(@&quot;%d&quot;,XLink(1)); //NSlog(@&quot;%zd&quot;,x1);
-NSLog(@&quot;%d&quot;,XLink(2)); //NSlog(@&quot;%zd&quot;,x2);
-NSLog(@&quot;%d&quot;,XLink(3)); //NSlog(@&quot;%zd&quot;,x3);
-</code></pre>
-<h3 id="一层层展开weakify"><a href="#一层层展开weakify" class="headerlink" title="一层层展开weakify"></a>一层层展开weakify</h3><p>假设我们写了@weakify(self) 发生了什么第一层：</p>
-<pre><code>#define weakify(...) \
- rac_keywordify \
- metamacro_foreach_cxt(rac_weakify_,, __weak, __VA_ARGS__)
-</code></pre>
-<p><code>rac_keywordify</code> 实际上就是<code>autoreleasepool {}</code>的宏替换而__VA_ARGS__就是对应我们传入的参数这里我们就可以变成这样：</p>
-<pre><code>autoreleasepool {} 
-metamacro_foreach_cxt(rac_weakify_,, __weak, self)
-</code></pre>
-<p>第二层：</p>
-<pre><code>#define metamacro_foreach_cxt(MACRO, SEP, CONTEXT, ...) \
- metamacro_concat(metamacro_foreach_cxt, metamacro_argcount(__VA_ARGS__))(MACRO, SEP, CONTEXT, __VA_ARGS__)
-</code></pre>
-<p>这一层开始就比较神奇了，替换第一层的结果就变成这样：</p>
-<pre><code>autoreleasepool {}
-metamacro_concat(metamacro_foreach_cxt, metamacro_argcount(self))(rac_weakify_,  , __weak, self)
-</code></pre>
-<p>我们先看<code>metamacro_argcount(self)</code>这部分，<code>metamacro_argcount(...)</code>这个宏很强大，可以替换可变参数(…)的个数：举个例子metamacro_argcount(@”obj”) &gt; 会被替换成<code>1</code>metamacro_argcount(@”obj”，@“obj”) &gt; 会被替换成<code>2</code>所以metamacro_argcount(self) &gt; 会被替换成<code>1</code>(只有一个参数)再看看metamacro_concat的定义：</p>
-<pre><code>#define metamacro_concat(A, B) \
- metamacro_concat_(A, B)
-</code></pre>
-<p>居然还包了一次，那好，再点进去看看metamacro_concat_的定义</p>
-<pre><code>#define metamacro_concat_(A, B) A ## B
-</code></pre>
-<p>嗯，搞了半天就是之前说到的宏连接符 <code>##</code>所以metamacro_concat(A, B) 就是把A、B连接起来变成AB根据上面分析的metamacro_argcount(self) &gt; 1 ，再用metamacro_concat连接：</p>
-<pre><code>autoreleasepool {}
-metamacro_foreach_cxt ## 1 (rac_weakify_,  , __weak, self)
-</code></pre>
-<p>也就是：</p>
-<pre><code>autoreleasepool {}
-metamacro_foreach_cxt1(rac_weakify_,  , __weak, self)
-</code></pre>
-<p>第三层：<code>metamacro_foreach_cxt1</code> 没错,不要怀疑，他还定义了metamacro_foreach_cxt1这个后面数组为1的宏，搜索一下：</p>
-<p><img src="/hexo-site/images/note/273894f4f0cd379be7869da1388df4a1.webp" alt="image.png"></p>
-<p>嗯，你没猜错，有metamacro_foreach_cxt1就有metamacro_foreach_cxt2、3、4、5、6、7、8…，这些是什么鬼，我们先不管，先看我们的metamacro_foreach_cxt1</p>
-<pre><code>#define metamacro_foreach_cxt1(MACRO, SEP, CONTEXT, _0) MACRO(0, CONTEXT, _0)
-</code></pre>
-<p>替换第二层分析的结果：</p>
-<pre><code>autoreleasepool {}
-rac_weakify_（0,__weak,self）    
-</code></pre>
-<p>额，好像明朗起来了，毫不犹豫看看rac_weakify这个宏是怎么定义的：</p>
-<pre><code>#define rac_weakify_(INDEX, CONTEXT, VAR) \
- CONTEXT __typeof__(VAR) metamacro_concat(VAR, _weak_) = (VAR);
-</code></pre>
-<p>再替换一次：<code>__weak __typeof__(self) self ## _weak_ = self</code>最终真相大白变成：</p>
-<pre><code>autoreleasepool {}__weak __typeof__(self) self_weak_ = self
-</code></pre>
-<p>同理 strongify(self) 这个宏最终展开是这样的，注意这里他重新定义了self，在block语句块里面是允许这么干的，之后用self就是文章一开头的使用strongSelf一样。</p>
-<pre><code>autoreleasepool {}
- __attribute__((objc_ownership(strong))) __typeof__(self) self = self_weak_;
-</code></pre>
-<p>裤子都脱了 你就给我看这个?有人要问了 为什么不直接用rac_weakify_就好，搞那么复杂饶了一大圈，这不是装逼么 - -其实饶了一大圈的函数就是 @weakify(…);可以支持最多20个参数比如： @weakify(ob1,obj2…,obj20);最终会替换成：</p>
-<pre><code>@autoreleasepool {}
-__weak type(obj1) obj1_weak_ = obj1;
-__weak type(obj2) obj2_weak_ = obj2;
-...
-__weak type(obj20) obj20_weak_ = obj20;
-</code></pre>
-<p>下面，我们来讲一讲RAC是怎么装逼的。</p>
-<h2 id="3-RAC装逼宏"><a href="#3-RAC装逼宏" class="headerlink" title="3.RAC装逼宏"></a>3.RAC装逼宏</h2><h3 id="metamacro-argcount-的定义"><a href="#metamacro-argcount-的定义" class="headerlink" title="metamacro_argcount 的定义"></a>metamacro_argcount 的定义</h3><p>前面说过metamacro_argcount这个宏可以把可变参数…替换成参数的个数，看看他的定义:</p>
-<pre><code>#define metamacro_argcount(...) \
- metamacro_at(20, __VA_ARGS__, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
-</code></pre>
-<p>一脸懵逼？没关系，我们一层层来看：假设：metamacro_at(self)就变成：metamacro_at(20, self, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)</p>
-<p>看看metamacro_at的定义</p>
-<pre><code>#define metamacro_at(N, ...) \
- metamacro_concat(metamacro_at, N)(__VA_ARGS__)
-</code></pre>
-<p>替换进去就是</p>
-<pre><code>metamacro_concat(metamacro_at, 20)(self, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
-</code></pre>
-<p>之前已经知道<code>metamacro_concat</code>是连接宏，所以变成</p>
-<pre><code>metamacro_at20(self, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
-</code></pre>
-<p>搜索<code>metamacro_at20</code></p>
-<p><img src="/hexo-site/images/note/39c2f0e4711d093abf8481f0e4e507ab.webp" alt="image.png"></p>
-<p>呵呵 又是一堆乱七八糟的，没事看懂一个就全懂了。</p>
-<pre><code>#define metamacro_at20(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, ...) 
-metamacro_head(__VA_ARGS__)
-</code></pre>
-<p>嗯，这个宏的意思就是 去掉传入参数中<code>前20个</code>参数，把<code>剩下的</code>参数传入metamacro_head宏，上面的metamacro_at20 前20个参数就是:<code>self, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2</code>所以剩下的参数是 <code>1</code>假设一开始不是 metamacro_at(self)而是两个或多个参数会发生什么？比如 metamacro_at(self,self)？根据上面的规则替换，就会变成</p>
-<pre><code>metamacro_at20(self,self, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
-</code></pre>
-<p>除去前面20个参数，剩下 只有 2，1 所以把 2,1 这两个参数传入<code>metamacro_head（2,1）</code>看看的<code>metamacro_head</code>的定义</p>
-<pre><code>#define metamacro_head(...) \
- metamacro_head_(__VA_ARGS__, 0)
-</code></pre>
-<p>又是一层，继续点进去metamacro_head_</p>
-<pre><code>#define metamacro_head_(FIRST, ...) FIRST
-</code></pre>
-<p>其实就是截取第一个参数，所以metamacro_head（2,1）就是 2。而前面的metamacro_head（1）就是 1。到这里 相信你已经弄清楚 metamacro_at 是怎么替换成参数个数的了</p>
-<p>其他metamacro_at 也是一个道理</p>
-<h3 id="metamacro-foreach-cxt-的定义"><a href="#metamacro-foreach-cxt-的定义" class="headerlink" title="metamacro_foreach_cxt 的定义"></a>metamacro_foreach_cxt 的定义</h3><p>回过头看metamacro_foreach_cxt</p>
-<pre><code>#define metamacro_foreach_cxt1(MACRO, SEP, CONTEXT, _0) MACRO(0, CONTEXT, _0)
-
-#define metamacro_foreach_cxt2(MACRO, SEP, CONTEXT, _0, _1) \
- metamacro_foreach_cxt1(MACRO, SEP, CONTEXT, _0) \
- SEP \
- MACRO(1, CONTEXT, _1)
-
-#define metamacro_foreach_cxt3(MACRO, SEP, CONTEXT, _0, _1, _2) \
- metamacro_foreach_cxt2(MACRO, SEP, CONTEXT, _0, _1) \
- SEP \
- MACRO(2, CONTEXT, _2)
-...省略N多行
-</code></pre>
-<p>回到最开始，举个例子metamacro_argcount(obj1,obj2,obj3)通过上面metamacro_argcount宏，确定出参数为3后，对号入座传入metamacro_foreach_cxt3</p>
-<pre><code>#define metamacro_foreach_cxt3(MACRO, SEP, CONTEXT, _0, _1, _2) \
- metamacro_foreach_cxt2(MACRO, SEP, CONTEXT, _0, _1) \
- SEP \
- MACRO(2, CONTEXT, _2)
-</code></pre>
-<p>所以也就变成了</p>
-<pre><code>metamacro_foreach_cxt3(rac_weakify_, , __weak , obj1 ,obj2 ,obj3)
-</code></pre>
-<p>发现是个递归，也就是</p>
-<pre><code>metamacro_foreach_cxt2(rac_weakify_, , CONTEXT, obj1, obj2) 
-rac_weakify_(2, __weak, obj3)
-</code></pre>
-<p>而metamacro_foreach_cxt2 又是一层递归，最后obj1、obj2、obj3都被替换成了:</p>
-<pre><code>__weak type(obj1) obj1_weak_ = obj1;
-__weak type(obj2) obj2_weak_ = obj2;
-__weak type(obj3) obj3_weak_ = obj3;
-</code></pre>
-<h3 id="RAC的宏装逼过程总结"><a href="#RAC的宏装逼过程总结" class="headerlink" title="RAC的宏装逼过程总结"></a>RAC的宏装逼过程总结</h3><p>其实总结起来很简单，就2点：</p>
-<ol>
-<li>通过metamacro_argcount确定可变参数个数<code>x</code></li>
-<li>根据1得到的<code>x</code>调用metamacro_foreach_cxt<code>x</code>,层层递归，对每个参数进行宏替换</li>
-</ol>
-<p>本文引用自<a target="_blank" rel="noopener" href="http://ziecho.com/post/ios/2016-08-04">这里</a>,如有侵权，请联系本人删除！</p>
-
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS-drawRect-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E8%88%B9%E9%9A%8F%E6%B3%A2%E6%B5%AA%E8%B5%B7%E4%BC%8F%E7%9A%84%E5%8A%A8%E7%94%BB/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-@weakify%E3%80%81@strongify%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" data-id="cuidiZc4an6Lje0OBN__cXG74" data-title="【iOS开发】--@weakify、@strongify原理解析" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS-drawRect-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E8%88%B9%E9%9A%8F%E6%B3%A2%E6%B5%AA%E8%B5%B7%E4%BC%8F%E7%9A%84%E5%8A%A8%E7%94%BB/" data-id="cuidEJ5-grg6L_Pnw9MBrDWBV" data-title="iOS-drawRect-实现小船随波浪起伏的动画" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -628,14 +279,14 @@ __weak type(obj3) obj3_weak_ = obj3;
 
 
   
-    <article id="post-2026-03-18-【iOS开发】-the-file-&#39;xxx-app&#39;-couldn&#39;t-be-opened-because-you-do" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS-drawRect-画五角星" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-the-file-'xxx-app'-couldn't-be-opened-because-you-do/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS-drawRect-%E7%94%BB%E4%BA%94%E8%A7%92%E6%98%9F/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:56:42.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a>
   </div>
 
   </div>
@@ -646,7 +297,7 @@ __weak type(obj3) obj3_weak_ = obj3;
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-the-file-'xxx-app'-couldn't-be-opened-because-you-do/">【iOS开发】-the-file-&#39;xxx-app&#39;-couldn&#39;t-be-opened-because-you-don&#39;t-have-p</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS-drawRect-%E7%94%BB%E4%BA%94%E8%A7%92%E6%98%9F/">iOS-drawRect-画五角星</a>
     </h1>
   
 
@@ -654,12 +305,16 @@ __weak type(obj3) obj3_weak_ = obj3;
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>请确认这里是不是有4个架构，我出现此问题是因为我删除了”arm64“<br><img src="/hexo-site/images/note/f6ba3522d0d695b46918b6bc87e73739.webp" alt="image.png"></p>
-
+        <p>项目里有一个需求要画一个五角星,不想用图片,自己纯计算画出一个五角星</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS-drawRect-%E7%94%BB%E4%BA%94%E8%A7%92%E6%98%9F/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91-the-file-'xxx-app'-couldn't-be-opened-because-you-do/" data-id="cuidn6dkg_cAsvMQSc4_TumTW" data-title="【iOS开发】-the-file-&#39;xxx-app&#39;-couldn&#39;t-be-opened-because-you-don&#39;t-have-p" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS-drawRect-%E7%94%BB%E4%BA%94%E8%A7%92%E6%98%9F/" data-id="cuidDk022CcwnlGrsoXBJHfKE" data-title="iOS-drawRect-画五角星" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -673,14 +328,14 @@ __weak type(obj3) obj3_weak_ = obj3;
 
 
   
-    <article id="post-2026-03-18-【iOS开发】CoreMotion-MotionThread-crash排查" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS-APP审核防止被拒-第三方登录篇" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91CoreMotion-MotionThread-crash%E6%8E%92%E6%9F%A5/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS-APP%E5%AE%A1%E6%A0%B8%E9%98%B2%E6%AD%A2%E8%A2%AB%E6%8B%92-%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%AF%87/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:56:38.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a>
   </div>
 
   </div>
@@ -691,7 +346,7 @@ __weak type(obj3) obj3_weak_ = obj3;
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91CoreMotion-MotionThread-crash%E6%8E%92%E6%9F%A5/">【iOS开发】CoreMotion-MotionThread-crash排查</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS-APP%E5%AE%A1%E6%A0%B8%E9%98%B2%E6%AD%A2%E8%A2%AB%E6%8B%92-%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%AF%87/">iOS-APP审核防止被拒-----第三方登录篇</a>
     </h1>
   
 
@@ -699,45 +354,16 @@ __weak type(obj3) obj3_weak_ = obj3;
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>#背景 </p>
-<p>程序开发都会有BUG,有大有小. crash问题视客户端需要重点关注的一个点.客户端有一个遗留的crash问题没有解决.现将排查过程记录下来,希望尽快解决问题</p>
-<p>#问题描述<br>客户端有一个crash问题一直没有解决.</p>
-<p>##错误原因<br>Attempted to dereference garbage pointer 0xab.<br>翻译: 试图间接引用垃圾指针地址0xab.<br>应该是:野指针访问</p>
-<p>##海神崩溃堆栈:<br><img src="/hexo-site/images/note/0f3317d14b9f26a5e558a54cf5143b3d.webp" alt="image.png"></p>
-<pre><code>0 CoreMotion CLClientCreateIso6709Notation (in CoreMotion) + 206336
-1 CoreMotion CLClientCreateIso6709Notation (in CoreMotion) + 206300
-2 CoreMotion CLClientCreateIso6709Notation (in CoreMotion) + 190264 
-3 CoreMotion CLShouldDisplayEEDUI (in CoreMotion) + 309872
-4 IOKit _iohideventsystem_copy_event_from_virtual_service (in IOKit) + 292
-5 CoreFoundation _CFXNotificationCenterCreate (in CoreFoundation) + 48
-6 CoreFoundation -[__NSSetI containsObject:] (in CoreFoundation) + 276
-7 CoreFoundation __NSArrayGetIndexPassingTest (in CoreFoundation) + 588
-8 CoreFoundation CFRunLoopTimerGetInterval (in CoreFoundation) + 36
-9 CoreFoundation CFRunLoopObserverInvalidate (in CoreFoundation) + 228
-10 CoreFoundation CFRunLoopTimerInvalidate (in CoreFoundation) + 344
-11 CoreMotion CLClientCreateIso6709Notation (in CoreMotion) + 211692
-12 libsystem_pthread.dylib pthread_rwlock_wrlock$VARIANT$mp (in libsystem_pthread.dylib) + 60
-</code></pre>
-<p>#排查过程<br>#0 根据错误原因发现是访问了野指针</p>
-<blockquote>
-<p>小结: 大致方向是内存管理的问题<br>#1 根据堆栈信息发现是崩溃在了CoreMotion的线程,而且堆栈信息内没有任何客户端调用的代码逻辑<br>小结: 不是客户端直接执行方法引起的崩溃,应该是客户端在运行过程中,系统在调用CoreMotion的底层代码时,引起了崩溃<br>#2 去掉首页列表的重力感应图片<br>CoreMotion是苹果的重力感应库,项目内有两个地方使用到了这个, 一个是拍摄页面,一个是首页列表的重力感应图片<br>结果: crash情况没有任何好转,排除首页列表的嫌疑<br>#3 拍摄页面<br>##3.1 查看 ‘进入’ 拍摄页面后线程情况</p>
-</blockquote>
-<p><img src="/hexo-site/images/note/af105d5360ae620090304adb662be682.webp" alt="线程情况.png"></p>
-<p><img src="/hexo-site/images/note/383038a73be57d213616b31f3029d1e6.webp" alt="内存情况.png"><br>我们发现: </p>
-<blockquote>
-<p>1 拍摄页面会创建线程 com.apple.CoreMotion.MotionThread ,这个线程是crash线程<br>2 这个线程是ARSession自主创建的<br><img src="/hexo-site/images/note/2354a657307e45c57676e0cf8c460ea4.webp" alt="image.png"></p>
-</blockquote>
-<p>##3.2 查看 ‘退出’ 拍摄页面后线程情况<br><img src="/hexo-site/images/note/e0a49f9981fe16b92b226e8cabba9060.webp" alt=" &#39;退出&#39; 拍摄页面后线程.png"><br>我们发现: </p>
-<blockquote>
-<p>1 拍摄页面会创建线程 com.apple.CoreMotion.MotionThread 没有停止</p>
-</blockquote>
-<p>##3.3 猜想<br> 1 会不会是线程没有关闭导致的问题<br> 2 能不能通过停止session自动释放此线程</p>
-<p>##3.4 尝试<br>  1 在退出拍摄页面的时候对session进行释放<br>  2 能不能通过停止session自动释放此线程: 不能,<br>     猜测可能是苹果的一个机制,为了下次更快速启动ARSession</p>
-
+        <p>最近在上传appStore的时候遇到了一个问题–在用微信第三方登录的时候,如果没有安装微信,苹果拒绝提示.这个问题很多人遇到过了.但是我还是想说说过程.</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS-APP%E5%AE%A1%E6%A0%B8%E9%98%B2%E6%AD%A2%E8%A2%AB%E6%8B%92-%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%AF%87/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91CoreMotion-MotionThread-crash%E6%8E%92%E6%9F%A5/" data-id="cuidCZkRe8Nc7Ee7fBtDNrDuD" data-title="【iOS开发】CoreMotion-MotionThread-crash排查" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS-APP%E5%AE%A1%E6%A0%B8%E9%98%B2%E6%AD%A2%E8%A2%AB%E6%8B%92-%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E7%AF%87/" data-id="cuid7M5PPhvvYXgXGOakR3Ekp" data-title="iOS-APP审核防止被拒-----第三方登录篇" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -751,14 +377,14 @@ __weak type(obj3) obj3_weak_ = obj3;
 
 
   
-    <article id="post-2026-03-18-【iOS开发】SDK开发之编译c-c++" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS-APP审核被拒-摄像头问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8B%E7%BC%96%E8%AF%91c-c++/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS-APP%E5%AE%A1%E6%A0%B8%E8%A2%AB%E6%8B%92-%E6%91%84%E5%83%8F%E5%A4%B4%E9%97%AE%E9%A2%98/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:56:34.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a>
   </div>
 
   </div>
@@ -769,7 +395,7 @@ __weak type(obj3) obj3_weak_ = obj3;
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8B%E7%BC%96%E8%AF%91c-c++/">【iOS开发】SDK开发之编译c-c++</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS-APP%E5%AE%A1%E6%A0%B8%E8%A2%AB%E6%8B%92-%E6%91%84%E5%83%8F%E5%A4%B4%E9%97%AE%E9%A2%98/">iOS-APP审核被拒----摄像头问题</a>
     </h1>
   
 
@@ -777,21 +403,16 @@ __weak type(obj3) obj3_weak_ = obj3;
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>#介绍<br>  本系列是SDK打包的实践，主要解决一下3个问题，本篇是第一篇。<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">【iOS开发】SDK开发之编译c&#x2F;c++</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/daeaf5728100?v=1742283697172">【iOS开发】SDK开发之podspec编写</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/99ca9803cb48?v=1742283732210">【iOS开发】SDK开发之podspec内执行脚本</a></p>
-<p>#本期问题<br>  SDK的源码是由其他团队编写，使用的语言为c&#x2F;c++，且会依赖第三方的库(也是c&#x2F;c++编写)。<br>考虑有以下几种方案：1 Xcode编译  2 cmake编译</p>
-<p>##一 Xcode编译步骤</p>
-<p>###1 使用Xcode创建Framework项目<br><img src="/hexo-site/images/note/e5d81450b0b2599e6e882709573baa47.webp" alt="image.png"><br>2 添加所有使用的c&#x2F;c++文件（依赖的第三方的文件）<br>3 调整暴露的头文件public headers<br>4 编译（command+B）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">优点：</span><br><span class="line">Xcode原生IDE加持，可视化好，操作简单</span><br><span class="line">缺点：</span><br><span class="line">1 需要运行在mac电脑上（iOS开发肯定有mac电脑，but如果需要编写团队来编译就不行了，因为他们是linux环境）</span><br><span class="line">2 第三方依赖需要我们手动配置（尤其在依赖文件有变化的时候，需要跨团队沟通）</span><br></pre></td></tr></table></figure>
-
-<p>##二 cmake编译步骤<br>1 编写cmake脚本<br>2 执行cmake脚本</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">优点：</span><br><span class="line">1 运行在任何有cmake环境的电脑（linux/mac均可）</span><br><span class="line">2 cmake支持嵌套，直接嵌套使用编写团队使用的cmake</span><br><span class="line">3 脚本编写简单，维护成本低</span><br><span class="line">4 可接CI/CD</span><br></pre></td></tr></table></figure>
-<p>#最后附上打包SDK的cmake(嵌套的cmake就不贴了)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.14)</span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line">set(CMAKE_C_COMPILER &quot;clang&quot;)</span><br><span class="line"></span><br><span class="line">message(STATUS &quot;compile iOS&quot;)</span><br><span class="line"># 设置工程名称</span><br><span class="line">project(HelloFramework)</span><br><span class="line">set(BUILD_SHARED_LIBS ON)</span><br><span class="line"># 设置目标平台为 iOS</span><br><span class="line">set(CMAKE_SYSTEM_NAME Darwin)</span><br><span class="line">set(CMAKE_OSX_SYSROOT iphoneos)</span><br><span class="line">set(CMAKE_OSX_ARCHITECTURES arm64)</span><br><span class="line"></span><br><span class="line"># 设置生成的 iOS 最低版本，假设是 iOS 11.0</span><br><span class="line">set(CMAKE_OSX_DEPLOYMENT_TARGET &quot;11.0&quot;)</span><br><span class="line"></span><br><span class="line"># 设置为生成 Framework 类型</span><br><span class="line">set(CMAKE_MACOSX_BUNDLE YES)</span><br><span class="line">set(CMAKE_FRAMEWORK TRUE)</span><br><span class="line"></span><br><span class="line"># 添加源文件</span><br><span class="line">set(PUBLIC_INTERFACE $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/algorithms/mobie_lib_test/src/align_interface)</span><br><span class="line">set(SOURCE_FILES STATIC $&#123;PUBLIC_INTERFACE&#125;/incremental_align_c_api.h)</span><br><span class="line"></span><br><span class="line">set(CMAKE_MODULE_PATH $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/dependence/eigen337/cmake)</span><br><span class="line">set(EIGEN3_INCLUDE_DIR $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/dependence/eigen337)</span><br><span class="line">message(&quot;CMAKE_CURRENT_SOURCE_DIR&quot; $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;)</span><br><span class="line"></span><br><span class="line">find_package(Eigen3 REQUIRED)</span><br><span class="line">include_directories($&#123;EIGEN3_INCLUDE_DIR&#125;)</span><br><span class="line">message(&quot;EIGEN3_INCLUDE_DIR&quot; $&#123;EIGEN3_INCLUDE_DIR&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set(OpenCV_LIBS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/opencv2.framework/opencv2)</span><br><span class="line">set(OpenCV_INCLUDE_DIRS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/opencv2.framework/Headers)</span><br><span class="line">message(&quot;OpenCV_INCLUDE_DIRS&quot; $&#123;OpenCV_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set(Boost_LIBRARIES $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/boost/libboosttt.a)</span><br><span class="line">set(Boost_INCLUDE_DIRS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/boost/include)</span><br><span class="line">include_directories($&#123;Boost_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line">set(MNN_LIBS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/MNN.framework/MNN)</span><br><span class="line">set(MNN_INCLUDE_DIRS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/MNN.framework/Headers)</span><br><span class="line">message(&quot;MNN_INCLUDE_DIRS&quot; $&#123;MNN_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line">set(GLOG_INCLUDE_DIRS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/ceres/include/ceres/internal/miniglog  $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/ceres/include)</span><br><span class="line">message(&quot;GLOG_INCLUDE_DIRS&quot; $&#123;GLOG_INCLUDE_DIRS&#125;)</span><br><span class="line">include_directories($&#123;GLOG_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line">set(G2O_INCLUDE_DIRS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/lib/g2o)</span><br><span class="line">include_directories($&#123;G2O_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line">set(PNG_INCLUDE_DIRS $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/../3rd/iOS/dependence/png)</span><br><span class="line">include_directories($&#123;PNG_INCLUDE_DIRS&#125;)</span><br><span class="line">message(&quot;PNG_INCLUDE_DIRS&quot; $&#123;PNG_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#设置libg2</span><br><span class="line">include_directories($&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/algorithms/mobile_pose_align_lib/third_part/g2o_tool/g2o/core)</span><br><span class="line">include_directories($&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/algorithms/mobile_pose_align_lib/third_part/g2o_tool) add_subdirectory($&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/algorithms/mobile_pose_align_lib/third_part/g2o_tool)</span><br><span class="line"></span><br><span class="line">add_subdirectory(algorithms)</span><br><span class="line"># # 设置输出路径（可选）</span><br><span class="line">set(CMAKE_LIBRARY_OUTPUT_DIRECTORY $&#123;CMAKE_BINARY_DIR&#125;/frameworks)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+        <p>最近发布的新版本遇到一个新的被拒原因—访问摄像头提示语不明确</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS-APP%E5%AE%A1%E6%A0%B8%E8%A2%AB%E6%8B%92-%E6%91%84%E5%83%8F%E5%A4%B4%E9%97%AE%E9%A2%98/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8B%E7%BC%96%E8%AF%91c-c++/" data-id="cuid_SAcrzuXbc9bpvs9yR2w4" data-title="【iOS开发】SDK开发之编译c-c++" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS-APP%E5%AE%A1%E6%A0%B8%E8%A2%AB%E6%8B%92-%E6%91%84%E5%83%8F%E5%A4%B4%E9%97%AE%E9%A2%98/" data-id="cuidAHi41Y6tROQv0rlqb2v7J" data-title="iOS-APP审核被拒----摄像头问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -805,14 +426,14 @@ __weak type(obj3) obj3_weak_ = obj3;
 
 
   
-    <article id="post-2026-03-18-【iOS开发】真机调试-dyld_shared_cache_extract_dylibs-failed" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS-视频播放过程中录制GIF图" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E7%9C%9F%E6%9C%BA%E8%B0%83%E8%AF%95-dyld_shared_cache_extract_dylibs-failed/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS-%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%BD%95%E5%88%B6GIF%E5%9B%BE/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:56:32.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a>
   </div>
 
   </div>
@@ -823,7 +444,7 @@ __weak type(obj3) obj3_weak_ = obj3;
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E7%9C%9F%E6%9C%BA%E8%B0%83%E8%AF%95-dyld_shared_cache_extract_dylibs-failed/">【iOS开发】真机调试--dyld_shared_cache_extract_dylibs-failed</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS-%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%BD%95%E5%88%B6GIF%E5%9B%BE/">iOS-视频播放过程中录制GIF图</a>
     </h1>
   
 
@@ -831,19 +452,16 @@ __weak type(obj3) obj3_weak_ = obj3;
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>无法真机调试，出现“dyld_shared_cache_extract_dylibs failed”，如下图</p>
-<p><img src="/hexo-site/images/note/45246186f8a2b86c991f329cdf5f04dc.webp" alt="image"></p>
-<p>解决办法：</p>
-<p>1.完全退出Xcode</p>
-<p>2.前往文件夹： ~&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;iOS DeviceSupport&#x2F; ，删除手机对应的系统版本。</p>
-<p><img src="/hexo-site/images/note/c8b934955c6768522dece4913bf28edf.webp" alt="image"></p>
-<p>3.启动Xcode</p>
-<p>引用链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/be8b8f1dcc1e">https://www.jianshu.com/p/be8b8f1dcc1e</a><br>來源：简书</p>
-
+        <p>近期,各大视频APP都推出了一个新的功能—-在播放视频过程中录制GIF图片,并分享.</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS-%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%BD%95%E5%88%B6GIF%E5%9B%BE/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E7%9C%9F%E6%9C%BA%E8%B0%83%E8%AF%95-dyld_shared_cache_extract_dylibs-failed/" data-id="cuiduHux1rU7evlsXYdPUi1Rz" data-title="【iOS开发】真机调试--dyld_shared_cache_extract_dylibs-failed" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS-%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%BD%95%E5%88%B6GIF%E5%9B%BE/" data-id="cuidcVY-Yat5vZYaUQceFEY1N" data-title="iOS-视频播放过程中录制GIF图" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -857,14 +475,14 @@ __weak type(obj3) obj3_weak_ = obj3;
 
 
   
-    <article id="post-2026-03-18-【iOS开发工具】cocoapods-can&#39;t-find-gem-cocoapods-(=-0-a)-with-exe" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS-开发-查看swift源码方法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E3%80%91cocoapods-can't-find-gem-cocoapods-(=-0-a)-with-exe/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS-%E5%BC%80%E5%8F%91-%E6%9F%A5%E7%9C%8Bswift%E6%BA%90%E7%A0%81%E6%96%B9%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:56:29.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a>
   </div>
 
   </div>
@@ -875,7 +493,7 @@ __weak type(obj3) obj3_weak_ = obj3;
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E3%80%91cocoapods-can't-find-gem-cocoapods-(=-0-a)-with-exe/">【iOS开发工具】cocoapods--can&#39;t-find-gem-cocoapods-(=-0-a)-with-executable-p</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS-%E5%BC%80%E5%8F%91-%E6%9F%A5%E7%9C%8Bswift%E6%BA%90%E7%A0%81%E6%96%B9%E6%B3%95/">iOS-开发-查看swift源码方法</a>
     </h1>
   
 
@@ -883,23 +501,16 @@ __weak type(obj3) obj3_weak_ = obj3;
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>#使用pod命令出现这个错误:</p>
-<blockquote>
-<p>can’t find gem cocoapods (&#x3D; 0.a) with executable pod (Gem::GemNotFoundException）</p>
-</blockquote>
-<p><img src="/hexo-site/images/note/7219201dddd2e2ac1b5afc49ce60bac5.webp" alt="image.png"><br>#解决步骤：</p>
-<blockquote>
-<p>1 cd到git目录<br>2 显示隐藏文件 【shift+command+.】<br>3 打开【.bundle】文件<br>4 打开config文件，并清空<br>（完毕！）</p>
-</blockquote>
-<p>#解决过程：</p>
-<blockquote>
-<p>1 重新安装最新版本cocoapods，不行<br>2 重新安装指定版本cocoapods，不行<br>3 重新安装ruby，不行<br>4 重新安装gem，不行<br>5 重新check代码，不行<br>6 重启电脑，不行<br>7 发现同一工程部分分支代码可以使用pod，后使用删除文件法，定位影响pod无法使用的文件，最后找到是.bundle&#x2F;config问题</p>
-</blockquote>
-
+        <p><strong>在进行完 GYP 预处理后，阅读 Swift 标准库源码的<del>最简单的</del>一种方式是执行一次完整的 Swift 编译。（另一种是写一小段 shell 脚本。可以看下面的更新）</strong></p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS-%E5%BC%80%E5%8F%91-%E6%9F%A5%E7%9C%8Bswift%E6%BA%90%E7%A0%81%E6%96%B9%E6%B3%95/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E3%80%91cocoapods-can't-find-gem-cocoapods-(=-0-a)-with-exe/" data-id="cuidGMoNIOO2NRvilqP6HxOr6" data-title="【iOS开发工具】cocoapods--can&#39;t-find-gem-cocoapods-(=-0-a)-with-executable-p" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS-%E5%BC%80%E5%8F%91-%E6%9F%A5%E7%9C%8Bswift%E6%BA%90%E7%A0%81%E6%96%B9%E6%B3%95/" data-id="cuidudOIyLdRsPoENYwm0Gm86" data-title="iOS-开发-查看swift源码方法" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -913,14 +524,14 @@ __weak type(obj3) obj3_weak_ = obj3;
 
 
   
-    <article id="post-2026-03-18-【iOS知识点】rootViewController获取不到的原因" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS-截取视频当前时间的一帧图片" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E7%9F%A5%E8%AF%86%E7%82%B9%E3%80%91rootViewController%E8%8E%B7%E5%8F%96%E4%B8%8D%E5%88%B0%E7%9A%84%E5%8E%9F%E5%9B%A0/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS-%E6%88%AA%E5%8F%96%E8%A7%86%E9%A2%91%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E7%9A%84%E4%B8%80%E5%B8%A7%E5%9B%BE%E7%89%87/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:56:27.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
   </div>
 
   </div>
@@ -931,7 +542,7 @@ __weak type(obj3) obj3_weak_ = obj3;
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E7%9F%A5%E8%AF%86%E7%82%B9%E3%80%91rootViewController%E8%8E%B7%E5%8F%96%E4%B8%8D%E5%88%B0%E7%9A%84%E5%8E%9F%E5%9B%A0/">【iOS知识点】rootViewController获取不到的原因</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS-%E6%88%AA%E5%8F%96%E8%A7%86%E9%A2%91%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E7%9A%84%E4%B8%80%E5%B8%A7%E5%9B%BE%E7%89%87/">iOS-截取视频当前时间的一帧图片</a>
     </h1>
   
 
@@ -939,83 +550,16 @@ __weak type(obj3) obj3_weak_ = obj3;
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p> 突然发现项目中获取rootViewController的代码失效了</p>
-<p>复现步骤：是当弹出了UIAlertView后，再获取rootViewController发现获取不到如下图：<br><img src="/hexo-site/images/note/cb27a6ac2941debf603de09ff4f9b2f5.webp" alt="image.png"><br>经查找资料，获取rootViewController的正确姿势:</p>
-<pre><code>AppDelegate *appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-UIViewController *rootViewController1 = appdelegate.window.rootViewController;
-</code></pre>
-<p>一般怎么获取工程中window上面的RootViewController</p>
-<p>第一种方法：</p>
-<pre><code>UIWindow *window = [UIApplication sharedApplication].keyWindow;
-UIViewController *rootViewController = window.rootViewController;
-</code></pre>
-<p>第二种方法：</p>
-<pre><code>AppDelegate *appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-UIViewController *rootViewController1 = appdelegate.window.rootViewController;
-</code></pre>
-<p>这两种写法，在平常的时候是没有区别的，但是这两种写法在有的时候就不一样了。</p>
-<p>keyWindow这个属性是什么意思？</p>
-<p><img src="/hexo-site/images/note/9cd67b36600f471ded2f4558f2f18c8a.webp" alt="image"></p>
-<p>个人理解的意思是，在windows数组中，最近时间调用makeKeyAndVisible方法的属性。</p>
-<p>当然可以参考关于UIAlertView显示的相关内容：</p>
-<p><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/7ac398ef4532">http://www.jianshu.com/p/7ac398ef4532</a></p>
-<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/5968703/how-to-find-root-uiviewcontroller">http://stackoverflow.com/questions/5968703/how-to-find-root-uiviewcontroller</a></p>
-<p>alertView的出现是因为，生成了一个新的window，加在了界面上面。这个时候获取到的keyWindow就是UIAlertControllerShimPresenterWindow。可以通过如下代码实验：</p>
-<p>Appdelegate中的代码，设置RootViewController</p>
-<pre><code>-  (BOOL)application:(UIApplication  *)application didFinishLaunchingWithOptions:(NSDictionary  *)launchOptions { 
- // Override point for customization after application launch.  
-self.window =  [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];  
-self.window.backgroundColor =  [UIColor whiteColor];  
-ViewController  *view =  [[ViewController alloc] init];  
-UINavigationController  *nav =  [[UINavigationController alloc] initWithRootViewController:view]; 
- self.window.rootViewController = nav;  [self.window makeKeyAndVisible]; 
- return  YES;  
-}
-</code></pre>
-<p>ViewController中的代码</p>
-<pre><code>-  (void)viewDidLoad {  [super viewDidLoad];  
-// Do any additional setup after loading the view, typically from a nib.  
-UIButton  *tempBtn =  [UIButton buttonWithType:UIButtonTypeSystem]; 
-tempBtn.frame =  CGRectMake(100,  100,  100,  100); 
-tempBtn.backgroundColor =  [UIColor cyanColor]; 
- [tempBtn setTitle:@&quot;测试1&quot; forState:UIControlStateNormal];  
-[tempBtn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];  
-[self.view addSubview:tempBtn];  
-}
-
--  (void)clickBtn:(UIButton  *)sender{  
-// 创建一个测试的alertView 
- UIAlertView  *alterView =  [[UIAlertView alloc] initWithTitle:@&quot;测试&quot; message:@&quot;测试&quot;  delegate:nil cancelButtonTitle:@&quot;取消&quot; otherButtonTitles:nil,  nil]; 
- [alterView show]; 
- UIWindow  *window1 =  [UIApplication sharedApplication].keyWindow; 
- AppDelegate  *appdelegate =  (AppDelegate  *)[UIApplication sharedApplication].delegate; 
- UIWindow  *window2 = appdelegate.window;  
-NSLog(@&quot;\n\nwindow1 = %@    \n\nwindow2 = %@  \n\nwindow1.rootViewController = %@ \n\nwindow2.rootViewController = %@&quot;,window1,window2,window1.rootViewController,window2.rootViewController);  
-}
-</code></pre>
-<p>打印结果：</p>
-<pre><code>window1 =  &lt;_UIAlertControllerShimPresenterWindow:  0x7fb4ab720c80;  frame  =  (0  0;  375  667);  opaque  =  NO;  gestureRecognizers  =  &lt;NSArray:  0x7fb4ab72fac0&gt;; layer =  &lt;UIWindowLayer:  0x7fb4ab7223f0&gt;&gt; window2 =  &lt;UIWindow:  0x7fb4ab720650;  frame  =  (0  0;  375  667);  gestureRecognizers  =  &lt;NSArray:  0x7fb4ab722310&gt;; layer =  &lt;UIWindowLayer:  0x7fb4ab720a70&gt;&gt; window1.rootViewController =  &lt;UIApplicationRotationFollowingController:  0x7fb4ab9282e0&gt; window2.rootViewController =  &lt;UINavigationController:  0x7fb4ae820800&gt;&lt;/pre&gt;
-</code></pre>
-<p>结果明显不一样，其实我们一般情况下想获取的rootViewController是第二种,希望我们获取到在appdelegate中设置的appdelaget.window.rootViewController。</p>
-<p>所以了建议获取rootViewController的时候还是采用</p>
-<p>第二种方法：</p>
-<pre><code>AppDelegate  *appdelegate =  (AppDelegate  *)[UIApplication sharedApplication].delegate; 
-UIViewController  *rootViewController1 = appdelegate.window.rootViewController;&lt;/pre&gt;
-</code></pre>
-<p>其实，和alertView类似的，UIActionSheet也是这样的。</p>
-<p>一般人说无所谓，但是如果在AlertView弹出的时候去获取RootViewController，并且对你认为获取正确的RootViewController做相关的操作，你会死的很惨。</p>
-<p>还有就是建议：即时通过第二种方法获取到了RootViewController，在使用之前建议再判断一下获取到的类是不是就是自己想要的类型，更保险一些。</p>
-<pre><code>AppDelegate  *appdelegate =  (AppDelegate  *)[UIApplication sharedApplication].delegate; 
- if  ([appdelegate.window.rootViewController isKindOfClass:[&quot;想要获取到的rootVC&quot;  class]]  ==  YES) { 
- // 为所欲为 
- }
-</code></pre>
-<p>转载自<a target="_blank" rel="noopener" href="http://www.qingpingshan.com/rjbc/ios/181557.html">此处</a></p>
-
+        <p>最近某视频观看软件新增了几个新的功能—截取视频当前时间的一帧图片进行分享,截取一段视频生成gif图片进行分享,截取一段视频进行分享.</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS-%E6%88%AA%E5%8F%96%E8%A7%86%E9%A2%91%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E7%9A%84%E4%B8%80%E5%B8%A7%E5%9B%BE%E7%89%87/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E7%9F%A5%E8%AF%86%E7%82%B9%E3%80%91rootViewController%E8%8E%B7%E5%8F%96%E4%B8%8D%E5%88%B0%E7%9A%84%E5%8E%9F%E5%9B%A0/" data-id="cuid2CO6k2cavPlcDlLCeJNXx" data-title="【iOS知识点】rootViewController获取不到的原因" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS-%E6%88%AA%E5%8F%96%E8%A7%86%E9%A2%91%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E7%9A%84%E4%B8%80%E5%B8%A7%E5%9B%BE%E7%89%87/" data-id="cuidS2pBojhcefwcFuAwpHQTD" data-title="iOS-截取视频当前时间的一帧图片" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1033,7 +577,7 @@ UIViewController  *rootViewController1 = appdelegate.window.rootViewController;&
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/hexo-site/page/3/">&laquo; 上一页</a><a class="page-number" href="/hexo-site/">1</a><a class="page-number" href="/hexo-site/page/2/">2</a><a class="page-number" href="/hexo-site/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/hexo-site/page/5/">5</a><a class="page-number" href="/hexo-site/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/hexo-site/page/11/">11</a><a class="extend next" rel="next" href="/hexo-site/page/5/">下一页 &raquo;</a>
+    <a class="extend prev" rel="prev" href="/hexo-site/page/3/">&laquo; 上一页</a><a class="page-number" href="/hexo-site/">1</a><a class="page-number" href="/hexo-site/page/2/">2</a><a class="page-number" href="/hexo-site/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/hexo-site/page/5/">5</a><a class="page-number" href="/hexo-site/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/hexo-site/page/10/">10</a><a class="extend next" rel="next" href="/hexo-site/page/5/">下一页 &raquo;</a>
   </nav>
 
 </section>
@@ -1044,7 +588,7 @@ UIViewController  *rootViewController1 = appdelegate.window.rootViewController;&
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/MAC%E7%9F%A5%E8%AF%86/">MAC知识</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/flutter%E5%BC%80%E5%8F%91/">flutter开发</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/swift%E8%AF%AD%E8%A8%80/">swift语言</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E/">亲人纪实</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/">工具分享</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li></ul>
     </div>
   </div>
 
@@ -1073,7 +617,7 @@ UIViewController  *rootViewController1 = appdelegate.window.rootViewController;&
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2018/04/">四月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li></ul>
     </div>
   </div>
 
@@ -1086,23 +630,23 @@ UIViewController  *rootViewController1 = appdelegate.window.rootViewController;&
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift%E5%9F%BA%E7%A1%80-%E5%8F%AF%E9%80%89%E9%A1%B9/">Swift基础-可选项</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95-Swift-Compiler-Error/">Swift错误提示解决办法--Swift-Compiler-Error</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E4%B8%AD%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E7%9A%84%E8%AF%B4%E6%98%8E%E4%BB%A5%E5%8F%8A%E7%94%A8%E6%B3%95/">OC中按位枚举的说明以及用法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift3-0%E5%9F%BA%E7%A1%80-if-let-var-%E5%92%8Cguard-let-var-%E5%BC%82%E5%90%8C/">Swift3-0基础----if-let-var-和guard-let-var-异同</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-SVN%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF-svn-server-sent-unexpected-return-value-405-method-n/">SVN常见错误-svn-server-sent-unexpected-return-value-405-method-not-allowed</a>
           </li>
         
       </ul>

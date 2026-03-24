@@ -1,0 +1,240 @@
+/**
+ * 布局增强：与 landscape 主题叠用，加载顺序在 skin.css 之后。
+ * 只改间距、圆角、阴影、排版，颜色仍由 skin 控制。
+ */
+
+:root {
+  --layout-radius: 10px;
+  --layout-shadow: 0 2px 14px rgba(0, 0, 0, 0.06);
+  --layout-shadow-hover: 0 6px 24px rgba(0, 0, 0, 0.08);
+  --layout-outer-pad: clamp(16px, 3.5vw, 28px);
+}
+
+/* 全站排版（中文阅读） */
+body {
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 主栏与侧栏整体宽度：略收窄，两侧留白更透气 */
+.outer {
+  max-width: 1160px;
+  padding-left: var(--layout-outer-pad);
+  padding-right: var(--layout-outer-pad);
+}
+
+/* 顶栏高度：大屏略降，移动端再收一点，多露出正文 */
+#header {
+  height: 260px;
+}
+@media screen and (max-width: 767px) {
+  #header {
+    height: 200px;
+  }
+  #logo {
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+  }
+  #subtitle {
+    font-size: 14px !important;
+  }
+}
+
+/* 单篇文章页：内层卡片 */
+body:not(.is-blog-index) .article {
+  margin-bottom: 2.25rem;
+}
+
+body:not(.is-blog-index) .article-inner {
+  border-radius: var(--layout-radius);
+  overflow: hidden;
+  box-shadow: var(--layout-shadow);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+body:not(.is-blog-index) .article-inner:hover {
+  box-shadow: var(--layout-shadow-hover);
+}
+
+/* 首页/列表：外层整卡 + 摘要，不重复内层阴影 */
+body.is-blog-index .article {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+  border-radius: var(--layout-radius);
+  overflow: hidden;
+  box-shadow: var(--layout-shadow);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.25s ease;
+}
+
+body.is-blog-index .article:hover {
+  box-shadow: var(--layout-shadow-hover);
+}
+
+body.is-blog-index .article .article-inner {
+  border: none !important;
+  border-radius: 0;
+  box-shadow: none !important;
+  background: transparent;
+}
+
+body.is-blog-index .article .article-inner:hover {
+  box-shadow: none !important;
+  transform: none;
+}
+
+body.is-blog-index .article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 1rem;
+  padding: 1rem 1.25rem 0.75rem;
+  float: none;
+}
+
+body.is-blog-index .article-meta .article-date,
+body.is-blog-index .article-meta .article-category {
+  float: none;
+}
+
+body.is-blog-index .article-header {
+  padding-top: 0.35rem;
+}
+
+body.is-blog-index .article-title {
+  font-size: 1.35rem;
+  line-height: 1.35;
+}
+
+body.is-blog-index .article-entry .article-excerpt-auto {
+  color: #666;
+  margin: 0 0 0.5rem;
+  line-height: 1.75;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+body.is-blog-index .article-more-link {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+body.is-blog-index .article-footer {
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin: 0 1.25rem 1rem;
+}
+
+.article-header {
+  padding-top: 1.35rem;
+}
+
+.article-title {
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+}
+
+.article-entry {
+  font-size: 15px;
+  line-height: 1.85;
+  letter-spacing: 0.02em;
+}
+
+.article-entry p,
+.article-entry li {
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+
+.article-entry img {
+  border-radius: 6px;
+  max-width: 100%;
+  height: auto;
+}
+
+.article-meta {
+  padding: 0 0.5rem;
+}
+
+/* 代码块 */
+.article-entry .highlight,
+.article-entry pre {
+  border-radius: 8px;
+}
+
+/* 归档列表卡片 */
+.archive-article-inner {
+  border-radius: var(--layout-radius);
+  box-shadow: var(--layout-shadow);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s ease;
+}
+
+.archive-article-inner:hover {
+  box-shadow: var(--layout-shadow-hover);
+}
+
+/* 分页 */
+#page-nav {
+  border-radius: var(--layout-radius);
+  box-shadow: var(--layout-shadow);
+}
+
+/* 侧边栏小部件 */
+.widget {
+  border-radius: var(--layout-radius);
+  box-shadow: var(--layout-shadow);
+}
+
+.widget-title {
+  letter-spacing: 0.12em;
+}
+
+/* 页脚与顶栏分隔 */
+#footer {
+  margin-top: 3rem;
+}
+
+/* —— 深色皮肤：阴影/描边适配 —— */
+html.skin-dark .article-inner,
+html.skin-dark .archive-article-inner,
+html.skin-dark #page-nav,
+html.skin-dark .widget {
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+html.skin-dark .article-inner:hover,
+html.skin-dark .archive-article-inner:hover {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+}
+
+/* —— 护眼皮肤 —— */
+html.skin-sepia .article-inner,
+html.skin-sepia .archive-article-inner,
+html.skin-sepia #page-nav,
+html.skin-sepia .widget {
+  box-shadow: 0 2px 12px rgba(92, 75, 55, 0.08);
+  border-color: rgba(92, 75, 55, 0.12);
+}
+
+/* ========== 博客列表页（首页 + 分页）：由 scripts/blog-index-layout.js 为 body 加 .is-blog-index ========== */
+
+/* 卡片底部：不显示文章标签（保留分享等） */
+.is-blog-index .article-footer .article-tag-list {
+  display: none !important;
+}
+
+/*
+ * 侧栏：隐藏「标签列表 / 标签云 / 归档」
+ * 依赖 :has()（Chrome 105+ / Safari 15.4+）；分类、最近文章仍保留
+ */
+.is-blog-index #sidebar .widget-wrap:has(> .widget > .tag-list),
+.is-blog-index #sidebar .widget-wrap:has(> .widget.tagcloud),
+.is-blog-index #sidebar .widget-wrap:has(> .widget > .archive-list) {
+  display: none !important;
+}

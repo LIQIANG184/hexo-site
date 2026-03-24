@@ -37,9 +37,9 @@
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<!-- hexo injector head_end start --><link rel="stylesheet" href="/hexo-site/css/skin.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/hexo-site/css/skin.css"><link rel="stylesheet" href="/hexo-site/css/layout.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
 
-<body>
+<body class="is-blog-index">
   <div id="container">
     <div id="wrap">
       <header id="header">
@@ -81,14 +81,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-2026-03-18-iOS开发-工具使用-Git-revert和reset区别" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-[iOS开发]-Charles抓包HTTPS请求" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8-Git-revert%E5%92%8Creset%E5%8C%BA%E5%88%AB/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%E5%BC%80%E5%8F%91%5D-Charles%E6%8A%93%E5%8C%85HTTPS%E8%AF%B7%E6%B1%82/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:49:03.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
   </div>
 
   </div>
@@ -99,7 +99,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8-Git-revert%E5%92%8Creset%E5%8C%BA%E5%88%AB/">iOS开发-工具使用---Git-revert和reset区别</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%E5%BC%80%E5%8F%91%5D-Charles%E6%8A%93%E5%8C%85HTTPS%E8%AF%B7%E6%B1%82/">[iOS开发]--Charles抓包HTTPS请求</a>
     </h1>
   
 
@@ -107,283 +107,19 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>reset与revert的区别</p>
-<p>自己的理解：<br>git revert  XXX ：意思是将XXX版本的改动放弃，并且版本号+1；<br>git reset XXX：意思是将代码重置到XXX版本，版本号不会变；</p>
-<h1 id="引用："><a href="#引用：" class="headerlink" title="引用："></a>引用：</h1><pre><code>git revert是用一次新的commit来回滚之前的commit，git reset是直接删除指定的commit。
-在回滚这一操作上看，效果差不多。但是在日后继续merge以前的老版本时有区别。因为git revert是用一次逆向的commit“中和”之前的提交，因此日后合并老的branch时，导致这部分改变不会再次出现，但是git reset是之间把某些commit在某个branch上删除，因而和老的branch再次merge时，这些被回滚的commit应该还会被引入。
-git reset 是把HEAD向后移动了一下，而git revert是HEAD继续前进，只是新的commit的内容和要revert的内容正好相反，能够抵消要被revert的内容。
-</code></pre>
-<p>作者：流着万条永远的河<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0e1fe709dd97">https://www.jianshu.com/p/0e1fe709dd97</a><br>来源：简书</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8-Git-revert%E5%92%8Creset%E5%8C%BA%E5%88%AB/" data-id="cuiduxHqOELDFgtV5yruiXBcb" data-title="iOS开发-工具使用---Git-revert和reset区别" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-最优办法查找两个数组相同与不同的数据" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E6%9C%80%E4%BC%98%E5%8A%9E%E6%B3%95%E6%9F%A5%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E7%9B%B8%E5%90%8C%E4%B8%8E%E4%B8%8D%E5%90%8C%E7%9A%84%E6%95%B0%E6%8D%AE/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E6%9C%80%E4%BC%98%E5%8A%9E%E6%B3%95%E6%9F%A5%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E7%9B%B8%E5%90%8C%E4%B8%8E%E4%B8%8D%E5%90%8C%E7%9A%84%E6%95%B0%E6%8D%AE/">iOS开发-最优办法查找两个数组相同与不同的数据</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在项目开发过程中,往往会遇到这个问题:查找两个数组相同的数据或者不同的数据,你会用下面三种中的哪种办法实现呢?那种办法会更好呢?</p>
-<p>一  很多人都知道也最容易想到的是for循环,forin循环,block循环等其他的循环判断数据中的元素相同不相同,如果找相同的数据一次双层循环就可以,如果找不同的数据就需要两次双层循环.这里以block循环为例;</p>
-<p>1 查找相同的数据</p>
-<pre><code>NSArray * arr2 = @[@4,@3,@2,@1];
-NSArray * arr1 = @[@2,@3,@4,@5];
-__block NSMutableArray *sameObject = [NSMutableArray arrayWithCapacity:5];
-[arr2 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-    NSNumber *number1 = obj;
-   [arr1 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-       if ([number1 isEqual:obj]) {
-           [sameObject addObject:number1];
-           *stop = YES;
-       }
-   }];
-}];
-NSLog(@&quot;%@&quot;,sameObject);
-</code></pre>
-<p>打印信息:(4,3,2)</p>
-<pre><code>注:由观察可以看出打印顺序是按照arr2的顺序打印的,解读代码之后可以
-   很容易得到结论:
-               打印顺序是由外层循环的数组决定的;
-</code></pre>
-<p>2 查找不同的数据</p>
-<pre><code>NSArray * arr2 = @[@4,@3,@2,@1];
-NSArray * arr1 = @[@2,@3,@4,@5];
-
-__block NSMutableArray *difObject = [NSMutableArray arrayWithCapacity:5];
-//找到arr2中有,arr1中没有的数据
-[arr2 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-    NSNumber *number1 = obj;//[obj objectAtIndex:idx];
-    __block BOOL isHave = NO;
-    [arr1 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([number1 isEqual:obj]) {
-            isHave = YES;
-            *stop = YES;
-        }
-    }];
-    if (!isHave) {
-        [difObject addObject:obj];
-    }
-}];
-//找到arr1中有,arr2中没有的数据
-[arr1 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-    NSNumber *number1 = obj;//[obj objectAtIndex:idx];
-    __block BOOL isHave = NO;
-    [arr2 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([number1 isEqual:obj]) {
-            isHave = YES;
-            *stop = YES;
-        }
-    }];
-    if (!isHave) {
-        [difObject addObject:obj];
-    }
-}];
-NSLog(@&quot;%@&quot;,difObject);
-</code></pre>
-<p>打印信息:(1,5)</p>
-<p>可以看到这种循环遍历找出两个数组的相同和不同的元素,代码量有点多,我们就想有没有简单一点的方法呢?</p>
-<p>二 有的人可能会想到用集合(NSSet)的相关方法,代码如下:</p>
-<p>1 查找相同的数据</p>
-<pre><code>NSArray *arr2 = @[@4,@3,@2,@1];
-NSArray *arr1 = @[@2,@3,@4,@5];
-NSMutableSet *set1 = [NSMutableSet setWithArray:arr1];
-NSMutableSet *set2 = [NSMutableSet setWithArray:arr2];
-[set1 intersectSet:set2];
-NSLog(@&quot;%@&quot;,set1);
-</code></pre>
-<p>打印结果: (3,4,2)</p>
-<p>2 查找不同的数据</p>
-<pre><code>NSMutableSet *set1 = [NSMutableSet setWithArray:arr1];
-NSMutableSet *set2 = [NSMutableSet setWithArray:arr2];
-[set2 minusSet:set1];
-NSMutableSet *set3 = [NSMutableSet setWithArray:arr2];
-[set1 minusSet:set3];
-[set2 unionSet:set1];
-NSLog(@&quot;%@&quot;,set2);
-</code></pre>
-<p>打印结果:(1,5)</p>
-<p>注:这种办法可以得到两个数组中相同的数据,但是从打印出的结果看,得出的集合是无序的,这个是由集合的特性决定的,所以在实际开发过程中的应用相对较少.</p>
-<p>三 运用正则的API得出两个数组中相同与不同的数据</p>
-<p>1 查找相同的数据</p>
-<pre><code>NSArray * arr2 = @[@4,@3,@2,@1];
-NSArray * arr1 = @[@2,@3,@4,@5];
-NSPredicate * filterPredicate_same = [NSPredicate predicateWithFormat:@&quot;SELF IN %@&quot;,arr1];
-NSArray * filter_no = [arr2 filteredArrayUsingPredicate:filterPredicate_same];
-NSLog(@&quot;%@&quot;,filter_no);
-</code></pre>
-<p>打印结果:(4,3,2)</p>
-<p>2 查找不同的数据</p>
-<pre><code>NSArray * arr2 = @[@4,@3,@2,@1];
-NSArray * arr1 = @[@2,@3,@4,@5];
-//找到在arr2中不在数组arr1中的数据
-NSPredicate * filterPredicate1 = [NSPredicate predicateWithFormat:@&quot;NOT (SELF IN %@)&quot;,arr1];
-NSArray * filter1 = [arr2 filteredArrayUsingPredicate:filterPredicate1];
-//找到在arr1中不在数组arr2中的数据
-NSPredicate * filterPredicate2 = [NSPredicate predicateWithFormat:@&quot;NOT (SELF IN %@)&quot;,arr2];
-NSArray * filter2 = [arr1 filteredArrayUsingPredicate:filterPredicate2];
-//拼接数组
-NSMutableArray *array = [NSMutableArray arrayWithArray:filter1];
-[array addObjectsFromArray:filter2];
-NSLog(@&quot;%@&quot;,array);
-</code></pre>
-<p>打印信息:(1,5)</p>
-<p>总结:第一种循环遍历数组的方法可读性和性能都不高;集合的办法应用场景有一定的局限性;运用正则的方法可读性高(推荐方法);</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E6%9C%80%E4%BC%98%E5%8A%9E%E6%B3%95%E6%9F%A5%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E7%9B%B8%E5%90%8C%E4%B8%8E%E4%B8%8D%E5%90%8C%E7%9A%84%E6%95%B0%E6%8D%AE/" data-id="cuidtjnabpFnZJlYge2FNcxAa" data-title="iOS开发-最优办法查找两个数组相同与不同的数据" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-动画全集" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E5%8A%A8%E7%94%BB%E5%85%A8%E9%9B%86/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E5%8A%A8%E7%94%BB%E5%85%A8%E9%9B%86/">iOS开发--动画全集</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/15aa50fdcd60">http://www.jianshu.com/p/15aa50fdcd60</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E5%8A%A8%E7%94%BB%E5%85%A8%E9%9B%86/" data-id="cuidS1r8SiQMDkGjDuy8ItDRv" data-title="iOS开发--动画全集" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-自动化打包Jenkins-实时ing" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85Jenkins-%E5%AE%9E%E6%97%B6ing/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85Jenkins-%E5%AE%9E%E6%97%B6ing/">iOS开发--自动化打包Jenkins--实时ing</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>当项目打包比较频繁的时候，打包的工作会占用不小的工作量，这个时候自动化打包工具就成为了必要。开发人员只需要关心代码，不必关心打包过程。</p>
-<p>下面进行Jenkins实时自动打包演练过程：</p>
-<p>1 安装 Jenkins，这里使用brew安装：</p>
-<blockquote>
-<p>brew install jenkins</p>
+        <blockquote>
+<p>抓取HTTPS请求包，对数据进行排查检验</p>
 </blockquote>
-<p>提示有脚本需要sudo权限,按照提示添加sudo执行 错误提示中的命令行，继续执行brew install jenkins。</p>
-<p>2 查找jenkins.war</p>
-<blockquote>
-<p>mdfind -name jenkins.war</p>
-</blockquote>
-<p>结果：</p>
-<blockquote>
-<p>bogon:~ mdfind -name jenkins.war<br>&#x2F;usr&#x2F;local&#x2F;Cellar&#x2F;jenkins&#x2F;2.220&#x2F;libexec&#x2F;jenkins.war</p>
-</blockquote>
-<p>3 绑定jenkins.war 端口号</p>
-<blockquote>
-<p>java -jar &#x2F;usr&#x2F;local&#x2F;Cellar&#x2F;jenkins&#x2F;2.220&#x2F;libexec&#x2F;jenkins.war –httpPort&#x3D;8080</p>
-</blockquote>
-<p>报错：</p>
-<blockquote>
-<p>9月 27, 2020 11:40:54 上午 Main verifyJavaVersion<br>严重: Running with Java class version 57 which is not in the list of supported versions: [52, 55]. Run with the –enable-future-java flag to enable such behavior. See <a target="_blank" rel="noopener" href="https://jenkins.io/redirect/java-support/">https://jenkins.io/redirect/java-support/</a><br>java.lang.UnsupportedClassVersionError: 57.0<br>	at Main.verifyJavaVersion(Main.java:174)<br>	at Main.main(Main.java:142)<br>Jenkins requires Java versions [8, 11] but you are running with Java 13 from &#x2F;Library&#x2F;Java&#x2F;JavaVirtualMachines&#x2F;jdk-13.jdk&#x2F;Contents&#x2F;Home<br>java.lang.UnsupportedClassVersionError: 57.0<br>	at Main.verifyJavaVersion(Main.java:174)<br>	at Main.main(Main.java:142)</p>
-</blockquote>
-<p>原因:java版本和jenkins要求不一致<br>解决办法：更新java版本<br>解决之后再次执行： </p>
-<blockquote>
-<p>java -jar &#x2F;usr&#x2F;local&#x2F;Cellar&#x2F;jenkins&#x2F;2.220&#x2F;libexec&#x2F;jenkins.war –httpPort&#x3D;8080</p>
-</blockquote>
-
+<p><strong>1.安装Charles</strong><br><strong>2.电脑安装Charles证书</strong></p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%E5%BC%80%E5%8F%91%5D-Charles%E6%8A%93%E5%8C%85HTTPS%E8%AF%B7%E6%B1%82/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85Jenkins-%E5%AE%9E%E6%97%B6ing/" data-id="cuid8oA6P5YDCw63gw9fiytTl" data-title="iOS开发--自动化打包Jenkins--实时ing" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-%5BiOS%E5%BC%80%E5%8F%91%5D-Charles%E6%8A%93%E5%8C%85HTTPS%E8%AF%B7%E6%B1%82/" data-id="cuidBR8S-W_pNLrRlQIoaq7t6" data-title="[iOS开发]--Charles抓包HTTPS请求" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -397,14 +133,14 @@ NSLog(@&quot;%@&quot;,array);
 
 
   
-    <article id="post-2026-03-18-iOS开发-自定义airPlayView实现投电视功能" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-[iOS]证书授权文件不匹配错误-关于Provisioning-profile-“”-doesn&#39;t-include-a" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D%E8%AF%81%E4%B9%A6%E6%8E%88%E6%9D%83%E6%96%87%E4%BB%B6%E4%B8%8D%E5%8C%B9%E9%85%8D%E9%94%99%E8%AF%AF-%E5%85%B3%E4%BA%8EProvisioning-profile-%E2%80%9C%E2%80%9D-doesn't-include-a/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:48:57.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a>
   </div>
 
   </div>
@@ -415,7 +151,7 @@ NSLog(@&quot;%@&quot;,array);
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/">iOS开发--自定义airPlayView实现投电视功能</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D%E8%AF%81%E4%B9%A6%E6%8E%88%E6%9D%83%E6%96%87%E4%BB%B6%E4%B8%8D%E5%8C%B9%E9%85%8D%E9%94%99%E8%AF%AF-%E5%85%B3%E4%BA%8EProvisioning-profile-%E2%80%9C%E2%80%9D-doesn't-include-a/">[iOS]证书授权文件不匹配错误-关于Provisioning-profile-“”-doesn&#39;t-include-any-certifi</a>
     </h1>
   
 
@@ -423,155 +159,17 @@ NSLog(@&quot;%@&quot;,array);
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>最近APP内需要用到投电视功能,所以做了一个小小的封装,方便使用.</p>
-<blockquote>
-<p>更新日志：<br>1  2018-04-09 KVO监听alpha的变化</p>
-</blockquote>
-<p>苹果API有一个类叫”MPVolumeView”,它是用来实现投电视的控件,但是这个控件和UISlider类似,定制性不是很好,不能用frame改变大小,并且自带一个电视的小图标,对于个性的产品来说很难满足他的需求(我们就是这样…)—–故自己封装一个用起来比较方便的view.</p>
-<blockquote>
-<p>本文<a target="_blank" rel="noopener" href="https://github.com/CoderLi-Q/airPlayView">demo</a>地址</p>
-</blockquote>
-<p>废话不多说上~~代码:</p>
-<p> LQAirPlayView.h</p>
-<pre><code> #import &lt;UIKit/UIKit.h&gt;
-
-@interface LQAirPlayView : UIView
-
-/**
- 返回实例
-
- @param rect frame
- @param image 图片
- @return 实例
- */
-+ (instancetype)airPlayViewWithFrame:(CGRect)rect image:(UIImage *)image;
-@end
-</code></pre>
-<p> LQAirPlayView.m</p>
-<pre><code>#import &quot;LQAirPlayView.h&quot;
-#import &lt;MediaPlayer/MediaPlayer.h&gt;
-@interface LQAirPlayView ()
-@property (nonatomic, weak) UIImageView *imageView;
-@property (nonatomic, weak) MPVolumeView *mpAirplayView;
-@end
-
-@implementation LQAirPlayView
-
-+(instancetype)airPlayViewWithFrame:(CGRect)rect image:(UIImage *)image{
-    return [[self alloc] initWithFrame:rect image:image];
-}
-
-+ (instancetype)airPlayViewWithFrame:(CGRect)rect{
-    return [[self alloc] initWithFrame:rect];
-}
-- (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image
-{
-    self = [self initWithFrame:frame];
-    if (self) {
-        self.imageView.image = image;
-    }
-    return self;
-}
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor = [UIColor lightGrayColor];
-        UIImageView *imgView = [[UIImageView alloc]init];
-        _imageView = imgView;
-        [self addSubview:imgView];
+        <p>问题描述： </p>
+<p>日前，发布证书将要过期，重新做了一个证书，与其配套的授权文件同步更新。在这个过程中出现了问题，见下图：<br><img src="/hexo-site/images/note/7daab74ce1abce0e0cb2a3ac3a97a64c.webp" alt="image.png"></p>
         
-        MPVolumeView *mpAirplayView = [[MPVolumeView alloc] init];
-        [mpAirplayView setRouteButtonImage:nil forState:UIControlStateNormal];
-        [mpAirplayView setShowsVolumeSlider:NO];
-        _mpAirplayView = mpAirplayView;
-        [self addSubview:mpAirplayView];
-
-        /*添加于2018-04-09*/
-        for (UIButton *button in mpAirplayView.subviews) {
-            if ([button isKindOfClass:[UIButton class]]) {
-                [button addObserver:self forKeyPath:@&quot;alpha&quot; options:NSKeyValueObservingOptionNew context:nil];
-            }
-        }
-        /*添加于2018-04-09*/
-
-    }
-    return self;
-}
- /*添加于2018-04-09*/
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-if ([object isKindOfClass:[UIButton class]] ) {
-    if([[change valueForKey:NSKeyValueChangeNewKey] intValue] == 1){
-        [(UIButton *)object setBounds:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-    }else{
-        self.mpAirplayView.hidden = NO;
-        [object setAlpha:1];
-    }
-}
-}
- /*添加于2018-04-09*/
--(void)layoutSubviews{
-    [super layoutSubviews];
-    CGFloat scaleW = self.frame.size.width/30;
-    CGFloat scaleH = self.frame.size.height/34;
-    CGFloat scale = scaleH &gt; scaleW ? scaleH : scaleW;
-    self.mpAirplayView.transform = CGAffineTransformMake(scale,0, 0, scale, self.frame.size.width/2, self.frame.size.height/2);
-    self.imageView.frame = self.bounds;
-    
-}
-
-@end
-</code></pre>
-<p>用法:</p>
-<pre><code>LQAirPlayView *airView = [LQAirPlayView airPlayViewWithFrame:CGRectMake(100, 100, w, w) image:[UIImage imageNamed:@&quot;icon]];
-[self.view addSubview:airView];
-</code></pre>
-<p>最后附上本文<a target="_blank" rel="noopener" href="https://github.com/CoderLi-Q/airPlayView">demo</a>地址！</p>
-<pre><code>        ————[半缘魔君](https://www.jianshu.com/u/5bf6c3f1b289)出品——————
-</code></pre>
-<p>AirPlay的API：</p>
-<pre><code>@property (nonatomic) BOOL showsVolumeSlider MP_API(ios(4.2)); // Default is YES.
-@property (nonatomic) BOOL showsRouteButton MP_API(ios(4.2));  // Default is YES.
-
-// Returns YES if wireless routes (AirPlay, Bluetooth, etc) are available for user selection.
-// Note that the view must be in present in a window hierarchy in order to discover some types of wireless routes.
-@property (nonatomic, readonly, getter=areWirelessRoutesAvailable) BOOL wirelessRoutesAvailable MP_API(ios(7.0));
-
-// Returns YES if a wireless route is active.
-@property (nonatomic, readonly, getter=isWirelessRouteActive) BOOL wirelessRouteActive MP_API(ios(7.0));
-
-// Volume slider customization
-
-- (void)setMinimumVolumeSliderImage:(nullable UIImage *)image forState:(UIControlState)state MP_API(ios(6.0));
-- (void)setMaximumVolumeSliderImage:(nullable UIImage *)image forState:(UIControlState)state MP_API(ios(6.0));
-- (void)setVolumeThumbImage:(nullable UIImage *)image forState:(UIControlState)state MP_API(ios(6.0));
-
-- (nullable UIImage *)minimumVolumeSliderImageForState:(UIControlState)state MP_API(ios(6.0));
-- (nullable UIImage *)maximumVolumeSliderImageForState:(UIControlState)state MP_API(ios(6.0));
-- (nullable UIImage *)volumeThumbImageForState:(UIControlState)state MP_API(ios(6.0));
-
-// Sets the image for the EU volume limit. When appropriate, this image will be displayed on top of the
-// maximumVolumeSliderImage. It must be visually distinct from the maximumVolumeSliderImage, and use
-// a color similar to the default, to convey a sense of warning to the user. The same image is used for
-// all control states. For debugging purposes, switch on the &quot;EU Volume Limit&quot; setting in the Developer
-// menu of the Settings application to always enable the volume limit.
-@property (nonatomic, strong, nullable) UIImage *volumeWarningSliderImage MP_API(ios(7.0));
-
-- (CGRect)volumeSliderRectForBounds:(CGRect)bounds MP_API(ios(6.0));
-- (CGRect)volumeThumbRectForBounds:(CGRect)bounds volumeSliderRect:(CGRect)rect value:(float)value MP_API(ios(6.0));
-
-// Route button customization
-
-- (void)setRouteButtonImage:(nullable UIImage *)image forState:(UIControlState)state MP_API(ios(6.0));
-- (nullable UIImage *)routeButtonImageForState:(UIControlState)state MP_API(ios(6.0));
-
-- (CGRect)routeButtonRectForBounds:(CGRect)bounds MP_API(ios(6.0));
-</code></pre>
-
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D%E8%AF%81%E4%B9%A6%E6%8E%88%E6%9D%83%E6%96%87%E4%BB%B6%E4%B8%8D%E5%8C%B9%E9%85%8D%E9%94%99%E8%AF%AF-%E5%85%B3%E4%BA%8EProvisioning-profile-%E2%80%9C%E2%80%9D-doesn't-include-a/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/" data-id="cuidhx5K8mqb7nsh7PHqh_6Mx" data-title="iOS开发--自定义airPlayView实现投电视功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D%E8%AF%81%E4%B9%A6%E6%8E%88%E6%9D%83%E6%96%87%E4%BB%B6%E4%B8%8D%E5%8C%B9%E9%85%8D%E9%94%99%E8%AF%AF-%E5%85%B3%E4%BA%8EProvisioning-profile-%E2%80%9C%E2%80%9D-doesn't-include-a/" data-id="cuidli6cmWDRZH9SRdXKWDqgQ" data-title="[iOS]证书授权文件不匹配错误-关于Provisioning-profile-“”-doesn&#39;t-include-any-certifi" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -585,14 +183,14 @@ if ([object isKindOfClass:[UIButton class]] ) {
 
 
   
-    <article id="post-2026-03-18-iOS开发-获取wifi名字,判断是否连接了dl" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-[iOS]-block内使用成员变量导致对象无法释放" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%8E%B7%E5%8F%96wifi%E5%90%8D%E5%AD%97,%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E8%BF%9E%E6%8E%A5%E4%BA%86dl/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D-block%E5%86%85%E4%BD%BF%E7%94%A8%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%AF%BC%E8%87%B4%E5%AF%B9%E8%B1%A1%E6%97%A0%E6%B3%95%E9%87%8A%E6%94%BE/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:48:51.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
   </div>
 
   </div>
@@ -603,7 +201,7 @@ if ([object isKindOfClass:[UIButton class]] ) {
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%8E%B7%E5%8F%96wifi%E5%90%8D%E5%AD%97,%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E8%BF%9E%E6%8E%A5%E4%BA%86dl/">iOS开发--获取wifi名字,判断是否连接了dl</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D-block%E5%86%85%E4%BD%BF%E7%94%A8%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%AF%BC%E8%87%B4%E5%AF%B9%E8%B1%A1%E6%97%A0%E6%B3%95%E9%87%8A%E6%94%BE/">[iOS]-block内使用成员变量导致对象无法释放</a>
     </h1>
   
 
@@ -611,50 +209,16 @@ if ([object isKindOfClass:[UIButton class]] ) {
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <pre><code>+ (NSString *)wiFiName
-{
-NSArray *wiFiName = CFBridgingRelease(CNCopySupportedInterfaces());
-id info1 = nil;
-for (NSString *wfName in wiFiName) {
-    info1 = (__bridge_transfer id)CNCopyCurrentNetworkInfo((CFStringRef) wfName);
-        if (info1 &amp;&amp; [info1 count]) {
-            break;
-        }
-    }
-    NSDictionary *dic = (NSDictionary *)info1;
-
-    NSString *ssidName = [[dic objectForKey:@&quot;SSID&quot;] lowercaseString];
-
-    return ssidName;
-}
-+ (BOOL)isVPNOn
-{
-   BOOL flag = NO;
-   NSString *version = [UIDevice currentDevice].systemVersion;
-   // need two ways to judge this.
-   if (version.doubleValue &gt;= 9.0)
-   {
-   NSDictionary *dict = CFBridgingRelease(CFNetworkCopySystemProxySettings());
-   NSArray *keys = [dict[@&quot;__SCOPED__&quot;] allKeys];
-   for (NSString *key in keys) {
-       if ([key rangeOfString:@&quot;tap&quot;].location != NSNotFound ||
-           [key rangeOfString:@&quot;tun&quot;].location != NSNotFound ||
-           [key rangeOfString:@&quot;ipsec&quot;].location != NSNotFound ||
-           [key rangeOfString:@&quot;ppp&quot;].location != NSNotFound){
-           flag = YES;
-           break;
-       }
-   }
-   }
-
-   return flag;
-}
-</code></pre>
-
+        <p>遇到一个对象无法释放的问题，最后排查是因为一个Bool类型的成员变量的原因，已解决！</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D-block%E5%86%85%E4%BD%BF%E7%94%A8%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%AF%BC%E8%87%B4%E5%AF%B9%E8%B1%A1%E6%97%A0%E6%B3%95%E9%87%8A%E6%94%BE/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%8E%B7%E5%8F%96wifi%E5%90%8D%E5%AD%97,%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E8%BF%9E%E6%8E%A5%E4%BA%86dl/" data-id="cuidUFDnEpZYMRVoeTtSMKaT-" data-title="iOS开发--获取wifi名字,判断是否连接了dl" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D-block%E5%86%85%E4%BD%BF%E7%94%A8%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%AF%BC%E8%87%B4%E5%AF%B9%E8%B1%A1%E6%97%A0%E6%B3%95%E9%87%8A%E6%94%BE/" data-id="cuidTgjhZfsi96GHm0xKRjI4Y" data-title="[iOS]-block内使用成员变量导致对象无法释放" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -668,14 +232,14 @@ for (NSString *wfName in wiFiName) {
 
 
   
-    <article id="post-2026-03-18-iOS开发-解析json出错-NSCocoaErrorDomain-Code=3840" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-[iOS]-url拼接参数封装方法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%A7%A3%E6%9E%90json%E5%87%BA%E9%94%99-NSCocoaErrorDomain-Code=3840/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D-url%E6%8B%BC%E6%8E%A5%E5%8F%82%E6%95%B0%E5%B0%81%E8%A3%85%E6%96%B9%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:48:42.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a>
   </div>
 
   </div>
@@ -686,7 +250,7 @@ for (NSString *wfName in wiFiName) {
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%A7%A3%E6%9E%90json%E5%87%BA%E9%94%99-NSCocoaErrorDomain-Code=3840/">iOS开发---解析json出错-NSCocoaErrorDomain-Code=3840</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D-url%E6%8B%BC%E6%8E%A5%E5%8F%82%E6%95%B0%E5%B0%81%E8%A3%85%E6%96%B9%E6%B3%95/">[iOS]---url拼接参数封装方法</a>
     </h1>
   
 
@@ -694,54 +258,18 @@ for (NSString *wfName in wiFiName) {
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>  最近线上版本发现一个页面无法正常显示数据，经过排查，定位到是接口返回的json有问题，导致无法正确解析。</p>
-<p>  解决办法：</p>
-<pre><code>先正常解析，之后，判断是否出错，如果出错，删除特殊字符后，再次解析
-</code></pre>
-<p>1 问题描述：<br>    返回json事例：</p>
-<pre><code>{&quot;title&quot;:&quot;123&quot;,&quot;its&quot;:&quot;1232  324534  sdfsd &quot;}
-</code></pre>
-<p>2 错误代码以及复原<br>   解析json的方法：</p>
-<pre><code>NSError *err;
-NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                    options:NSJSONReadingMutableContainers
-                                                      error:&amp;err];
-</code></pre>
-<p>报错：Error Domain&#x3D;NSCocoaErrorDomain Code&#x3D;3840 “Unescaped control character around character XXX.”<br>3 解决方法,在解析一次之后，判断是否出错，如果出错，删除特殊字符后，再次解析</p>
-<pre><code>if(err) {
-    NSLog(@&quot;%@&quot;,err);
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    jsonString = [self removeUnescapedCharacter:jsonString];
-    jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    err = nil;
-    dic = [NSJSONSerialization JSONObjectWithData:jsonData
-                                          options:NSJSONReadingMutableContainers
-                                            error:&amp;err];
-}
-
--(NSString *)removeUnescapedCharacter:(NSString *)inputStr
-{
- NSCharacterSet *controlChars = [NSCharacterSet controlCharacterSet];//获取那些特殊字符
-NSRange range = [inputStr rangeOfCharacterFromSet:controlChars];//寻找字符串中有没有这些特殊字符
-if (range.location != NSNotFound)
-{
-    NSMutableString *mutable = [NSMutableString stringWithString:inputStr];
-    while (range.location != NSNotFound)
-    {
-        [mutable deleteCharactersInRange:range];//去掉这些特殊字符
-        range = [mutable rangeOfCharacterFromSet:controlChars];
-    }
-    return mutable;
-}
-return inputStr;
-}
-</code></pre>
-<p>本文借鉴其他人的处理方法，仅作为记录使用，如有侵权，请联系本人删除！</p>
-
+        <p>近期项目中的一个URL拼接的地方出现了问题，跟接口方约定好规则–</p>
+<p>   他提供的原始URL是带“?”的，我们直接拼接参数就好了，</p>
+<p>但是他们更新接口后，提供的原始URL不带”?“了，导致线上出现问题。</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D-url%E6%8B%BC%E6%8E%A5%E5%8F%82%E6%95%B0%E5%B0%81%E8%A3%85%E6%96%B9%E6%B3%95/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%A7%A3%E6%9E%90json%E5%87%BA%E9%94%99-NSCocoaErrorDomain-Code=3840/" data-id="cuidX__1EeEiph3MfIzfuteVG" data-title="iOS开发---解析json出错-NSCocoaErrorDomain-Code=3840" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D-url%E6%8B%BC%E6%8E%A5%E5%8F%82%E6%95%B0%E5%B0%81%E8%A3%85%E6%96%B9%E6%B3%95/" data-id="cuidf8GZyK_XscHl38xW4x2A6" data-title="[iOS]---url拼接参数封装方法" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -755,14 +283,14 @@ return inputStr;
 
 
   
-    <article id="post-2026-03-18-iOS开发-运用AVPlayer播放视频" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-[iOS]-App-签名的原理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%BF%90%E7%94%A8AVPlayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D-App-%E7%AD%BE%E5%90%8D%E7%9A%84%E5%8E%9F%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:48:33.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a>
   </div>
 
   </div>
@@ -773,7 +301,7 @@ return inputStr;
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%BF%90%E7%94%A8AVPlayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91/">iOS开发--运用AVPlayer播放视频</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D-App-%E7%AD%BE%E5%90%8D%E7%9A%84%E5%8E%9F%E7%90%86/">[iOS]----App-签名的原理</a>
     </h1>
   
 
@@ -781,27 +309,16 @@ return inputStr;
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>AVPlayer是可以高度定制性的播放器<br>利用AVPlayer播放的简单实现见下文:</p>
-<pre><code>NSURL *url = [NSURL URLWithString:@&quot;http://******&quot;];
-playerItem  = [[AVPlayerItem alloc]initWithURL:url];
-//创建player
-player = [[AVPlayer alloc]initWithPlayerItem:playerItem];
-//生成layer层
-AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player];
-self.playLayer = player;
-//设置坐标
-layer.frame = CGRectMake(0, 0, 480, 480);
-//把layer层假如到self.view.layer中
-[self.view.layer addSublayer:layer];
-//进行播放
-[player play];
-</code></pre>
-<p>如想了解AVPlayer的更多用法可以参考</p>
-
+        <p>iOS 签名机制挺复杂，各种证书，Provisioning Profile，entitlements，CertificateSigningRequest，p12，AppID，概念一堆，也很容易出错，本文尝试从原理出发，一步步推出为什么会有这么多概念，希望能有助于理解 iOS App 签名的原理和流程。</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D-App-%E7%AD%BE%E5%90%8D%E7%9A%84%E5%8E%9F%E7%90%86/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E8%BF%90%E7%94%A8AVPlayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91/" data-id="cuidIEIKCVibFZcmKpB0TdGXk" data-title="iOS开发--运用AVPlayer播放视频" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-%5BiOS%5D-App-%E7%AD%BE%E5%90%8D%E7%9A%84%E5%8E%9F%E7%90%86/" data-id="cuidZi5IqNUIFMDzD2k3XFtgV" data-title="[iOS]----App-签名的原理" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -815,14 +332,14 @@ layer.frame = CGRectMake(0, 0, 480, 480);
 
 
   
-    <article id="post-2026-03-18-iOS开发BUG-UITableView-dataSource-is-not-set" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-[iOS-开发]-xcode14-pod-update-报错" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91BUG-UITableView-dataSource-is-not-set/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-%5BiOS-%E5%BC%80%E5%8F%91%5D-xcode14-pod-update-%E6%8A%A5%E9%94%99/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:48:30.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a>
   </div>
 
   </div>
@@ -833,7 +350,7 @@ layer.frame = CGRectMake(0, 0, 480, 480);
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91BUG-UITableView-dataSource-is-not-set/">iOS开发BUG---UITableView-dataSource-is-not-set</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-%5BiOS-%E5%BC%80%E5%8F%91%5D-xcode14-pod-update-%E6%8A%A5%E9%94%99/">[iOS-开发]-xcode14-pod-update-报错</a>
     </h1>
   
 
@@ -841,30 +358,49 @@ layer.frame = CGRectMake(0, 0, 480, 480);
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>最近项目发现有一个BUG,百思不得其解:</p>
-<pre><code>reason: UITableView dataSource is not set
+        <p>#xcode14   pod update 的时候报错:</p>
+<p> ([Xcodeproj] Unknown object version (56). (RuntimeError))</p>
+<pre><code>Analyzing dependencies
+/Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/user_interface/error_report.rb:34:in `force_encoding&#39;: can&#39;t modify frozen String (FrozenError)
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/user_interface/error_report.rb:34:in `report&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/command.rb:66:in `report_error&#39;
+from /Library/Ruby/Gems/2.6.0/gems/claide-1.0.3/lib/claide/command.rb:396:in `handle_exception&#39;
+from /Library/Ruby/Gems/2.6.0/gems/claide-1.0.3/lib/claide/command.rb:337:in `rescue in run&#39;
+from /Library/Ruby/Gems/2.6.0/gems/claide-1.0.3/lib/claide/command.rb:324:in `run&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/command.rb:52:in `run&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/bin/pod:55:in `&lt;top (required)&gt;&#39;
+from /usr/local/bin/pod:23:in `load&#39;
+from /usr/local/bin/pod:23:in `&lt;main&gt;&#39;
+/Library/Ruby/Gems/2.6.0/gems/xcodeproj-1.21.0/lib/xcodeproj/project.rb:228:in `initialize_from_file&#39;: [Xcodeproj] Unknown object version (56). (RuntimeError)
+from /Library/Ruby/Gems/2.6.0/gems/xcodeproj-1.21.0/lib/xcodeproj/project.rb:113:in `open&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer/analyzer.rb:1190:in `block (2 levels) in inspect_targets_to_integrate&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer/analyzer.rb:1189:in `each&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer/analyzer.rb:1189:in `block in inspect_targets_to_integrate&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/user_interface.rb:64:in `section&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer/analyzer.rb:1184:in `inspect_targets_to_integrate&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer/analyzer.rb:106:in `analyze&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer.rb:416:in `analyze&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer.rb:241:in `block in resolve_dependencies&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/user_interface.rb:64:in `section&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer.rb:240:in `resolve_dependencies&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/installer.rb:161:in `install!&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/command/install.rb:52:in `run&#39;
+from /Library/Ruby/Gems/2.6.0/gems/claide-1.0.3/lib/claide/command.rb:334:in `run&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/lib/cocoapods/command.rb:52:in `run&#39;
+from /Library/Ruby/Gems/2.6.0/gems/cocoapods-1.11.3/bin/pod:55:in `&lt;top (required)&gt;&#39;
+from /usr/local/bin/pod:23:in `load&#39;
+from /usr/local/bin/pod:23:in `&lt;main&gt;&#39;
 </code></pre>
-<p>原因是: </p>
-<pre><code> 在UITableView执行数据源代理方法cellForRowAtIndexPath的时候,数据源释放了;
-</code></pre>
-<p>出现情况:</p>
-<pre><code>此问题出现概率较小,通常是在定时刷新UITableView的时候出现
-</code></pre>
-<p>解决方法:</p>
-<pre><code>方法一: 降低刷新频率(不建议)
-此方法不能完全解决闪退问题,只能降低崩溃概率
-方法二: 定时刷新tableView的时候,也就是调用reload的时候保证在主线程执行(建议用此方法,能完全解决此问题):
-
-*代码*
- dispatch_async(dispatch_get_main_queue(), ^{ 
-                [tableView reloadData];
-  });
-</code></pre>
-
+<p>这个问题一般是发生在Xcode升级后,新建的项目pod install, 然后 pod update</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-%5BiOS-%E5%BC%80%E5%8F%91%5D-xcode14-pod-update-%E6%8A%A5%E9%94%99/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91BUG-UITableView-dataSource-is-not-set/" data-id="cuidNtiKVSNXK-2fhuqnoZ48g" data-title="iOS开发BUG---UITableView-dataSource-is-not-set" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-%5BiOS-%E5%BC%80%E5%8F%91%5D-xcode14-pod-update-%E6%8A%A5%E9%94%99/" data-id="cuidybaWYlZXrGKHiSm9m_hgB" data-title="[iOS-开发]-xcode14-pod-update-报错" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -878,14 +414,14 @@ layer.frame = CGRectMake(0, 0, 480, 480);
 
 
   
-    <article id="post-2026-03-18-iOS自定义视图系列(一)-实用的进度条" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-[flutter]FFI-调用找不到符号：Failed-to-lookup-symbol" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%B8%80)-%E5%AE%9E%E7%94%A8%E7%9A%84%E8%BF%9B%E5%BA%A6%E6%9D%A1/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-%5Bflutter%5DFFI-%E8%B0%83%E7%94%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E7%AC%A6%E5%8F%B7%EF%BC%9AFailed-to-lookup-symbol/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:48:27.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/flutter%E5%BC%80%E5%8F%91/">flutter开发</a>
   </div>
 
   </div>
@@ -896,7 +432,7 @@ layer.frame = CGRectMake(0, 0, 480, 480);
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%B8%80)-%E5%AE%9E%E7%94%A8%E7%9A%84%E8%BF%9B%E5%BA%A6%E6%9D%A1/">iOS自定义视图系列(一)-实用的进度条</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-%5Bflutter%5DFFI-%E8%B0%83%E7%94%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E7%AC%A6%E5%8F%B7%EF%BC%9AFailed-to-lookup-symbol/">[flutter]FFI-调用找不到符号：Failed-to-lookup-symbol</a>
     </h1>
   
 
@@ -904,64 +440,168 @@ layer.frame = CGRectMake(0, 0, 480, 480);
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>博主从事iOS开发3年多,看过许多大神的博客,感觉他们文笔都很好,讲解很透彻,但是本人一直没有写过博客,今天鼓起勇气写下这个入门级的小东西–实用的进度条,想用的尽管拿去.我随手封装的东西,如果有可以改进的地方,你又愿意提点我,请留言,谢谢!如果不喜欢,请关闭本文,谢谢!</p>
-<pre><code>   好了,废话不多说,进入主题!
-</code></pre>
-<p> 由于目前项目中要用到进度条,但是系统的UIProgressView的高度和背景颜色不一致,想了几种办法尝试解决这个问题,但是感觉有点费劲,然后,然后,我就自己搞了一个,先用着.欢迎留言交流……</p>
-<p>上代码:</p>
-<p>   LQProgressLine.h</p>
-<pre><code>@interface LQProgressLine : UIView
-/**
- *  背景色
- */
-@property (nonatomic,copy) NSString *backColor;
-/**
- *  已经经过的进度的颜色
- */
-@property (nonatomic,copy) NSString *didColor;
-/**
- *  进度
- */
-@property (nonatomic,assign) CGFloat progress;
-
-/**
- *  工厂方法
- *
- *  @param bColor 背景颜色 (例如&quot;#ffffff&quot;)
- *  @param dColor 已经经过的进度的颜色(例如&quot;#000000&quot;)
- *
- *  @return 对象
- */
-+(instancetype)progressLineWithBackColor:(NSString *)bColor didColor:(NSString *)dColor;
-</code></pre>
-<p>LQProgressLine.m</p>
-<pre><code>#import &quot;LQProgressLine.h&quot;
-@interface LQProgressLine ()
-@property (nonatomic,strong) NSArray *backColorArray;
-@property (nonatomic,strong) NSArray *didColorArray;
-@end
-
-@implementation LQProgressLine
-+(instancetype)progressLineWithBackColor:(NSString *)bColor didColor:(NSString *)dColor{
-</code></pre>
-<p>        return [[self alloc]initWithBackColor:bColor didColor:dColor];<br>    }<br>    - (instancetype)initWithBackColor:(NSString *)bColor didColor:    (NSString *)dColor{<br>      if (self &#x3D; [super init]) {<br>          self.backColor &#x3D; bColor;<br>          self.backgroundColor &#x3D; [UIColor colorWithRed:[self.backColorArray[0] floatValue] green:[self.backColorArray[1]   floatValue] blue:[self.backColorArray[2] floatValue] alpha:1];<br>          self.didColor &#x3D; dColor;<br>    }<br>      return self;<br>    }<br>    - (void)setBackColor:(NSString *)backColor{<br>      _backColor &#x3D; backColor;<br>      self.backColorArray &#x3D; [self RGBFromStr:backColor];<br>      }<br>    - (void)setDidColor:(NSString <em>)didColor{<br>      _didColor &#x3D; didColor;<br>      self.didColorArray &#x3D; [self RGBFromStr:didColor];<br>      }<br>    - (void)drawRect:(CGRect)rect{<br>      CGContextRef context &#x3D; UIGraphicsGetCurrentContext();<br>      CGContextSetLineWidth(context, rect.size.width);  &#x2F;&#x2F;线宽<br>      CGContextSetRGBStrokeColor(context, [self.didColorArray[0] floatValue], [self.didColorArray[1] floatValue],   [self.didColorArray[2] floatValue], 1.0);  &#x2F;&#x2F;线的颜色<br>      CGContextBeginPath(context);<br>      CGContextMoveToPoint(context, 0, 0);  &#x2F;&#x2F;起点坐标<br>      CGContextAddLineToPoint(context, rect.size.width</em>_progress, rect.size.height);   &#x2F;&#x2F;终点坐标<br>      CGContextStrokePath(context);<br>    }<br>    - (void)setProgress:(CGFloat)progress{<br>        _progress &#x3D; progress;<br>       [self setNeedsDisplay];<br>    }</p>
-<pre><code>- (NSArray *)RGBFromStr:(NSString *)hexColor{
-</code></pre>
-<p>      NSString *str &#x3D; nil;<br>      if([hexColor rangeOfString:@”#”].length&gt;0){<br>          str &#x3D; [hexColor substringFromIndex:1];<br>      }else{<br>          str &#x3D; hexColor;<br>      }<br>      if(str.length&lt;&#x3D;0)return nil;<br>      unsigned int red, green, blue;<br>      NSRange range;<br>      range.length &#x3D;2;<br>      range.location &#x3D;0;<br>      [[NSScanner scannerWithString:[str substringWithRange:range]]scanHexInt:&amp;red];<br>      range.location &#x3D;2;<br>      [[NSScanner scannerWithString:[str substringWithRange:range]]scanHexInt:&amp;green];<br>      range.location &#x3D;4;<br>      [[NSScanner scannerWithString:[str substringWithRange:range]]scanHexInt:&amp;blue];<br>      return @[@(red&#x2F;255.0),@(green&#x2F;255.0),@(blue&#x2F;255.0)];<br>      }</p>
-<p>好了,代码贴完,用法如下:</p>
-<pre><code>//创建
-
-LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;#cccccc&quot; didColor:@&quot;#0096e0&quot;];
-[superView addSubview:progressView];
-
-//在需要设置进度的时候设置
-[progressView setProgress:0.4];
-</code></pre>
-
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[VERBOSE-2:dart_vm_initializer.cc(41)] Unhandled Exception: Invalid argument(s): Failed to lookup symbol &#x27;ffi_RsFileDownloadCallback_Constructor&#x27;: dlsym(RTLD_DEFAULT, ffi_RsFileDownloadCallback_Constructor): symbol not found</span><br><span class="line">#0      DynamicLibrary.lookup (dart:ffi-patch/ffi_dynamic_library_patch.dart:33:70)</span><br><span class="line">#1      ptr_ffi_RsFileDownloadCallback_Constructor (package:rs_device_controller/RsFileDownloadState_ffiapi.dart:133:88)</span><br><span class="line">#2      ptr_ffi_RsFileDownloadCallback_Constructor (package:rs_device_controller/RsFileDownloadState_ffiapi.dart)</span><br><span class="line">#3      ffi_RsFileDownloadCallback_Constructor (package:rs_device_controller/RsFileDownloadState_ffiapi.dart:134:53)</span><br><span class="line">#4      ffi_RsFileDownloadCallback_Constructor (package:rs_device_controller/RsFileDownloadState_ffiapi.dart)</span><br><span class="line">#5      new RsFileDownloadCallback.Constructor (package:rs_device_controller/RsFileDownloadState.dart:406:22)</span><br><span class="line">#6      _RSPoincareDeviceManager.getProductRawData (package:rs_poincare_main_page/rs_poincare_device_vm.dart:541:62)</span><br><span class="line">#7      RSPoincareDeviceViewModel.getProductRawData (package:rs_poincare_main_page/rs_poincare_device_vm.dart:300:51)</span><br><span class="line">#8      RSPoincareCaptureViewModel.checkAndPrepareUploadData (package:rs_poincare_main_page/rs_poincare_main_page_vm.dart:766:26)</span><br><span class="line">&lt;asynchronous suspension&gt;</span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-%5Bflutter%5DFFI-%E8%B0%83%E7%94%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E7%AC%A6%E5%8F%B7%EF%BC%9AFailed-to-lookup-symbol/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE%E7%B3%BB%E5%88%97(%E4%B8%80)-%E5%AE%9E%E7%94%A8%E7%9A%84%E8%BF%9B%E5%BA%A6%E6%9D%A1/" data-id="cuidqsKjiJ38XDEym2CIafLpG" data-title="iOS自定义视图系列(一)-实用的进度条" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-%5Bflutter%5DFFI-%E8%B0%83%E7%94%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E7%AC%A6%E5%8F%B7%EF%BC%9AFailed-to-lookup-symbol/" data-id="cuid4Kmi8pmF6lLVbEY2KQIdL" data-title="[flutter]FFI-调用找不到符号：Failed-to-lookup-symbol" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-24-[开发工具]-一个可以测试所有网络请求的网站" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/24/2026-03-24-%5B%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%5D-%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E6%B5%8B%E8%AF%95%E6%89%80%E6%9C%89%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82%E7%9A%84%E7%BD%91%E7%AB%99/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:48:24.000Z" itemprop="datePublished">2026-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/">工具分享</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-%5B%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%5D-%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E6%B5%8B%E8%AF%95%E6%89%80%E6%9C%89%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82%E7%9A%84%E7%BD%91%E7%AB%99/">[开发工具]--一个可以测试所有网络请求的网站</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p> —-网站地址——  <a target="_blank" rel="noopener" href="https://httpbin.org/">https://httpbin.org/</a> </p>
+<pre><code>DESCRIPTION
+Testing an HTTP Library can become difficult sometimes.RequestBin is fantastic 
+for testing POST requests, but doesn&#39;t let you control the response.This exists 
+to cover all kinds of HTTP scenarios. Additional endpoints are being considered.
+</code></pre>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-%5B%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%5D-%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E6%B5%8B%E8%AF%95%E6%89%80%E6%9C%89%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82%E7%9A%84%E7%BD%91%E7%AB%99/#more">阅读全文</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-%5B%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%5D-%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E6%B5%8B%E8%AF%95%E6%89%80%E6%9C%89%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82%E7%9A%84%E7%BD%91%E7%AB%99/" data-id="cuidXkMCiBmjeDhS6fpBrLR3g" data-title="[开发工具]--一个可以测试所有网络请求的网站" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-24-[不建议升级]Xcode13-版本踩坑之旅-持续更新中" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/24/2026-03-24-%5B%E4%B8%8D%E5%BB%BA%E8%AE%AE%E5%8D%87%E7%BA%A7%5DXcode13-%E7%89%88%E6%9C%AC%E8%B8%A9%E5%9D%91%E4%B9%8B%E6%97%85-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:48:21.000Z" itemprop="datePublished">2026-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/">工具分享</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-%5B%E4%B8%8D%E5%BB%BA%E8%AE%AE%E5%8D%87%E7%BA%A7%5DXcode13-%E7%89%88%E6%9C%AC%E8%B8%A9%E5%9D%91%E4%B9%8B%E6%97%85-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/">[不建议升级]Xcode13-版本踩坑之旅-持续更新中</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在iOS15发布来临之际,下载了Xcode13 版本<br><img src="/hexo-site/images/note/9b4b1153712c46e578072cbc5a0e8b60.webp" alt="image.png"></p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-%5B%E4%B8%8D%E5%BB%BA%E8%AE%AE%E5%8D%87%E7%BA%A7%5DXcode13-%E7%89%88%E6%9C%AC%E8%B8%A9%E5%9D%91%E4%B9%8B%E6%97%85-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/#more">阅读全文</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-%5B%E4%B8%8D%E5%BB%BA%E8%AE%AE%E5%8D%87%E7%BA%A7%5DXcode13-%E7%89%88%E6%9C%AC%E8%B8%A9%E5%9D%91%E4%B9%8B%E6%97%85-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/" data-id="cuidGrD4MNaKQCyl7-6nQU455" data-title="[不建议升级]Xcode13-版本踩坑之旅-持续更新中" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-18-iOS开发-简单MVVM设计模式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E7%AE%80%E5%8D%95MVVM%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T10:36:04.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E7%AE%80%E5%8D%95MVVM%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">iOS开发--简单MVVM设计模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-auto">一张图简要说明MVVM分层工作:</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E7%AE%80%E5%8D%95MVVM%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/#more">阅读全文</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E7%AE%80%E5%8D%95MVVM%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" data-id="cuidu0tBposwX-TjsDFvC2GJe" data-title="iOS开发--简单MVVM设计模式" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -979,7 +619,7 @@ LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/hexo-site/page/7/">&laquo; 上一页</a><a class="page-number" href="/hexo-site/">1</a><span class="space">&hellip;</span><a class="page-number" href="/hexo-site/page/6/">6</a><a class="page-number" href="/hexo-site/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/hexo-site/page/9/">9</a><a class="page-number" href="/hexo-site/page/10/">10</a><a class="page-number" href="/hexo-site/page/11/">11</a><a class="extend next" rel="next" href="/hexo-site/page/9/">下一页 &raquo;</a>
+    <a class="extend prev" rel="prev" href="/hexo-site/page/7/">&laquo; 上一页</a><a class="page-number" href="/hexo-site/">1</a><span class="space">&hellip;</span><a class="page-number" href="/hexo-site/page/6/">6</a><a class="page-number" href="/hexo-site/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/hexo-site/page/9/">9</a><a class="page-number" href="/hexo-site/page/10/">10</a><a class="extend next" rel="next" href="/hexo-site/page/9/">下一页 &raquo;</a>
   </nav>
 
 </section>
@@ -990,7 +630,7 @@ LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/MAC%E7%9F%A5%E8%AF%86/">MAC知识</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/flutter%E5%BC%80%E5%8F%91/">flutter开发</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/swift%E8%AF%AD%E8%A8%80/">swift语言</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E/">亲人纪实</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/">工具分享</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li></ul>
     </div>
   </div>
 
@@ -1019,7 +659,7 @@ LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2018/04/">四月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li></ul>
     </div>
   </div>
 
@@ -1032,23 +672,23 @@ LQProgressLine*progressView = [LQProgressLine progressLineWithBackColor: @&quot;
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift%E5%9F%BA%E7%A1%80-%E5%8F%AF%E9%80%89%E9%A1%B9/">Swift基础-可选项</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95-Swift-Compiler-Error/">Swift错误提示解决办法--Swift-Compiler-Error</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E4%B8%AD%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E7%9A%84%E8%AF%B4%E6%98%8E%E4%BB%A5%E5%8F%8A%E7%94%A8%E6%B3%95/">OC中按位枚举的说明以及用法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift3-0%E5%9F%BA%E7%A1%80-if-let-var-%E5%92%8Cguard-let-var-%E5%BC%82%E5%90%8C/">Swift3-0基础----if-let-var-和guard-let-var-异同</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-SVN%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF-svn-server-sent-unexpected-return-value-405-method-n/">SVN常见错误-svn-server-sent-unexpected-return-value-405-method-not-allowed</a>
           </li>
         
       </ul>

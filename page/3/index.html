@@ -37,9 +37,9 @@
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<!-- hexo injector head_end start --><link rel="stylesheet" href="/hexo-site/css/skin.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/hexo-site/css/skin.css"><link rel="stylesheet" href="/hexo-site/css/layout.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
 
-<body>
+<body class="is-blog-index">
   <div id="container">
     <div id="wrap">
       <header id="header">
@@ -81,14 +81,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-2026-03-18-iOS-视频播放过程中录制GIF图" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS开发-NSURL大部分人都用错了" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS-%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%BD%95%E5%88%B6GIF%E5%9B%BE/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-NSURL%E5%A4%A7%E9%83%A8%E5%88%86%E4%BA%BA%E9%83%BD%E7%94%A8%E9%94%99%E4%BA%86/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:58:38.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
   </div>
 
   </div>
@@ -99,7 +99,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS-%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%BD%95%E5%88%B6GIF%E5%9B%BE/">iOS-视频播放过程中录制GIF图</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-NSURL%E5%A4%A7%E9%83%A8%E5%88%86%E4%BA%BA%E9%83%BD%E7%94%A8%E9%94%99%E4%BA%86/">iOS开发--NSURL大部分人都用错了</a>
     </h1>
   
 
@@ -107,88 +107,16 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>近期,各大视频APP都推出了一个新的功能—-在播放视频过程中录制GIF图片,并分享.</p>
-<p><img src="/hexo-site/images/note/3aecdc0ad657fcca2e7243f9df6e1a96.webp" alt="截图.png"></p>
-<p>我们项目刚好有这个需求,就写了一个demo,这里分享一下我的实现思路;</p>
-<p>技术点:<br>1 视频播放(略:可参考<a target="_blank" rel="noopener" href="http://www.jianshu.com/p/6cb137340732">http://www.jianshu.com/p/6cb137340732</a>)<br>2 LongPress手势的添加和使用(略)<br>3 视频截取帧图(略:可参考<a target="_blank" rel="noopener" href="http://www.jianshu.com/p/69be2869ad02">http://www.jianshu.com/p/69be2869ad02</a>)<br>4 多张图片合成GIF图(重点)<br>5 分享(略)</p>
-<p>本篇文章的视频播放是基于AVPlayer的,关于AVPlayer的详细使用手册可以参考:<a target="_blank" rel="noopener" href="http://www.jianshu.com/p/6cb137340732">http://www.jianshu.com/p/6cb137340732</a></p>
-<p>我们假定的需求:<br>   1 触发录制GIF的条件是长按某个按钮;<br>   2 图片暂不做压缩处理<br>   3 内存问题暂不考虑<br>视频播放过程中录制GIF图实现思路:<br>   1 长按手势开始每0.3s截取一张帧图<br>   2 长按手势结束,将截取到的图片合成一张GIF</p>
-<p>本篇文章的重点是多张图片合成GIF,截取帧图方法参考:<a target="_blank" rel="noopener" href="http://www.jianshu.com/p/69be2869ad02,%E8%BF%99%E9%87%8C%E4%B8%8D%E5%86%8D%E8%B5%98%E8%BF%B0">http://www.jianshu.com/p/69be2869ad02,这里不再赘述</a></p>
-<p>核心代码如下:</p>
-<pre><code> //长按手势的方法
- - (void)longp:(UILongPressGestureRecognizer *)longp{
-switch (longp.state) {
-    case UIGestureRecognizerStateBegan:
-        self.flag = YES;//标识开始截图
-        [self getThumbnails];//截图方法
-        NSLog(@&quot;开始截图&quot;);
-        break;
-    case UIGestureRecognizerStateEnded:
-        self.flag = NO;标识停止截图
-        NSLog(@&quot;结束截图&quot;);
-        NSLog(@&quot;----%@&quot;,self.thumbnailArray);
-        //生成gif
-       UIImage *ima = [self createGitWithImageArray:self.thumbnailArray];//生成GIF
-        [self.imageV setImage:ima  forState:UIControlStateNormal];
-        [self.thumbnailArray removeAllObjects];
-        break;
-    default:
-        break;
-}
-}
-//截取帧图的方法
-- (void)getThumbnails{
-if (self.flag) {
-    if(player.currentItem.status == AVPlayerStatusReadyToPlay){
-        dispatch_async(dispatch_get_global_queue(0,0), ^{
-            
-            CMTime currentTime = player.currentItem.currentTime;
-            
-            CVPixelBufferRef buffer = [videoOutput copyPixelBufferForItemTime:currentTime itemTimeForDisplay:nil];
-            
-            CIImage *ciImage = [CIImage imageWithCVPixelBuffer:buffer];
-            
-            CIContext *temporaryContext = [CIContext contextWithOptions:nil];
-            CGImageRef videoImage = [temporaryContext createCGImage:ciImage fromRect:CGRectMake(0, 0, CVPixelBufferGetWidth(buffer), CVPixelBufferGetHeight(buffer))];
-            UIImage *image = [UIImage imageWithCGImage:videoImage];
-            [self.thumbnailArray addObject:image];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self screenShot];
-                NSLog(@&quot;------&quot;);
-            });
-        });
-    }
-}   
-}
-
-//多张图片生成GIF
-- (UIImage *)createGitWithImageArray:(NSArray &lt;UIImage *&gt; *)imageArray{
-NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES)lastObject] stringByAppendingPathComponent:@&quot;animated4.gif&quot;];
-if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-    [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
-    NSLog(@&quot;删除--&quot;);
-}
-CGImageDestinationRef destination =CGImageDestinationCreateWithURL((CFURLRef)[NSURL fileURLWithPath:path], kUTTypeGIF, imageArray.count, NULL);
-
-NSDictionary *frameProperties = [NSDictionary dictionaryWithObject:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:0.3f] forKey:(NSString *)kCGImagePropertyGIFDelayTime] forKey:(NSString *)kCGImagePropertyGIFDictionary];
-NSDictionary *gifProperties = [NSDictionary dictionaryWithObject:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:1] forKey:(NSString *)kCGImagePropertyGIFLoopCount]forKey:(NSString *)kCGImagePropertyGIFDictionary];
-for (int i = 0; i&lt;imageArray.count; i++) {
-    UIImage *shacho = imageArray[i];
-    CGImageDestinationAddImage(destination, shacho.CGImage, (CFDictionaryRef)frameProperties);
-}
-CGImageDestinationSetProperties(destination, (CFDictionaryRef)gifProperties);
-CGImageDestinationFinalize(destination);
-CFRelease(destination);
-//    NSLog(@&quot;animated GIF file created at %@&quot;, path);
-NSData *data = [NSData dataWithContentsOfFile:path];
-return [UIImage sd_animatedGIFWithData:data];
-}
-</code></pre>
-
+        <p>大部分人拼接URL参数&#x2F;路径时, 都会选择字符串拼接,因为直观,容易理解.这样真的好吗? 本文带你认识NSURL的用法</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-NSURL%E5%A4%A7%E9%83%A8%E5%88%86%E4%BA%BA%E9%83%BD%E7%94%A8%E9%94%99%E4%BA%86/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS-%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%BD%95%E5%88%B6GIF%E5%9B%BE/" data-id="cuiduvUhxtmrICXL5CYrCAsAv" data-title="iOS-视频播放过程中录制GIF图" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-NSURL%E5%A4%A7%E9%83%A8%E5%88%86%E4%BA%BA%E9%83%BD%E7%94%A8%E9%94%99%E4%BA%86/" data-id="cuid1kOCpPhdNJmW3MCxCKZ1-" data-title="iOS开发--NSURL大部分人都用错了" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -202,14 +130,14 @@ return [UIImage sd_animatedGIFWithData:data];
 
 
   
-    <article id="post-2026-03-18-iOS-集成IJK的那些坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS开发-iOS14-Xcode12-适配问题-持续更新" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS-%E9%9B%86%E6%88%90IJK%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:58:30.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
   </div>
 
   </div>
@@ -220,581 +148,7 @@ return [UIImage sd_animatedGIFWithData:data];
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS-%E9%9B%86%E6%88%90IJK%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/">iOS-集成IJK的那些坑</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>集成教程： <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1f06b27b3ac0">http://www.jianshu.com/p/1f06b27b3ac0</a></p>
-<p>已经很详细了，照这个步骤走就行了。</p>
-<p>不过照找个步骤还是发现了一些坑，下面是我自己遇到的问题，菜鸟一个，大神勿喷。</p>
-<p>坑一:  直接盗图了，Show in Finder, 你可能打不开<br><img src="/hexo-site/images/note/319f16816dd27328cc0aa86a4242717d.webp" alt="3"></p>
-<p>显示不了这个<br><img src="/hexo-site/images/note/e82d341f1e752098a7ec1acbd375d74d.webp" alt="2"></p>
-<p>这是因为你需要在模拟器和真机上分别运行一下，才会显示出来，然后Show in Finder就会存在了</p>
-<p>坑二：lipo -create “真机版本路径” “模拟器版本路径” -output “合并后的文件路径”</p>
-<p>合并后的路径你需要，给出名字，如</p>
-<p><img src="/hexo-site/images/note/c2a207541b38358f8f392655a566d7f1.webp" alt="1"></p>
-<p>坑三: 其实这样按照步骤下去已经成功了，新建工程-导入IJKMediaFramework，但是如果你初始化IJKFFMoviePlayerController会报错</p>
-<p>Undefined symbols for architecture x86_64:  “operator delete(void*)”, referenced from:      _ijk_map_destroy in IJKMediaFramework(ijkstl.o)      std::__1::__tree, std::__1::__map_value_compare, std::__1::less, true&gt;, std::__1::allocator&gt; &gt;::destroy(std::__1::__tree_node, void*&gt;<em>) in IJKMediaFramework(ijkstl.o)      std::__1::__tree, std::__1::__map_value_compare, std::__1::less, true&gt;, std::__1::allocator&gt; &gt;::erase(std::__1::__tree_const_iterator, std::__1::__tree_node, void</em>&gt;<em>, long&gt;) in IJKMediaFramework(ijkstl.o)  “operator new(unsigned long)”, referenced from:      _ijk_map_create in IJKMediaFramework(ijkstl.o)      std::__1::pair, std::__1::__tree_node, void</em>&gt;*, long&gt;, bool&gt; std::__1::__tree, std::__1::__map_value_compare, std::__1::less, true&gt;, std::__1::allocator&gt; &gt;::__emplace_unique_key_args, std::__1::tuple&lt;&gt; &gt;(long long const&amp;, std::__1::piecewise_construct_t const&amp;&amp;&amp;, std::__1::tuple&amp;&amp;, std::__1::tuple&lt;&gt;&amp;&amp;) in IJKMediaFramework(ijkstl.o)</p>
-<p>ld: symbol(s) not found for architecture x86_64</p>
-<p>clang: error: linker command failed with exit code 1 (use -v to see invocation)</p>
-<p><img src="/hexo-site/images/note/4c337f29a03875bac56b23db11703e4d.webp" alt="123"></p>
-<p>需要添加一个库 -  libstdc++.tbd</p>
-<p>再运行, ok</p>
-<p>转载自：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9d99e3c85177">https://www.jianshu.com/p/9d99e3c85177</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS-%E9%9B%86%E6%88%90IJK%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/" data-id="cuidPQ74O9r74uRokyLfEcb74" data-title="iOS-集成IJK的那些坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-BUG定位,符号化crash地址" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/">iOS开发--BUG定位,符号化crash地址</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在umeng或者其他的BUG收集的第三方里边大多数的BUG是能够通过crash前的调用信息,定位到具体的方法,从而想办法解决,但是有些BUG信息量很少,只有一个内存地址:</p>
-<p>例如: </p>
-<pre><code>  appname                            0x97525 appname + 615717 
-</code></pre>
-<p>下面本文将介绍通过内存地址,定位BUG文件,调用方法</p>
-<p>步骤:</p>
-<p>1 检查log中的dSYM UUID与本地的dYSM文件是否匹配<br>方法: 打开终端(不知道终端的请略过此文),输入命令</p>
-<pre><code> $1 cd /Users/username/Library/Developer/Xcode/Archives/ xx.xcarchive/dSYMs  
- $2 dwarfdump --uuid appname.app.dSYM  
-</code></pre>
-<p>注:  $1里cd 后的地址是打包时生成的xcode自动生成的本地文件的地址<br>找到此地址的方法打开: xcode-&gt;Window-&gt;Organizer,然后找到对应的release包,右键 Show in Finder</p>
-<p><img src="/hexo-site/images/note/74d27b004018698c9cfa5f0d94a8f5d9.webp" alt="Paste_Image.png"></p>
-<p>会看到扩展名为.xcarchive的文件,这个文件路径(最好用拖文件的方式获取文件路径)后边拼接dSYMs即为这个地址.</p>
-<p><img src="/hexo-site/images/note/617702c4e8b31be8ad6170e096752139.webp" alt="Paste_Image.png"></p>
-<p>$2里dwarfdump –uuid appname.app.dSYM的 appname 替换为你的app的包名就行,别的不用动<br>输出结果:<br>UUID: 9F0AEFA6-4349-30AF-8420-BCEE739DA0B4 (armv7) appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>UUID: 365EF56E-D598-3B94-AD36-BFA13772A4E3 (armv7s) appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>这两个匹配后继续第二步</p>
-<p>2  继续在终端输入命令<br>dwarfdump –arch&#x3D;armv7 –lookup 0x97525  &#x2F;Users&#x2F;username&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;Archives&#x2F;2013-08-30&#x2F;appname\xx.xcarchive&#x2F;dSYMs&#x2F;appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>注: 在$1步的路径后继续拼接 &#x2F;appname.app.dSYM&#x2F;Contents&#x2F;Resources&#x2F;DWARF&#x2F;appname<br>就可以 其中的 appname 替换成自己的包名(也可以自己找到DWARF下的appname文件拖到终端)<br>输出结果为:</p>
-<pre><code>Looking up address: 0x0000000000097525 in .debug_info... found!  
-
-0x00359c67: Compile Unit: length = 0x000066f1  version =     0x0002  abbr_offset = 0x00000000  addr_size = 0x04  (next CU at 0x0036035c)  
-
-0x00359c72: TAG_compile_unit [1] *  
-     AT_producer( &quot;Apple LLVM version 4.2 (clang-425.0.28) (based on LLVM 3.2svn)&quot; )  
-     AT_language( DW_LANG_ObjC )  
-     AT_name( &quot;xxx/EGOImageView.m&quot; )  
-     AT_low_pc( 0x0009710c )  
-     AT_stmt_list( 0x000655c1 )  
-     AT_comp_dir( &quot;xxx&quot; )  
-     AT_APPLE_optimized( 0x01 )  
-     AT_APPLE_major_runtime_vers( 0x02 )  
-
-0x00359e57:     TAG_subprogram [10] *  
-         AT_name( &quot;-[EGOImageView imageLoaderDidFailToLoad:]&quot; )  
-         AT_decl_file( &quot;xxx/EGOImageView.m&quot; )  
-         AT_decl_line( 96 )  
-         AT_prototyped( 0x01 )  
-         AT_APPLE_isa( 0x01 )  
-         AT_low_pc( 0x00097490 )  
-         AT_high_pc( 0x00097572 )  
-         AT_frame_base( r7 )  
-         AT_object_pointer( {0x00359e6e} )  
-Line table dir : &#39;xxx&#39;  
-Line table file: &#39;EGOImageView.m&#39; line 99, column 2 with start address 0x00000000000974fe  
-
-Looking up address: 0x0000000000097525 in .debug_frame... found!  
-
-0x0000c620: FDE  
-length: 0x0000000c  
-CIE_pointer: 0x00000000  
-start_addr: 0x00097490 -[EGOImageView imageLoaderDidFailToLoad:]  
-range_size: 0x000000e2 (end_addr = 0x00097572)  
-Instructions: 0x00097490: CFA=4294967295+4294967295  
-</code></pre>
-<p>信息中的AT_name( “xxx&#x2F;EGOImageView.m” )  就是crash文件,<br> start_addr:就是crash方法<br>此文结束</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" data-id="cuidCyXkmIifuIFP9dkYsvacj" data-title="iOS开发--BUG定位,符号化crash地址" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/">iOS开发--Thread-1--EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-subcode=0x0</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>   崩溃的截图：<br>  <img src="/hexo-site/images/note/15f69cd324ef0ffbea5444bb70ba5875.webp" alt="image.png"></p>
-<p>  <img src="/hexo-site/images/note/8c0e06b090bda15a2631fb0dbff35734.webp" alt="image.png">  </p>
-<p> 最近项目中有一个dispatch_group相关的巨坑（此问题解决方法很简单，难点是定位问题），特此记录下来并分享，希望帮助到有需要的人！</p>
-<p>   本文涉及的知识面较广，有一定的逻辑性，如果想真正明白各种原理，请细细读来，如时间紧迫，可记住正确使用方法亦可！</p>
-<p>   阅读本文需要的知识点：</p>
-<pre><code> 1 熟悉AFNetworking
- 2 熟练使用dispatch_group
- 3 了解接口的含义
- 4 熟悉block工作原理
- 5 熟悉地址引用含义
-</code></pre>
-<p>   先把crash场景和解决方案放在开头：</p>
-<p>   crash场景：</p>
-<pre><code>1 有一组多个接口地址
-2 利用  dispatch_group并发请求到数据后，统一回调（必要：利用AF进行网络请求）
-3 频繁调用2（必要）
-4 每次调用2中的请求是同一组接口地址（必要）
-注：频繁的意思是一秒调用3次或3次以上
-</code></pre>
-<p>问题核心： </p>
-<pre><code>对dispatch_group进行了额外的leave操作
-</code></pre>
-<p>问题代码：</p>
-<pre><code>-(void)request{
-    dispatch_group_t group = dispatch_group_create();
-    self.group = group;
-
-   enter代码....
-  [request  requestGetUrl:url success:^(id responds) {
-    leave代码....
-  }];     
-} 
-</code></pre>
-<p>修正后代码：</p>
-<pre><code>-(void)request{
-  if(self.group == nil){
-    dispatch_group_t group = dispatch_group_create();
-    self.group = group;
-  }
-   enter代码....
-  [request  requestGetUrl:url success:^(id responds) {
-    leave代码....
-  }];     
-} 
-</code></pre>
-<p> 我想你肯定在疑惑加一个if判断就解决了问题了，那这个坑应该不大，分分钟搞定，请往下看</p>
-<p>产生此问题的原因：概括的说是dispatch_group的原理和AFNetworking网络请求回调block的缓存回调原理的协作问题</p>
-<p>举例详细说明，流程图如下：<br><img src="/hexo-site/images/note/1ae39c1ded50e2853db32d8e2b8afde7.webp" alt="image.png"></p>
-<pre><code>正常情况下：执行步骤1 的间隔时间充分长，或者只执行一次，此逻辑没有问题，不会crash；
-非正常情况：开头所说的crash出现场景下，即频繁执行上图中步骤1到步骤3
-</code></pre>
-<p>   因为网络请求的耗时和异步特性，这时候会发生一种情况</p>
-<pre><code>1 第一次在步骤1创建了一个新的group1，这时网络请求n1到n4请求未返回，也就是b1到b4
-   还未调用；
-2 此时又执行了一次步骤一创建了一个新的group，命名为group2（这是一个新的，代码见上图），
-  并且赋值给了self.group，又执行步骤二，对group2进行enter，发送网络请求;
-3 此时若是1中的网络请求返回了，b1到b4就会调用，会对步骤2中创建的新的group2进行
-  leave操作，当2中的网络请求返回，进行回调时，会发生对group2进行额外的leave操作，
-  从而造成crash；
-注：b1到b4因为leave的需要，会对group进行地址引用
-</code></pre>
-<p>作者受<a target="_blank" rel="noopener" href="http://satanwoo.github.io/2017/01/07/DispatchGroupCrash/">此文</a>启发，虽场景不同，但原理一致！</p>
-<hr>
-<p>—2018-03-14更新错误代码实例 –start<br>附1：<br>错误代码实例（崩溃截图见代码下边）：</p>
-<pre><code> - (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
-dispatch_group_t group = dispatch_group_create();
-self.group = group;
-dispatch_group_enter(self.group);
-dispatch_group_enter(self.group);
-dispatch_group_enter(self.group);
-dispatch_async(dispatch_get_global_queue(0, 0), ^{
-    dispatch_group_leave(self.group);
-    sleep(2);
-    dispatch_group_leave(self.group);
-     dispatch_group_leave(self.group);
-});
-dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
-    NSLog(@&quot;1234567&quot;);
-});   
-}
-</code></pre>
-<p><img src="/hexo-site/images/note/b097bbe5cf702d7e5b1e07e3a6757f6d.webp" alt="崩溃截图"></p>
-<p> 修正后代码：</p>
-<pre><code>- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
-if(self.group == nil){
-    dispatch_group_t group = dispatch_group_create();
-    self.group = group;
-}
-dispatch_group_enter(self.group);
-dispatch_group_enter(self.group);
-dispatch_group_enter(self.group);
-dispatch_async(dispatch_get_global_queue(0, 0), ^{
-    dispatch_group_leave(self.group);
-    sleep(2);
-    dispatch_group_leave(self.group);
-    dispatch_group_leave(self.group);
-});
-
-dispatch_group_notify(self.group, dispatch_get_main_queue(), ^{
-    NSLog(@&quot;1234567&quot;);
-});    
-}
-</code></pre>
-<p>—2018-03-14更新错误代码实例 –end</p>
-<hr>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-Thread-1-EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-sub/" data-id="cuid0XHWPHJST3qFCOKT1XDu4" data-title="iOS开发--Thread-1--EXC_BAD_INSTRUCTION-(code=EXC_I386_INVOP,-subcode=0x0" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-UITableView+FDTemplateLayoutCell遇到的坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-UITableView+FDTemplateLayoutCell%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-UITableView+FDTemplateLayoutCell%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/">iOS开发-UITableView+FDTemplateLayoutCell遇到的坑</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>最近项目进入重构代码阶段，其中一个重构的方向是：把项目中的手动计算cell高度的逻辑，替换为使用UITableView+FDTemplateLayoutCell进行高度缓存。代码写起来很流畅，刚开始用起来很爽，直接写好约束，在heightForRow方法里调用</p>
-<pre><code>  - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-  return [tableView fd_heightForCellWithIdentifier:@&quot;&quot; configuration:^(UITableViewCell *cell) {
-        cell.epgModel = epgModel;//cell设置数据，更新数据
-    }];
-  }
-</code></pre>
-<p>对FD不熟的小伙伴可以去github搜索学习，这里不再赘述。</p>
-<p>#先说明踩坑经验：FD框架对影响横向布局的控件的hidden很敏感，会影响cell高度的计算准确度。建议对需要隐藏的控件做宽度布局修改为零。</p>
-<p>有兴趣了解”踩坑到出坑“过程的同学可以继续读下去，没兴趣的可以忙别的去了。</p>
-<hr>
-<p>##应用场景如下<br>先来看下cell样式：<br><img src="/hexo-site/images/note/e1c867c6b8b55e10ceacb16f0b8f2ce0.webp" alt="image.png"></p>
-<blockquote>
-<p>简单说明：1 cell分为3种状态, 回看&#x2F;播放中&#x2F;预约</p>
-</blockquote>
-<p>#遇到的问题<br>有的时候cell高度计算不对，导致label无法全部展示。<br><img src="/hexo-site/images/note/4fe3985e038bb504dddc3396c082a99c.webp" alt="错误"></p>
-<p><img src="/hexo-site/images/note/68ac47192ed511e06746f77f47373995.webp" alt="正确"></p>
-<p>##错误说明：<br>”环球综艺秀-2020-23“一行显示不下，需要折行展示；</p>
-<p>##上错误代码：<br>cell的setEpgModel方法内部代码是给cell控件赋值,同时刷新布局；</p>
-<pre><code>-(void)setEpgModel:(CNLiveEPGModel *)epgModel{
- ....
-
-self.livingAnimationView.hidden = YES;
-switch (type) {
-        case Live_Playing:
-    {
-        
-        self.livingAnimationView.hidden = NO;
-  break;
-.....
-
-  }
-</code></pre>
-<p>##修改后代码</p>
-<pre><code>-(void)setEpgModel:(CNLiveEPGModel *)epgModel{
-   ....
-   [self.livingAnimationView mas_remakeConstraints:^(MASConstraintMaker *make) {
-    make.right.equalTo(self.typeButton.mas_left).with.offset(-6);
-    make.centerY.equalTo(self.typeButton);
-    make.height.mas_equalTo(14);
-    make.width.mas_equalTo(0);
-}];
-//self.livingAnimationView.hidden = YES;
-switch (type) {
-        case Live_Playing:
-    {
-   //self.livingAnimationView.hidden = NO;
-        [self.livingAnimationView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.typeButton.mas_left).with.offset(-6);
-            make.centerY.equalTo(self.typeButton);
-            make.height.mas_equalTo(14);
-            make.width.mas_equalTo(15);
-        }];
-  break;
-.....
-  }
-</code></pre>
-<hr>
-<p>#定位问题过程（前方高能）<br>1 看到label显示不全，怀疑是约束的问题，较劲脑汁换约束方法（不管用）<br>2 怀疑是行高cache的问题，打开fd的log，根据错误行高数据查找cache读取&#x2F;存储过程，发现行高方法会执行很多次，有的计算是对的，最后一次总会错误，错误行高有一个规律–只有正直播的数据会错误。<br>3 本着怀疑一切的态度，首先去掉了正直播的数据行高cache</p>
-<blockquote>
-<p>-(CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration;</p>
-</blockquote>
-<p>改为：</p>
-<blockquote>
-<p>-(CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration; （不管用）</p>
-</blockquote>
-<p>4 怀疑是正直播的行高计算问题，单步调试，发现一个问题<br>在cell高度计算不正确的时候，不执行 return [self fd_systemFittingHeightForConfiguratedCell:templateLayoutCell];<br>只会执行到if (configuration) { configuration(templateLayoutCell); }怀疑是这个block的问题</p>
-<blockquote>
-<p>-(CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration {<br>if (!identifier) {<br>    return 0;<br>}<br>UITableViewCell *templateLayoutCell &#x3D; [self fd_templateCellForReuseIdentifier:identifier];<br>&#x2F;&#x2F; Manually calls to ensure consistent behavior with actual cells. (that are displayed on screen)<br>[templateLayoutCell prepareForReuse];<br>&#x2F;&#x2F; Customize and provide content for our template cell.<br>if (configuration) {<br>    configuration(templateLayoutCell);<br>}<br>return [self fd_systemFittingHeightForConfiguratedCell:templateLayoutCell];<br>}</p>
-</blockquote>
-<p>5 把这个block内的代码去掉，发现所有的cell高度均会错误，只能放开block内的代码。</p>
-<pre><code>    - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-  return [tableView fd_heightForCellWithIdentifier:@&quot;&quot; configuration:^(UITableViewCell *cell) {
-        //cell.epgModel = epgModel;//cell设置数据，更新数据
-    }];
-  }
-</code></pre>
-<p>6  既然cell的设置数据有问题，那就需要定位到设置数据方法内具体哪些代码影响了cell高度计算。运用二分大法，最后定位到了是self.livingAnimationView.hidden&#x3D;YES的问题。<br>7 修改self.livingAnimationView.hidden的方案，最后修改为约束宽度为0来代替隐藏控件</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-UITableView+FDTemplateLayoutCell%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" data-id="cuidAuxp2TtjJ6LuPtrjvQSGr" data-title="iOS开发-UITableView+FDTemplateLayoutCell遇到的坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-YYLable-点击没反应的坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-YYLable-%E7%82%B9%E5%87%BB%E6%B2%A1%E5%8F%8D%E5%BA%94%E7%9A%84%E5%9D%91/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-YYLable-%E7%82%B9%E5%87%BB%E6%B2%A1%E5%8F%8D%E5%BA%94%E7%9A%84%E5%9D%91/">iOS开发--YYLable-点击没反应的坑</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>项目中有一个用户协议入口,是使用YYLable显示的,有高亮和点击事件,点击事件不执行,困扰很久,最后发现是手势冲突的问题:</p>
-<p><img src="/hexo-site/images/note/534df043bd1e10e2bc1ee925a1ae4d63.webp" alt="IMG_0150.JPG"></p>
-<p>界面内有一个textField, 为了收起键盘,在view上添加了tap手势来隐藏键盘:</p>
-<pre><code>UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
-[self.view addGestureRecognizer:tap];
-
-
-- (void)keyboardHide:(UITapGestureRecognizer *)tap {
-[self.view endEditing:true];
-return;
-}
-</code></pre>
-<p>YYLabel添加事件方法:</p>
-<pre><code> - (YYLabel *)readinglabel {
-if (!_readinglabel) {
-    _readinglabel = [[YYLabel alloc] init];
-    _readinglabel.numberOfLines = 2;
-    NSString *concealText = LocatizedStringForKey(@&quot;woyiyuedutongyixieyiheyinsi&quot;);
-    NSRange linkTextRange1 = [concealText rangeOfString:LocatizedStringForKey(@&quot;yonghuxieyi&quot;)];
-    NSRange linkTextRange2 = [concealText rangeOfString:LocatizedStringForKey(@&quot;yinsizhengce&quot;)];
-    NSMutableAttributedString *concealAttrText = [[NSMutableAttributedString alloc]initWithString:concealText attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12],NSForegroundColorAttributeName : [UIColor colorWithRed:180/255.0 green:183/255.0 blue:199/255.0 alpha:1/1.0]}];
-    
-    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
-    paragraphStyle.minimumLineHeight = 17;
-    paragraphStyle.lineSpacing = 5;
-    [concealAttrText addAttributes:@{NSParagraphStyleAttributeName : paragraphStyle} range:NSMakeRange(0, concealAttrText.length)];
-    
-    __weak __typeof(self)weakSelf = self;
-   
-    [concealAttrText yy_setTextHighlightRange:linkTextRange1 color:[UIColor lj_colorWithHexString:@&quot;3D6EFF&quot;] backgroundColor:nil tapAction:^(UIView * _Nonnull containerView, NSAttributedString * _Nonnull text, NSRange range, CGRect rect) {
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        UIViewController *vc = [LJVRSDK VRWebViewControllerWithURL:[NSString stringWithFormat:@&quot;%@%@&quot;,[RSDAPI h5Ycy],[SharedData sharedDataSingleton].NEW_USER_AGREEMENT_HTML] ext:nil showNav:YES showBackButton:NO delegate:nil];
-        [vc setHidesBottomBarWhenPushed:YES];
-        [strongSelf.navigationController pushViewController:vc animated:YES];
-    }];
-    [concealAttrText yy_setTextHighlightRange:linkTextRange2 color:[UIColor lj_colorWithHexString:@&quot;3D6EFF&quot;] backgroundColor:nil tapAction:^(UIView * _Nonnull containerView, NSAttributedString * _Nonnull text, NSRange range, CGRect rect) {
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        UIViewController *vc = [LJVRSDK VRWebViewControllerWithURL:[NSString stringWithFormat:@&quot;%@%@&quot;,[RSDAPI h5Realsee],[SharedData sharedDataSingleton].NEW_PRIVACY_POLICY_HTML] ext:nil showNav:YES showBackButton:NO delegate:nil];
-        [vc setHidesBottomBarWhenPushed:YES];
-        [strongSelf.navigationController pushViewController:vc animated:YES];
-    }];
-    _readinglabel.userInteractionEnabled = YES;
-    _readinglabel.attributedText = concealAttrText;
-    [self.view addSubview:_readinglabel];
-}
-return _readinglabel;
-}
-</code></pre>
-<p>这个手势和YYLabel的富文本添加事件有冲突,造成在点击YYLabel时执行了tap手势方法tap.</p>
-<p>查看 YYLabel的hitTest方法确实返回了YYLabel,但是没有执行.<br>通过查看YYLabel源码发现, YYLabel是通过touchBegin: touchEnd:捉对来确认点击事件,然后根据点击范围来执行对应的action</p>
-<p>所以冲突实质是 touchend 和tap手势的冲突</p>
-<p>以下是测试用例:</p>
-<pre><code>@implementation ViewController
-
- - (void)viewDidLoad {
-[super viewDidLoad];
-// Do any additional setup after loading the view.
-
-UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
-[self.view addGestureRecognizer:tap];
-
-
-}
--(void)viewDidAppear:(BOOL)animated{
-UILabel *label = [[LQLabel alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];
-label.backgroundColor = [UIColor grayColor];
-
-[self.view addSubview:label];
-label.userInteractionEnabled = YES;
-}
--(void)tap{
-NSLog(@&quot;tap&quot;);
-}
-@end
-
-
-@implementation LQLabel
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-// Drawing code
-}
-*/
- -(void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
-NSLog(@&quot;touch begin&quot;);
- }
- -(void)touchesEnded:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
-NSLog(@&quot;touch end&quot;);
- }
-
- @end
-</code></pre>
-<p>点击view的时候 执行tap:</p>
-<pre><code> 2021-07-07 16:01:09.557891+0800 tapWithTouch[23171:2729459] tap
-</code></pre>
-<p>点击LQLabel的时候执行: touch begin 和 tap</p>
-<pre><code> 2021-07-07 16:01:33.989632+0800 tapWithTouch[23171:2729459] touch begin
- 2021-07-07 16:01:34.070506+0800 tapWithTouch[23171:2729459] tap
-</code></pre>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-YYLable-%E7%82%B9%E5%87%BB%E6%B2%A1%E5%8F%8D%E5%BA%94%E7%9A%84%E5%9D%91/" data-id="cuidb6ZYnD1zYLrk1NgR7e-AO" data-title="iOS开发--YYLable-点击没反应的坑" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-iOS开发-iOS14-Xcode12-适配问题-持续更新" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/">iOS开发--iOS14-Xcode12-适配问题-持续更新</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/">iOS开发--iOS14-Xcode12-适配问题-持续更新</a>
     </h1>
   
 
@@ -803,31 +157,15 @@ NSLog(@&quot;touch end&quot;);
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>最近苹果推了iOS14，Xcode更新到了12，beta版本是12.2，第一时间更新了。跑一下老项目，暂时发现下列问题；</p>
-<h1 id="一-崩溃问题："><a href="#一-崩溃问题：" class="headerlink" title="一 崩溃问题："></a>一 崩溃问题：</h1><h2 id="1-1-由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。"><a href="#1-1-由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。" class="headerlink" title="1.1 由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。"></a>1.1 由于代码原因导致字典转模型失败，在使用模型点方法的时候崩溃。崩溃原因是字典没有对应对象的get方法。</h2><p>听云收集的崩溃错误说明如下：<br>     <img src="/hexo-site/images/note/a75e2ceb80b8ea763439efa10ac4f41a.webp" alt="图片.png"></p>
-<p>##相关代码：</p>
-<p>###LQTextModel.h<br>     @interface LQTextModel : LQBaseModel<br>     @property (nonatomic,strong) NSMutableArray &lt;LQItemListModel *&gt; * rightItem;<br>     @end</p>
-<p>崩溃位置代码:</p>
-<blockquote>
-<p>CNVLtemplateItemListModel *keyWord &#x3D; [_dataModel.rightItem firstObject];<br>  keyTitle &#x3D; keyWord.title;&#x2F;&#x2F;崩溃行</p>
-</blockquote>
-<p>##分析：<br>LQTextModel 在字典转模型的时候模型数组rightItem 没有转成功导致 rightItem里存的是字典数组，而不是模型数组，导致取title的时候崩溃。</p>
-<p>##解决方法：<br>使用MJExtension方法声明数组内的对象类名：</p>
-<pre><code>+(NSDictionary *)mj_objectClassInArray{
-    return @{@&quot;rightItem&quot;:@&quot;CNVLtemplateItemListModel&quot;};
-}
-</code></pre>
-<h1 id="1-2-UITableViewCell-点击事件无响应"><a href="#1-2-UITableViewCell-点击事件无响应" class="headerlink" title="1.2 UITableViewCell 点击事件无响应"></a>1.2 UITableViewCell 点击事件无响应</h1><p> UITableViewCell直接使用 [self addSubview:]，会导致点击事件无响应，解决方法是将 [self addSubview:] 换成 [self.contentView addSubview:];(<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3fb93f36026a">来源</a>)（2020-9-22）</p>
-<h1 id="1-3-iOS-14-UITableViewCell-长按手势-UILongPressGestureRecognizer-不生效的问题-需要把手势添加到self-contentView"><a href="#1-3-iOS-14-UITableViewCell-长按手势-UILongPressGestureRecognizer-不生效的问题-需要把手势添加到self-contentView" class="headerlink" title="1.3 iOS 14 UITableViewCell 长按手势 UILongPressGestureRecognizer 不生效的问题, 需要把手势添加到self.contentView"></a>1.3 iOS 14 UITableViewCell 长按手势 UILongPressGestureRecognizer 不生效的问题, 需要把手势添加到self.contentView</h1><h1 id="1-4-私有方法-KVC-不允许使用"><a href="#1-4-私有方法-KVC-不允许使用" class="headerlink" title="1.4 私有方法 KVC 不允许使用"></a>1.4 私有方法 KVC 不允许使用</h1><p>在iOS14下设置UIPageControl的pageimage，会导致奔溃，不能再用了。(<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3fb93f36026a">来源</a>)（2020-9-22）</p>
-<pre><code>[_pageControl setValue:[UIImage imageNamed:@&quot;main_pageControl_dian&quot;] forKeyPath:@&quot;pageImage&quot;];
-[_pageControl setValue:[UIImage imageNamed:@&quot;main_pageControl_xian&quot;] forKeyPath:@&quot;currentPageImage&quot;];
-</code></pre>
-<h2 id="其他发现"><a href="#其他发现" class="headerlink" title="其他发现"></a>其他发现</h2><h3 id="1-Xcode图标变化"><a href="#1-Xcode图标变化" class="headerlink" title="1 Xcode图标变化"></a>1 Xcode图标变化</h3><p><img src="/hexo-site/images/note/5385fd55183a76f610a3f89716c89357.webp" alt="Xcode12之前.png"></p>
-<p><img src="/hexo-site/images/note/6553126313e74ccc514ad62bcde344a6.webp" alt="Xcode12.png"></p>
-<h3 id="2-view-hierarchy-出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知"><a href="#2-view-hierarchy-出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知" class="headerlink" title="2 view hierarchy 出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知"></a>2 view hierarchy 出不来，显示一直加载，目前不知道怎么解决，知道的小伙伴麻烦留言告知</h3><h3 id="3-archive-打包生成的ipa，名字将不会使用工程名字，而会使用-Display-Name（2020-9-23）"><a href="#3-archive-打包生成的ipa，名字将不会使用工程名字，而会使用-Display-Name（2020-9-23）" class="headerlink" title="3 archive 打包生成的ipa，名字将不会使用工程名字，而会使用 Display Name（2020-9-23）"></a>3 archive 打包生成的ipa，名字将不会使用工程名字，而会使用 Display Name（2020-9-23）</h3>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" data-id="cuidoIFGhnsClH-mv45_0OPWp" data-title="iOS开发--iOS14-Xcode12-适配问题-持续更新" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-iOS14-Xcode12-%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" data-id="cuidxmPZxqLplJs09aMcvz9WP" data-title="iOS开发--iOS14-Xcode12-适配问题-持续更新" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -841,14 +179,14 @@ NSLog(@&quot;touch end&quot;);
 
 
   
-    <article id="post-2026-03-18-iOS开发-AVPlayer教程(常用功能都在这里了)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS开发-iOS11&amp;&amp;iPhoneX适配" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-iOS11&&iPhoneX%E9%80%82%E9%85%8D/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:58:27.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
   </div>
 
   </div>
@@ -859,7 +197,204 @@ NSLog(@&quot;touch end&quot;);
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/">iOS开发--AVPlayer教程(常用功能都在这里了)</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-iOS11&&iPhoneX%E9%80%82%E9%85%8D/">iOS开发--iOS11&amp;&amp;iPhoneX适配</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><strong>一、前言</strong></p>
+<p>iOS11发布也有一段时间了，每次版本升级，相关的适配工作当然是下个版本的核心工作之一。而且这次iOS11的更新，相对于iOS10的更新来说，改动点还是比较多的。除了iOS11系统的更新之外，iPhoneX刘海的打理工作也是必不可少。以前我们总是庆幸作为iOS开发者，不必像Android开发者需要考虑各种不同机型的适配问题。但是现在，随着iPhone各种历史版本的存在，各种花式的新版本产生，不同版本之间的适配问题，也是未来我们作为iOS开发者必然要考虑的重要问题之一。</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-iOS11&&iPhoneX%E9%80%82%E9%85%8D/#more">阅读全文</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-iOS11&&iPhoneX%E9%80%82%E9%85%8D/" data-id="cuidmUbQJ6zemVXly69kjgb6D" data-title="iOS开发--iOS11&amp;&amp;iPhoneX适配" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-24-iOS开发-GIF图片的选取,压缩,上传" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-GIF%E5%9B%BE%E7%89%87%E7%9A%84%E9%80%89%E5%8F%96,%E5%8E%8B%E7%BC%A9,%E4%B8%8A%E4%BC%A0/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:58:23.000Z" itemprop="datePublished">2026-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-GIF%E5%9B%BE%E7%89%87%E7%9A%84%E9%80%89%E5%8F%96,%E5%8E%8B%E7%BC%A9,%E4%B8%8A%E4%BC%A0/">iOS开发--GIF图片的选取,压缩,上传</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>之前写了一篇关于PNG&#x2F;JPEG图片的选取,压缩,上传(下边统一简称前文): <a target="_blank" rel="noopener" href="http://www.jianshu.com/p/011b5ef47675">http://www.jianshu.com/p/011b5ef47675</a>, 文本依赖前文的UIImage+ZipSizeAndLength分类进行图片的压缩等.<br>总结一下: 用原生的 UIImagePickerController 选取图片; 用原生的UIImageJPEGRepresentation()和图形上下文对图片进行压缩; 用AFN进行上传操作.<br>好了,总结完之后进入今天的主题—–GIF图片的选取,压缩,上传;</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-GIF%E5%9B%BE%E7%89%87%E7%9A%84%E9%80%89%E5%8F%96,%E5%8E%8B%E7%BC%A9,%E4%B8%8A%E4%BC%A0/#more">阅读全文</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-GIF%E5%9B%BE%E7%89%87%E7%9A%84%E9%80%89%E5%8F%96,%E5%8E%8B%E7%BC%A9,%E4%B8%8A%E4%BC%A0/" data-id="cuidrpCxQArJae4BwUKusXWYy" data-title="iOS开发--GIF图片的选取,压缩,上传" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-24-iOS开发-DES对称加密封装" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-DES%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E5%B0%81%E8%A3%85/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:58:20.000Z" itemprop="datePublished">2026-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-DES%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E5%B0%81%E8%A3%85/">iOS开发--DES对称加密封装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近项目里需要对URL的参数进行DES加密,研究了一下,现分享一下.</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-DES%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E5%B0%81%E8%A3%85/#more">阅读全文</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-DES%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E5%B0%81%E8%A3%85/" data-id="cuidoebYL-2TpaiaqiWM0TF7P" data-title="iOS开发--DES对称加密封装" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-24-iOS开发-BUG定位,符号化crash地址" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:58:16.000Z" itemprop="datePublished">2026-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/">iOS开发--BUG定位,符号化crash地址</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在umeng或者其他的BUG收集的第三方里边大多数的BUG是能够通过crash前的调用信息,定位到具体的方法,从而想办法解决,但是有些BUG信息量很少,只有一个内存地址:</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/#more">阅读全文</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-BUG%E5%AE%9A%E4%BD%8D,%E7%AC%A6%E5%8F%B7%E5%8C%96crash%E5%9C%B0%E5%9D%80/" data-id="cuidu2WC_2MjGnBw7oupknsc6" data-title="iOS开发--BUG定位,符号化crash地址" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-24-iOS开发-AVPlayer教程(常用功能都在这里了)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:58:13.000Z" itemprop="datePublished">2026-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/">iOS开发--AVPlayer教程(常用功能都在这里了)</a>
     </h1>
   
 
@@ -868,118 +403,15 @@ NSLog(@&quot;touch end&quot;);
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>如果我只是简单的播放一个视频，而不需要考虑播放器的界面。iOS9.0 之前使用 MPMoviePlayerController, 或者内部自带一个 view 的 MPMoviePlayerViewController.  iOS9.0 之后，可以使用AVPictureInPictureController, AVPlayerViewController, 或者 WKWebView。</p>
-<p>以上系统提供的播放器由于高度的封装性， 使得自定义播放器变的很难。 所以，如果我需要自定义播放器样式的时候，可以使用 AVPlayer。 </p>
-<p>AVPlayer 存在于 AVFoundtion 中，更接近于底层，也更加灵活。<br><img src="/hexo-site/images/note/fdf039f5882fcd7875fa95b9f51eb43d.webp" alt="1474352198387328.jpg"></p>
-<p>Representing and Using Media with AVFoundation<br>AVFoundtion 框架中主要使用 AVAsset<br> 类来展示媒体信息，比如： title， duration， size 等等。<br>AVAsset : 存储媒体信息的一个抽象类，不能直接使用。</p>
-<p>AVURLAsset : AVAsset 的一个子类，使用 URL 进行实例化，实例化对象包换 URL 对应视频资源的所有信息。</p>
-<p>AVPlayerItem :  有一个属性为 asset。起到观察和管理视频信息的作用。 比如，asset, tracks ， status， duration ，loadedTimeRange 等。</p>
-<p>我的理解是， AVPlayItem 相当于 Model 层，包含 Media 的信息和播放状态，并提供这些数据给视频观察者 比如：属性 asset，URL视频的信息. loadedTimeRanges,已缓冲进度。</p>
-<p>#AVPlayerItem 使用<br> 初始化</p>
-<p>playerItemWithURL或者 initWithURL:<br>在使用 AVPlayer 播放视频时，提供视频信息的是 AVPlayerItem，一个 AVPlayerItem 对应着一个URL视频资源。<br>初始化一个 AVPlayItem 对象后，其属性并不是马上就可以使用。我们必须确保 AVPlayerItem 已经被加载好了，可以播放了，才能使用。 毕竟凡是和网络扯上关系的都需要时间去加载。 那么，什么时候属性才能正常使用呢。 官方文档给出了解决方案：<br>直到 AVPlayerItem 的 status<br> 属性为 AVPlayerItemStatusReadyToPlay.</p>
-<p>使用 KVO 键值观察者，其属性。</p>
-<p>因此我们在使用的时候，使用 URL 初始化 AVPlayerItem 后，还要给它添加观察者。</p>
-<p>添加观察者</p>
-<p>AVPlayreItem 的属性需要当 status 为 ReadyToPlay 的时候才可以正常使用。<br><strong>观察status属性</strong><br>[_playerItem addObserver:self forKeyPath:@”status” options:(NSKeyValueObservingOptionNew) context:nil]; &#x2F;&#x2F; 观察status属性，<br><strong>观察loadedTimeRanges</strong><br>如果想做缓冲进度条，显示当前视频的缓存进度，则需要观察 loadedTimeRanges.<br>[_playerItem addObserver:self forKeyPath:@”loadedTimeRanges” options:NSKeyValueObservingOptionNew context:nil]; &#x2F;&#x2F; 观察缓冲进度</p>
-<p>#AVPlayer &amp; AVPlayerLayer<br><strong>AVPlayer创建方式</strong><br>AVPlayer 有三种创建方式：<br>init,initWithURL:,initWithPlayerItem:（URL，Item遍历构造器方法）<br>使用 AVPlayer 时需要注意，AVPlayer 本身并不能显示视频， 显示视频的是 AVPlayerLayer。 AVPlayerLayer 继承自 CALayer，添加到 view.layer 上就可以使用了。<br><strong>AVPlayerLayer创建方式</strong><br>AVPlayerLayer *playerLayer &#x3D; [AVPlayerLayer playerLayerWithPlayer:player];[superlayer addSublayer:playerLayer];</p>
-<p>AVPlayerLayer 显示视频，AVPlayerItem 提供视频信息， AVPlayer 管理和调控。 这是不是非常熟悉。 我觉得这里也体现了 MVC 的思想（虽然AVPlayer继承自NSObject）， 把响应层， 显示层， 信息层， 三层分离了。 明确了每层做的任务，使用起来就会更加得心应手。<br>使用 AVPlayer 的核心，在于 AVPlayer 和 AVPlayerItem， AVPlayerLayer 添加到视图的layer 上后，就没有什么事儿了。 思考一下，整个播放视频的步骤。</p>
-<p>首先，得到视频的URL</p>
-<p>根据URL创建AVPlayerItem</p>
-<p>把AVPlayerItem 提供给 AVPlayer</p>
-<p>AVPlayerLayer 显示视频。</p>
-<p>AVPlayer 控制视频， 播放， 暂停， 跳转 等等。</p>
-<p>播放过程中获取缓冲进度，获取播放进度。</p>
-<p>视频播放完成后做些什么，是暂停还是循环播放，还是获取最后一帧图像。</p>
-<p>播放步骤<br>#1.布局页面，初始化 AVPlayer 和 AVPlayerLayer<br> &#x2F;&#x2F; setAVPlayer</p>
-<pre><code>   self.player = [[AVPlayer alloc] init]; 
-   _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player]; 
-   [self.playerView.layer addSublayer:_playerLayer];
-</code></pre>
-<p>#2.根据 URL 获取 AVPayerItem，并替换 AVPlayer 的 AVPlayerItem<br>在第一步，布局初始化时，AVPlayer 并没有 AVPlayerItem，<br>AVPlayer 提供了<br>     - (void)replaceCurrentItemWithPlayerItem:(nullable AVPlayerItem *)item;<br>  方法，用于切换视频。</p>
-<pre><code> - (void)updatePlayerWithURL:(NSURL *)url {    
- // create item 
-_playerItem = [AVPlayerItem playerItemWithURL:url]; 
-</code></pre>
-<p>    &#x2F;&#x2F; replaceCurrentItem  <br>    [_player  replaceCurrentItemWithPlayerItem:_playerItem];<br>    &#x2F;&#x2F; 注册观察者，通知<br>    [self addObserverAndNotification]; <br>    }<br>#3.KVO 获取视频信息， 观察缓冲进度<br>观察 AVPlayerItem 的 status属性，当状态变为 AVPlayerStatusReadyToPlay时才可以使用。也可以观察 loadedTimeRanges获取缓冲进度<br>注册观察者：</p>
-<pre><code>// 观察status属性
-</code></pre>
-<p>    [_playerItem addObserver:self forKeyPath:@”status” options:(NSKeyValueObservingOptionNew) context:nil]; </p>
-<p>执行观察者方法：</p>
-<pre><code>- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    AVPlayerItem *item = (AVPlayerItem *)object;
-    if ([keyPath isEqualToString:@&quot;status&quot;]) {
-         //获取更改后的状态
-        AVPlayerStatus status = [[change objectForKey:@&quot;new&quot;] intValue];
-        if (status == AVPlayerStatusReadyToPlay) {
-            CMTime duration = item.duration; // 获取视频长度
-            // 设置视频时间
-            [self setMaxDuration:CMTimeGetSeconds(duration)];
-             // 播放
-            [self play];
-        } else if (status == AVPlayerStatusFailed) {
-            NSLog(@&quot;AVPlayerStatusFailed&quot;);
-        } else {
-            NSLog(@&quot;AVPlayerStatusUnknown&quot;);
-        }
-    } else if ([keyPath isEqualToString:@&quot;loadedTimeRanges&quot;]) {
-         NSTimeInterval timeInterval = [self availableDurationRanges]; // 缓冲时间
-         CGFloat totalDuration = CMTimeGetSeconds(_playerItem.duration); // 总时间
-        [self.loadedProgress setProgress:timeInterval / totalDuration animated:YES]; // 更新缓冲条
-    }
-}
-</code></pre>
-<p>#4. 播放过程中响应：播放、 暂停、 跳转<br>AVPlayer 提供了 play , pause, 和 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler<br> 方法。<br>在看 AVPlayer 的 seekToTime 之前，先来认识一个结构体。</p>
-<p><strong>CMTime</strong> 是专门用于标识电影时间的结构体.</p>
-<pre><code>typedef struct{    
-    CMTimeValue    value;     // 帧数    
-    CMTimeScale    timescale;  // 帧率（影片每秒有几帧）    
-    CMTimeFlags    flags;            
-    CMTimeEpoch    epoch;
-} CMTime;
-</code></pre>
-<p>AVPlayerItem 的 duration 属性就是一个 CMTime 类型的数据。 如果我们想要获取影片的总秒数那么就可以用 duration.value &#x2F; duration.timeScale 计算出来。<br>也可以使用 CMTimeGetSeconds 函数<br><strong>CMTimeGetSeconds(CMtime time)</strong></p>
-<pre><code>double seconds = CMTimeGetSeconds(item.duration);  // 相当于 duration.value / duration.timeScale
-</code></pre>
-<p>如果一个影片为60frame（帧）每秒， 当前想要跳转到 120帧的位置，也就是两秒的位置，那么就可以创建一个 CMTime 类型数据。<br>CMTime,通常用如下两个函数来创建.</p>
-<p><strong>CMTimeMake(int64_t value, int32_t scale)</strong></p>
-<pre><code>    CMTime time1 = CMTimeMake(120, 60);
-</code></pre>
-<p><strong>CMTimeMakeWithSeconds(Flout64 seconds, int32_t scale)</strong></p>
-<pre><code>   CMTime time2 = CMTimeWithSeconds(120, 60);
-</code></pre>
-<p>CMTimeMakeWithSeconds 和CMTimeMake 区别在于，第一个函数的第一个参数可以是float，其他一样。</p>
-<p>拖拽方法如下：<br>    - (IBAction)playerSliderValueChanged:(id)sender {   <br>     _isSliding &#x3D; YES;  <br>      [self pause];    <br>    &#x2F;&#x2F; 跳转到拖拽秒处    <br>    &#x2F;&#x2F; self.playProgress.maxValue &#x3D; value &#x2F; timeScale    <br>    &#x2F;&#x2F; value &#x3D; progress.value * timeScale    <br>    &#x2F;&#x2F; CMTimemake(value, timeScale) &#x3D;  (progress.value, 1.0)    <br>    CMTime changedTime &#x3D; CMTimeMakeWithSeconds(self.playProgress.value, 1.0);   <br>     [_playerItem seekToTime:changedTime completionHandler:^(BOOL finished) {            <br>    &#x2F;&#x2F; 跳转完成后    <br>    }];<br>    }</p>
-<p>#5.观察 AVPlayer 播放进度<br>AVPlayerItem 是使用 KVO 模式观察状态，和 缓冲进度。而 AVPlayer 给我们直接提供了 观察播放进度更为方便的方法。</p>
-<pre><code>- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(nullable dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
-</code></pre>
-<p>方法名如其意， “添加周期时间观察者” ，<br>参数1 interal 为CMTime 类型的，<br>参数2 为一个 返回值为空，参数为 CMTime 的block类型。<br>简而言之就是，每隔一段时间后执行 block。<br>比如： 我把时间间隔设置为， 1&#x2F; 30 秒，然后 block 里面更新 UI。就是一秒钟更新 30次UI。</p>
-<p>播放进度代码如下：<br>&#x2F;&#x2F; 观察播放进度<br>    - (void)monitoringPlayback:(AVPlayerItem *)item {<br>        __weak typeof(self)WeakSelf &#x3D; self;<br>        &#x2F;&#x2F; 观察间隔, CMTime 为30分之一秒<br>         _playTimeObserver &#x3D; [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30.0) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {<br>            if (_touchMode !&#x3D; TouchPlayerViewModeHorizontal) {<br>                &#x2F;&#x2F; 获取 item 当前播放秒<br>                 float currentPlayTime &#x3D; (double)item.currentTime.value&#x2F; item.currentTime.timescale;<br>                &#x2F;&#x2F; 更新slider, 如果正在滑动则不更新<br>                 if (_isSliding &#x3D;&#x3D; NO) {<br>                     [WeakSelf updateVideoSlider:currentPlayTime];<br>                }<br>            } else {<br>                return;<br>            }<br>        }];<br>    }<br><strong>注意：</strong> 给 palyer 添加了 timeObserver 后，不使用的时候记得移除 removeTimeObserver, 否则会占用大量内存。比如，我在dealloc里面做了移除：</p>
-<pre><code>- (void)dealloc {   
-</code></pre>
-<p>    [self removeObserveAndNOtification];    <br>    [_player removeTimeObserver:_playTimeObserver]; &#x2F;&#x2F; 移除playTimeObserver<br>    }</p>
-<p>#6.AVPlayerItem 通知<br>AVPlaerItem 播放完成后，系统会自动发送通知，通知的定义详情请见 AVPlayerItem.h.</p>
-<pre><code>/* Note that NSNotifications posted by AVPlayerItem may be posted on a 
-different thread from the one on which the observer was registered. */
-// notifications description
-AVF_EXPORT NSString *const AVPlayerItemTimeJumpedNotification			 NS_AVAILABLE(10_7, 5_0);	// the item&#39;s current time has changed discontinuously
-AVF_EXPORT NSString *const AVPlayerItemDidPlayToEndTimeNotification      NS_AVAILABLE(10_7, 4_0);   // item has played to its end time
-AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeNotification NS_AVAILABLE(10_7, 4_3);   // item has failed to play to its end time
-AVF_EXPORT NSString *const AVPlayerItemPlaybackStalledNotification       NS_AVAILABLE(10_9, 6_0);    // media did not arrive in time to continue playback
-AVF_EXPORT NSString *const AVPlayerItemNewAccessLogEntryNotification	 NS_AVAILABLE(10_9, 6_0);	// a new access log entry has been added
-AVF_EXPORT NSString *const AVPlayerItemNewErrorLogEntryNotification		 NS_AVAILABLE(10_9, 6_0);	// a new error log entry has been added
-
-// notification userInfo key                                                                    type
-AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAILABLE(10_7, 4_3);   // NSError
-</code></pre>
-<p>因此，如果我们想要在某个状态下，执行某些操作。监听 AVPlayerItem 的相关通知就行了。 比如，我想要播放完成后，暂停播放。 给AVPlayerItemDidPlayToEndTimeNotification<br> 添加观察者。  </p>
-<pre><code>[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector
-(playbackFinished:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil]; 
-</code></pre>
-<p>&#x2F;&#x2F; 播放完成后 <br>    - (void)playbackFinished:(NSNotification *)notification {    <br>      NSLog(@”视频播放完成通知”);    <br>    _playerItem &#x3D; [notification object];   <br>     [_playerItem seekToTime:kCMTimeZero]; &#x2F;&#x2F; item 跳转到初始      <br>    &#x2F;&#x2F;[_player play]; &#x2F;&#x2F; 循环播放<br>    }<br>#最后<br>使用 AVPlayer 的时候，一定要注意 AVPlayer 、 AVPlayerLayer 和 AVPlayerItem 三者之间的关系。 AVPlayer 负责控制播放， layer 显示播放， item 提供数据，当前播放时间， 已加载情况。 Item 中一些基本的属性, status, duration, loadedTimeRanges， currentTime（当前播放时间）。</p>
-
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/" data-id="cuidCLW-EYHOOfD4GgfHRMC9Y" data-title="iOS开发--AVPlayer教程(常用功能都在这里了)" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-AVPlayer%E6%95%99%E7%A8%8B(%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%E4%BA%86)/" data-id="cuidNvWdsl89PN19chGGZPH9I" data-title="iOS开发--AVPlayer教程(常用功能都在这里了)" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -993,14 +425,14 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
 
 
   
-    <article id="post-2026-03-18-iOS开发-pod集成framework-找不到头文件" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS开发-自动化打包Jenkins-实时ing" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-pod%E9%9B%86%E6%88%90framework-%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85Jenkins-%E5%AE%9E%E6%97%B6ing/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:58:08.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
   </div>
 
   </div>
@@ -1011,7 +443,7 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-pod%E9%9B%86%E6%88%90framework-%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6/">iOS开发-pod集成framework-找不到头文件</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85Jenkins-%E5%AE%9E%E6%97%B6ing/">iOS开发--自动化打包Jenkins--实时ing</a>
     </h1>
   
 
@@ -1019,13 +451,16 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>选中target –&gt;Build Setting –&gt; 搜索Module:  下图选中的值修改NO</p>
-<p><img src="/hexo-site/images/note/a48bc9251c1a21ed1922d769a7148cb2.webp" alt="image.png"></p>
-
+        <p>当项目打包比较频繁的时候，打包的工作会占用不小的工作量，这个时候自动化打包工具就成为了必要。开发人员只需要关心代码，不必关心打包过程。</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85Jenkins-%E5%AE%9E%E6%97%B6ing/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-pod%E9%9B%86%E6%88%90framework-%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6/" data-id="cuidwEzctCazeL3_PeO1l9Fuz" data-title="iOS开发-pod集成framework-找不到头文件" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85Jenkins-%E5%AE%9E%E6%97%B6ing/" data-id="cuid_LN1LzoUojGnpokBfGBTr" data-title="iOS开发--自动化打包Jenkins--实时ing" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1039,14 +474,14 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
 
 
   
-    <article id="post-2026-03-18-iOS开发-简单MVVM设计模式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-24-iOS开发-自定义airPlayView实现投电视功能" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E7%AE%80%E5%8D%95MVVM%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:30:13.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:57:53.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
   </div>
 
   </div>
@@ -1057,7 +492,7 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E7%AE%80%E5%8D%95MVVM%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">iOS开发--简单MVVM设计模式</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/">iOS开发--自定义airPlayView实现投电视功能</a>
     </h1>
   
 
@@ -1065,13 +500,65 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>一张图简要说明MVVM分层工作:</p>
-<p><img src="/hexo-site/images/note/60248b240688369029d8d3681856721b.webp" alt="MVVM.png"></p>
-
+        <p>最近APP内需要用到投电视功能,所以做了一个小小的封装,方便使用.</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-iOS%E5%BC%80%E5%8F%91-%E7%AE%80%E5%8D%95MVVM%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" data-id="cuidGmUETRcgGIm8KStI1B9hk" data-title="iOS开发--简单MVVM设计模式" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%87%AA%E5%AE%9A%E4%B9%89airPlayView%E5%AE%9E%E7%8E%B0%E6%8A%95%E7%94%B5%E8%A7%86%E5%8A%9F%E8%83%BD/" data-id="cuidnRZkM3Onfogp_3ebfy5hV" data-title="iOS开发--自定义airPlayView实现投电视功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2026-03-24-iOS开发-运用AVPlayer播放视频" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%BF%90%E7%94%A8AVPlayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T06:57:49.000Z" itemprop="datePublished">2026-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%BF%90%E7%94%A8AVPlayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91/">iOS开发--运用AVPlayer播放视频</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>AVPlayer是可以高度定制性的播放器<br>利用AVPlayer播放的简单实现见下文:</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%BF%90%E7%94%A8AVPlayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91/#more">阅读全文</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/24/2026-03-24-iOS%E5%BC%80%E5%8F%91-%E8%BF%90%E7%94%A8AVPlayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91/" data-id="cuidJA-J886856YCIGh7srVWF" data-title="iOS开发--运用AVPlayer播放视频" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1089,7 +576,7 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/hexo-site/page/2/">&laquo; 上一页</a><a class="page-number" href="/hexo-site/">1</a><a class="page-number" href="/hexo-site/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/hexo-site/page/4/">4</a><a class="page-number" href="/hexo-site/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/hexo-site/page/11/">11</a><a class="extend next" rel="next" href="/hexo-site/page/4/">下一页 &raquo;</a>
+    <a class="extend prev" rel="prev" href="/hexo-site/page/2/">&laquo; 上一页</a><a class="page-number" href="/hexo-site/">1</a><a class="page-number" href="/hexo-site/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/hexo-site/page/4/">4</a><a class="page-number" href="/hexo-site/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/hexo-site/page/10/">10</a><a class="extend next" rel="next" href="/hexo-site/page/4/">下一页 &raquo;</a>
   </nav>
 
 </section>
@@ -1100,7 +587,7 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/MAC%E7%9F%A5%E8%AF%86/">MAC知识</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/flutter%E5%BC%80%E5%8F%91/">flutter开发</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/swift%E8%AF%AD%E8%A8%80/">swift语言</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E/">亲人纪实</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/">工具分享</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li></ul>
     </div>
   </div>
 
@@ -1129,7 +616,7 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2018/04/">四月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li></ul>
     </div>
   </div>
 
@@ -1142,23 +629,23 @@ AVF_EXPORT NSString *const AVPlayerItemFailedToPlayToEndTimeErrorKey     NS_AVAI
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift%E5%9F%BA%E7%A1%80-%E5%8F%AF%E9%80%89%E9%A1%B9/">Swift基础-可选项</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95-Swift-Compiler-Error/">Swift错误提示解决办法--Swift-Compiler-Error</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E4%B8%AD%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E7%9A%84%E8%AF%B4%E6%98%8E%E4%BB%A5%E5%8F%8A%E7%94%A8%E6%B3%95/">OC中按位枚举的说明以及用法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift3-0%E5%9F%BA%E7%A1%80-if-let-var-%E5%92%8Cguard-let-var-%E5%BC%82%E5%90%8C/">Swift3-0基础----if-let-var-和guard-let-var-异同</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-SVN%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF-svn-server-sent-unexpected-return-value-405-method-n/">SVN常见错误-svn-server-sent-unexpected-return-value-405-method-not-allowed</a>
           </li>
         
       </ul>

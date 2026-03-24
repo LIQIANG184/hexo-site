@@ -37,9 +37,9 @@
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<!-- hexo injector head_end start --><link rel="stylesheet" href="/hexo-site/css/skin.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/hexo-site/css/skin.css"><link rel="stylesheet" href="/hexo-site/css/layout.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
 
-<body>
+<body class="is-blog-index">
   <div id="container">
     <div id="wrap">
       <header id="header">
@@ -81,14 +81,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-2026-03-18-【iOS开发】SDK开发之podspec内执行脚本" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-2026-03-18-【MAC-小知识】host文件地址" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E5%86%85%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC/" class="article-date">
+    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC-%E5%B0%8F%E7%9F%A5%E8%AF%86%E3%80%91host%E6%96%87%E4%BB%B6%E5%9C%B0%E5%9D%80/" class="article-date">
   <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/MAC%E7%9F%A5%E8%AF%86/">MAC知识</a>
   </div>
 
   </div>
@@ -99,7 +99,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E5%86%85%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC/">【iOS开发】SDK开发之podspec内执行脚本</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC-%E5%B0%8F%E7%9F%A5%E8%AF%86%E3%80%91host%E6%96%87%E4%BB%B6%E5%9C%B0%E5%9D%80/">【MAC-小知识】host文件地址</a>
     </h1>
   
 
@@ -107,286 +107,16 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>  本系列是SDK打包的实践，主要解决一下3个问题，本篇是第三篇。<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">【iOS开发】SDK开发之编译c&#x2F;c++</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/daeaf5728100?v=1742283697172">【iOS开发】SDK开发之podspec编写</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/99ca9803cb48?v=1742283732210">【iOS开发】SDK开发之podspec内执行脚本</a></p>
-<p>上篇文章podsec内的framework是cmake编译出来的，到目前为止app内使用pod引入sdk需要两步：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 使用cmake编译sdk</span><br><span class="line">2 cd 到podfile所在目录</span><br><span class="line">   添加pod依赖</span><br><span class="line">   pod install</span><br></pre></td></tr></table></figure>
-<p>有没有可能把两步合并呢？👇🏻向下看</p>
-<h1 id="打包脚本合并到podspec中"><a href="#打包脚本合并到podspec中" class="headerlink" title="打包脚本合并到podspec中"></a>打包脚本合并到podspec中</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">system &lt;&lt;-SCRIPT</span><br><span class="line">mkdir build &amp;&amp; cd build</span><br><span class="line">cmake -G Xcode .. -B .</span><br><span class="line">env=&quot;Release&quot;</span><br><span class="line">xcodebuild -target MobilePoseAlign -configuration &quot;$env&quot;</span><br><span class="line">SCRIPT</span><br><span class="line"># 如果执行 xcodebuild 失败, 直接报错, 终止打包流程</span><br><span class="line">raise &quot;xcodebuild failed!&quot; unless $?.success?</span><br><span class="line">   </span><br><span class="line">Pod::Spec.new do |s|</span><br><span class="line">  s.name             = &#x27;sdkName&#x27;</span><br><span class="line">  s.version         = &quot;1.0.0&quot;</span><br><span class="line">  s.summary          = &#x27;***&#x27;</span><br><span class="line">  s.description      = &quot;***.&quot;</span><br><span class="line">  s.homepage         = &quot;**&quot;</span><br><span class="line">  s.license          = &#123; :type =&gt; &#x27;MIT&#x27;, :file =&gt; &#x27;LICENSE&#x27; &#125;</span><br><span class="line">  s.author           = &#123; &#x27;lq&#x27; =&gt; &#x27;**&#x27; &#125;</span><br><span class="line">  s.source           = &#123; :git =&gt; &quot;****&quot;, :tag =&gt; s.name.to_s + &quot;-&quot; + s.version.to_s &#125;</span><br><span class="line">  s.frameworks = &quot;AVFoundation&quot;, &quot;Foundation&quot;, &quot;Metal&quot;, &quot;CoreMedia&quot;</span><br><span class="line">  s.libraries = &quot;c++&quot;,&quot;z&quot;</span><br><span class="line">  s.preserve_paths = &quot;ios/build/Debug-iphoneos/**/*&quot;, &quot;ios/algorithms/**/data/**/*&quot;, &quot;3rd/iOS/lib/**/*.framework/**/*&quot;, &quot;3rd/iOS/lib/*.framework/**/*&quot;, &quot;3rd/iOS/dependence/png/*&quot;</span><br><span class="line">  s.resource_bundle = &#123; &#x27;sdkName&#x27; =&gt; &quot;ios/algorithms/**/data/*&quot; &#125;</span><br><span class="line">  s.public_header_files = &quot;3rd/iOS/dependence/png/*.h&quot;</span><br><span class="line">  s.ios.deployment_target = &#x27;9.0&#x27;</span><br><span class="line"> s.vendored_frameworks = &quot;ios/Debug-iphoneos/Release/*.framework&quot;,&quot;ios/build/Debug-iphoneos/Release/*.framework&quot;, &quot;3rd/iOS/lib/**/*.framework&quot;, &quot;3rd/iOS/lib/*.framework&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E5%86%85%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC/" data-id="cuidLPTwz306x3TcuGBLcel0Y" data-title="【iOS开发】SDK开发之podspec内执行脚本" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【iOS开发】SDK开发之podspec编写" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E7%BC%96%E5%86%99/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+        <p class="article-excerpt-auto">host文件地址： &#x2F;private&#x2F;etc&#x2F;hosts</p>
         
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E7%BC%96%E5%86%99/">【iOS开发】SDK开发之podspec编写</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>#介绍<br>  本系列是SDK打包的实践，主要解决一下3个问题，本篇是第二篇。<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">【iOS开发】SDK开发之编译c&#x2F;c++</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/daeaf5728100?v=1742283697172">【iOS开发】SDK开发之podspec编写</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/99ca9803cb48?v=1742283732210">【iOS开发】SDK开发之podspec内执行脚本</a></p>
-<p>#本期问题</p>
-<ul>
-<li>APP内使用cocoapods管理第三方库，所以需要自己写podspec并发布到私有repo</li>
-<li>podspec嵌入打包脚本</li>
-</ul>
-<p>##podspec编写：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new do |s|</span><br><span class="line">  s.name             = &#x27;sdkName&#x27;</span><br><span class="line">  s.version         = &quot;1.0.0&quot;</span><br><span class="line">  s.summary          = &#x27;***&#x27;</span><br><span class="line">  s.description      = &quot;***.&quot;</span><br><span class="line">  s.homepage         = &quot;**&quot;</span><br><span class="line">  s.license          = &#123; :type =&gt; &#x27;MIT&#x27;, :file =&gt; &#x27;LICENSE&#x27; &#125;</span><br><span class="line">  s.author           = &#123; &#x27;lq&#x27; =&gt; &#x27;**&#x27; &#125;</span><br><span class="line">  s.source           = &#123; :git =&gt; &quot;****&quot;, :tag =&gt; s.name.to_s + &quot;-&quot; + s.version.to_s &#125;</span><br><span class="line">  s.frameworks = &quot;AVFoundation&quot;, &quot;Foundation&quot;, &quot;Metal&quot;, &quot;CoreMedia&quot;</span><br><span class="line">  s.libraries = &quot;c++&quot;,&quot;z&quot;</span><br><span class="line">  s.preserve_paths = &quot;ios/build/Debug-iphoneos/**/*&quot;, &quot;ios/algorithms/**/data/**/*&quot;, &quot;3rd/iOS/lib/**/*.framework/**/*&quot;, &quot;3rd/iOS/lib/*.framework/**/*&quot;, &quot;3rd/iOS/dependence/png/*&quot;</span><br><span class="line">  s.resource_bundle = &#123; &#x27;sdkName&#x27; =&gt; &quot;ios/algorithms/**/data/*&quot; &#125;</span><br><span class="line">  s.public_header_files = &quot;3rd/iOS/dependence/png/*.h&quot;</span><br><span class="line">  s.ios.deployment_target = &#x27;9.0&#x27;</span><br><span class="line"> s.vendored_frameworks = &quot;ios/Debug-iphoneos/Release/*.framework&quot;,&quot;ios/build/Debug-iphoneos/Release/*.framework&quot;, &quot;3rd/iOS/lib/**/*.framework&quot;, &quot;3rd/iOS/lib/*.framework&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<p>这个podspec意思是把很多framework加进来（没有源文件），这些framework是由<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64a7757d3fae?v=1734334386926">上一篇</a>文章cmake编译出来的</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91SDK%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E7%BC%96%E5%86%99/" data-id="cuidAbW8-XnStHRSe6JPRICT3" data-title="【iOS开发】SDK开发之podspec编写" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【iOS开发】shell脚本打包SDK，并整合" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91shell%E8%84%9A%E6%9C%AC%E6%89%93%E5%8C%85SDK%EF%BC%8C%E5%B9%B6%E6%95%B4%E5%90%88/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC-%E5%B0%8F%E7%9F%A5%E8%AF%86%E3%80%91host%E6%96%87%E4%BB%B6%E5%9C%B0%E5%9D%80/#more">阅读全文</a>
+          </p>
         
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91shell%E8%84%9A%E6%9C%AC%E6%89%93%E5%8C%85SDK%EF%BC%8C%E5%B9%B6%E6%95%B4%E5%90%88/">【iOS开发】shell脚本打包SDK，并整合</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>最近有需求需要我们打包很多<code>framework</code>(大概10多个,另外还有5个bundle),一直手动打包费时费力,还有可能会出错, 想到可以使用<code>shell</code>脚本来打包.</p>
-<p>#本文知识点:</p>
-<h2 id="变量定义-查看变量内容"><a href="#变量定义-查看变量内容" class="headerlink" title="变量定义,查看变量内容"></a>变量定义,查看变量内容</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">path=&quot;/Users/xxx/Library/Developer/Xcode/DerivedData&quot;</span><br><span class="line">echo &quot;打包开始: $path&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="删除文件夹"><a href="#删除文件夹" class="headerlink" title="删除文件夹"></a>删除文件夹</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf &quot;$path&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="杀掉进程"><a href="#杀掉进程" class="headerlink" title="杀掉进程"></a>杀掉进程</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#杀掉 Xcode</span><br><span class="line">pkill Xcode</span><br></pre></td></tr></table></figure>
-<h2 id="读取函数入参"><a href="#读取函数入参" class="headerlink" title="读取函数入参"></a>读取函数入参</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">packaging()&#123;</span><br><span class="line">#工程名称(Project的名字) </span><br><span class="line">#$1 表示第一个参数CaptureSDK</span><br><span class="line">ProjectName=$1</span><br><span class="line">#scheme名字 -</span><br><span class="line">#$2 表示第二个参数CaptureSDKScheme</span><br><span class="line">Scheme=$2</span><br><span class="line">&#125;</span><br><span class="line">packaging &quot;CaptureSDK&quot; &quot;CaptureSDKScheme&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="查找文件"><a href="#查找文件" class="headerlink" title="查找文件"></a>查找文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#其中“**”是通配符, 下边代码代表“CaptureSDK-”开头的文件</span><br><span class="line">find $path -name &quot;CaptureSDK-*&quot;</span><br><span class="line"></span><br><span class="line">#-maxdepth 1 代表查找深度1也就是在path目录下找文件,不在下一级目录查找</span><br><span class="line">find $path -name &quot;CaptureSDK-*&quot; -maxdepth 1</span><br></pre></td></tr></table></figure>
-<h2 id="for循环遍历"><a href="#for循环遍历" class="headerlink" title="for循环遍历"></a>for循环遍历</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">typeArray=&quot;all</span><br><span class="line">all_framework</span><br><span class="line">all_bundle</span><br><span class="line">phone</span><br><span class="line">gimbal</span><br><span class="line">galois</span><br><span class="line">camera</span><br><span class="line">phone_bundle</span><br><span class="line">gimbal_bundle</span><br><span class="line">galois_bundle</span><br><span class="line">camera_bundle&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i in $&#123;typeArray[@]&#125;</span><br><span class="line">do</span><br><span class="line">    echo &#x27;$i&#x27;</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-<h2 id="if-语句"><a href="#if-语句" class="headerlink" title="if 语句"></a>if 语句</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#if [ condition ];then,condition所有两边和中括号之前必须有空格</span><br><span class="line">c=1</span><br><span class="line">    if [ $c == 0 ];then</span><br><span class="line">        echo &quot;不支持的参数&quot;</span><br><span class="line">        return</span><br><span class="line">    fi</span><br></pre></td></tr></table></figure>
-<h2 id="等待用户输入"><a href="#等待用户输入" class="headerlink" title="等待用户输入"></a>等待用户输入</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">read -p &quot;请输入:&quot; CURRENTTYPE</span><br><span class="line">echo &quot;输入了: $CURRENTTYPE&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="获取系统时间-年月日时分秒"><a href="#获取系统时间-年月日时分秒" class="headerlink" title="获取系统时间 年月日时分秒"></a>获取系统时间 年月日时分秒</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nowDate=$(date &quot;+%Y-%m-%d %H:%M:%S&quot;)</span><br><span class="line">echo &quot;nowData:$nowDate&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="监听control-c中止"><a href="#监听control-c中止" class="headerlink" title="监听control+c中止"></a>监听control+c中止</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#control+c 中止后当前函数返回</span><br><span class="line">trap return INT</span><br></pre></td></tr></table></figure>
-<h2 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp $sourecepath $toPath</span><br></pre></td></tr></table></figure>
-<h2 id="文件夹复制"><a href="#文件夹复制" class="headerlink" title="文件夹复制"></a>文件夹复制</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r $sourecepath $toPath</span><br></pre></td></tr></table></figure>
-<h2 id="播放音频文件"><a href="#播放音频文件" class="headerlink" title="播放音频文件"></a>播放音频文件</h2><p>   brew 安装 SoX</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#终端命令</span><br><span class="line">brew install SoX</span><br><span class="line"></span><br><span class="line">#播放,在脚本里写, 播放当前目录下success.mp3</span><br><span class="line">play success.mp3</span><br></pre></td></tr></table></figure>
-<hr>
-<p>以上为脚本内使用到的<code>知识点</code>,想深入学习的自己查资料吧</p>
-<p>#目标</p>
-<ul>
-<li>打包framework</li>
-</ul>
-<p>#方法<br>使用xcodebuild build</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild build \</span><br><span class="line">-workspace &quot;$XXX.xcworkspace&quot; \</span><br><span class="line">-scheme &quot;$XXX&quot; \</span><br><span class="line">-configuration &quot;$XXX&quot;</span><br></pre></td></tr></table></figure>
-
-<p>好,大功告成! <strong>别急这是只是1%….</strong></p>
-<p>#优化</p>
-<ol>
-<li>xcode有的时候缓存会出现奇怪的问题,所以我们要clean一下</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild clean \</span><br><span class="line">-workspace &quot;$XXX.xcworkspace&quot; \</span><br><span class="line">-scheme &quot;$XXX&quot; \</span><br><span class="line">-configuration &quot;$XXX&quot;</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>framework工程使用cocopods依赖了第三方SDK,要pod update</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod update</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>打包完毕之后,需要把framework挪动到一个文件夹,方便分发</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp $sourecepath $toPath</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>打包完毕播放提示音</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">play success.mp3</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>打包参数,打包部分framework</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">allType=&quot;</span><br><span class="line">all:                    all framework and bundle;</span><br><span class="line">all_framework:          all framework;</span><br><span class="line">all_bundle:             all bundle;</span><br><span class="line">&quot;</span><br><span class="line">typeArray=&quot;all</span><br><span class="line">all_framework</span><br><span class="line">all_bundle&quot;</span><br><span class="line"></span><br><span class="line">read -p &quot;请输入打包文件,可选值有: $allType&quot; CURRENTTYPE</span><br><span class="line"></span><br><span class="line">#echo &quot;输入了: $CURRENTTYPE&quot;</span><br><span class="line"></span><br><span class="line">c=0</span><br><span class="line"></span><br><span class="line">for j in $&#123;CURRENTTYPE[@]&#125;</span><br><span class="line"></span><br><span class="line">do</span><br><span class="line"></span><br><span class="line">    for i in $&#123;typeArray[@]&#125;</span><br><span class="line">    do</span><br><span class="line">        if [ $i == $j ]; then</span><br><span class="line">        c=1</span><br><span class="line">        break</span><br><span class="line">        fi</span><br><span class="line">    done</span><br><span class="line">    if [ $c == 0 ];then</span><br><span class="line">        echo &quot;不支持的参数 $j&quot;</span><br><span class="line">        return</span><br><span class="line">    fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>输出时间</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nowDate=$(date &quot;+%Y-%m-%d %H:%M:%S&quot;)</span><br><span class="line">echo &quot;nowData:$nowDate&quot;</span><br></pre></td></tr></table></figure>
-<ol start="7">
-<li>打包过程中control+C中断之后停止</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trap return INT</span><br></pre></td></tr></table></figure>
-
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91shell%E8%84%9A%E6%9C%AC%E6%89%93%E5%8C%85SDK%EF%BC%8C%E5%B9%B6%E6%95%B4%E5%90%88/" data-id="cuidihr9KQxjWoNjIzIsYVZdX" data-title="【iOS开发】shell脚本打包SDK，并整合" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【iOS开发】如果让AI把figma的UI稿1：1还原出来" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%A6%82%E6%9E%9C%E8%AE%A9AI%E6%8A%8Afigma%E7%9A%84UI%E7%A8%BF1%EF%BC%9A1%E8%BF%98%E5%8E%9F%E5%87%BA%E6%9D%A5/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%A6%82%E6%9E%9C%E8%AE%A9AI%E6%8A%8Afigma%E7%9A%84UI%E7%A8%BF1%EF%BC%9A1%E8%BF%98%E5%8E%9F%E5%87%BA%E6%9D%A5/">【iOS开发】如果让AI把figma的UI稿1：1还原出来</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>一款好用的免费 figma MCP：<a target="_blank" rel="noopener" href="https://github.com/GLips/Figma-Context-MCP">https://github.com/GLips/Figma-Context-MCP</a></p>
-<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><ol>
-<li>打开 IDE 的聊天（例如：Cursor 的代理模式）。</li>
-<li>粘贴 Figma 文件、框架或组的链接。</li>
-<li>要求 Cursor 对 Figma 文件执行某些操作（例如：实现设计）。</li>
-<li>Cursor 将从 Figma 获取相关元数据并使用它来编写代码。</li>
-</ol>
-<p>此 MCP 服务器专为与 Cursor 一起使用而设计。在从 <a target="_blank" rel="noopener" href="https://www.figma.com/developers/api">Figma API</a> 响应上下文之前，它会简化和翻译响应，以便只向模型提供最相关的布局和样式信息。</p>
-<p>减少提供给模型的上下文数量有助于提高 AI 的准确性并使响应更具相关性。</p>
-<h2 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h2><p>许多代码编辑器和其他 AI 客户端使用配置文件来管理 MCP 服务器。</p>
-<p>可以通过将以下内容添加到配置文件中来设置 <code>figma-developer-mcp</code> 服务器。</p>
-<blockquote>
-<p>注意：您需要创建 Figma 访问令牌才能使用此服务器。有关如何创建 Figma API 访问令牌的说明，请参见<a target="_blank" rel="noopener" href="https://help.figma.com/hc/en-us/articles/8085703771159-Manage-personal-access-tokens">此处</a>。</p>
-</blockquote>
-<h3 id="MacOS-Linux"><a href="#MacOS-Linux" class="headerlink" title="MacOS &#x2F; Linux"></a>MacOS &#x2F; Linux</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;mcpServers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;Framelink MCP for Figma&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npx&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;-y&quot;</span><span class="punctuation">,</span> <span class="string">&quot;figma-developer-mcp&quot;</span><span class="punctuation">,</span> <span class="string">&quot;--figma-api-key=YOUR-KEY&quot;</span><span class="punctuation">,</span> <span class="string">&quot;--stdio&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;mcpServers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;Framelink MCP for Figma&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cmd&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;/c&quot;</span><span class="punctuation">,</span> <span class="string">&quot;npx&quot;</span><span class="punctuation">,</span> <span class="string">&quot;-y&quot;</span><span class="punctuation">,</span> <span class="string">&quot;figma-developer-mcp&quot;</span><span class="punctuation">,</span> <span class="string">&quot;--figma-api-key=YOUR-KEY&quot;</span><span class="punctuation">,</span> <span class="string">&quot;--stdio&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>或者您可以在 <code>env</code> 字段中设置 <code>FIGMA_API_KEY</code> 和 <code>PORT</code>。</p>
-<p>有关如何配置 Framelink MCP for Figma 服务器的更多信息，请参阅 <a target="_blank" rel="noopener" href="https://www.framelink.ai/docs/quickstart?utm_source=github&utm_medium=readme&utm_campaign=readme">Framelink 文档</a>。</p>
-<h2 id="了解更多"><a href="#了解更多" class="headerlink" title="了解更多"></a>了解更多</h2><p>Framelink MCP for Figma 服务器简单但功能强大。在 <a target="_blank" rel="noopener" href="https://framelink.ai/?utm_source=github&utm_medium=readme&utm_campaign=readme">Framelink</a> 网站上了解更多信息。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%A6%82%E6%9E%9C%E8%AE%A9AI%E6%8A%8Afigma%E7%9A%84UI%E7%A8%BF1%EF%BC%9A1%E8%BF%98%E5%8E%9F%E5%87%BA%E6%9D%A5/" data-id="cuidRaGDqPIPLBsSkzzDi-tpd" data-title="【iOS开发】如果让AI把figma的UI稿1：1还原出来" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-【iOS开发】工具之git-clone-报错：The-project-you-were-looking-for-coul" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%B7%A5%E5%85%B7%E4%B9%8Bgit-clone-%E6%8A%A5%E9%94%99%EF%BC%9AThe-project-you-were-looking-for-coul/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%B7%A5%E5%85%B7%E4%B9%8Bgit-clone-%E6%8A%A5%E9%94%99%EF%BC%9AThe-project-you-were-looking-for-coul/">【iOS开发】工具之git-clone-报错：The project you were looking for could not be f</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>错误: remote: The project you were looking for could not be found.<br>fatal: repository ‘<a target="_blank" rel="noopener" href="http://xxxx.git/">http://XXXX.git/</a>‘ not found</p>
-<p>解决方法：</p>
-<p>git clone <a target="_blank" rel="noopener" href="http://username@xxxx.git/">http://username@XXXX.git/</a></p>
-<p>把username 换成自己的用户名   之后会提醒你输入密码</p>
-<p>原因：</p>
-<p>之前登录过其他的账号，这个账号没有此路径权限</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90iOS%E5%BC%80%E5%8F%91%E3%80%91%E5%B7%A5%E5%85%B7%E4%B9%8Bgit-clone-%E6%8A%A5%E9%94%99%EF%BC%9AThe-project-you-were-looking-for-coul/" data-id="cuidMSphQwd_lSdqNFzFcZT7F" data-title="【iOS开发】工具之git-clone-报错：The project you were looking for could not be f" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E3%80%90MAC-%E5%B0%8F%E7%9F%A5%E8%AF%86%E3%80%91host%E6%96%87%E4%BB%B6%E5%9C%B0%E5%9D%80/" data-id="cuidH6hXmu6JQWzpml74nfnbu" data-title="【MAC-小知识】host文件地址" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -407,7 +137,7 @@
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E/">亲人纪实</a>
   </div>
 
   </div>
@@ -426,12 +156,16 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>在我印象里,大姑是一个特别能干的女人,身上的衣服总是很干净,说话很利索,动作很麻利,能骑2-8大车子,带大梁的那种老式自行车,小的时候还能带我,有一次,因为道路太坑洼了,把我颠下车来了,她就赶紧把我抱起来了,问我摔到哪里了吗,小时候很喜欢去大姑家玩.我记得那时候她偶尔会头疼,大姑父就会用针扎她的头皮放血,可能跟这个有关系,后来脑血栓病发了,抢救过来就半身不遂了</p>
-
+        <p class="article-excerpt-auto">在我印象里,大姑是一个特别能干的女人,身上的衣服总是很干净,说话很利索,动作很麻利,能骑2-8大车子,带大梁的那种老式自行车,小的时候还能带我,有一次,因为道路太坑洼了,把我颠下车来了,她就赶紧把我抱起来了,问我摔到哪里了吗,小时候很喜欢去大姑家玩.我记得那时候她偶尔会头疼,大姑父就会用针扎她的头皮放血,可能跟这个有关系,后来脑血栓病发了,抢救过来就半身不遂了</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E5%A4%A7%E5%A7%91/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E5%A4%A7%E5%A7%91/" data-id="cuidkdOktpVu3za7iEgGdwfjF" data-title="亲人纪实--大姑" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E5%A4%A7%E5%A7%91/" data-id="cuidJJiIxDmKmK0tMUkylcXm3" data-title="亲人纪实--大姑" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -452,7 +186,7 @@
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E/">亲人纪实</a>
   </div>
 
   </div>
@@ -471,57 +205,16 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>(已故)在我的印象里,大姑父是一个特别爱干净的人,走路的时候,腰板挺的很直,经常会穿一身老式的西服,很干净利索,他爱抽烟,能一根接一根</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E5%A4%A7%E5%A7%91%E7%88%B6/" data-id="cuid_kf6wFScWXVQ9R0VXw5cL" data-title="亲人纪实--大姑父" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2026-03-18-亲人纪实-奶奶" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E5%A5%B6%E5%A5%B6/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+        <p class="article-excerpt-auto">(已故)在我的印象里,大姑父是一个特别爱干净的人,走路的时候,腰板挺的很直,经常会穿一身老式的西服,很干净利索,他爱抽烟,能一根接一根</p>
         
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E5%A5%B6%E5%A5%B6/">亲人纪实---奶奶</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在我的认识里奶奶是一个要强的女人. 她从来不张口向我爸爸拿钱,她说我爸供我上学也不容易,能不跟他要钱就不要.她会要求我爷爷去干活挣钱.她跟人家学习了做油条的方法,自己每天起早做油条,推着车去买,她个头不高,做事很踏实.</p>
-
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E5%A4%A7%E5%A7%91%E7%88%B6/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E5%A5%B6%E5%A5%B6/" data-id="cuidwQXVgtgSQiYvlOmqsd_Y9" data-title="亲人纪实---奶奶" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E5%A4%A7%E5%A7%91%E7%88%B6/" data-id="cuidrRBNeYe8YZZGiqLhCjYiG" data-title="亲人纪实--大姑父" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -542,7 +235,7 @@
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E/">亲人纪实</a>
   </div>
 
   </div>
@@ -561,12 +254,16 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>(已故)在我的记忆力,爷爷是一个任劳任怨的人,他总是很沉默,话语不是很多,年纪大点之后,说话不是很利索,左边眼睛因为受风,有些睁不开.他60多岁,还在打工,盖房子挣钱,他也不会发火,总是默默地维持着温暖的家.后来因为年纪渐渐大了,就不干活了,我们过去看他,总是乐呵呵的,会关心我们生活怎么样,什么时候毕业,什么时候工作等等问题</p>
-
+        <p class="article-excerpt-auto">(已故)在我的记忆力,爷爷是一个任劳任怨的人,他总是很沉默,话语不是很多,年纪大点之后,说话不是很利索,左边眼睛因为受风,有些睁不开.他60多岁,还在打工,盖房子挣钱,他也不会发火,总是默默地维持着温暖的家.后来因为年纪渐渐大了,就不干活了,我们过去看他,总是乐呵呵的,会关心我们生活怎么样,什么时候毕业,什么时候工作等等问题</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E7%88%B7%E7%88%B7/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E7%88%B7%E7%88%B7/" data-id="cuidGZYjCRd6l_WWDWrDVmkxh" data-title="亲人纪实--爷爷" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E-%E7%88%B7%E7%88%B7/" data-id="cuidnwkoFHefmJoU12XKwmblA" data-title="亲人纪实--爷爷" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -580,14 +277,57 @@
 
 
   
-    <article id="post-2026-03-18-梯度下降（Gradient-Descent）小结" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/hexo-site/2026/03/18/2026-03-18-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88Gradient-Descent%EF%BC%89%E5%B0%8F%E7%BB%93/" class="article-date">
-  <time class="dt-published" datetime="2026-03-18T10:04:06.000Z" itemprop="datePublished">2026-03-18</time>
+    <a href="/hexo-site/2026/03/18/hello-world/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T09:04:38.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-auto">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick…</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/18/hello-world/#more">阅读全文</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/hello-world/" data-id="cuidL6F-54MjLnd3JdqBl_Xrg" data-title="Hello World" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-hexo-blog-setup" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/hexo-site/2026/03/18/hexo-blog-setup/" class="article-date">
+  <time class="dt-published" datetime="2026-03-18T04:00:00.000Z" itemprop="datePublished">2026-03-18</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    <a class="article-category-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a>
   </div>
 
   </div>
@@ -598,7 +338,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/hexo-site/2026/03/18/2026-03-18-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88Gradient-Descent%EF%BC%89%E5%B0%8F%E7%BB%93/">梯度下降（Gradient-Descent）小结</a>
+      <a class="p-name article-title" href="/hexo-site/2026/03/18/hexo-blog-setup/">用 Hexo 搭建个人博客</a>
     </h1>
   
 
@@ -606,16 +346,20 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>转载: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinard/p/5970503.html">https://www.cnblogs.com/pinard/p/5970503.html</a></p>
-
+        <p class="article-excerpt-auto">本站使用 Hexo 生成静态页面，依赖 Node.js 20.19+，通过 Markdown 写作。 常用命令 命令 说明 npm run server 本地预览 npm run build 生成 public&#x2F; npm run deploy 一键部署（需先配置 _config.yml 的 deploy） 新建文章1npx hexo new &quot;文章标题&quot; 在 source&#x2F;_p…</p>
+        
+          <p class="article-more-link">
+            <a href="/hexo-site/2026/03/18/hexo-blog-setup/#more">阅读全文</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/2026-03-18-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88Gradient-Descent%EF%BC%89%E5%B0%8F%E7%BB%93/" data-id="cuidOKTTeOLvonnmr52utQ61d" data-title="梯度下降（Gradient-Descent）小结" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://liqiang184.github.io/hexo-site/2026/03/18/hexo-blog-setup/" data-id="cuid3jCm1mQJTHTMY6dGV2G1W" data-title="用 Hexo 搭建个人博客" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/Hexo/" rel="tag">Hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo-site/tags/%E6%95%99%E7%A8%8B/" rel="tag">教程</a></li></ul>
 
     </footer>
   </div>
@@ -629,7 +373,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/hexo-site/page/9/">&laquo; 上一页</a><a class="page-number" href="/hexo-site/">1</a><span class="space">&hellip;</span><a class="page-number" href="/hexo-site/page/8/">8</a><a class="page-number" href="/hexo-site/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/hexo-site/page/11/">11</a><a class="extend next" rel="next" href="/hexo-site/page/11/">下一页 &raquo;</a>
+    <a class="extend prev" rel="prev" href="/hexo-site/page/9/">&laquo; 上一页</a><a class="page-number" href="/hexo-site/">1</a><span class="space">&hellip;</span><a class="page-number" href="/hexo-site/page/8/">8</a><a class="page-number" href="/hexo-site/page/9/">9</a><span class="page-number current">10</span>
   </nav>
 
 </section>
@@ -640,7 +384,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AC%94%E8%AE%B0/">笔记</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/MAC%E7%9F%A5%E8%AF%86/">MAC知识</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/flutter%E5%BC%80%E5%8F%91/">flutter开发</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/swift%E8%AF%AD%E8%A8%80/">swift语言</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E4%BA%B2%E4%BA%BA%E7%BA%AA%E5%AE%9E/">亲人纪实</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/">工具分享</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">知识分享</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo-site/categories/%E7%AB%99%E5%8A%A1/">站务</a></li></ul>
     </div>
   </div>
 
@@ -669,7 +413,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2018/04/">四月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo-site/archives/2026/03/">三月 2026</a></li></ul>
     </div>
   </div>
 
@@ -682,23 +426,23 @@
       <ul>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Error-fetching-https-gems-ruby-china-org-bad-response-Not-Fo/">Error-fetching-https---gems-ruby-china-org---bad-response-Not-Found-40</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift%E5%9F%BA%E7%A1%80-%E5%8F%AF%E9%80%89%E9%A1%B9/">Swift基础-可选项</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Mac-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%98%8E%E5%BC%80%E5%8F%91%E8%80%85%E6%88%96%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">Mac--应用程序无法打开提示不明开发者或文件损坏的处理方法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95-Swift-Compiler-Error/">Swift错误提示解决办法--Swift-Compiler-Error</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E4%B8%AD%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E7%9A%84%E8%AF%B4%E6%98%8E%E4%BB%A5%E5%8F%8A%E7%94%A8%E6%B3%95/">OC中按位枚举的说明以及用法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift3-0%E5%9F%BA%E7%A1%80-if-let-var-%E5%92%8Cguard-let-var-%E5%BC%82%E5%90%8C/">Swift3-0基础----if-let-var-和guard-let-var-异同</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-OC%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-Dijkstra%E7%AE%97%E6%B3%95/">OC算法实现--Dijkstra算法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
           </li>
         
           <li>
-            <a href="/hexo-site/2026/03/18/2026-03-18-Swift-%E6%8C%89%E4%BD%8D%E6%9E%9A%E4%B8%BE%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%94%A8%E6%B3%95/">Swift-按位枚举说明及用法</a>
+            <a href="/hexo-site/2026/03/24/2026-03-24-SVN%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF-svn-server-sent-unexpected-return-value-405-method-n/">SVN常见错误-svn-server-sent-unexpected-return-value-405-method-not-allowed</a>
           </li>
         
       </ul>

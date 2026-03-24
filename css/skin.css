@@ -136,6 +136,42 @@ html.skin-sepia #header {
   border-bottom-color: #e8dfc8;
 }
 
+/* 博客列表：整卡背景（与内层 article-inner 区分） */
+html.skin-default body.is-blog-index .article {
+  background: #fff;
+}
+html.skin-default body.is-blog-index .article .article-inner {
+  background: transparent;
+}
+
+html.skin-dark body.is-blog-index .article {
+  background: #252525;
+  border-color: #333;
+}
+html.skin-dark body.is-blog-index .article .article-inner {
+  background: transparent;
+}
+html.skin-dark body.is-blog-index .article-footer {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+html.skin-dark body.is-blog-index .article-entry .article-excerpt-auto {
+  color: #8b949e;
+}
+
+html.skin-sepia body.is-blog-index .article {
+  background: #faf6ed;
+  border-color: #e8dfc8;
+}
+html.skin-sepia body.is-blog-index .article .article-inner {
+  background: transparent;
+}
+html.skin-sepia body.is-blog-index .article-footer {
+  border-top-color: rgba(92, 75, 55, 0.12);
+}
+html.skin-sepia body.is-blog-index .article-entry .article-excerpt-auto {
+  color: #6b5a4a;
+}
+
 /* 过渡 */
 body,
 #wrap,
