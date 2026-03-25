@@ -9,7 +9,7 @@ from_note: true
 source_note: "swift语言/Swift错误提示解决办法--Swift-Compiler-Error.md"
 ---
 
-错误提示`Swift Compiler Error`
+错误提示: Swift Compiler Error
 <!-- more -->
 `'?' must be followed by a call, member lookup, or subscript`
 
