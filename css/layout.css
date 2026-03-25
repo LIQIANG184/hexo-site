@@ -131,6 +131,10 @@ html:not(.skin-dark):not(.skin-sepia) body {
     align-items: stretch;
   }
 
+  body.is-blog-index #sidebar {
+    padding-top: 2rem;
+  }
+
   body.is-blog-index #main > .article,
   body.is-blog-index #main > #page-nav {
     width: auto !important;
