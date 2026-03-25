@@ -8,6 +8,7 @@
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
+    "publish": "npm run sync-notes && npm run build && npm run deploy",
     "server": "hexo server"
   },
   "hexo": {

@@ -1,9 +1,7 @@
-错误: 
-===
+# 错误
 svn:server sent unexpected return value 405 method not allowed
 <!-- more -->
-全部信息:
-=====
+# 全部信息:
 Description : An error occurred while contacting the repository.
  Suggestion : The server may be unreachable or the URL may be incorrect.
  
