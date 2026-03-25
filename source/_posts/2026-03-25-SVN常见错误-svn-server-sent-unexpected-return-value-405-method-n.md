@@ -9,8 +9,7 @@ from_note: true
 source_note: "知识分享/SVN常见错误-svn-server-sent-unexpected-return-value-405-method-not-allowed.md"
 ---
 
-# 错误
-svn:server sent unexpected return value 405 method not allowed
+svn: server sent unexpected return value 405 method not allowed
 <!-- more -->
 # 全部信息:
 Description : An error occurred while contacting the repository.
