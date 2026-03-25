@@ -1,20 +1,19 @@
-错误提示:
-
-Swift Compiler Error
-
-      '?' must be followed by a call, member lookup, or subscript
+错误提示`Swift Compiler Error`
 <!-- more -->
-报错代码:
+`'?' must be followed by a call, member lookup, or subscript`
+
+报错代码
 
 ![错误代码.png](/images/note/5a8fcc8244c456f722fd3542a6d2f9c5.webp)
 
-解决办法:
+解决办法
+
 将代码行 head.backgroundColor = UIColor.hex2RGB("#e9f1f6")
 改为:
 head.backgroundColor = UIColor.hex2RGB("#e9f1f6") as UIColor
 
 
-总结:
+总结
 
 将代码: head.backgroundColor = UIColor.hex2RGB("#e9f1f6")分开发现不报错了....
 

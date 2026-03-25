@@ -13,7 +13,7 @@ source_note: "swift语言/Swift错误提示解决办法--Swift-Compiler-Error.md
 
 Swift Compiler Error
 
-      '?' must be followed by a call, member lookup, or subscript
+'?' must be followed by a call, member lookup, or subscript
 <!-- more -->
 报错代码:
 
